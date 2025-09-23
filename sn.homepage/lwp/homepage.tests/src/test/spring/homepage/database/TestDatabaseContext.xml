@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+        "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2002, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<beans>
+
+	<import resource="classpath:spring/homepage/resources/ResourceBundleContext.xml" />
+	<import resource="classpath:spring/homepage/database/DatabaseIbatis.xml"/>
+	<import resource="classpath:spring/homepage/database/DatabaseDao.xml"/>
+	<import resource="classpath:test/spring/home-news/database/TestDatabaseContext.xml"/>
+	
+	
+     
+    <bean id="DATABASE:sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocations">
+			<list>
+				<value>classpath:resources/ibatis-dynacache-on.xml</value>
+				<value>classpath:resources/home-news/sql-map-config.xml</value>
+				<value>classpath:resources/homepage/sql-map-config.xml</value>
+			</list>
+      	</property>
+		<property name="dataSource" ref = "HPNEWS-DATABASE:dataSource"/>
+    </bean>
+
+		
+</beans>

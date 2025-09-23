@@ -1,0 +1,73 @@
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- IBM Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright IBM Corp. 2008, 2016                                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%
+	request.setAttribute("isPerson", com.ibm.lconn.core.web.auth.LCRestSecurityHelper.isUserInRole(request, "person"));
+%>
+
+<script type="text/javascript">
+    if (typeof lconn == 'undefined') {
+        var lconn = {};lconn.homepage = {};lconn.homepage.global = {};
+    }
+
+    lconn.homepage.global.isAuthenticated = (function () {
+        return ${requestScope.isPerson};
+    });
+
+    <c:if test="${!isPerson}">
+        var redirectUrl = location.pathname;
+
+        var hashValue = location.hash;
+        if (hashValue.length > 0) {
+            if (hashValue.charAt(0) == "#") {
+                hashValue = hashValue.substring(1);
+
+                // If the hashValue actually has some content
+                // TODO: Temp measure here checking the pathname. Remove later.
+                if (hashValue.length > 0 && location.pathname.indexOf("activityStream") < 0) {
+                    // Redirect to the 'Updates' page
+                    redirectUrl = "${pageContext.request.contextPath}" + "/web/updates/";
+                }
+            }
+            
+            /*
+            	IE Doesn't have a .startsWith method
+          	*/
+          	if (!String.prototype.startsWith) {
+            	String.prototype.startsWith = function (str){
+              		return this.lastIndexOf(str, 0) === 0;
+            	};
+          	}
+            
+            var hashValueWhiteList = ["myStream","myNotifications","actionRequired","atMentions","saved","topUpdates","discover"];   
+            var whitelist = hashValueWhiteList.some(function(entry){
+            	return hashValue.startsWith(entry);
+          	});
+            if(!whitelist || (hashValue.search(/[^a-zA-Z/]+/) !== -1)){
+            	hashValue = "myStream/imFollowing/all";
+            }
+            
+            document.cookie = "ConnectionsHomepageActivityStreamState=" + hashValue + "; path=${pageContext.request.contextPath}";
+        }
+        redirectUrl = encodeURIComponent(redirectUrl);
+
+        // Attach query params if they exist
+        redirectUrl += location.search ? location.search : "";
+
+        // Redirect to login servlet, passing redirectUrl as a parameter
+        window.location.replace("${pageContext.request.contextPath}/web/login_redirect?redirectUrl=" + redirectUrl);
+    </c:if>
+</script>

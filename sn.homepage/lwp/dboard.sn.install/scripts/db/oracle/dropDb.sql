@@ -1,0 +1,39 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2001, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+-- 5724_S68                                              
+DROP ROLE HOMEPAGEUSER_ROLE;
+DROP USER HOMEPAGEUSER;
+DROP USER HOMEPAGE CASCADE;
+
+
+DROP TABLESPACE HOMEPAGEREGTABSPACE INCLUDING CONTENTS AND DATAFILES CASCADE CONSTRAINTS;
+DROP TABLESPACE HOMEPAGEINDEXTABSPACE INCLUDING CONTENTS AND DATAFILES CASCADE CONSTRAINTS;
+
+DROP TABLESPACE HPNTTMPTABSPACE INCLUDING CONTENTS AND DATAFILES CASCADE CONSTRAINTS;
+DROP TABLESPACE HPNTREGTABSPACE INCLUDING CONTENTS AND DATAFILES CASCADE CONSTRAINTS;
+DROP TABLESPACE HPNTINDEXTABSPACE INCLUDING CONTENTS AND DATAFILES CASCADE CONSTRAINTS;
+
+DROP TABLESPACE NEWSTMPTABSPACE INCLUDING CONTENTS AND DATAFILES CASCADE CONSTRAINTS;
+DROP TABLESPACE NEWSREGTABSPACE INCLUDING CONTENTS AND DATAFILES CASCADE CONSTRAINTS;
+DROP TABLESPACE NEWSINDEXTABSPACE INCLUDING CONTENTS AND DATAFILES CASCADE CONSTRAINTS;
+DROP TABLESPACE NEWSLOBTABSPACE INCLUDING CONTENTS AND DATAFILES CASCADE CONSTRAINTS;
+
+DROP TABLESPACE BOARDTMPTABSPACE INCLUDING CONTENTS AND DATAFILES CASCADE CONSTRAINTS;
+DROP TABLESPACE BOARDREGTABSPACE INCLUDING CONTENTS AND DATAFILES CASCADE CONSTRAINTS;
+DROP TABLESPACE BOARDINDEXTABSPACE INCLUDING CONTENTS AND DATAFILES CASCADE CONSTRAINTS;
+DROP TABLESPACE BOARDLOBTABSPACE INCLUDING CONTENTS AND DATAFILES CASCADE CONSTRAINTS;
+
+
+QUIT;

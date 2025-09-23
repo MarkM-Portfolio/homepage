@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2002, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+	<bean id="databaseResourceBundle" class="com.ibm.lconn.homepage.utils.impl.ResourceBundleImpl" scope="singleton">
+        <property name="bundleName" value="com.ibm.lconn.homepage.resources.nls.database.DataLogMessages"/>
+    </bean>
+    
+    <bean id="webResourceBundle" class="com.ibm.lconn.homepage.utils.impl.ResourceBundleImpl" scope="singleton">
+        <property name="bundleName" value="com.ibm.lconn.homepage.resources.nls.web.WebLogMessages"/>
+    </bean>
+    
+    <bean id="uiResourceBundle" class="com.ibm.lconn.homepage.utils.impl.ResourceBundleImpl" scope="singleton">
+        <property name="bundleName" value="com.ibm.lconn.homepage.resources.nls.ui.ui_resources"/>
+    </bean>
+    
+    <bean id="jspResourceBundle" class="com.ibm.lconn.homepage.utils.impl.ResourceBundleImpl" scope="singleton">
+        <property name="bundleName" value="com.ibm.lconn.homepage.resources.nls.jsp.jsp_resources"/>
+    </bean>
+    
+    <bean id="catalogServiceResourceBundle" class="com.ibm.lconn.homepage.utils.impl.ResourceBundleImpl" scope="singleton">
+        <property name="bundleName" value="com.ibm.lconn.homepage.resources.nls.catalog.service.CatalogServicesLogMessages"/>
+    </bean>
+        
+    <bean id="catalogServiceUIResourceBundle" class="com.ibm.lconn.homepage.utils.impl.ResourceBundleImpl" scope="singleton">
+        <property name="bundleName" value="com.ibm.lconn.homepage.resources.nls.catalog.service.ui.CatalogServiceUIMessages"/>
+    </bean>
+    
+    <bean id="mBeanResourceBundle" class="com.ibm.lconn.homepage.utils.impl.ResourceBundleImpl" scope="singleton">
+        <property name="bundleName" value="com.ibm.lconn.homepage.resources.nls.mbean.MBeanResources"/>
+    </bean>
+    
+    <bean id="serviceResourceBundle" class="com.ibm.lconn.homepage.utils.impl.ResourceBundleImpl" scope="singleton">
+        <property name="bundleName" value="com.ibm.lconn.homepage.resources.nls.service.ServiceLogMessages"/>
+    </bean>
+    
+    <bean id="jfrostResourceBundle" class="com.ibm.lconn.homepage.utils.impl.ResourceBundleImpl" scope="singleton">
+        <property name="bundleName" value="com.ibm.lconn.homepage.resources.nls.jfrost.JFrostLogMessages"/>
+    </bean>    
+    
+    <bean id="uiServicesUtils" class="com.ibm.lconn.homepage.utils.impl.UIServicesUtilsImpl" scope="singleton">
+        <property name="catalogServiceUIResourceBundle" ref="catalogServiceUIResourceBundle"/>
+        <property name="catalogServiceResourceBundle" ref="catalogServiceResourceBundle"/>
+        
+    </bean>
+    
+    <bean id="buildStatsResourceBundle" class="com.ibm.lconn.homepage.utils.impl.ResourceBundleImpl" scope="singleton">
+        <property name="bundleName" value="com.ibm.lconn.homepage.resources.stats.BuildStats"/>
+    </bean>    
+    
+    <bean id="activityStreamConfigResourceBundle" class="com.ibm.lconn.homepage.utils.impl.ResourceBundleImpl" scope="singleton">
+        <property name="bundleName" value="com.ibm.lconn.homepage.resources.nls.activitystream.config.activitystreamconfig_resources"/>
+    </bean>  
+</beans>

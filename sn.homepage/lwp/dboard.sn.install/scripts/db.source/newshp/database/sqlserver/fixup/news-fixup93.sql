@@ -1,0 +1,267 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2007, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+-- {COPYRIGHT}
+
+---------------------------------------------------------
+-- [START] RECREATING NR_CATEGORIES_READERS VIEW
+---------------------------------------------------------
+DROP VIEW HOMEPAGE.NR_CATEGORIES_READERS;
+
+GO
+    
+--------------------------------------------------------------------------------------------------------------
+-- CREATE THE VIEW FOR ALL THE STORIES
+--------------------------------------------------------------------------------------------------------------
+CREATE VIEW HOMEPAGE.NR_CATEGORIES_READERS AS (
+    SELECT * FROM HOMEPAGE.NR_RESPONSES_READERS
+        UNION ALL
+    SELECT * FROM HOMEPAGE.NR_PROFILES_READERS
+        UNION ALL
+    SELECT * FROM HOMEPAGE.NR_COMMUNITIES_READERS
+        UNION ALL
+    SELECT * FROM HOMEPAGE.NR_ACTIVITIES_READERS
+        UNION ALL
+    SELECT * FROM HOMEPAGE.NR_BLOGS_READERS
+        UNION ALL
+    SELECT * FROM HOMEPAGE.NR_BOOKMARKS_READERS
+        UNION ALL
+    SELECT * FROM HOMEPAGE.NR_FILES_READERS
+        UNION ALL
+    SELECT * FROM HOMEPAGE.NR_FORUMS_READERS
+        UNION ALL
+    SELECT * FROM HOMEPAGE.NR_WIKIS_READERS
+        UNION ALL
+    SELECT * FROM HOMEPAGE.NR_TAGS_READERS
+    	UNION ALL
+    SELECT * FROM HOMEPAGE.NR_STATUS_UPDATE_READERS
+    	UNION ALL
+	SELECT * FROM HOMEPAGE.NR_EXTERNAL_READERS    	
+);
+
+GO
+
+---------------------------------------------------------
+-- [END] RECREATING NR_CATEGORIES_READERS VIEW
+---------------------------------------------------------
+
+-----------------------------------------------------
+-- 1) ADDING INDEXES 
+-----------------------------------------------------
+CREATE INDEX BRD_SL_UPDATED_DEL 
+	ON HOMEPAGE.BOARD_ENTRIES (SL_UPDATE_DATE ASC, SL_IS_DELETED);
+
+GO
+
+CREATE INDEX BRD_CURRENT_STATUS 
+	ON HOMEPAGE.BOARD_CURRENT_STATUS (ENTRY_ID);
+
+GO	
+
+CREATE INDEX BRD_RECOMMENDER_ID
+    ON HOMEPAGE.BOARD_RECOMMENDATIONS (RECOMMENDER_ID);
+
+GO
+
+----------------------------------------------------
+-- 2) ADDING A MISSING FK TO BOARD_RECOMMENDATIONS: FK_BRD_RECOMMENDER AND 
+----------------------------------------------------
+ALTER TABLE HOMEPAGE.BOARD_RECOMMENDATIONS
+	ADD CONSTRAINT FK_BRD_RECOMMENDER FOREIGN KEY (RECOMMENDER_ID)
+	REFERENCES HOMEPAGE.PERSON (PERSON_ID);
+
+ALTER TABLE HOMEPAGE.BOARD_RECOMMENDATIONS
+	ADD CONSTRAINT FK_BRD_ENTRY_ID FOREIGN KEY (ENTRY_ID)
+	REFERENCES HOMEPAGE.BOARD_ENTRIES (ENTRY_ID);
+
+GO		    
+
+----------------------------------------------------------
+-- 3) Adding an ORGANISATION_ID
+----------------------------------------------------------
+ALTER TABLE HOMEPAGE.NR_SOURCE_TYPE ADD ORGANIZATION_ID nvarchar(36);
+
+GO
+
+UPDATE HOMEPAGE.NR_SOURCE_TYPE SET ORGANIZATION_ID = 'default';
+
+
+----------------------------------------------------------
+-- 4) Change the CATEGORY_TYPE INFO FOR PROFILE VIEW
+----------------------------------------------------------
+UPDATE HOMEPAGE.NR_CATEGORY_TYPE SET CATEGORY_TYPE_NAME = '%profiles-view', CATEGORY_TYPE_DESC = 'profiles-view' WHERE CATEGORY_TYPE = 18;
+
+----------------------------------------------------------
+-- 5) CREATING AN INDEX FOR ALL THE READERS TABLE INCLUDING ALSO THE SOURCE_TYPE
+-- THIS INDEX IS USED FOR THIRD FILTER LEVEL
+----------------------------------------------------------
+CREATE INDEX NR_AGG_READERS 
+	ON HOMEPAGE.NR_AGGREGATED_READERS (READER_ID, CREATION_DATE DESC, SOURCE_TYPE);
+	
+CREATE INDEX PROFILES_STORIES_SRC_IDX
+	ON HOMEPAGE.NR_PROFILES_READERS (READER_ID, CREATION_DATE DESC, SOURCE_TYPE);
+	
+CREATE INDEX COMMUNITIES_STORIES_SRC_IDX 
+	ON HOMEPAGE.NR_COMMUNITIES_READERS (READER_ID, CREATION_DATE DESC, SOURCE_TYPE);
+	
+CREATE INDEX ACTIVITIES_STORIES_SRC_IDX 
+	ON HOMEPAGE.NR_ACTIVITIES_READERS (READER_ID, CREATION_DATE DESC, SOURCE_TYPE);
+	
+CREATE INDEX BLOGS_STORIES_SRC_IDX 
+	ON HOMEPAGE.NR_BLOGS_READERS (READER_ID, CREATION_DATE DESC, SOURCE_TYPE);
+	
+CREATE INDEX BOOKMARKS_STORIES_SRC_IDX 
+	ON HOMEPAGE.NR_BOOKMARKS_READERS (READER_ID, CREATION_DATE DESC, SOURCE_TYPE);
+	
+CREATE INDEX FILES_STORIES_SRC_IDX 
+	ON HOMEPAGE.NR_FILES_READERS (READER_ID, CREATION_DATE DESC, SOURCE_TYPE);
+	
+CREATE INDEX FORUMS_STORIES_SRC_IDX 
+	ON HOMEPAGE.NR_FORUMS_READERS (READER_ID, CREATION_DATE DESC, SOURCE_TYPE);
+	
+CREATE INDEX WIKIS_STORIES_SRC_IDX 
+	ON HOMEPAGE.NR_WIKIS_READERS (READER_ID, CREATION_DATE DESC, SOURCE_TYPE);
+	
+CREATE INDEX TAGS_STORIES_SRC_IDX 
+	ON HOMEPAGE.NR_TAGS_READERS (READER_ID, CREATION_DATE DESC, SOURCE_TYPE);
+	
+CREATE INDEX SU_STORIES_SRC_IDX 
+	ON HOMEPAGE.NR_STATUS_UPDATE_READERS (READER_ID, CREATION_DATE DESC, SOURCE_TYPE);
+
+-- they already have indexed the SOURCE_TYPE those tables
+--NR_RESPONSES_READERS
+--NR_EXTERNAL_READERS
+--NR_ACTIONABLE_READERS
+
+GO
+
+-------------------------------------------------------------------------------------------
+-- 6) Adding IS_LAST_COMMENT_PUBLIC and IS_PREV_COMMENT_PUBLIC to  NR_ENTRIES_XXX tables
+-------------------------------------------------------------------------------------------
+
+--1) NR_ENTRIES_ACT 
+ALTER TABLE HOMEPAGE.NR_ENTRIES_ACT ADD  
+	IS_LAST_COMMENT_PUBLIC NUMERIC(5,0), 
+	IS_PREV_COMMENT_PUBLIC NUMERIC(5,0)
+
+
+GO
+
+----reorg table HOMEPAGE.NR_ENTRIES_ACT;
+
+GO
+
+--2) NR_ENTRIES_BLG
+ALTER TABLE HOMEPAGE.NR_ENTRIES_BLG ADD
+	IS_LAST_COMMENT_PUBLIC NUMERIC(5,0), 
+	IS_PREV_COMMENT_PUBLIC NUMERIC(5,0)
+	
+GO
+
+--reorg table HOMEPAGE.NR_ENTRIES_BLG;
+
+GO
+
+--3) NR_ENTRIES_COM
+ALTER TABLE HOMEPAGE.NR_ENTRIES_COM ADD
+	IS_LAST_COMMENT_PUBLIC NUMERIC(5,0), 
+	IS_PREV_COMMENT_PUBLIC NUMERIC(5,0)
+	
+GO
+
+--reorg table HOMEPAGE.NR_ENTRIES_COM;
+
+GO
+
+--4) NR_ENTRIES_WIK
+ALTER TABLE HOMEPAGE.NR_ENTRIES_WIK ADD
+	IS_LAST_COMMENT_PUBLIC NUMERIC(5,0), 
+	IS_PREV_COMMENT_PUBLIC NUMERIC(5,0)
+	
+GO
+
+--reorg table HOMEPAGE.NR_ENTRIES_WIK;
+
+GO
+
+--5) NR_ENTRIES_PRF
+ALTER TABLE HOMEPAGE.NR_ENTRIES_PRF ADD
+	IS_LAST_COMMENT_PUBLIC NUMERIC(5,0), 
+	IS_PREV_COMMENT_PUBLIC NUMERIC(5,0)
+	
+GO
+
+--reorg table HOMEPAGE.NR_ENTRIES_PRF;
+
+GO
+
+--6) NR_ENTRIES_HP
+ALTER TABLE HOMEPAGE.NR_ENTRIES_HP ADD
+	IS_LAST_COMMENT_PUBLIC NUMERIC(5,0), 
+	IS_PREV_COMMENT_PUBLIC NUMERIC(5,0)
+	
+GO
+
+--reorg table HOMEPAGE.NR_ENTRIES_HP;
+
+GO
+
+--7) NR_ENTRIES_DGR
+ALTER TABLE HOMEPAGE.NR_ENTRIES_DGR ADD
+	IS_LAST_COMMENT_PUBLIC NUMERIC(5,0), 
+	IS_PREV_COMMENT_PUBLIC NUMERIC(5,0)
+	
+GO
+
+--reorg table HOMEPAGE.NR_ENTRIES_DGR;
+
+GO
+
+--8) NR_ENTRIES_FILE
+ALTER TABLE HOMEPAGE.NR_ENTRIES_FILE ADD
+	IS_LAST_COMMENT_PUBLIC NUMERIC(5,0), 
+	IS_PREV_COMMENT_PUBLIC NUMERIC(5,0)
+	
+GO
+
+--reorg table HOMEPAGE.NR_ENTRIES_FILE;
+
+GO
+
+--9) NR_ENTRIES_FRM
+ALTER TABLE HOMEPAGE.NR_ENTRIES_FRM ADD 
+	IS_LAST_COMMENT_PUBLIC NUMERIC(5,0), 
+	IS_PREV_COMMENT_PUBLIC NUMERIC(5,0)
+	
+GO
+
+--reorg table HOMEPAGE.NR_ENTRIES_FRM;
+
+GO
+
+--10) NR_ENTRIES_EXTERNAL
+ALTER TABLE HOMEPAGE.NR_ENTRIES_EXTERNAL ADD
+	IS_LAST_COMMENT_PUBLIC NUMERIC(5,0), 
+	IS_PREV_COMMENT_PUBLIC NUMERIC(5,0)
+	
+GO
+
+--reorg table HOMEPAGE.NR_ENTRIES_EXTERNAL;
+
+GO
+
+
+
+
+

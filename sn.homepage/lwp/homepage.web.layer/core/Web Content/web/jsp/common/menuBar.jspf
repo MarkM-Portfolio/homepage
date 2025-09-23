@@ -1,0 +1,55 @@
+<%@ page session="false" contentType="text/html; charset=UTF-8"
+	buffer="128kb"%>
+<%--wscExemptBegin--%>
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- IBM Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright IBM Corp. 2008, 2015                                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+<%--wscExemptEnd--%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<%-- TODO: remove this file - code was moved to header.jspf --%>
+
+<script type="text/javascript">      // Very simple function to open help file in a separate popup window
+    // Based on Dogear openHelpWindow
+	function openHelpWindow(url) {
+	
+		// Calculate height
+		var h = window.screen.height / 4;
+		if (h < 800)
+			h = 800;
+			
+		// Calculate width
+		var w = window.screen.width / 4;
+		if (w < 800)
+			w = 800;
+			
+		var options = "height="+h+",width="+w+",status=yes,toolbar=yes,menubar=no,location=yes,scrollbars=yes,resizable=yes";
+		
+		var urlToOpen = '';
+		// test absolute URL. Only handle the HTTP and HTTPS cases, all the other urls pattern will be appended to the context root (including www.*)
+		var absPathRegex = /^https?:\/\/*/;
+			
+		// not an absolute URL
+		if (absPathRegex.test(url))
+			urlToOpen = url;
+		else 
+			urlToOpen = '<%= request.getContextPath() %>/' + url;
+				
+		var homepageHelpWindow = window.open(urlToOpen, "helpWindow", options);
+		homepageHelpWindow.focus();
+		
+	}
+</script>
+<%--end menuBar--%>

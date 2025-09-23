@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2006, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<!--
+CREATE TABLE HOMEPAGE.LOGINNAME (
+	PERSON_ID VARCHAR(36) NOT NULL,
+	LOGINNAME VARCHAR(256) NOT NULL
+);
+-->
+
+
+<!DOCTYPE sqlMap 
+            PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+            "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="LoginName">
+
+	<typeAlias alias="LoginName" type="com.ibm.lconn.homepage.dao.model.LoginName" />
+	
+	<resultMap id="LoginNameMap" class="LoginName">
+		<result property="id" column="PERSON_ID" jdbcType="VARCHAR" />
+		<result property="loginName" column="LOGINNAME" jdbcType="VARCHAR" />
+	</resultMap>
+	
+		
+	<select id="select-LOGINNAME" parameterClass="String" resultMap="LoginNameMap" >
+		<![CDATA[
+			SELECT * from $schema$.LOGINNAME
+		]]>
+	</select>
+	
+	<insert id="insert-LOGINNAME" parameterClass="LoginName" >
+		<![CDATA[
+			INSERT INTO $schema$.LOGINNAME
+				(PERSON_ID, LOGINNAME, ORGANIZATION_ID)
+			VALUES
+				(#id:VARCHAR#, #loginName:VARCHAR#, #organizationId:VARCHAR#)
+		]]>
+	</insert>
+
+  	<update id="update-LOGINNAME" parameterClass="LoginName">
+		<![CDATA[
+		 	update $schema$.LOGINNAME set
+		 		LOGINNAME = #loginName:VARCHAR#				
+		  	where PERSON_ID = #id:VARCHAR#
+		]]>
+  	</update>	
+  
+	<delete id="delete-LOGINNAME">
+		<![CDATA[
+		   	delete from $schema$.LOGINNAME where PERSON_ID = #key#
+		]]>
+	</delete>
+
+	<delete id="deleteLoginName-LOGINNAME">
+		<![CDATA[
+		   	delete from $schema$.LOGINNAME where PERSON_ID = #id:VARCHAR# AND LOGINNAME = #loginName:VARCHAR#
+		]]>
+	</delete>
+
+	<select id="getByPK-LOGINNAME" resultMap="LoginNameMap">
+	    <![CDATA[
+		    select *
+	    	from $schema$.LOGINNAME
+	    	where PERSON_ID = #key#
+	    ]]>
+	</select>
+	
+	<!-- Vincent: added for LotusLive support. It is the same as getByPK which seems to be bugged (check with Lorenzo) -->
+	<!-- as PersonId is not the PK of the table and a list can be returned -->
+	<select id="findByPersonId-LOGINNAME" resultMap="LoginNameMap">
+	    <![CDATA[
+		    select *
+	    	from $schema$.LOGINNAME
+	    	where PERSON_ID = #key#
+	    ]]>
+	</select>
+
+</sqlMap>	
+
+	
+	
+	

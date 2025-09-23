@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2013                                          -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<suite thread-count="1" name="Moderation" parallel="classes">
+
+  <parameter name="server_host" value="localhost" />
+  <parameter name="server_port" value="4445" />
+  <parameter name="browser_url" value="http://lc30linux5.swg.usma.ibm.com/" />
+  <parameter name="server_is_grid_hub" value="false" />
+  
+  <!--
+  <parameter name="browser_start_command" value="Firefox_7_Windows7" />
+  The appropriate browser start commmand is formed from the 3 parameters below. All parameters are required.
+  For Selenium Grid, browser start command will be '[browser_name]_[browser_version]_[browser_environment_os]'.
+  If using selenium grid(i.e. '<parameter name="server_is_grid_hub" value="true" />'), you must request capabilities that match what is available on the grid.
+  If not using selenium grid(i.e. '<parameter name="server_is_grid_hub" value="false" />'), the appropriate browser_start_command will be automatically chosen (e.g. *firefox for browser_name="FireFox").
+  View grid capabilities at 'http://[server_host]:[server_port]/grid/'.
+  -->
+  <parameter name="browser_name" value="Firefox" /> <!-- Valid values are: 'Firefox' OR 'GoogleChrome' OR 'InternetExplorer'. This is CaseSensitive -->
+  <parameter name="browser_version" value="3.6" /> <!-- Example values are:'3.6', '5', '8', '10'-->
+  <parameter name="browser_environment_os" value="WindowsVista" /> <!-- Example values are: Windows7, WindowsVista, WindowsXP, MacOSX, LinuxMint etc. This is CaseSensitive -->
+  
+  <!--
+  Folder names for resource files or file output. These will be used to create OS appropriate paths.
+  -->
+  <parameter name="browser_root_folder" value="SeleniumServer" /> <!-- Folder in root (e.g. C:\[browser_root_folder]) on local drive of browser host machine for file storage/output. -->
+  <parameter name="local_root_folder" value="SeleniumServer" />
+  <parameter name="upload_files_folder" value="TestFiles" /> <!-- Subdirectory of [browser_root_folder] for tests to find files for uploading from -->
+  <parameter name="screenshots_folder" value="Screenshots" /> <!-- Subdirectory of [browser_root_folder] for screenshots to be saved to -->
+
+  <test name="Communities" preserve-order="true">
+    <packages>
+      <package name="com.ibm.bvt.testcases.communities" />
+    </packages>
+  </test>
+  
+</suite>

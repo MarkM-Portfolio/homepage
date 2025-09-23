@@ -1,0 +1,78 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2002, 2013                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<project name="sn.homepage" default="development" basedir=".">
+
+  <!-- WARNING: The following property allows a single switch for pseudo-transalation properties. However,
+                this is a non-documented, non-supported setting. This actually adds a new link between
+                this component and sn.infra and assumes that it has sn.infra in its fe_element.xml.
+                Before modifying this, ask karim.heredia@ie.ibm.com or jay_boyd@us.ibm.com -->
+  <property file="${env.WPLC_HOME}/prereq_fes/sn.infra/lwp/build/globalization.test/pseudo/pseudo.properties" />
+  <property file="${env.WPLC_HOME}/socnet.03/sn.infra/lwp/build/globalization.test/pseudo/pseudo.properties" />
+
+  <import file="${env.WPLC_IMPORT}/std_props.xml"/>
+  <import file="${env.WPLC_IMPORT}/root_build.xml"/>
+  <import file="${env.WPLC_IMPORT}/translations.xml"/>
+  
+  <property name="ear.location" value="build/dboard.ear/ear.prod/lib" />
+  <property name="ear.name" value="dboard.ear" />
+  <property name="ear.unpackaged.location" value="ear" />
+	
+  <property name="war.name" value="homepage.war" />
+  <property name="war.unpackaged.location" value="war" />
+	
+  <property name="test.files.location" value="build/homepage.web.layer/core/test.files" />
+
+  <target name="include-js-tests">
+	<!-- Unzip EAR -->
+	<unzip src="${ear.location}/${ear.name}" dest="${ear.unpackaged.location}" />
+	
+	<!-- Unzip WAR that is in EAR -->
+	<unzip src="${ear.unpackaged.location}/${war.name}" dest="${war.unpackaged.location}" />
+	
+	<!-- Copy test files to unpackaged WAR -->
+	<copy todir="${war.unpackaged.location}/script/lconn/homepage/tests" includeEmptyDirs="true">
+		<fileset dir="${test.files.location}/tests" includes="**" />
+	</copy>
+	
+	<!-- Copy doh files to unpackaged WAR -->
+	<copy todir="${war.unpackaged.location}/dojo_1.4/util/doh" includeEmptyDirs="true">
+		<fileset dir="${test.files.location}/doh" includes="**" />
+	</copy>
+
+	<!-- Zip up WAR -->
+	<war destfile="${war.name}">
+		<zipfileset dir="${war.unpackaged.location}"/>
+	</war>
+	
+	<!-- Cleanup unpackaged WAR -->
+	<delete dir="${war.unpackaged.location}" />
+
+	<!-- Copy WAR back to unpackaged EAR -->
+	<copy file="${war.name}" tofile="${ear.unpackaged.location}/${war.name}" />
+	
+	<!-- Cleanup zipped WAR -->
+	<delete file="${war.name}" />
+	
+	<!-- Zip up EAR -->
+	<ear destfile="${ear.location}/dboard.ear" appxml="${ear.unpackaged.location}/META-INF/application.xml">
+		<zipfileset dir="${ear.unpackaged.location}"/>
+	</ear>
+	
+	<!-- Cleanup unpackaged EAR -->
+	<delete dir="${ear.unpackaged.location}" />
+	
+  </target>
+  
+</project>

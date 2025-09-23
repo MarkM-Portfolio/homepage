@@ -1,0 +1,48 @@
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- HCL Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright HCL Technologies Limited. 2006, 2021                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+
+<%@ page session="false" contentType="text/html; charset=UTF-8"
+	buffer="48kb"%>
+
+<%-- OneUI place bar (bar located just under the tabs --%>
+
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="com.ibm.lconn.homepage.web.utils.impl.HomepageConfigUtils"%>
+
+<%
+request.setAttribute("canCustomize", !HomepageConfigUtils.getNoCustomize());
+%>
+
+<tiles:importAttribute name="tabName" toName="placeName" />
+<tiles:importAttribute name="displayCustomizationButton" />
+
+<c:if test="${not empty displayCustomizationButton && displayCustomizationButton == 'true' && canCustomize}">
+
+<div class="lotusTitleBarExt">
+	<div class="lotusWrapper">
+		<div class="lotusInner">
+			<ul class="lotusInlinelist lotusRight lotusActions"
+				><li class="lotusFirst"
+					><a id="paletteLink" role="button" href="javascript:;" onclick="lconn.homepage.global.openPalette()"
+						><fmt:message key="jsp.homepage.lotusBar.customize" 
+					/></a
+				></li
+			></ul>
+		</div>
+	</div>
+</div>
+
+</c:if>

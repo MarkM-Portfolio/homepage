@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2001, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<!-- 5724-S68                                                          -->
+<config xmlns="http://www.ibm.com/LotusConnections-config" xmlns:sloc="http://www.ibm.com/service-location" xmlns:tns="http://www.ibm.com/LotusConnections-config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" buildlevel="LC2.5_20090628_1551" id="LotusConnections" xsi:schemaLocation="http://www.ibm.com/LotusConnections-config LotusConnections-config.xsd">
+
+    <!-- Unique deployment ID that will not change if servers are migrated to another address. 
+         Default is "com.ibm.sn:random-id".  Suggested value is reversed domain name of the 
+         Connections installation, for example: "com.example.social-intranet" 
+    -->
+    <deployment deployment_id="com.ibm.lc.441075a3-1da6-4390-9ff1-169ca04037f3"/>
+
+    <sloc:serviceReference enabled="true" person_card_service_name_js_eval="generalrs.label_personcard_activitieslink" person_card_service_url_pattern="/service/html/mainpage#dashboard%2Cmyactivities%2Cuserid%3D{userid}%2Cname%3D{displayName}" serviceName="activities" ssl_enabled="true">
+        <sloc:href>
+            <sloc:hrefPathPrefix>/activities</sloc:hrefPathPrefix>
+            <sloc:static href="http://junit.dyn.webahead.ibm.com:9080" ssl_href="https://junit.dyn.webahead.ibm.com:9443"/>
+            <sloc:interService href="https://junit.dyn.webahead.ibm.com:9443"/>
+        </sloc:href>
+    </sloc:serviceReference>
+
+    <sloc:serviceReference enabled="true" person_card_service_name_js_eval="generalrs.label_personcard_blogslink" person_card_service_url_pattern="/roller-ui/blog/{userid}" serviceName="blogs" ssl_enabled="true">
+        <sloc:href>
+            <sloc:hrefPathPrefix>/blogs</sloc:hrefPathPrefix>
+            <sloc:static href="http://junit.dyn.webahead.ibm.com:9080" ssl_href="https://junit.dyn.webahead.ibm.com:9443"/>
+            <sloc:interService href="https://junit.dyn.webahead.ibm.com:9443"/>
+        </sloc:href>
+    </sloc:serviceReference>
+
+    <sloc:serviceReference enabled="true" person_card_service_name_js_eval="generalrs.label_personcard_communitieslink" person_card_service_url_pattern="/service/html/allcommunities?userid={userid}" serviceName="communities" ssl_enabled="true">
+        <sloc:href>
+            <sloc:hrefPathPrefix>/communities</sloc:hrefPathPrefix>
+            <sloc:static href="http://junit.dyn.webahead.ibm.com:9080" ssl_href="https://junit.dyn.webahead.ibm.com:9443"/>
+            <sloc:interService href="https://junit.dyn.webahead.ibm.com:9443"/>
+        </sloc:href>
+    </sloc:serviceReference>
+
+    <sloc:serviceReference communities_directory_service_extension_auth="DSX-Admin" communities_directory_service_extension_auth_alias="connectionsAdmin" communities_directory_service_extension_enabled="true" communities_directory_service_extension_href="http://junit.dyn.webahead.ibm.com:9080/communities/dsx/" profiles_directory_service_extension_auth="None" profiles_directory_service_extension_auth_alias="connectionsAdmin" profiles_directory_service_extension_enabled="true" profiles_directory_service_extension_href="http://junit.dyn.webahead.ibm.com:9080/profiles/dsx/" serviceName="directory"/>
+    
+    <sloc:serviceReference enabled="true" person_card_service_name_js_eval="generalrs.label_personcard_dogearlink" person_card_service_url_pattern="/html?userid={userid}" serviceName="dogear" ssl_enabled="true">
+        <sloc:href>
+            <sloc:hrefPathPrefix>/dogear</sloc:hrefPathPrefix>
+            <sloc:static href="http://junit.dyn.webahead.ibm.com:9080" ssl_href="https://junit.dyn.webahead.ibm.com:9443"/>
+            <sloc:interService href="https://junit.dyn.webahead.ibm.com:9443"/>
+        </sloc:href>
+    </sloc:serviceReference>
+
+    <sloc:serviceReference enabled="true" serviceName="personTag" ssl_enabled="true">
+        <sloc:href>
+            <sloc:hrefPathPrefix>/profiles/ibm_semanticTagServlet</sloc:hrefPathPrefix>
+            <sloc:static href="http://junit.dyn.webahead.ibm.com:9080" ssl_href="https://junit.dyn.webahead.ibm.com:9443"/>
+            <sloc:interService href="https://junit.dyn.webahead.ibm.com:9443"/>
+        </sloc:href>
+    </sloc:serviceReference>
+
+    <sloc:serviceReference enabled="true" person_card_service_name_js_eval="generalrs.label_personcard_profilelink" person_card_service_url_pattern="/html/simpleSearch.do?searchFor={userid}&amp;searchBy=userid" serviceName="profiles" ssl_enabled="true">
+        <sloc:href>
+            <sloc:hrefPathPrefix>/profiles</sloc:hrefPathPrefix>
+            <sloc:static href="http://junit.dyn.webahead.ibm.com:9080" ssl_href="https://junit.dyn.webahead.ibm.com:9443"/>
+            <sloc:interService href="https://junit.dyn.webahead.ibm.com:9443"/>
+        </sloc:href>
+    </sloc:serviceReference>
+
+    <sloc:serviceReference enabled="false" person_card_service_name_js_eval="generalrs.label_personcard_quickrlink" person_card_service_url_pattern="/allfiles/people/{email}" serviceName="quickr" ssl_enabled="false">
+        <sloc:href>
+            <sloc:hrefPathPrefix>/quickr</sloc:hrefPathPrefix>
+            <sloc:static href="admin_replace" ssl_href="admin_replace"/>
+            <sloc:interService href="admin_replace"/>
+        </sloc:href>
+    </sloc:serviceReference>
+
+    <sloc:serviceReference enabled="false" serviceName="sametimeLinks" ssl_enabled="false">
+        <sloc:anonymousLogin enabled="false"/>
+        <sloc:href>
+            <sloc:hrefPathPrefix>/sametime</sloc:hrefPathPrefix>
+            <sloc:static href="admin_replace" ssl_href="admin_replace"/>
+            <sloc:interService href="admin_replace"/>
+        </sloc:href>
+    </sloc:serviceReference>
+    
+    <sloc:serviceReference bootstrapHost="pjblinux.mul.ie.ibm.com" bootstrapPort="2809" clusterName="" enabled="true" serviceName="homepage" ssl_enabled="true">
+        <sloc:href>
+            <sloc:hrefPathPrefix>/homepage</sloc:hrefPathPrefix>
+            <sloc:static href="http://junit.dyn.webahead.ibm.com:9080" ssl_href="https://junit.dyn.webahead.ibm.com:9443"/>
+            <sloc:interService href="https://junit.dyn.webahead.ibm.com:9443"/>
+        </sloc:href>
+    </sloc:serviceReference>
+
+    <sloc:serviceReference bootstrapHost="pjblinux.mul.ie.ibm.com" bootstrapPort="2809" clusterName="" enabled="true" serviceName="search" ssl_enabled="true">
+        <sloc:href>
+            <sloc:hrefPathPrefix>/search</sloc:hrefPathPrefix>
+            <sloc:static href="http://junit.dyn.webahead.ibm.com:9080" ssl_href="https://junit.dyn.webahead.ibm.com:9443"/>
+            <sloc:interService href="https://junit.dyn.webahead.ibm.com:9443"/>
+        </sloc:href>
+    </sloc:serviceReference>
+
+    <sloc:serviceReference enabled="true" person_card_service_name_js_eval="generalrs.label.personcard.wikislink" person_card_service_url_pattern="/wikis/home/search?uid={userid}&amp;name={displayName}" serviceName="wikis" ssl_enabled="true">
+        <sloc:href>
+            <sloc:hrefPathPrefix>/wikis</sloc:hrefPathPrefix>
+            <sloc:static href="http://junit.dyn.webahead.ibm.com:9080" ssl_href="https://junit.dyn.webahead.ibm.com:9443"/>
+            <sloc:interService href="https://junit.dyn.webahead.ibm.com:9443"/>
+        </sloc:href>
+    </sloc:serviceReference>
+
+    <sloc:serviceReference enabled="true" person_card_service_name_js_eval="generalrs.label_personcard_fileslink" person_card_service_url_pattern="/app/person/{userid}" serviceName="files" ssl_enabled="true">
+        <sloc:href>
+            <sloc:hrefPathPrefix>/files</sloc:hrefPathPrefix>
+            <sloc:static href="http://junit.dyn.webahead.ibm.com:9080" ssl_href="https://junit.dyn.webahead.ibm.com:9443"/>
+            <sloc:interService href="https://junit.dyn.webahead.ibm.com:9443"/>
+        </sloc:href>
+    </sloc:serviceReference>
+            
+    <sloc:serviceReference bootstrapHost="junit.mul.ie.ibm.com" bootstrapPort="2809" clusterName="" enabled="true" serviceName="news" ssl_enabled="true">
+        <sloc:href>
+            <sloc:hrefPathPrefix>/news</sloc:hrefPathPrefix>
+            <sloc:static href="http://junit.dyn.webahead.ibm.com:9080" ssl_href="https://junit.dyn.webahead.ibm.com:9443"/>
+            <sloc:interService href="https://junit.dyn.webahead.ibm.com:9443"/>
+        </sloc:href>
+    </sloc:serviceReference>  
+    
+    <sloc:serviceReference enabled="false" serviceName="mobile" ssl_enabled="false">
+        <sloc:href>
+            <sloc:hrefPathPrefix>/mobile</sloc:hrefPathPrefix>
+            <sloc:static href="admin_replace" ssl_href="admin_replace"/>
+            <sloc:interService href="admin_replace"/>
+        </sloc:href>
+    </sloc:serviceReference>        
+
+    <style enabled="false">
+        <!-- leave "admin_replace" for any fields you do not wish to override -->
+        <header url="admin_replace"/>
+        <footer url="admin_replace"/>
+        <images ssl_url="admin_replace" url="admin_replace"/>
+        <caching value="private, max-age=3601"/>
+    </style>
+    
+    <customAuthenticator name="DefaultAuthenticator">
+        <attribute key="AllowSelfSignedCerts" value="true"/>
+        <attribute key="BasicAuthEnabled" value="false"/>
+        <attribute key="ByPassBasicAuthForDSX" value="true"/>
+        <attribute key="AllowHomeMadeCookies" value="true"/>
+        <attribute key="FailoverWithJ2EEAuth" value="true"/>
+        <attribute key="CookieTimeout" value="60"/>
+        <attribute key="ConnectionTimeout" value="10"/>
+        <attribute key="SoTimeout" value="60"/>
+        <attribute key="MaxTotalConnections" value="40"/>
+        <attribute key="DefaultMaxConnectionsPerHost" value="15"/>
+    </customAuthenticator>
+    
+    <allowedContent>
+      <contentType name="FLASH" enabled="true"/>
+    </allowedContent>
+
+    <!-- Uncomment and replace hostname as appropriate to enable virus scanning
+     Replace myScannerService with the appropriate name for your scanner (eg
+     AVSCAN for Symantec, RESPMOD for McAfee)
+     -->
+    <!--avFilter class="AVScannerICAP">
+        <property>av.scanner.servers=myscanner.host.com</property>
+        <property>exception.on.virus=yes</property>
+        <property>av.scanner.service=myScannerService</property>
+    </avFilter-->
+
+    <forceConfidentialCommunications enabled="false"/>
+    <exposeEmail enabled="false"/> 
+
+	<!-- When enabling the language selector by setting enabled to true, there are
+	     options to consider:
+	     
+	     If you want to have a default language for all users who have not explicitly
+	     chosen a language then set the defaultLanguage attribute (e.g. to "en" for
+	     English. If this is not set then the user's browser settings will be used.
+	     Note - setting a default language will override any browser language settings
+	     that users have.
+	     
+	     Set the cookieName attribute if you want to use a specific, defined name for
+	     the cookie used to track the selected language.
+	     
+	     Set the cookieDomain if you use multiple host names for Connections features
+	     and want to ensure this setting works across all features. For example if your
+	     servers are profiles.acme.com and dogear.acme.com set the cookie domain to "acme.com"
+	     
+	     Set usePermanentCookie to true if you wish to have the user language choice persist
+	     across multiple web sessions.
+	     
+	     Specify a language element for each language you want the user to select from. The
+	     lang value should be a valid ISO country code, and the element value the 
+	     name of the language. The name of the language will be displayed in the UI and 
+	     non-latin characters must be specified in javascript escaped unicode format.
+	     
+	     If you just wish to enforce a single language for all users then set the 
+	     defaultLanguage attribute and do not specify any child language elements.
+	 -->   
+
+
+    <languageSelector cookieDomain="" cookieName="" defaultLanguage="en" enabled="false" usePermanentCookie="false">
+	    <language lang="en">English</language>
+	    <language lang="zh">\u6C49\u8BED</language>
+	    <language lang="fr">Fran\u00E7ais</language>
+	    <language lang="ar">\u0623\u0631\u0628\u064A\u0643</language>
+    </languageSelector>
+	
+	<dynamicHosts enabled="false">
+        <host href="admin_replace" ssl_href="admin_replace"/>
+    </dynamicHosts>
+
+    <resources>
+	</resources>	
+</config>

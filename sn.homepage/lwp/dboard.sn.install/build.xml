@@ -1,0 +1,304 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2006, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<!-- This component is a temporary hack to get Karaoke into the install to meet some deadlines.  -->
+
+<project name="dboard.sn.install" default="development" basedir="."> 
+
+  <import file="${env.WPLC_IMPORT}/std_props.xml"/>
+  <import file="${env.WPLC_IMPORT}/std_dirs.xml"/>
+  <import file="${env.WPLC_IMPORT}/copyright.xml"/>
+
+  <import file="${env.WPLC_IMPORT}/clean.xml"/>
+  <import file="${env.WPLC_IMPORT}/nojavadoc.xml"/>
+  <import file="${env.WPLC_IMPORT}/noprocess_nls.xml"/>
+  <import file="${env.WPLC_IMPORT}/noperformance.xml"/>
+  <import file="${env.WPLC_IMPORT}/manifest.xml"/>
+  <target name="development" depends="production"/>
+  <target name="production" depends="stageHomepage, smartcloud"/>
+
+
+	<!-- LN to create the sql scripts at build time using sql scripts fragments -->
+	<import file="${basedir}/buildSchema.xml"/>
+
+	<target name="removeSomeJars">
+		<!-- Removing some jars from for Wells Fargo dboard.ear -->
+		
+		<!-- Find dboard.ear and set property to its path -->
+		<locateComponent component="dboard.ear/ear.prod" locateBuildDir="true" property="dboard.ear.prod.dir"/>
+
+		<property name="dboard.ear.lib.dir" value="${dboard.ear.prod.dir}/lib"/>
+		
+		<!-- Create temporary directory-->
+		<property name="tmp.ear.dir" value="${dboard.ear.prod.dir}/tmpeardir"/>
+		<mkdir dir="${tmp.ear.dir}"/>
+		
+		<echo message="Directory of existing dboard.ear: ${dboard.ear.lib.dir}"/>
+		<echo message="Temporary directory for creating new ear: ${tmp.ear.dir}" />  
+		
+		<!--   1.  unzip the dboard.ear to temp directory       -->
+		<unzip src="${dboard.ear.lib.dir}/dboard.ear" dest="${tmp.ear.dir}"/>
+
+		<!--   2.  delete the jars from temp directory          -->
+		<delete verbose="true">   
+			<fileset dir="${tmp.ear.dir}">
+			<include name="spring.jar"/>
+			<include name="spring-webmvc-2.5.6.jar"/>
+			<include name="tiles-api-2.2.2.jar"/>
+			<include name="tiles-core-2.2.2.jar"/>
+				<include name="tiles-el-2.2.2.jar"/>
+				<include name="tiles-freemarker-2.2.2.jar"/>
+				<include name="tiles-jsp-2.2.2.jar"/>
+				<include name="tiles-ognl-2.2.2.jar"/>
+				<include name="tiles-servlet-2.2.2.jar"/>
+				<include name="tiles-template-2.2.2.jar"/>
+			</fileset>
+		</delete>
+		
+		<!--   3.  zip up the temp directory as dboard.ear      -->
+		<!--       Note: need to remove dboard.ear for zip to work not sure why-->
+		<delete file="${dboard.ear.lib.dir}/dboard.ear" verbose="true"/> 
+		<zip destfile="${dboard.ear.lib.dir}/dboard.ear" basedir="${tmp.ear.dir}" update="false" />
+	
+		<!--   4.  remove temp directory                        -->
+		<delete dir="${tmp.ear.dir}" verbose="true"/> 
+	</target>
+
+	<target name="stageHomepage" depends="removeSomeJars">
+  	<!-- remove existing build directory -->
+	<delete dir="${dir.build}" />
+
+      <!-- Create directories for staging and bundling Homepage assests -->
+      <mkdir dir="${dir.build}/stage1/" />
+      <mkdir dir="${dir.build}/stage2/homepage/homepage" />
+      <mkdir dir="${dir.build}/stage3/" />
+
+      <!-- ************************************************************************************ -->
+      <!-- Stage1 directory holds application assests reflecting their post-install arrangement -->
+      <!-- ************************************************************************************ -->    
+	
+  	<!-- create the actual database scripts and save them into the output folder gen.schema.dir !-->
+    <antcall target="bld-schemas"/>
+
+  	
+  	<!-- Copy ear to stage 1 location: /installableApps --> 
+      <locateComponent component="dboard.ear/ear.prod" locateBuildDir="true" property="homepage.ear.dir"/>	
+  	<copy todir="${dir.build}/stage1/installableApps">
+          <fileset dir="${homepage.ear.dir}/lib">      
+      	    <exclude name="**/.copyarea.db"/>
+          </fileset>
+	</copy>
+
+  	<!-- Copy db.tokens.xml. This is used in data transfer --> 	
+  	<copy todir="${dir.build}/stage1/scripts/db.tokens">
+          <fileset dir="./scripts/db.tokens">      
+      	    <exclude name="**/.copyarea.db"/>
+          </fileset>
+	</copy>
+
+  	<!-- Copy jacl scripts --> 	
+  	<copy todir="${dir.build}/stage1/scripts/jacl">
+          <fileset dir="./scripts/jacl">      
+      	    <exclude name="**/.copyarea.db"/>
+          </fileset>
+	</copy>
+  	
+  	<!-- Copy jython scripts --> 	
+  	<copy todir="${dir.build}/stage1/scripts/jython">
+          <fileset dir="./scripts/jython">      
+      	    <exclude name="**/.copyarea.db"/>
+          </fileset>
+	</copy>
+
+  	<!-- Copy homepage.properties to stage 1 location --> 	
+  	<!--copy todir="${dir.build}/stage1">
+          <fileset dir="./properties">       
+      	    <exclude name="**/.copyarea.db"/>
+          </fileset>
+	</copy-->
+
+  	<!-- Copy other xml/xsd to stage 1 location: /homepage.config  	
+  	<copy todir="${dir.build}/stage1/homepage.config">
+          <fileset dir="../peoplepages.config.files/config.files">  
+      	    <exclude name="**/.copyarea.db"/>
+          </fileset>
+	</copy>
+	-->
+
+  	<!-- Copy global jython admin script to stage 1 location: scripts/jython --> 	
+    	<locateComponent component="lc.config.svc" locateBuildDir="false" property="lc.config.svc.dir"/>
+  	<copy todir="${dir.build}/stage1/scripts/jython">
+          <fileset dir="${lc.config.svc.dir}/config.scripts/jython">      
+          	<include name="**/connectionsConfig.py"/>
+          </fileset>
+	</copy>  	
+	  	
+        <!-- **********************************************************************************-->
+        <!-- Stage2 directory holds homepage.jar which bundles assests copied in stage 1 -->
+        <!-- **********************************************************************************-->
+  	<!-- Create a jar of app assests -->
+      <!-- Create the manifest file.  First an empty manifest file. -->
+      <touch file="${dir.build}/manifest.base" />
+      <property name="manifest.file" value="${dir.build}/manifest.base"/>
+      <!-- This call adds the manifest file content -->
+      <antcall target="manifest2" />
+
+
+  	<antcall target="crConvert_1to3"><param name="dir.ToConvert" value="${dir.build}/stage1"/></antcall> 	
+  	<jar destfile="${dir.build}/stage2/homepage/homepage/homepage.jar"  manifest="${dir.build}/manifest.mf">
+           <fileset dir="${dir.build}/stage1"/>
+	</jar>
+
+  	<!-- Place the IUDD.xmls for install: Product --> 	
+  	<copy todir="${dir.build}/stage2">
+          <fileset dir="./install.xml">
+      	    <exclude name="**/HomepageComponent.xml"/>
+      	    <exclude name="**/HomepageOffering.xml"/>
+          </fileset>
+	</copy>
+
+  	<!-- Place the IUDD.xmls for install: Offering --> 	
+  	<copy todir="${dir.build}/stage2/homepage">
+          <fileset dir="./install.xml">
+      	   <exclude name="**/HomepageComponent.xml"/>
+      	   <exclude name="**/homepage.xml"/>
+          </fileset>
+	</copy>
+
+  	<!-- Place the IUDD.xmls for install: Component --> 	
+  	<copy todir="${dir.build}/stage2/homepage/homepage">
+          <fileset dir="./install.xml">
+      	    <exclude name="**/HomepageOffering.xml"/>
+      	    <exclude name="**/homepage.xml"/>
+          </fileset>
+	</copy>
+
+        <!-- ****************************************************************************** -->
+        <!-- Stage3, create the final package for  distribution                            -->
+        <!-- ****************************************************************************** -->
+        <jar destfile="${dir.build}/stage3/homepage_cd.jar"
+          basedir="${dir.build}/stage2"
+        />
+
+        <!-- ****************************************************************************** -->
+        <!-- Copy db sql outside of install package                                         -->
+        <!-- ****************************************************************************** -->
+      <!-- Do not distribute .sql in application jar.  We will distribute these outside install for ease of use. -->
+      	<!-- LN: removed, now the output scripts are in gen.schemas. gen.schemas is build at build time -->
+  		<!--
+  		<copy todir="${dir.build}/db.scripts/homepage">
+          <fileset dir="./scripts/db">      
+      	    <include name="oracle/**"/>
+            <include name="db2/**"/>
+	    	<include name="sqlserver/**"/>
+          </fileset>
+		</copy>
+		-->
+  		
+		<copy todir="${dir.build}/db.scripts/homepage">
+      		<fileset dir="${gen.schema.dir}">      
+	  	    	<include name="oracle/**"/>
+	        	<include name="db2/**"/>
+	    		<include name="sqlserver/**"/>
+	    		<include name="as400/**"/>
+      		</fileset>
+		</copy>
+  		
+		<move failonerror="false" file="${dir.build}/db.scripts/homepage/as400" tofile="${dir.build}/db.scripts/homepage/db2_IBMi" />
+  </target>
+
+	<!-- This target is used to copy and move specific smartclouds scripts. There are two types of smartclouds scripts:
+		- unique smartcloud scripts: scripts that don't have to be part of the release on-premisis. 
+			Unique smartcloud scripts are just part of smartcloud folder
+		- shared smartcloud scripts: scripts that are part of on-premisis and smartcloud release: i.e.: fixupXX.sql scripts
+	-->
+	<target name="smartcloud"> 
+		<!-- db2 source dir -->
+		<property name="src-dir" value="${dir.build}/db.scripts/homepage/db2" />
+		<!-- smartcloud target dir -->	
+		<property name="sc-dir" value="${dir.build}/smartcloud" />
+		
+	
+		<mkdir dir="${sc-dir}"/> <!-- creating smartcloud output folder -->
+		<mkdir dir="${sc-dir}/fixup"/>
+		
+		<!-- task one -->
+		<echo message="Task one: Move specific and unique smartcloud scripts which are not part of the on-premisies release. Files are moved to: ${sc-dir}.." />
+	
+		<!-- MOVE: main scripts -->
+		<move todir="${sc-dir}">
+			<filelist dir="${src-dir}">
+				<file name="sc-aug2013-fix-discrepancies.sql"/>
+				<file name="sc-compress-data-june.sql"/>				
+			</filelist>
+		</move>
+		<!-- MOVE: fixup scripts -->
+		<move todir="${sc-dir}/fixup">
+			<filelist dir="${src-dir}/fixup">				
+				<file name="sc-fixup452.sql"/>
+				<file name="sc-fixup453.sql"/>
+				<file name="sc-fixup454.sql"/>
+				<file name="sc-fixup455.sql"/>
+				<file name="sc-fixup456.sql"/>
+				<file name="sc-fixup457.sql"/>
+				<file name="sc-fixup458.sql"/>
+				<file name="sc-fixup459.sql"/>
+				<file name="sc-fixup460.sql"/>
+				<file name="sc-fixup461.sql"/>
+				<file name="sc-fixup462.sql"/>
+				<file name="sc-fixup463.sql"/>
+				<file name="sc-fixup464.sql"/>
+				<file name="sc-fixup465.sql"/>
+				<file name="sc-fixup466.sql"/>
+				<file name="sc-fixup467.sql"/>
+				<file name="sc-fixup468.sql"/>
+				<file name="sc-fixup469.sql"/>
+				<file name="sc-fixup470.sql"/>
+				<file name="sc-fixup471.sql"/>
+				<file name="sc-fixup472.sql"/>
+			</filelist>			
+		</move>
+		
+		
+	
+		<echo message="Task two: Copy smartcloud scripts which are part of the on-premisies and smartcloud release too. Files are copied to: ${sc-dir}.." />
+		
+		<!-- COPY: main scripts -->
+		<copy todir="${sc-dir}">
+			<filelist dir="${src-dir}">				
+				<file name="appGrants.sql"/>
+				<file name="clearScheduler.sql"/>	
+				<file name="clearSearchIndexTables.sql"/>	
+				<file name="reorg.sql"/>
+				<file name="updateStats.sql"/>
+				<file name="setInteg.sql"/>			
+			</filelist>			
+		</copy>
+		<!-- COPY: fixup scripts -->
+		<copy todir="${sc-dir}/fixup">
+			<filelist dir="${src-dir}/fixup">
+				<!-- file name="fixup453.sql"/ -->	
+			</filelist>			
+		</copy>
+		
+		
+		
+		<!-- On prem we are now using @ as command terminator. On SC we still need to use; -->
+		<!-- Find and replace all @ to be ; . This apply to the SC scripts -->
+		<replace dir="${sc-dir}" token="@" value=";" />
+		
+	</target>
+
+</project>
+

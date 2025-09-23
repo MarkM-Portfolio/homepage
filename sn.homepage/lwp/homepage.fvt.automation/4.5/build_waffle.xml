@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2010, 2013                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+<project name="WD_EXAMPLE" default="package" basedir=".">
+	<description>WD EXAMPLE</description>
+	<!-- set global properties for this build -->
+	<property name="src" location="src" />
+	<property name="build" location="build" />
+	<property name="bin" location="bin" />
+	<property name="lib" location="lib" />
+	<property name="reports.dir" location="test-outout" />
+	<property name="output.jar" value="${bin}/Homepage_Automation.jar" />
+	<property name="waffle.jar" value="${lib}/waffle.jar" />
+	<property name="selenium.jar" value="${lib}/selenium-server-standalone-2.24.1.jar" />
+
+	<path id="test.classpath">
+		<pathelement location="${output.jar}" />
+		<fileset dir="${lib}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<delete>
+			<fileset dir="${bin}" includes="**/*.*" />
+		</delete>
+		<delete dir="${build}" />
+	</target>
+
+	<target name="init" depends="clean">
+		<tstamp />
+		<mkdir dir="${build}" />
+		<mkdir dir="${build}/classes" />
+		<mkdir dir="${bin}" />
+		<mkdir dir="${bin}/test_config" />
+		<mkdir dir="${bin}/test-output" />
+		<mkdir dir="${bin}/logs" />
+		<mkdir dir="${bin}/resources" />
+	</target>
+
+	<target name="compile" depends="init" description="compile the source ">
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac srcdir="${src}" destdir="${build}/classes" 
+			classpathref="test.classpath" debug="on" includeantruntime="false" includes="**/*" />
+		<copy todir="${build}/classes">
+			<fileset dir="${src}">
+				<include name="**/*.properties" />
+				<include name="**/*.xml" />
+				<include name="**/*.csv" />
+				<include name="**/*.json" />
+				<include name="**/*.yaml" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="package" depends="compile">
+		<jar jarfile="${output.jar}" basedir="${build}/classes" excludes="com/ibm/atmn/mt/bss/**">
+			<zipfileset src="${selenium.jar}" excludes="META-INF/*" />
+			<zipfileset src="${waffle.jar}" excludes="META-INF/*" />
+			<manifest>
+				<attribute name="Main-Class" value="com.ibm.atmn.waffle.core.Main" />
+				<attribute name="Class-Path" value="." />
+			</manifest>
+		</jar>
+		<copy todir="${bin}/test_config" flatten="false">
+			<fileset dir="test_config">
+				<include name="**/*.properties" />
+				<include name="**/*.xml" />
+				<include name="**/*.csv" />
+				<include name="**/*.json" />
+				<include name="**/*.yaml" />
+				<include name="**/*.js" />
+			</fileset>
+		</copy>
+		<copy todir="${bin}/resources" flatten="false">
+			<fileset dir="resources">
+				<include name="**/*.properties" />
+				<include name="**/*.xml" />
+				<include name="**/*.csv" />
+				<include name="**/*.exe" />
+				<include name="**/*.json" />
+				<include name="**/*.yaml" />
+				<include name="**/*.js" />
+			</fileset>
+		</copy>
+	</target>
+
+	<path id="cp">
+		<pathelement location="${waffle.jar}" />
+		<pathelement location="${selenium.jar}" />
+		<pathelement location="${build}/classes/" />
+	</path>
+
+
+</project>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+ PUBLIC "-//iBATIS.com/DTD SQL Map 2.0//EN"
+ "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2011, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<sqlMap namespace="HomepageActionRequired">
+    <select id="getCountActionRequiredByExternalID-NR_ACTIONABLE_READERS" parameterClass="java.util.Map" resultClass="long">
+    	SELECT COUNT(*) 
+    	FROM $schema$.NR_ACTIONABLE_READERS r,
+    	     $schema$.PERSON p
+    	WHERE p.EXID = #personExtId:VARCHAR#
+    	AND r.READER_ID = p.PERSON_ID AND r.IS_VISIBLE = 1
+    	<isEqual prepend="AND" property="applyMT" compareValue="true">
+			r.ORGANIZATION_ID = #organizationId:VARCHAR#
+			AND p.ORGANIZATION_ID = r.ORGANIZATION_ID
+		</isEqual>
+    	<isEqual property="dbVendor" compareValue="db2">
+			WITH UR								
+		</isEqual>
+    </select>
+</sqlMap>

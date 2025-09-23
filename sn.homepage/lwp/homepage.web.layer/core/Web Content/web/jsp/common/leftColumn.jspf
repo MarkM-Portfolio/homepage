@@ -1,0 +1,189 @@
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- HCL Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright HCL Technologies Limited. 2011, 2021                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+
+<%@ page session="true" contentType="text/html; charset=UTF-8" buffer="48kb"%>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@ taglib prefix="lc-ui" uri="http://www.ibm.com/lconn/tags/coreuiutil" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%@page import="com.ibm.lconn.homepage.services.config.gettingstarted.GettingStartedBeanHelper" %>
+<%@page import="com.ibm.lconn.homepage.services.config.gettingstarted.GettingStartedUrl" %>
+<%@page import="com.ibm.lconn.homepage.utils.impl.ResourceBundleImpl" %>
+
+<jsp:useBean id="services" class="com.ibm.lconn.core.web.util.taglib.ServiceEnabledBean" scope="application"/>
+
+<tiles:importAttribute name="page" toName="selected" />
+
+<%
+	boolean isMultitenant = com.ibm.lconn.hpnews.common.util.Environment.isMultitenant();
+
+	com.ibm.lconn.homepage.utils.impl.ResourceBundleImpl widgetBundle = new com.ibm.lconn.homepage.utils.impl.ResourceBundleImpl();
+	widgetBundle.setBundleName("com.ibm.lconn.homepage.resources.nls.widgets.widgets_resources");
+	String strOpenInNewWindow = widgetBundle.getString("BOOKMARKS_ARIA_OPENS_NEW_WINDOW");
+
+	com.ibm.lconn.homepage.utils.impl.ResourceBundleImpl homepageBundle = new com.ibm.lconn.homepage.utils.impl.ResourceBundleImpl();
+	homepageBundle.setBundleName("com.ibm.lconn.homepage.resources.nls.jsp.jsp_resources");
+	String strGettingStarted = homepageBundle.getString("jsp.homepage.tab.gettingStarted");
+
+
+	Object gettingStarted = new com.ibm.lconn.core.web.util.resourcebundle.UILabelConfig("bundle","jsp.homepage.tab.gettingStarted");
+	Object myPage = new com.ibm.lconn.core.web.util.resourcebundle.UILabelConfig("bundle","jsp.homepage.tab.myPage");
+	Object admin = new com.ibm.lconn.core.web.util.resourcebundle.UILabelConfig("bundle","jsp.homepage.tab.admin");
+	Object myPageDesc = new com.ibm.lconn.core.web.util.resourcebundle.UILabelConfig("bundle","jsp.homepage.nav.activitystream.myPageDesc");
+	Object menuAriaDesc = new com.ibm.lconn.core.web.util.resourcebundle.UILabelConfig("bundle","jsp.homepage.nav.landmark.aria");
+	Object toolbarGettingStartedAriaLabel = isMultitenant?admin:gettingStarted; 
+	
+	request.setAttribute("gettingStarted",gettingStarted);
+	request.setAttribute("myPage",myPage);
+	request.setAttribute("admin",admin);
+	request.setAttribute("myPageTitle",myPageDesc);
+	request.setAttribute("menuAria",menuAriaDesc);
+	request.setAttribute("toolbarGettingStartedAriaLabel",toolbarGettingStartedAriaLabel);
+	request.setAttribute("isMultitenant",isMultitenant);
+
+	try {
+		Boolean _isCNX8UXEnabled = (Boolean) pageContext.getAttribute("isCNX8UXEnabled");
+        if (!_isCNX8UXEnabled) {
+            request.setAttribute("menuSelected",homepageBundle.getString("jsp.homepage.nav.activitystream.selected") +"&nbsp;-&nbsp;");
+        }
+	} catch(Exception e){
+		request.setAttribute("menuSelected","");
+	}
+
+	// Check if Getting Started is default page, or configured for external page
+	String gsUrl = request.getContextPath() + "/web/gettingStarted/";
+	String gsTarget = "";
+	String gsAriaLabel = strGettingStarted;
+
+	boolean isGSUrlMode = GettingStartedBeanHelper.isUrlMode();
+	GettingStartedUrl gsUrlData = GettingStartedBeanHelper.getGettingStartedUrl();
+	if ( isGSUrlMode && gsUrlData != null && gsUrlData.getUrl() != null ) {
+		gsUrl = gsUrlData.getUrl();
+		gsTarget = gsUrlData.getTarget();
+	}
+
+	if (gsTarget != null && gsTarget.equals("_blank")){
+		gsAriaLabel += " ("+ strOpenInNewWindow + ")";
+	}
+
+	request.setAttribute("gsUrl", gsUrl);
+	request.setAttribute("gsTarget", gsTarget);
+	request.setAttribute("gsAriaLabel", gsAriaLabel);
+%>
+
+<div id="hpplaceholder_left_top"></div>
+
+
+<div id="homepageLeftNavigationMenuContainer">
+    <div class="lotusMenu" role="navigation" id="homepageLeftNavigationMenu"
+         aria-label="<lc-ui:message label='${menuAria}'/>">
+        <%-- ActivityStream links --%>
+        <div dojoType="com.ibm.social.as.nav.ASSideNav"></div>
+
+        <c:if test="${sessionScope['view.iswidgettabenabled']  && !sessionScope['user.info.isExternal']}">
+            <div class="lotusMenuSection">
+                <ul role="toolbar" aria-label="<lc-ui:message label='${myPage}'/>">
+                        <%-- My page link --%>
+                    <c:choose>
+                        <c:when test="${selected eq 'widgets'}">
+                            <li class="lconnHomepageMyPage lotusSelected"><a
+                                    title="${menuSelected}<lc-ui:message label='${myPageTitle}'/>"
+                                    href="${pageContext.request.contextPath}/web/widgets/"
+                                    role="button"><img src="<lc-ui:blankGif />" alt=""
+                                                                           class="lconnStreamIcon"
+                                                                           role="presentation"><lc-ui:message
+                                    label="${myPage}"/></a></li>
+                        </c:when>
+                        <c:otherwise>
+                            <li class="lconnHomepageMyPage"><a title="<lc-ui:message label='${myPageTitle}'/>"
+                                                               href="${pageContext.request.contextPath}/web/widgets/"
+                                                               role="button"><img
+                                    src="<lc-ui:blankGif />" alt="" class="lconnStreamIcon"
+                                    role="presentation"><lc-ui:message label="${myPage}"/></a></li>
+                        </c:otherwise>
+                    </c:choose>
+                </ul>
+            </div>
+        </c:if>
+
+        <div class="lotusMenuSection">
+            <ul role="toolbar" aria-label="<lc-ui:message label='${toolbarGettingStartedAriaLabel}'/>">
+            	<c:if test="${!isMultitenant}">
+                <%-- Getting Startted link --%>
+                <c:choose>
+                    <c:when test="${selected eq 'gettingStarted'}">
+                        <li class="lconnHomepageGettingStarted lotusSelected"><a href="${gsUrl}" target="${gsTarget}"
+                                                                                 title="${menuSelected}<lc-ui:message label='${gettingStarted}'/>"
+                                                                                 aria-label="${gsAriaLabel}"
+                                                                                 role="button"><img
+                                src="<lc-ui:blankGif />" alt="" class="lconnStreamIcon"
+                                role="presentation"><lc-ui:message label="${gettingStarted}"/></a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li class="lconnHomepageGettingStarted"><a href="${gsUrl}" target="${gsTarget}"
+                                                                   title="<lc-ui:message label='${gettingStarted}'/>"
+                                                                   aria-label="${gsAriaLabel}"
+                                                                   role="button"><img
+                                src="<lc-ui:blankGif />" alt="" class="lconnStreamIcon"
+                                role="presentation"><lc-ui:message label="${gettingStarted}"/></a></li>
+                    </c:otherwise>
+                </c:choose>
+                </c:if>
+                <%-- Admin link --%>
+                <c:if test="${ sessionScope.isAdmin }">
+                    <c:choose>
+                        <c:when test="${selected eq 'admin'}">
+                            <li class="lconnHomepageAdmin lotusSelected"><a
+                                    href="${pageContext.request.contextPath}/admin/openAdminPage.action"
+                                    title="${menuSelected}<lc-ui:message label='${admin}'/>"
+                                    role="button"><img src="<lc-ui:blankGif />" alt=""
+                                                                           class="lconnStreamIcon"
+                                                                           role="presentation"><lc-ui:message
+                                    label="${admin}"/></a></li>
+                        </c:when>
+                        <c:otherwise>
+                            <li class="lconnHomepageAdmin"><a
+                                    href="${pageContext.request.contextPath}/admin/openAdminPage.action"
+                                    title="<lc-ui:message label='${admin}'/>"
+                                    role="button"><img src="<lc-ui:blankGif />" alt=""
+                                                                            class="lconnStreamIcon" role="presentation"><lc-ui:message
+                                    label="${admin}"/></a></li>
+                        </c:otherwise>
+                    </c:choose>
+                </c:if>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div id="hpplaceholder_left_center"></div>
+<div id="hpplaceholder_left_bottom"></div>
+
+<script type="text/javascript">
+dojo.addOnLoad(function() {
+	dojo.parser.parse(dojo.byId("lotusColLeft"));
+	dojo.require("lconn.homepage.utils.toolbar");
+
+	// Build the menu structure for keyboard navigation
+	lconn.homepage.utils.toolbar.build(dojo.byId("homepageLeftNavigationMenu"));
+
+	// Look for the menu item that's currently selected and focus it.
+	var container = dojo.byId("#homepageLeftNavigationMenu");
+	var selectedItem = dojo.query("a[aria-pressed$=true]",container);
+
+	if (selectedItem && selectedItem.length > 0) {
+		selectedItem[0].focus();
+	}
+})
+</script>

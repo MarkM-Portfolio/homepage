@@ -1,0 +1,54 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2011, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+
+<div dojoAttachPoint="root" class="topContainer">
+
+	<div dojoAttachPoint="filesCentralLoading">
+		<center><img src="${_loadingImagePath}" class='loading' alt='${loading}' /></center>
+	</div>
+	<div dojoAttachPoint="boardingNode" style="display:none"></div>	
+	<div dojoAttachPoint="errorNode" style="display: none"></div>
+	<div dojoattachpoint="welcomeNode" style="display:none;" class="welcomeNode">
+			<div class="lconnEmpty">
+				${noFilesEntry1}&nbsp;<span dojoattachpoint="noFilesEntry2Point"></span>
+				<div style="font-style: normal; padding-top: 10px;">
+					<a href="" dojoattachpoint="filesLink" >${noFilesEntry3}</a>
+				</div>
+			</div>
+		</div>
+
+
+
+
+	<div dojoAttachPoint="filesCentralContainer" style="display: none">
+		
+		<div>
+			<h3 dojoAttachPoint="titleNode" class="widgetTitle"> 
+				<span class="lotusLeft">${filesWidgetTitle}</span><span class="lotusRight"><a dojoAttachPoint="filesUploadLink" href="">${uploadLinkText}</a></span><span dojoAttachPoint="menuModeButtonNode"></span>&nbsp;
+			</h3>
+		</div>		
+		
+		<div dojoAttachPoint="filesCentralNode">
+		</div>		
+		
+		<div class="widgetFooter" align="right">
+			<div dojoAttachPoint="scrollerNode"></div>
+		</div>	
+	
+	</div>
+	<div dojoAttachPoint="tempNode" style="display : none">	
+	</div>
+
+</div>

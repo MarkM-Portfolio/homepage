@@ -1,0 +1,360 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2007, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+-- {COPYRIGHT}
+
+---------------------------------------------------------------------------------
+------------------------ START NEWS FIXUP 462 -----------------------------------
+---------------------------------------------------------------------------------
+
+-- 100357: [fixup462] create a new index in NR_RESOURCE table: CONTAINER_NAME + ORGANIZATION_ID - unique index
+CREATE INDEX NR_RES_CONT_NAME_ORG_ID_IDX
+	ON HOMEPAGE.NR_RESOURCE (CONTAINER_NAME, ORGANIZATION_ID);
+GO
+
+-- 81806: [fixup462.sql] Remove NR_SOURCE table and relevant DAO and Service layer
+DROP TABLE HOMEPAGE.NR_SOURCE;
+GO
+
+-- 101900: [fixup462.sql] [G2, Homepage sql running poorly in G2 (European Data Cernter, Staging Environment). (122357)]
+CREATE INDEX NR_EMD_RES_PRF_PER_FRQ_RES_IDX 
+	ON HOMEPAGE.EMD_RESOURCE_PREF (PERSON_ID, FREQUENCY_TYPE, RESOURCE_TYPE);
+	
+
+DROP INDEX SAVED_READERS_SR_IX ON HOMEPAGE.NR_SAVED_READERS;
+GO
+	
+--  [start indexes] NR_AGGREGATED_READERS
+DROP  INDEX AGGREGATED_READERS_RDR_STR 
+ 	ON HOMEPAGE.NR_AGGREGATED_READERS;
+GO
+
+--  [end indexes] NR_AGGREGATED_READERS
+
+--  [start indexes] NR_RESPONSES_READERS
+DROP  INDEX RESPONSES_READERS_RDR_STR 
+ 	ON HOMEPAGE.NR_RESPONSES_READERS;
+GO
+
+--  [end indexes] NR_RESPONSES_READERS
+
+--  [start indexes] NR_PROFILES_READERS
+DROP  INDEX PROFILES_READERS_RDR_STR 
+ 	ON HOMEPAGE.NR_PROFILES_READERS;
+GO
+
+--  [end indexes] NR_PROFILES_READERS
+
+--  [start indexes] NR_COMMUNITIES_READERS
+DROP  INDEX COMM_READERS_RDR_STR 
+ 	ON HOMEPAGE.NR_COMMUNITIES_READERS;
+GO
+
+--  [end indexes] NR_COMMUNITIES_READERS
+
+--  [start indexes] NR_ACTIVITIES_READERS
+DROP  INDEX ACTIVITIES_READERS_RDR_STR 
+ 	ON HOMEPAGE.NR_ACTIVITIES_READERS;
+GO
+
+--  [end indexes] NR_ACTIVITIES_READERS
+
+--  [start indexes] NR_BLOGS_READERS
+DROP  INDEX BLOGS_READERS_RDR_STR 
+ 	ON HOMEPAGE.NR_BLOGS_READERS;
+GO
+
+--  [end indexes] NR_BLOGS_READERS
+
+--  [start indexes] NR_BOOKMARKS_READERS
+DROP  INDEX BOOKMARKS_READERS_RDR_STR 
+ 	ON HOMEPAGE.NR_BOOKMARKS_READERS;
+GO
+
+--  [end indexes] NR_BOOKMARKS_READERS
+
+--  [start indexes] NR_FILES_READERS
+DROP  INDEX FILES_READERS_RDR_STR 
+ 	ON HOMEPAGE.NR_FILES_READERS;
+GO
+
+--  [end indexes] NR_FILES_READERS
+
+--  [start indexes] NR_FORUMS_READERS
+DROP  INDEX FORUMS_READERS_RDR_STR 
+ 	ON HOMEPAGE.NR_FORUMS_READERS;
+GO
+
+--  [end indexes] NR_FORUMS_READERS
+
+--  [start indexes] NR_WIKIS_READERS
+DROP  INDEX WIKIS_READERS_RDR_STR 
+ 	ON HOMEPAGE.NR_WIKIS_READERS;
+GO
+
+--  [end indexes] NR_WIKIS_READERS
+
+--  [start indexes] NR_TAGS_READERS
+DROP  INDEX TAGS_READERS_RDR_STR 
+ 	ON HOMEPAGE.NR_TAGS_READERS;
+GO
+
+--  [end indexes] NR_TAGS_READERS
+
+--  [start indexes] NR_STATUS_UPDATE_READERS
+DROP  INDEX STATUS_READERS_RDR_STR 
+ 	ON HOMEPAGE.NR_STATUS_UPDATE_READERS;
+GO
+
+--  [end indexes] NR_STATUS_UPDATE_READERS
+
+--  [start indexes] NR_EXTERNAL_READERS
+DROP  INDEX EXTERNAL_READERS_RDR_STR 
+ 	ON HOMEPAGE.NR_EXTERNAL_READERS;
+GO
+
+--  [end indexes] NR_EXTERNAL_READERS
+
+--  [start indexes] NR_ACTIONABLE_READERS
+DROP  INDEX ACTIONABLE_READERS_RDR_STR 
+ 	ON HOMEPAGE.NR_ACTIONABLE_READERS;
+GO
+
+--  [end indexes] NR_ACTIONABLE_READERS
+
+--  [start indexes] NR_DISCOVERY_VIEW
+
+--  [end indexes] NR_DISCOVERY_VIEW
+
+--  [start indexes] NR_PROFILES_VIEW
+DROP  INDEX PROFILES_VIEW_RDR_STR 
+ 	ON HOMEPAGE.NR_PROFILES_VIEW;
+GO
+
+--  [end indexes] NR_PROFILES_VIEW
+
+--  [start indexes] NR_NOTIFICATION_SENT_READERS
+DROP  INDEX NOTIFICA_READERS_RDR_STR 
+ 	ON HOMEPAGE.NR_NOTIFICATION_SENT_READERS;
+GO
+
+--  [end indexes] NR_NOTIFICATION_SENT_READERS
+
+--  [start indexes] NR_NOTIFICATION_RECEIV_READERS
+DROP  INDEX NOT_REC_READERS_RDR_STR 
+ 	ON HOMEPAGE.NR_NOTIFICATION_RECEIV_READERS;
+GO
+
+--  [end indexes] NR_NOTIFICATION_RECEIV_READERS
+
+--  [start indexes] NR_SAVED_READERS
+DROP  INDEX SAVED_READERS_RDR_STR 
+ 	ON HOMEPAGE.NR_SAVED_READERS;
+GO
+
+--  [end indexes] NR_SAVED_READERS
+
+--  [start indexes] NR_TOPICS_READERS
+DROP  INDEX TOPICS_READERS_RDR_STR 
+ 	ON HOMEPAGE.NR_TOPICS_READERS;
+GO
+
+--  [end indexes] NR_TOPICS_READERS
+
+--  [start indexes] NR_MENTIONS_READERS
+DROP  INDEX MENTIONS_READERS_RDR_STR 
+ 	ON HOMEPAGE.NR_MENTIONS_READERS;
+GO
+
+--  [end indexes] NR_MENTIONS_READERS
+
+
+--  [start indexes] NR_AGGREGATED_READERS
+CREATE  INDEX AGGREGATED_READERS_STR_RDR 
+ 	ON HOMEPAGE.NR_AGGREGATED_READERS (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_AGGREGATED_READERS
+
+--  [start indexes] NR_RESPONSES_READERS
+CREATE  INDEX RESPONSES_READERS_STR_RDR 
+ 	ON HOMEPAGE.NR_RESPONSES_READERS (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_RESPONSES_READERS
+
+--  [start indexes] NR_PROFILES_READERS
+CREATE  INDEX PROFILES_READERS_STR_RDR 
+ 	ON HOMEPAGE.NR_PROFILES_READERS (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_PROFILES_READERS
+
+--  [start indexes] NR_COMMUNITIES_READERS
+CREATE  INDEX COMM_READERS_STR_RDR 
+ 	ON HOMEPAGE.NR_COMMUNITIES_READERS (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_COMMUNITIES_READERS
+
+--  [start indexes] NR_ACTIVITIES_READERS
+CREATE  INDEX ACTIVITIES_READERS_STR_RDR 
+ 	ON HOMEPAGE.NR_ACTIVITIES_READERS (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_ACTIVITIES_READERS
+
+--  [start indexes] NR_BLOGS_READERS
+CREATE  INDEX BLOGS_READERS_STR_RDR 
+ 	ON HOMEPAGE.NR_BLOGS_READERS (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_BLOGS_READERS
+
+--  [start indexes] NR_BOOKMARKS_READERS
+CREATE  INDEX BOOKMARKS_READERS_STR_RDR 
+ 	ON HOMEPAGE.NR_BOOKMARKS_READERS (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_BOOKMARKS_READERS
+
+--  [start indexes] NR_FILES_READERS
+CREATE  INDEX FILES_READERS_STR_RDR 
+ 	ON HOMEPAGE.NR_FILES_READERS (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_FILES_READERS
+
+--  [start indexes] NR_FORUMS_READERS
+CREATE  INDEX FORUMS_READERS_STR_RDR 
+ 	ON HOMEPAGE.NR_FORUMS_READERS (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_FORUMS_READERS
+
+--  [start indexes] NR_WIKIS_READERS
+CREATE  INDEX WIKIS_READERS_STR_RDR 
+ 	ON HOMEPAGE.NR_WIKIS_READERS (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_WIKIS_READERS
+
+--  [start indexes] NR_TAGS_READERS
+CREATE  INDEX TAGS_READERS_STR_RDR 
+ 	ON HOMEPAGE.NR_TAGS_READERS (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_TAGS_READERS
+
+--  [start indexes] NR_STATUS_UPDATE_READERS
+CREATE  INDEX STATUS_READERS_STR_RDR 
+ 	ON HOMEPAGE.NR_STATUS_UPDATE_READERS (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_STATUS_UPDATE_READERS
+
+--  [start indexes] NR_EXTERNAL_READERS
+CREATE  INDEX EXTERNAL_READERS_STR_RDR 
+ 	ON HOMEPAGE.NR_EXTERNAL_READERS (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_EXTERNAL_READERS
+
+--  [start indexes] NR_ACTIONABLE_READERS
+CREATE  INDEX ACTIONABLE_READERS_STR_RDR 
+ 	ON HOMEPAGE.NR_ACTIONABLE_READERS (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_ACTIONABLE_READERS
+
+--  [start indexes] NR_DISCOVERY_VIEW
+CREATE  INDEX DISCOVERY_VIEW_STR_RDR 
+ 	ON HOMEPAGE.NR_DISCOVERY_VIEW (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_DISCOVERY_VIEW
+
+--  [start indexes] NR_PROFILES_VIEW
+CREATE  INDEX PROFILES_VIEW_STR_RDR 
+ 	ON HOMEPAGE.NR_PROFILES_VIEW (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_PROFILES_VIEW
+
+--  [start indexes] NR_NOTIFICATION_SENT_READERS
+CREATE  INDEX NOTIFICA_READERS_STR_RDR 
+ 	ON HOMEPAGE.NR_NOTIFICATION_SENT_READERS (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_NOTIFICATION_SENT_READERS
+
+--  [start indexes] NR_NOTIFICATION_RECEIV_READERS
+CREATE  INDEX NOT_REC_READERS_STR_RDR 
+ 	ON HOMEPAGE.NR_NOTIFICATION_RECEIV_READERS (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_NOTIFICATION_RECEIV_READERS
+
+--  [start indexes] NR_SAVED_READERS
+CREATE  INDEX SAVED_READERS_STR_RDR 
+ 	ON HOMEPAGE.NR_SAVED_READERS (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_SAVED_READERS
+
+--  [start indexes] NR_TOPICS_READERS
+CREATE  INDEX TOPICS_READERS_STR_RDR 
+ 	ON HOMEPAGE.NR_TOPICS_READERS (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_TOPICS_READERS
+
+--  [start indexes] NR_MENTIONS_READERS
+CREATE  INDEX MENTIONS_READERS_STR_RDR 
+ 	ON HOMEPAGE.NR_MENTIONS_READERS (STORY_ID, READER_ID); 
+GO
+
+--  [end indexes] NR_MENTIONS_READERS
+
+
+
+---------------------------------------------------------------------------------
+------------------------ END   NEWS FIXUP 462 -------------------------------------
+---------------------------------------------------------------------------------
+
+-- 102461: [fixp462] drop column NOTE_TEXT from SAVED and ACTIONABLE readers
+ALTER TABLE HOMEPAGE.NR_ACTIONABLE_READERS DROP COLUMN NOTE_TEXT;
+GO
+ALTER TABLE HOMEPAGE.NR_ACTIONABLE_READERS DROP COLUMN NOTE_UPDATE_DATE;
+GO
+
+ALTER TABLE HOMEPAGE.NR_SAVED_READERS DROP COLUMN NOTE_TEXT;
+GO
+ALTER TABLE HOMEPAGE.NR_SAVED_READERS DROP COLUMN NOTE_UPDATE_DATE;
+GO
+
+-- 102831: [fixup462] create un unique index on NR_SOURCE_TYPE (source + orgId)
+CREATE UNIQUE INDEX UNQ_SOURCE_TYPE_SRC_ORG
+ 	ON HOMEPAGE.NR_SOURCE_TYPE (SOURCE, ORGANIZATION_ID);
+GO
+
+-- 103237: OSC 121178 - Reply to a topic notification shows as reply to a reply
+
+UPDATE HOMEPAGE.NR_TEMPLATE SET DATA_SOURCE_STRING = 'rollupName;rollupHtmlPath' WHERE NAME = 'topicEntryName';
+GO
+
+INSERT INTO HOMEPAGE.NR_TEMPLATE
+                (TEMPLATE_ID, NAME, DATA_SOURCE_STRING, FORMAT, NO_VALUES)
+VALUES  ('general-rollupitem-asdfbe898Bjr95','rollupitem','rollupName;rollupHtmlPath', 'link', 1);
+GO

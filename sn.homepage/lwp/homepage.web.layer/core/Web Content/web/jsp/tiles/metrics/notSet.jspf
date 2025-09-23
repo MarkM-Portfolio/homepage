@@ -1,0 +1,39 @@
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- HCL Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright HCL Technologies Limited. 2001, 2021                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+
+<%@ taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" 	uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" 		uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="dboard" 	uri="http://www.ibm.com/homepage/tags"%>
+<%@ page import="java.util.Date" %>
+<div id="lotusMain" class="lotusMain">
+
+	<span style="position: absolute;">
+		<a name="mainContent" id="maincontent">&nbsp;</a>
+	</span>
+
+	<div id="lotusContent" class="lotusContent">
+
+		<div class="lotusHeader" align="${bidir.alignment}"><h1><fmt:message key="label.metrics.title" /></h1>
+			<div class="lotusMeta">
+				<p><fmt:message key="label.metrics.asof"/> 
+				<fmt:formatDate value="<%= new Date()%>" type="both" dateStyle="short" timeStyle="short"/>
+				</p>
+				</p>
+					<fmt:message key="label.metrics.notSet"/>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>

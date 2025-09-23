@@ -1,0 +1,31 @@
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- HCL Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright HCL Technologies Limited. 2008, 2021                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>	
+
+<%@ page session="false" contentType="text/html; charset=UTF-8"
+	buffer="128kb"%>
+
+
+<%-- Simply display the current debugging mode, if any --%>
+
+<%@ taglib prefix="c" 			uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%-- debug and develop mode indication --%>
+<c:choose>
+	<c:when test="${request.getParameter('mode') == 'debug'}">
+		<p>debug mode</p>
+	</c:when>
+	<c:when test="${request.getParameter('mode') == 'develop'}">
+		<p>develop mode</p>
+	</c:when>
+</c:choose>

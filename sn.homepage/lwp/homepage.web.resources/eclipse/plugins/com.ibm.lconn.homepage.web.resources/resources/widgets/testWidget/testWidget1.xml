@@ -1,0 +1,65 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2008, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<iw:iwidget name="testwidget" xmlns:iw="http://www.ibm.com/xmlns/prod/iWidget"
+			lang="en"
+			iScope="testWidgetClass1"
+			allowInstanceContent="true"
+			useHomepageEnhancedFeatures="true">
+
+	<iw:resource uri="testWidgetClass1.js" id="testWidgetClass1"/>
+	<!--<iw:resource uri="https://dubxpcvm409.mul.ie.ibm.com:9444/connections/resources/web/lconn.homepage/widgets/testWidget/testWidgetClass.js" id="testWidgetClass"/>-->
+
+	<iw:event id="edit" handled="true" onEvent="onEdit" />
+	<!--<iw:event id="help" handled="true" onEvent="onHelp" />-->
+	<iw:event id="onRefreshNeeded" handled="true" onEvent="onRefresh" />
+	<!--<iw:event id="onUnload" handled="true" onEvent="onDestroy" />-->
+
+
+	<!--<iw:itemSet id="attributes" private="false" onItemSetChanged="itemSetChanged">-->
+	<iw:itemSet id="attributes">
+		<iw:item id="attribute1" value="att1_xml" />
+		<iw:item id="attribute2" value="att2_xml" />
+		<iw:item id="attribute3" value="att3_xml" />
+	</iw:itemSet>
+
+	<iw:content mode="view">
+		<![CDATA[
+		<div>
+			In admin page of widget set url to /connections/resources/web/lconn.homepage/widgets/testWidget/testWidget1.xml<br><br>
+			<em>User:</em>
+			<div id="content"></div>
+			<hr>
+			<input type="button" onclick="iContext.iScope().dumpAttributes()" value="Dump Attributes"/>
+			<input type="button" onclick="iContext.iScope().fireEditEvent()" value="Edit"/>
+		</div>
+		]]>
+	 </iw:content>
+
+	<iw:content mode="edit">
+		<![CDATA[
+		<div> Attributes: <span id="name"></span></div>
+		<div>
+			<label for="txtAttr1">Attribute 1</label>&nbsp;<input type="text" dojoType="dijit.form.TextBox" maxlength="15" name="txtAttr1" id="txtAttr1" /><br/>
+			<label for="txtAttr2">Attribute 2</label>&nbsp;<input type="text" dojoType="dijit.form.TextBox" maxlength="15" name="txtAttr2" id="txtAttr2" /><br/>
+			<label for="txtAttr3">Attribute 3</label>&nbsp;<input type="text" dojoType="dijit.form.TextBox" maxlength="15" name="txtAttr3" id="txtAttr3" /><br/><br/>
+
+			<hr>
+			<input type="button" onclick="iContext.iScope().saveAttributes()" value="Save"/>
+			<input type="button" onclick="iContext.iScope().cancel()" value="Cancel"/>
+			<div id="content"></div>
+		</div>
+		]]>
+	</iw:content>
+</iw:iwidget>

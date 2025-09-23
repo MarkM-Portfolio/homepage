@@ -1,0 +1,1452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * IBM Confidential
+ * 
+ * OCO Source Materials
+ * 
+ * Copyright IBM Corp. 2008, 2017                                    
+ * 
+ * The source code for this program is not published or otherwise
+ * divested of its trade secrets, irrespective of what has been
+ * deposited with the U.S. Copyright Office.
+ * 
+-->
+<project name="dboard.sn.install/schemaBld" basedir=".">
+	
+	<loadproperties srcFile="fixup_driver.properties"/>
+
+	<!-- 
+		locateComponent is giving some error during bld clean. Trying to avoid to use it and use ${env.ALT_FE_CONTAINERS} -->
+	<locateComponent component="lc.appext/core/db" locateBuildDir="false" property="lc.appext.core.db.dir" />
+	<!--
+	<property name="lc.appext.core.db.dir" value="${env.ALT_FE_CONTAINERS}${file.separator}sn.infra${file.separator}lwp${file.separator}lc.appext${file.separator}core${file.separator}db" />
+	-->
+	<echo message="Using this lc.appext.core.db.dir: ${lc.appext.core.db.dir}"/>
+
+	<property name="schemaMacrosPath" value="${lc.appext.core.db.dir}${file.separator}"/>
+	<import file="${schemaMacrosPath}schemaProcMacros.xml"/>
+
+
+	<!-- This is the main working folder: it contains  temp.schemas and gen.schemas
+			- temp.schemas: contains the temporaries scripts fragment
+			- gen.schemas: contains the output of the process with the actual end scripts
+	-->
+	<property name="schema.bld.dir" value="${basedir}/../build/dboard.sn.install/schema.bld"/>
+	<property name="temp.schema.dir" value="${schema.bld.dir}/temp.schemas"/>
+	<property name="gen.schema.dir" value="${schema.bld.dir}/gen.schemas"/>
+
+	<target name="clean-gen-schema">
+		<delete dir="${schema.bld.dir}" quiet="true"/>
+		<delete dir="${temp.schema.dir}" quiet="true"/>
+		<delete dir="${gen.schema.dir}" quiet="true"/>
+	</target>
+
+	<!-- ==========================================================
+		 Method for generating final schemas
+		 ========================================================== -->
+	<macrodef name="bldSchema">
+		<attribute name="dbvar" description="Database variant"/>
+
+		<sequential>
+			<antcall target="bldSchema-target">
+				<param name="dbvar" value="@{dbvar}"/>
+			</antcall>
+		</sequential>
+	</macrodef>
+
+	<!-- This target is called 3 times: db2, sqlserver and oracle -->
+	<target name="bldSchema-target">
+
+		<!-- 14094: Review on how we use the template to genarate the SQL
+			 This section is to deal with the nested includes scenarios.
+			 That is includes that are used within other includes	
+		-->
+		<mkdir dir="${temp.schema.dir}/${dbvar}/nested.includes"/>
+
+		<!-- FIXUP -->
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup34.sql" property="include.hp-fixup34.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup34_a.sql" property="include.hp-fixup34_a.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup34_b.sql" property="include.hp-fixup34_b.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup35.sql" property="include.hp-fixup35.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup36.sql" property="include.hp-fixup36.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup37.sql" property="include.hp-fixup37.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup38.sql" property="include.hp-fixup38.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup41.sql" property="include.hp-fixup41.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup43.sql" property="include.hp-fixup43.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup44.sql" property="include.hp-fixup44.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup45.sql" property="include.hp-fixup45.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup48.sql" property="include.hp-fixup48.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup49.sql" property="include.hp-fixup49.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup80.sql" property="include.hp-fixup80.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup84.sql" property="include.hp-fixup84.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup86.sql" property="include.hp-fixup86.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup87.sql" property="include.hp-fixup87.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup88.sql" property="include.hp-fixup88.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup89.sql" property="include.hp-fixup89.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup90.sql" property="include.hp-fixup90.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup92.sql" property="include.hp-fixup92.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup98.sql" property="include.hp-fixup98.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup99.sql" property="include.hp-fixup99.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup100.sql" property="include.hp-fixup100.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup101.sql" property="include.hp-fixup101.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup102.sql" property="include.hp-fixup102.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup103.sql" property="include.hp-fixup103.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup104.sql" property="include.hp-fixup104.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup105.sql" property="include.hp-fixup105.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup106.sql" property="include.hp-fixup106.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup109.sql" property="include.hp-fixup109.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup204.sql" property="include.hp-fixup204.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup205.sql" property="include.hp-fixup205.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup207.sql" property="include.hp-fixup207.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup208.sql" property="include.hp-fixup208.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup451.sql" property="include.hp-fixup451.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup460.sql" property="include.hp-fixup460.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup462.sql" property="include.hp-fixup462.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup463.sql" property="include.hp-fixup463.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup464.sql" property="include.hp-fixup464.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup466.sql" property="include.hp-fixup466.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup468.sql" property="include.hp-fixup468.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup470.sql" property="include.hp-fixup470.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup471.sql" property="include.hp-fixup471.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup475.sql" property="include.hp-fixup475.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup514.sql" property="include.hp-fixup514.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup605.sql" property="include.hp-fixup605.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup607.sql" property="include.hp-fixup607.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-fixup706.sql" property="include.hp-fixup706.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-postfixup705.1.sql" property="include.hp-postfixup705.1.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-postfixup710.2.sql" property="include.hp-postfixup710.2.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-postfixup710.3.sql" property="include.hp-postfixup710.3.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-postfixup710.4.sql" property="include.hp-postfixup710.4.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-postfixup710.5.sql" property="include.hp-postfixup710.5.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-postfixup710.6.sql" property="include.hp-postfixup710.6.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-postfixup710.8.sql" property="include.hp-postfixup710.8.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/hp-postfixup710.9.sql" property="include.hp-postfixup710.9.sql"/>
+		
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup32.sql" property="include.news-fixup32.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup33.sql" property="include.news-fixup33.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup34.sql" property="include.news-fixup34.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup34_a.sql" property="include.news-fixup34_a.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup34_b.sql" property="include.news-fixup34_b.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup35.sql" property="include.news-fixup35.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup36.sql" property="include.news-fixup36.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup37.sql" property="include.news-fixup37.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup38.sql" property="include.news-fixup38.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup39.sql" property="include.news-fixup39.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup40.sql" property="include.news-fixup40.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup41.sql" property="include.news-fixup41.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup43.sql" property="include.news-fixup43.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup44.sql" property="include.news-fixup44.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup45.sql" property="include.news-fixup45.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup46.sql" property="include.news-fixup46.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup47.sql" property="include.news-fixup47.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup48.sql" property="include.news-fixup48.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup49.sql" property="include.news-fixup49.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup50.sql" property="include.news-fixup50.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup51.sql" property="include.news-fixup51.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup52.sql" property="include.news-fixup52.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup53.sql" property="include.news-fixup53.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup54.sql" property="include.news-fixup54.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup56.sql" property="include.news-fixup56.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup80.sql" property="include.news-fixup80.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup81.sql" property="include.news-fixup81.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup82.sql" property="include.news-fixup82.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup83.sql" property="include.news-fixup83.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup84.sql" property="include.news-fixup84.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup85.sql" property="include.news-fixup85.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup86.sql" property="include.news-fixup86.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup87.sql" property="include.news-fixup87.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup88.sql" property="include.news-fixup88.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup89.sql" property="include.news-fixup89.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup90.sql" property="include.news-fixup90.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup92.sql" property="include.news-fixup92.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup93.sql" property="include.news-fixup93.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup94.sql" property="include.news-fixup94.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup95.sql" property="include.news-fixup95.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup96.sql" property="include.news-fixup96.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup97.sql" property="include.news-fixup97.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup98.sql" property="include.news-fixup98.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup99.sql" property="include.news-fixup99.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup100.sql" property="include.news-fixup100.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup101.sql" property="include.news-fixup101.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup102.sql" property="include.news-fixup102.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup103.sql" property="include.news-fixup103.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup104.sql" property="include.news-fixup104.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup105.sql" property="include.news-fixup105.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup107.sql" property="include.news-fixup107.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup108.sql" property="include.news-fixup108.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup109.sql" property="include.news-fixup109.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup110.sql" property="include.news-fixup110.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup201.sql" property="include.news-fixup201.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup202.sql" property="include.news-fixup202.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup203.sql" property="include.news-fixup203.sql"/>	
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup204.sql" property="include.news-fixup204.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup205.sql" property="include.news-fixup205.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup206.sql" property="include.news-fixup206.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup207.sql" property="include.news-fixup207.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup208.sql" property="include.news-fixup208.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup209.sql" property="include.news-fixup209.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup210.sql" property="include.news-fixup210.sql"/>
+		
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup211.sql" property="include.news-fixup211.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup212.sql" property="include.news-fixup212.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup213.sql" property="include.news-fixup213.sql"/>
+		
+		
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup451.sql" property="include.news-fixup451.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup453.sql" property="include.news-fixup453.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup455.sql" property="include.news-fixup455.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup456.sql" property="include.news-fixup456.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup457.sql" property="include.news-fixup457.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup458.sql" property="include.news-fixup458.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup460.sql" property="include.news-fixup460.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup462.sql" property="include.news-fixup462.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup463.sql" property="include.news-fixup463.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup464.sql" property="include.news-fixup464.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup465.sql" property="include.news-fixup465.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup468.sql" property="include.news-fixup468.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup469.sql" property="include.news-fixup469.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup470.sql" property="include.news-fixup470.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup472.sql" property="include.news-fixup472.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup473.sql" property="include.news-fixup473.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup474.sql" property="include.news-fixup474.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup475.sql" property="include.news-fixup475.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup476.sql" property="include.news-fixup476.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup477.sql" property="include.news-fixup477.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup500.sql" property="include.news-fixup500.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup502.sql" property="include.news-fixup502.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup503.sql" property="include.news-fixup503.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup504.sql" property="include.news-fixup504.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup510.sql" property="include.news-fixup510.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup513.sql" property="include.news-fixup513.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup514.sql" property="include.news-fixup514.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup515.sql" property="include.news-fixup515.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup517.sql" property="include.news-fixup517.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup601.sql" property="include.news-fixup601.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup602.sql" property="include.news-fixup602.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup603.sql" property="include.news-fixup603.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup604.sql" property="include.news-fixup604.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup605.sql" property="include.news-fixup605.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup606.sql" property="include.news-fixup606.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup700.sql" property="include.news-fixup700.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup701.sql" property="include.news-fixup701.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup702.sql" property="include.news-fixup702.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup703.sql" property="include.news-fixup703.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup704.sql" property="include.news-fixup704.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup705.sql" property="include.news-fixup705.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup706.sql" property="include.news-fixup706.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup707.sql" property="include.news-fixup707.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-fixup710.sql" property="include.news-fixup710.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-postfixup705.1.sql" property="include.news-postfixup705.1.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-postfixup705.2.sql" property="include.news-postfixup705.2.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-postfixup705.3.sql" property="include.news-postfixup705.3.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-postfixup705.4.sql" property="include.news-postfixup705.4.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-postfixup705.5.sql" property="include.news-postfixup705.5.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-postfixup710.1.sql" property="include.news-postfixup710.1.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-postfixup710.5.sql" property="include.news-postfixup710.5.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-postfixup710.6.sql" property="include.news-postfixup710.6.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/news-postfixup710.7.sql" property="include.news-postfixup710.7.sql"/>
+
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup32.sql" property="include.search-fixup32.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup33.sql" property="include.search-fixup33.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup40.sql" property="include.search-fixup40.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup42.sql" property="include.search-fixup42.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup45.sql" property="include.search-fixup45.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup49.sql" property="include.search-fixup49.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup53.sql" property="include.search-fixup53.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup55.sql" property="include.search-fixup55.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup84.sql" property="include.search-fixup84.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup87.sql" property="include.search-fixup87.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup89.sql" property="include.search-fixup89.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup91.sql" property="include.search-fixup91.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup95.sql" property="include.search-fixup95.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup96.sql" property="include.search-fixup96.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup100.sql" property="include.search-fixup100.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup103.sql" property="include.search-fixup103.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup200.sql" property="include.search-fixup200.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup201.sql" property="include.search-fixup201.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup207.sql" property="include.search-fixup207.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup208.sql" property="include.search-fixup208.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup462.sql" property="include.search-fixup462.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup464.sql" property="include.search-fixup464.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup468.sql" property="include.search-fixup468.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup500.sql" property="include.search-fixup500.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup603.sql" property="include.search-fixup603.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-fixup710.sql" property="include.search-fixup710.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/search-postfixup705.3.sql" property="include.search-postfixup705.3.sql"/>
+		
+		<!-- DEDICATED SCRIPTS for migration purpose that are not part of fixup seq. script as they are not DDL modifications -->
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/onpremises-45-50-updateNullOrgId.sql" property="include.onpremises-45-50-updateNullOrgId.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/fixup/sc-45-50-purge-as-tables.sql" property="include.sc-45-50-purge-as-tables.sql"/>
+		
+		
+		<!-- DELETE -->
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/hp-deleteAllRows.sql" property="include.hp-deleteAllRows.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/news-deleteAllRows.sql" property="include.news-deleteAllRows.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/search-deleteAllRows.sql" property="include.search-deleteAllRows.sql"/>
+		
+		
+		
+
+		<!-- HACK TO PRODUCE USABLE FEATURE SCRIPTS  -->
+		<copy todir="${temp.schema.dir}/${dbvar}/nested.includes" overwrite="true">
+			<filterset begintoken="{" endtoken="}">
+				<!-- FIXUP -->
+				<filter token="include.hp-fixup34.sql" value="${include.hp-fixup34.sql}"/>
+				<filter token="include.hp-fixup34_a.sql" value="${include.hp-fixup34_a.sql}"/>
+				<filter token="include.hp-fixup34_b.sql" value="${include.hp-fixup34_b.sql}"/>
+				<filter token="include.hp-fixup35.sql" value="${include.hp-fixup35.sql}"/>
+				<filter token="include.hp-fixup36.sql" value="${include.hp-fixup36.sql}"/>
+				<filter token="include.hp-fixup37.sql" value="${include.hp-fixup37.sql}"/>
+				<filter token="include.hp-fixup38.sql" value="${include.hp-fixup38.sql}"/>
+				<filter token="include.hp-fixup41.sql" value="${include.hp-fixup41.sql}"/>
+				<filter token="include.hp-fixup43.sql" value="${include.hp-fixup43.sql}"/>
+				<filter token="include.hp-fixup44.sql" value="${include.hp-fixup44.sql}"/>
+				<filter token="include.hp-fixup45.sql" value="${include.hp-fixup45.sql}"/>
+				<filter token="include.hp-fixup48.sql" value="${include.hp-fixup48.sql}"/>
+				<filter token="include.hp-fixup49.sql" value="${include.hp-fixup49.sql}"/>
+				<filter token="include.hp-fixup80.sql" value="${include.hp-fixup80.sql}"/>
+				<filter token="include.hp-fixup84.sql" value="${include.hp-fixup84.sql}"/>
+				<filter token="include.hp-fixup86.sql" value="${include.hp-fixup86.sql}"/>
+				<filter token="include.hp-fixup87.sql" value="${include.hp-fixup87.sql}"/>
+				<filter token="include.hp-fixup88.sql" value="${include.hp-fixup88.sql}"/>
+				<filter token="include.hp-fixup89.sql" value="${include.hp-fixup89.sql}"/>
+				<filter token="include.hp-fixup90.sql" value="${include.hp-fixup90.sql}"/>
+				<filter token="include.hp-fixup92.sql" value="${include.hp-fixup92.sql}"/>
+				<filter token="include.hp-fixup98.sql" value="${include.hp-fixup98.sql}"/>
+				<filter token="include.hp-fixup99.sql" value="${include.hp-fixup99.sql}"/>
+				<filter token="include.hp-fixup100.sql" value="${include.hp-fixup100.sql}"/>
+				<filter token="include.hp-fixup101.sql" value="${include.hp-fixup101.sql}"/>
+				<filter token="include.hp-fixup102.sql" value="${include.hp-fixup102.sql}"/>
+				<filter token="include.hp-fixup103.sql" value="${include.hp-fixup103.sql}"/>
+				<filter token="include.hp-fixup104.sql" value="${include.hp-fixup104.sql}"/>
+				<filter token="include.hp-fixup105.sql" value="${include.hp-fixup105.sql}"/>
+				<filter token="include.hp-fixup106.sql" value="${include.hp-fixup106.sql}"/>
+				<filter token="include.hp-fixup109.sql" value="${include.hp-fixup109.sql}"/>					
+				<filter token="include.hp-fixup204.sql" value="${include.hp-fixup204.sql}"/>
+				<filter token="include.hp-fixup207.sql" value="${include.hp-fixup207.sql}"/>
+				<filter token="include.hp-fixup208.sql" value="${include.hp-fixup208.sql}"/>
+				<filter token="include.hp-fixup451.sql" value="${include.hp-fixup451.sql}"/>
+				<filter token="include.hp-fixup460.sql" value="${include.hp-fixup460.sql}"/>
+				<filter token="include.hp-fixup462.sql" value="${include.hp-fixup462.sql}"/>
+				<filter token="include.hp-fixup463.sql" value="${include.hp-fixup463.sql}"/>
+				<filter token="include.hp-fixup464.sql" value="${include.hp-fixup464.sql}"/>
+				<filter token="include.hp-fixup466.sql" value="${include.hp-fixup466.sql}"/>
+				<filter token="include.hp-fixup468.sql" value="${include.hp-fixup468.sql}"/>
+				<filter token="include.hp-fixup470.sql" value="${include.hp-fixup470.sql}"/>
+				<filter token="include.hp-fixup471.sql" value="${include.hp-fixup471.sql}"/>
+				<filter token="include.hp-fixup475.sql" value="${include.hp-fixup475.sql}"/>
+				<filter token="include.hp-fixup514.sql" value="${include.hp-fixup514.sql}"/>
+				<filter token="include.hp-fixup605.sql" value="${include.hp-fixup605.sql}"/>
+				<filter token="include.hp-fixup607.sql" value="${include.hp-fixup607.sql}"/>
+				<filter token="include.hp-fixup706.sql" value="${include.hp-fixup706.sql}"/>
+				<filter token="include.hp-postfixup705.1.sql" value="${include.hp-postfixup705.1.sql}"/>
+				<filter token="include.hp-postfixup710.2.sql" value="${include.hp-postfixup710.2.sql}"/>
+				<filter token="include.hp-postfixup710.3.sql" value="${include.hp-postfixup710.3.sql}"/>
+				<filter token="include.hp-postfixup710.4.sql" value="${include.hp-postfixup710.4.sql}"/>
+				<filter token="include.hp-postfixup710.5.sql" value="${include.hp-postfixup710.5.sql}"/>
+				<filter token="include.hp-postfixup710.6.sql" value="${include.hp-postfixup710.6.sql}"/>
+				<filter token="include.hp-postfixup710.8.sql" value="${include.hp-postfixup710.8.sql}"/>
+				<filter token="include.hp-postfixup710.9.sql" value="${include.hp-postfixup710.9.sql}"/>
+				
+				
+				<filter token="include.news-fixup32.sql" value="${include.news-fixup32.sql}"/>
+				<filter token="include.news-fixup33.sql" value="${include.news-fixup33.sql}"/>
+				<filter token="include.news-fixup34.sql" value="${include.news-fixup34.sql}"/>
+				<filter token="include.news-fixup34_a.sql" value="${include.news-fixup34_a.sql}"/>
+				<filter token="include.news-fixup34_b.sql" value="${include.news-fixup34_b.sql}"/>
+				<filter token="include.news-fixup35.sql" value="${include.news-fixup35.sql}"/>
+				<filter token="include.news-fixup36.sql" value="${include.news-fixup36.sql}"/>
+				<filter token="include.news-fixup37.sql" value="${include.news-fixup37.sql}"/>
+				<filter token="include.news-fixup38.sql" value="${include.news-fixup38.sql}"/>
+				<filter token="include.news-fixup39.sql" value="${include.news-fixup39.sql}"/>
+				<filter token="include.news-fixup40.sql" value="${include.news-fixup40.sql}"/>
+				<filter token="include.news-fixup41.sql" value="${include.news-fixup41.sql}"/>
+				<filter token="include.news-fixup43.sql" value="${include.news-fixup43.sql}"/>
+				<filter token="include.news-fixup44.sql" value="${include.news-fixup44.sql}"/>
+				<filter token="include.news-fixup45.sql" value="${include.news-fixup45.sql}"/>
+				<filter token="include.news-fixup46.sql" value="${include.news-fixup46.sql}"/>
+				<filter token="include.news-fixup47.sql" value="${include.news-fixup47.sql}"/>
+				<filter token="include.news-fixup48.sql" value="${include.news-fixup48.sql}"/>
+				<filter token="include.news-fixup49.sql" value="${include.news-fixup49.sql}"/>
+				<filter token="include.news-fixup50.sql" value="${include.news-fixup50.sql}"/>
+				<filter token="include.news-fixup51.sql" value="${include.news-fixup51.sql}"/>
+				<filter token="include.news-fixup52.sql" value="${include.news-fixup52.sql}"/>
+				<filter token="include.news-fixup53.sql" value="${include.news-fixup53.sql}"/>
+				<filter token="include.news-fixup54.sql" value="${include.news-fixup54.sql}"/>
+				<filter token="include.news-fixup56.sql" value="${include.news-fixup56.sql}"/>				
+				<filter token="include.news-fixup80.sql" value="${include.news-fixup80.sql}"/>
+				<filter token="include.news-fixup81.sql" value="${include.news-fixup81.sql}"/>
+				<filter token="include.news-fixup82.sql" value="${include.news-fixup82.sql}"/>
+				<filter token="include.news-fixup83.sql" value="${include.news-fixup83.sql}"/>
+				<filter token="include.news-fixup84.sql" value="${include.news-fixup84.sql}"/>
+				<filter token="include.news-fixup85.sql" value="${include.news-fixup85.sql}"/>
+				<filter token="include.news-fixup86.sql" value="${include.news-fixup86.sql}"/>
+				<filter token="include.news-fixup87.sql" value="${include.news-fixup87.sql}"/>
+				<filter token="include.news-fixup88.sql" value="${include.news-fixup88.sql}"/>
+				<filter token="include.news-fixup89.sql" value="${include.news-fixup89.sql}"/>
+				<filter token="include.news-fixup90.sql" value="${include.news-fixup90.sql}"/>
+				<filter token="include.news-fixup92.sql" value="${include.news-fixup92.sql}"/>
+				<filter token="include.news-fixup93.sql" value="${include.news-fixup93.sql}"/>
+				<filter token="include.news-fixup94.sql" value="${include.news-fixup94.sql}"/>
+				<filter token="include.news-fixup95.sql" value="${include.news-fixup95.sql}"/>
+				<filter token="include.news-fixup96.sql" value="${include.news-fixup96.sql}"/>
+				<filter token="include.news-fixup97.sql" value="${include.news-fixup97.sql}"/>
+				<filter token="include.news-fixup98.sql" value="${include.news-fixup98.sql}"/>
+				<filter token="include.news-fixup99.sql" value="${include.news-fixup99.sql}"/>
+				<filter token="include.news-fixup100.sql" value="${include.news-fixup100.sql}"/>
+				<filter token="include.news-fixup101.sql" value="${include.news-fixup101.sql}"/>
+				<filter token="include.news-fixup102.sql" value="${include.news-fixup102.sql}"/>
+				<filter token="include.news-fixup103.sql" value="${include.news-fixup103.sql}"/>
+				<filter token="include.news-fixup104.sql" value="${include.news-fixup104.sql}"/>
+				<filter token="include.news-fixup105.sql" value="${include.news-fixup105.sql}"/>
+				<filter token="include.news-fixup107.sql" value="${include.news-fixup107.sql}"/>
+				<filter token="include.news-fixup108.sql" value="${include.news-fixup108.sql}"/>
+				<filter token="include.news-fixup109.sql" value="${include.news-fixup109.sql}"/>
+				<filter token="include.news-fixup110.sql" value="${include.news-fixup110.sql}"/>
+				<filter token="include.news-fixup201.sql" value="${include.news-fixup201.sql}"/>
+				<filter token="include.news-fixup202.sql" value="${include.news-fixup202.sql}"/>
+				<filter token="include.news-fixup203.sql" value="${include.news-fixup203.sql}"/>
+				<filter token="include.news-fixup204.sql" value="${include.news-fixup204.sql}"/>
+				<filter token="include.news-fixup205.sql" value="${include.news-fixup205.sql}"/>
+				<filter token="include.news-fixup206.sql" value="${include.news-fixup206.sql}"/>
+				<filter token="include.news-fixup207.sql" value="${include.news-fixup207.sql}"/>
+				<filter token="include.news-fixup208.sql" value="${include.news-fixup208.sql}"/>
+				<filter token="include.news-fixup209.sql" value="${include.news-fixup209.sql}"/>
+				<filter token="include.news-fixup210.sql" value="${include.news-fixup210.sql}"/>
+				
+				<filter token="include.news-fixup211.sql" value="${include.news-fixup211.sql}"/>
+				<filter token="include.news-fixup212.sql" value="${include.news-fixup212.sql}"/>
+				<filter token="include.news-fixup213.sql" value="${include.news-fixup213.sql}"/>
+				
+				
+				<filter token="include.news-fixup451.sql" value="${include.news-fixup451.sql}"/>
+				<filter token="include.news-fixup453.sql" value="${include.news-fixup453.sql}"/>
+				<filter token="include.news-fixup455.sql" value="${include.news-fixup455.sql}"/>
+				<filter token="include.news-fixup456.sql" value="${include.news-fixup456.sql}"/>
+				<filter token="include.news-fixup457.sql" value="${include.news-fixup457.sql}"/>
+				<filter token="include.news-fixup458.sql" value="${include.news-fixup458.sql}"/>
+				<filter token="include.news-fixup460.sql" value="${include.news-fixup460.sql}"/>
+				<filter token="include.news-fixup462.sql" value="${include.news-fixup462.sql}"/>
+				<filter token="include.news-fixup463.sql" value="${include.news-fixup463.sql}"/>
+				<filter token="include.news-fixup464.sql" value="${include.news-fixup464.sql}"/>
+				<filter token="include.news-fixup465.sql" value="${include.news-fixup465.sql}"/>
+				<filter token="include.news-fixup468.sql" value="${include.news-fixup468.sql}"/>
+				<filter token="include.news-fixup469.sql" value="${include.news-fixup469.sql}"/>
+				<filter token="include.news-fixup470.sql" value="${include.news-fixup470.sql}"/>
+				<filter token="include.news-fixup472.sql" value="${include.news-fixup472.sql}"/>
+				<filter token="include.news-fixup473.sql" value="${include.news-fixup473.sql}"/>
+				<filter token="include.news-fixup474.sql" value="${include.news-fixup474.sql}"/>
+				<filter token="include.news-fixup475.sql" value="${include.news-fixup475.sql}"/>
+				<filter token="include.news-fixup476.sql" value="${include.news-fixup476.sql}"/>
+				<filter token="include.news-fixup477.sql" value="${include.news-fixup477.sql}"/>
+				<filter token="include.news-fixup515.sql" value="${include.news-fixup515.sql}"/>
+				<filter token="include.news-fixup517.sql" value="${include.news-fixup517.sql}"/>
+				<filter token="include.news-fixup601.sql" value="${include.news-fixup601.sql}"/>
+				<filter token="include.news-fixup602.sql" value="${include.news-fixup602.sql}"/>
+				<filter token="include.news-fixup603.sql" value="${include.news-fixup603.sql}"/>
+				<filter token="include.news-fixup604.sql" value="${include.news-fixup604.sql}"/>
+				<filter token="include.news-fixup605.sql" value="${include.news-fixup605.sql}"/>
+				<filter token="include.news-fixup606.sql" value="${include.news-fixup606.sql}"/>
+				<filter token="include.news-fixup700.sql" value="${include.news-fixup700.sql}"/>
+				<filter token="include.news-fixup701.sql" value="${include.news-fixup701.sql}"/>
+				<filter token="include.news-fixup702.sql" value="${include.news-fixup702.sql}"/>
+				<filter token="include.news-fixup703.sql" value="${include.news-fixup703.sql}"/>
+				<filter token="include.news-fixup704.sql" value="${include.news-fixup704.sql}"/>
+				<filter token="include.news-fixup705.sql" value="${include.news-fixup705.sql}"/>
+				<filter token="include.news-fixup706.sql" value="${include.news-fixup706.sql}"/>
+				<filter token="include.news-fixup707.sql" value="${include.news-fixup707.sql}"/>
+				<filter token="include.news-fixup710.sql" value="${include.news-fixup710.sql}"/>
+				<filter token="include.news-postfixup705.1.sql" value="${include.news-postfixup705.1.sql}"/>
+				<filter token="include.news-postfixup705.2.sql" value="${include.news-postfixup705.2.sql}"/>
+				<filter token="include.news-postfixup705.3.sql" value="${include.news-postfixup705.3.sql}"/>
+				<filter token="include.news-postfixup705.4.sql" value="${include.news-postfixup705.4.sql}"/>
+				<filter token="include.news-postfixup705.5.sql" value="${include.news-postfixup705.5.sql}"/>
+				<filter token="include.news-postfixup710.1.sql" value="${include.news-postfixup710.1.sql}"/>
+				<filter token="include.news-postfixup710.5.sql" value="${include.news-postfixup710.5.sql}"/>
+				<filter token="include.news-postfixup710.6.sql" value="${include.news-postfixup710.6.sql}"/>
+				<filter token="include.news-postfixup710.7.sql" value="${include.news-postfixup710.7.sql}"/>
+
+				<filter token="include.search-fixup32.sql" value="${include.search-fixup32.sql}"/>
+				<filter token="include.search-fixup33.sql" value="${include.search-fixup33.sql}"/>
+				<filter token="include.search-fixup40.sql" value="${include.search-fixup40.sql}"/>
+				<filter token="include.search-fixup42.sql" value="${include.search-fixup42.sql}"/>
+				<filter token="include.search-fixup45.sql" value="${include.search-fixup45.sql}"/>
+				<filter token="include.search-fixup49.sql" value="${include.search-fixup49.sql}"/>
+				<filter token="include.search-fixup53.sql" value="${include.search-fixup53.sql}"/>
+				<filter token="include.search-fixup55.sql" value="${include.search-fixup55.sql}"/>
+				<filter token="include.search-fixup84.sql" value="${include.search-fixup84.sql}"/>
+				<filter token="include.search-fixup87.sql" value="${include.search-fixup87.sql}"/>
+				<filter token="include.search-fixup89.sql" value="${include.search-fixup89.sql}"/>
+				<filter token="include.search-fixup91.sql" value="${include.search-fixup91.sql}"/>
+				<filter token="include.search-fixup95.sql" value="${include.search-fixup95.sql}"/>
+				<filter token="include.search-fixup96.sql" value="${include.search-fixup96.sql}"/>
+				<filter token="include.search-fixup100.sql" value="${include.search-fixup100.sql}"/>
+				<filter token="include.search-fixup103.sql" value="${include.search-fixup103.sql}"/>
+				<filter token="include.search-fixup200.sql" value="${include.search-fixup200.sql}"/>
+				<filter token="include.search-fixup201.sql" value="${include.search-fixup201.sql}"/>
+				<filter token="include.search-fixup207.sql" value="${include.search-fixup207.sql}"/>
+				<filter token="include.search-fixup208.sql" value="${include.search-fixup208.sql}"/>
+				<filter token="include.search-fixup462.sql" value="${include.search-fixup462.sql}"/>
+				<filter token="include.search-fixup464.sql" value="${include.search-fixup464.sql}"/>
+				<filter token="include.search-fixup468.sql" value="${include.search-fixup468.sql}"/>
+				<filter token="include.search-fixup500.sql" value="${include.search-fixup500.sql}"/>
+				<filter token="include.search-fixup603.sql" value="${include.search-fixup603.sql}"/>
+				<filter token="include.search-fixup710.sql" value="${include.search-fixup710.sql}"/>
+				<filter token="include.search-postfixup705.3.sql" value="${include.search-postfixup705.3.sql}"/>
+				
+
+				
+				<!--DELETE ROWS -->
+				<filter token="include.hp-deleteAllRows.sql" value="${include.hp-deleteAllRows.sql}"/>
+				<filter token="include.news-deleteAllRows.sql" value="${include.news-deleteAllRows.sql}"/>
+				<filter token="include.search-deleteAllRows.sql" value="${include.search-deleteAllRows.sql}"/>
+				
+				<!-- MIGRATION 45-50 -->
+				<filter token="include.onpremises-45-50-updateNullOrgId.sql" value="${include.onpremises-45-50-updateNullOrgId.sql}"/>
+				<filter token="include.sc-45-50-purge-as-tables.sql" value="${include.sc-45-50-purge-as-tables.sql}"/>
+				
+				
+			</filterset>
+			
+			<fileset dir="${temp.schema.dir}/${dbvar}">
+				<!-- UPGRADE scripts -->
+					<include name="**/*-upgrade-25-30b1a.sql"/>
+					<include name="**/*-upgrade-25-30b1b.sql"/>
+					<include name="**/*-upgrade-25-30b2a.sql"/>
+					<include name="**/*-upgrade-25-30b2b.sql"/>
+					<include name="**/*-upgrade30a.sql"/>
+					<include name="**/*-upgrade30b.sql"/>
+					<include name="**/*-upgrade-301-35.sql"/>
+					<include name="**/*-upgrade-30-40b2.sql"/>
+				 	<include name="**/*-upgrade-30-40.sql"/>
+				
+					<include name="**/upgrade-40-40CR2.sql"/>
+				
+					<include name="**/*-upgrade-40CR2-45.sql"/>
+					
+				
+					<include name="**/*-predbxfer30.sql"/>
+					<include name="**/*-postdbxfer30.sql"/>
+				
+					<include name="**/*-predbxfer40CR2.sql"/>
+					<include name="**/*-postdbxfer40CR2.sql"/>
+				
+					<include name="**/*-predbxfer45.sql"/>
+					<include name="**/*-predbxfer45CR4.sql"/>
+					<include name="**/*-postdbxfer45.sql"/>
+					<include name="**/*-postdbxfer45CR4.sql"/>
+				
+					<!-- onpremisis 5.0 release -->
+				   
+					<include name="**/*-upgrade-45CR4-50.sql"/>	
+					<include name="**/upgrade-50-50CR4.sql"/>
+				
+					<!-- onpremise 5.5 release -->
+				    
+				    <include name="**/*-predbxfer50CR1.sql"/>
+					<include name="**/*-postdbxfer50CR1.sql"/>
+			        <include name="**/*-predbxfer50CR2.sql"/>
+				    <include name="**/*-postdbxfer50CR2.sql"/>			
+				    <include name="**/*-predbxfer50CR3.sql"/>
+					<include name="**/*-postdbxfer50CR3.sql"/>	
+				    <include name="**/*-predbxfer50CR4.sql"/>
+					<include name="**/*-postdbxfer50CR4.sql"/>	
+				    <include name="**/*-predbxfer55.sql"/>
+					<include name="**/*-postdbxfer55.sql"/>					
+				    <include name="**/*-predbxfer55CR1.sql"/>
+					<include name="**/*-postdbxfer55CR1.sql"/>					
+				    <include name="**/*-predbxfer55CR2.sql"/>
+					<include name="**/*-postdbxfer55CR2sql"/>	
+				
+				<!-- onpremisis 6.0 release -->
+
+				    <include name="**/*-predbxfer60.sql"/>
+					<include name="**/*-postdbxfer60.sql"/>					
+				    <include name="**/*-predbxfer60CR1.sql"/>
+					<include name="**/*-postdbxfer60CR1.sql"/>					
+				    <include name="**/*-predbxfer60CR2.sql"/>
+					<include name="**/*-postdbxfer60CR2.sql"/>					
+				    <include name="**/*-predbxfer60CR3.sql"/>
+					<include name="**/*-postdbxfer60CR3.sql"/>					
+				
+					<include name="**/*-upgrade-50-50CR1.sql"/>
+					<include name="**/*-upgrade-50CR1-50CR2.sql"/>
+					<include name="**/*-upgrade-50CR2-50CR3.sql"/>
+					<include name="**/*-upgrade-50CR3-50CR4.sql"/>
+					<include name="**/*-upgrade-50CR4-55.sql"/>				
+					<include name="**/*-upgrade-55-55CR1.sql"/>		
+					<include name="**/*-upgrade-55CR1-55CR2.sql"/>		
+					<include name="**/*-upgrade-55CR2-60.sql"/>		
+					<include name="**/*-upgrade-60-60CR1.sql"/>		
+					<include name="**/*-upgrade-60CR1-60CR2.sql"/>		
+					<include name="**/*-upgrade-60CR2-60CR3.sql"/>		
+					<include name="**/*-upgrade-60CR3-60CR4.sql"/>
+					<include name="**/*-upgrade-60CR4-70.sql"/>
+			</fileset>
+		</copy>
+
+		<copy todir="${temp.schema.dir}/${dbvar}" failonerror="true" overwrite="true"  verbose="true">
+			<fileset dir="${temp.schema.dir}/${dbvar}/nested.includes" includes="**/*.sql"/>
+		</copy>
+
+		<delete dir="${temp.schema.dir}/${dbvar}/nested.includes"/>
+		<!-- END SECTION TO DEAL WITH NESTED INCLUDES -->
+
+
+		<!-- Load message vector resources -->
+		<!-- CREATE DATABASE-->
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/hp-createDb.sql" property="include.hp-createDb.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/news-createDb.sql" property="include.news-createDb.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/search-createDb.sql" property="include.search-createDb.sql"/>
+		<!--INIT DATA -->
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/hp-initData.sql" property="include.hp-initData.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/news-initData.sql" property="include.news-initData.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/search-initData.sql" property="include.search-initData.sql"/>
+		<!-- REORG (DB2 ONLY) -->
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/hp-reorg.sql" property="include.hp-reorg.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/news-reorg.sql" property="include.news-reorg.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/search-reorg.sql" property="include.search-reorg.sql"/>
+		<!-- UPGRADE -->
+
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/hp-upgrade-25-30b1a.sql" property="include.hp-upgrade-25-30b1a.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/hp-upgrade-25-30b1b.sql" property="include.hp-upgrade-25-30b1b.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/hp-upgrade-25-30b2a.sql" property="include.hp-upgrade-25-30b2a.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/hp-upgrade-25-30b2b.sql" property="include.hp-upgrade-25-30b2b.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/hp-upgrade30a.sql" property="include.hp-upgrade30a.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/hp-upgrade30b.sql" property="include.hp-upgrade30b.sql"/>
+		
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/hp-upgrade-301-40b2.sql" property="include.hp-upgrade-301-40b2.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/hp-upgrade-40b2-40.sql" property="include.hp-upgrade-40b2-40.sql"/>
+
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/news-upgrade-25-30b1a.sql" property="include.news-upgrade-25-30b1a.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/news-upgrade-25-30b1b.sql" property="include.news-upgrade-25-30b1b.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/news-upgrade-25-30b2a.sql" property="include.news-upgrade-25-30b2a.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/news-upgrade-25-30b2b.sql" property="include.news-upgrade-25-30b2b.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/news-upgrade-30b2-30.sql" property="include.news-upgrade-30b2-30.sql"/>
+		
+		
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/news-upgrade-301-40b2.sql" property="include.news-upgrade-301-40b2.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/news-upgrade-40b2-40.sql" property="include.news-upgrade-40b2-40.sql"/>
+
+		
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/news-upgrade30a.sql" property="include.news-upgrade30a.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/news-upgrade30b.sql" property="include.news-upgrade30b.sql"/>
+
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/search-upgrade30.sql" property="include.search-upgrade30.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/search-upgrade-30b2-30.sql" property="include.search-upgrade-30b2-30.sql"/>
+		
+		
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/search-upgrade-301-40b2.sql" property="include.search-upgrade-301-40b2.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/search-upgrade-40b2-40.sql" property="include.search-upgrade-40b2-40.sql"/>
+
+		
+		<!-- STATS -->
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/hp-updateStats.sql" property="include.hp-updateStats.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/news-updateStats.sql" property="include.news-updateStats.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/search-updateStats.sql" property="include.search-updateStats.sql"/>
+		<!-- PREDBXFER -->
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/hp-predbxfer30.sql" property="include.hp-predbxfer30.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/hp-predbxfer40.sql" property="include.hp-predbxfer40.sql"/>
+		
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/news-predbxfer30.sql" property="include.news-predbxfer30.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/news-predbxfer40.sql" property="include.news-predbxfer40.sql"/>
+		
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/search-predbxfer30.sql" property="include.search-predbxfer30.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/search-predbxfer40.sql" property="include.search-predbxfer40.sql"/>
+		<!-- POSTDBXFER -->
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/hp-postdbxfer30.sql" property="include.hp-postdbxfer30.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/hp-postdbxfer40.sql" property="include.hp-postdbxfer40.sql"/>
+			
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/news-postdbxfer30.sql" property="include.news-postdbxfer30.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/news-postdbxfer40.sql" property="include.news-postdbxfer40.sql"/>
+		
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/search-postdbxfer30.sql" property="include.search-postdbxfer30.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/search-postdbxfer40.sql" property="include.search-postdbxfer40.sql"/>
+		<!-- CLEARSCHEDULER (NEWS AND SEARCH) -->
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/news-clearScheduler.sql" property="include.news-clearScheduler.sql"/>
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/search-clearScheduler.sql" property="include.search-clearScheduler.sql"/>
+		<!-- CLEAR INDEX TABLES (SEARCH) -->
+		<loadfile quiet="true" srcFile="${temp.schema.dir}/${dbvar}/search-clearIndexTables.sql" property="include.search-clearIndexTables.sql"/>
+
+		
+		<!--UPGRADE SCRIPT -->	
+		<loadfile quiet="true" srcFile="${basedir}/scripts/db/${dbvar}/upgrade-301-40b2.sql" property="include.upgrade-301-40b2.sql"/>
+		
+		
+		
+
+
+		<!-- Build output director -->
+		<mkdir dir="${gen.schema.dir}/${dbvar}"/>
+
+		<copy todir="${gen.schema.dir}/${dbvar}" overwrite="true">
+			<filterset begintoken="{" endtoken="}">
+				<!-- CREATE DATABASE-->
+				<filter token="include.hp-createDb.sql" value="${include.hp-createDb.sql}"/>
+				<filter token="include.news-createDb.sql" value="${include.news-createDb.sql}"/>
+				<filter token="include.search-createDb.sql" value="${include.search-createDb.sql}"/>
+				<!-- REORG (DB2 ONLY) -->
+				<filter token="include.hp-reorg.sql" value="${include.hp-reorg.sql}"/>
+				<filter token="include.news-reorg.sql" value="${include.news-reorg.sql}"/>
+				<filter token="include.search-reorg.sql" value="${include.search-reorg.sql}"/>
+				<!-- FIXUP -->
+				<filter token="include.hp-fixup34.sql" value="${include.hp-fixup34.sql}"/>
+				<filter token="include.hp-fixup34_a.sql" value="${include.hp-fixup34_a.sql}"/>
+				<filter token="include.hp-fixup34_b.sql" value="${include.hp-fixup34_b.sql}"/>
+				<filter token="include.hp-fixup35.sql" value="${include.hp-fixup35.sql}"/>
+				<filter token="include.hp-fixup36.sql" value="${include.hp-fixup36.sql}"/>
+				<filter token="include.hp-fixup37.sql" value="${include.hp-fixup37.sql}"/>
+				<filter token="include.hp-fixup38.sql" value="${include.hp-fixup38.sql}"/>
+				<filter token="include.hp-fixup41.sql" value="${include.hp-fixup41.sql}"/>
+				<filter token="include.hp-fixup43.sql" value="${include.hp-fixup43.sql}"/>
+				<filter token="include.hp-fixup44.sql" value="${include.hp-fixup44.sql}"/>
+				<filter token="include.hp-fixup45.sql" value="${include.hp-fixup45.sql}"/>
+				<filter token="include.hp-fixup48.sql" value="${include.hp-fixup48.sql}"/>
+				<filter token="include.hp-fixup49.sql" value="${include.hp-fixup49.sql}"/>
+				<filter token="include.hp-fixup80.sql" value="${include.hp-fixup80.sql}"/>
+				<filter token="include.hp-fixup84.sql" value="${include.hp-fixup84.sql}"/>
+				<filter token="include.hp-fixup86.sql" value="${include.hp-fixup86.sql}"/>
+				<filter token="include.hp-fixup87.sql" value="${include.hp-fixup87.sql}"/>
+				<filter token="include.hp-fixup88.sql" value="${include.hp-fixup88.sql}"/>
+				<filter token="include.hp-fixup89.sql" value="${include.hp-fixup89.sql}"/>
+				<filter token="include.hp-fixup90.sql" value="${include.hp-fixup90.sql}"/>
+				<filter token="include.hp-fixup92.sql" value="${include.hp-fixup92.sql}"/>
+				<filter token="include.hp-fixup98.sql" value="${include.hp-fixup98.sql}"/>
+				<filter token="include.hp-fixup99.sql" value="${include.hp-fixup99.sql}"/>
+				<filter token="include.hp-fixup100.sql" value="${include.hp-fixup100.sql}"/>
+				<filter token="include.hp-fixup101.sql" value="${include.hp-fixup101.sql}"/>
+				<filter token="include.hp-fixup102.sql" value="${include.hp-fixup102.sql}"/>
+				<filter token="include.hp-fixup103.sql" value="${include.hp-fixup103.sql}"/>
+				<filter token="include.hp-fixup104.sql" value="${include.hp-fixup104.sql}"/>
+				<filter token="include.hp-fixup105.sql" value="${include.hp-fixup105.sql}"/>
+				<filter token="include.hp-fixup106.sql" value="${include.hp-fixup106.sql}"/>
+				<filter token="include.hp-fixup109.sql" value="${include.hp-fixup109.sql}"/>
+				<filter token="include.hp-fixup204.sql" value="${include.hp-fixup204.sql}"/>
+				<filter token="include.hp-fixup205.sql" value="${include.hp-fixup205.sql}"/>
+				<filter token="include.hp-fixup207.sql" value="${include.hp-fixup207.sql}"/>
+				<filter token="include.hp-fixup208.sql" value="${include.hp-fixup208.sql}"/>
+				<filter token="include.hp-fixup451.sql" value="${include.hp-fixup451.sql}"/>
+				<filter token="include.hp-fixup460.sql" value="${include.hp-fixup460.sql}"/>
+				<filter token="include.hp-fixup462.sql" value="${include.hp-fixup462.sql}"/>
+				<filter token="include.hp-fixup463.sql" value="${include.hp-fixup463.sql}"/>
+				<filter token="include.hp-fixup464.sql" value="${include.hp-fixup464.sql}"/>
+				<filter token="include.hp-fixup466.sql" value="${include.hp-fixup466.sql}"/>
+				<filter token="include.hp-fixup468.sql" value="${include.hp-fixup468.sql}"/>
+				<filter token="include.hp-fixup470.sql" value="${include.hp-fixup470.sql}"/>
+				<filter token="include.hp-fixup471.sql" value="${include.hp-fixup471.sql}"/>
+				<filter token="include.hp-fixup475.sql" value="${include.hp-fixup475.sql}"/>
+				<filter token="include.hp-fixup514.sql" value="${include.hp-fixup514.sql}"/>
+				<filter token="include.hp-fixup605.sql" value="${include.hp-fixup605.sql}"/>
+				<filter token="include.hp-fixup607.sql" value="${include.hp-fixup607.sql}"/>
+				<filter token="include.hp-fixup706.sql" value="${include.hp-fixup706.sql}"/>
+				<filter token="include.hp-postfixup705.1.sql" value="${include.hp-postfixup705.1.sql}"/>
+				<filter token="include.hp-postfixup710.2.sql" value="${include.hp-postfixup710.2.sql}"/>
+				<filter token="include.hp-postfixup710.3.sql" value="${include.hp-postfixup710.3.sql}"/>
+				<filter token="include.hp-postfixup710.4.sql" value="${include.hp-postfixup710.4.sql}"/>
+				<filter token="include.hp-postfixup710.5.sql" value="${include.hp-postfixup710.5.sql}"/>
+				<filter token="include.hp-postfixup710.6.sql" value="${include.hp-postfixup710.6.sql}"/>
+				<filter token="include.hp-postfixup710.8.sql" value="${include.hp-postfixup710.8.sql}"/>
+				<filter token="include.hp-postfixup710.9.sql" value="${include.hp-postfixup710.9.sql}"/>
+				
+				<filter token="include.news-fixup32.sql" value="${include.news-fixup32.sql}"/>
+				<filter token="include.news-fixup33.sql" value="${include.news-fixup33.sql}"/>
+				<filter token="include.news-fixup34.sql" value="${include.news-fixup34.sql}"/>
+				<filter token="include.news-fixup34_a.sql" value="${include.news-fixup34_a.sql}"/>
+				<filter token="include.news-fixup34_b.sql" value="${include.news-fixup34_b.sql}"/>
+				<filter token="include.news-fixup35.sql" value="${include.news-fixup35.sql}"/>
+				<filter token="include.news-fixup36.sql" value="${include.news-fixup36.sql}"/>
+				<filter token="include.news-fixup37.sql" value="${include.news-fixup37.sql}"/>
+				<filter token="include.news-fixup38.sql" value="${include.news-fixup38.sql}"/>
+				<filter token="include.news-fixup39.sql" value="${include.news-fixup39.sql}"/>
+				<filter token="include.news-fixup40.sql" value="${include.news-fixup40.sql}"/>
+				<filter token="include.news-fixup41.sql" value="${include.news-fixup41.sql}"/>
+				<filter token="include.news-fixup43.sql" value="${include.news-fixup43.sql}"/>
+				<filter token="include.news-fixup44.sql" value="${include.news-fixup44.sql}"/>
+				<filter token="include.news-fixup45.sql" value="${include.news-fixup45.sql}"/>
+				<filter token="include.news-fixup46.sql" value="${include.news-fixup46.sql}"/>
+				<filter token="include.news-fixup47.sql" value="${include.news-fixup47.sql}"/>
+				<filter token="include.news-fixup48.sql" value="${include.news-fixup48.sql}"/>
+				<filter token="include.news-fixup49.sql" value="${include.news-fixup49.sql}"/>
+				<filter token="include.news-fixup50.sql" value="${include.news-fixup50.sql}"/>
+				<filter token="include.news-fixup51.sql" value="${include.news-fixup51.sql}"/>
+				<filter token="include.news-fixup52.sql" value="${include.news-fixup52.sql}"/>
+				<filter token="include.news-fixup53.sql" value="${include.news-fixup53.sql}"/>
+				<filter token="include.news-fixup54.sql" value="${include.news-fixup54.sql}"/>
+				<filter token="include.news-fixup56.sql" value="${include.news-fixup56.sql}"/>
+				<filter token="include.news-fixup80.sql" value="${include.news-fixup80.sql}"/>
+				<filter token="include.news-fixup81.sql" value="${include.news-fixup81.sql}"/>
+				<filter token="include.news-fixup82.sql" value="${include.news-fixup82.sql}"/>
+				<filter token="include.news-fixup83.sql" value="${include.news-fixup83.sql}"/>
+				<filter token="include.news-fixup84.sql" value="${include.news-fixup84.sql}"/>
+				<filter token="include.news-fixup85.sql" value="${include.news-fixup85.sql}"/>
+				<filter token="include.news-fixup86.sql" value="${include.news-fixup86.sql}"/>
+				<filter token="include.news-fixup87.sql" value="${include.news-fixup87.sql}"/>
+				<filter token="include.news-fixup88.sql" value="${include.news-fixup88.sql}"/>
+				<filter token="include.news-fixup89.sql" value="${include.news-fixup89.sql}"/>
+				<filter token="include.news-fixup90.sql" value="${include.news-fixup90.sql}"/>
+				<filter token="include.news-fixup92.sql" value="${include.news-fixup92.sql}"/>
+				<filter token="include.news-fixup93.sql" value="${include.news-fixup93.sql}"/>
+				<filter token="include.news-fixup94.sql" value="${include.news-fixup94.sql}"/>
+				<filter token="include.news-fixup95.sql" value="${include.news-fixup95.sql}"/>
+				<filter token="include.news-fixup96.sql" value="${include.news-fixup96.sql}"/>
+				<filter token="include.news-fixup97.sql" value="${include.news-fixup97.sql}"/>
+				<filter token="include.news-fixup98.sql" value="${include.news-fixup98.sql}"/>
+				<filter token="include.news-fixup99.sql" value="${include.news-fixup99.sql}"/>
+				<filter token="include.news-fixup100.sql" value="${include.news-fixup100.sql}"/>
+				<filter token="include.news-fixup101.sql" value="${include.news-fixup101.sql}"/>
+				<filter token="include.news-fixup102.sql" value="${include.news-fixup102.sql}"/>
+				<filter token="include.news-fixup103.sql" value="${include.news-fixup103.sql}"/>
+				<filter token="include.news-fixup104.sql" value="${include.news-fixup104.sql}"/>
+				<filter token="include.news-fixup105.sql" value="${include.news-fixup105.sql}"/>
+				<filter token="include.news-fixup107.sql" value="${include.news-fixup107.sql}"/>
+				<filter token="include.news-fixup108.sql" value="${include.news-fixup108.sql}"/>
+				<filter token="include.news-fixup109.sql" value="${include.news-fixup109.sql}"/>
+				<filter token="include.news-fixup110.sql" value="${include.news-fixup110.sql}"/>
+				<filter token="include.news-fixup201.sql" value="${include.news-fixup201.sql}"/>
+				<filter token="include.news-fixup202.sql" value="${include.news-fixup202.sql}"/>
+				<filter token="include.news-fixup203.sql" value="${include.news-fixup203.sql}"/>
+				<filter token="include.news-fixup204.sql" value="${include.news-fixup204.sql}"/>
+				<filter token="include.news-fixup205.sql" value="${include.news-fixup205.sql}"/>
+				<filter token="include.news-fixup206.sql" value="${include.news-fixup206.sql}"/>
+				<filter token="include.news-fixup207.sql" value="${include.news-fixup207.sql}"/>
+				<filter token="include.news-fixup208.sql" value="${include.news-fixup208.sql}"/>
+				<filter token="include.news-fixup209.sql" value="${include.news-fixup209.sql}"/>
+				<filter token="include.news-fixup210.sql" value="${include.news-fixup210.sql}"/>
+				
+				<filter token="include.news-fixup211.sql" value="${include.news-fixup211.sql}"/>
+				<filter token="include.news-fixup212.sql" value="${include.news-fixup212.sql}"/>
+				<filter token="include.news-fixup213.sql" value="${include.news-fixup213.sql}"/>
+				
+				
+				<filter token="include.news-fixup451.sql" value="${include.news-fixup451.sql}"/>
+				<filter token="include.news-fixup453.sql" value="${include.news-fixup453.sql}"/>
+				<filter token="include.news-fixup455.sql" value="${include.news-fixup455.sql}"/>
+				<filter token="include.news-fixup456.sql" value="${include.news-fixup456.sql}"/>
+				<filter token="include.news-fixup457.sql" value="${include.news-fixup457.sql}"/>
+				<filter token="include.news-fixup458.sql" value="${include.news-fixup458.sql}"/>
+				<filter token="include.news-fixup460.sql" value="${include.news-fixup460.sql}"/>
+				<filter token="include.news-fixup462.sql" value="${include.news-fixup462.sql}"/>
+				<filter token="include.news-fixup463.sql" value="${include.news-fixup463.sql}"/>
+				<filter token="include.news-fixup464.sql" value="${include.news-fixup464.sql}"/>
+				<filter token="include.news-fixup465.sql" value="${include.news-fixup465.sql}"/>
+				<filter token="include.news-fixup468.sql" value="${include.news-fixup468.sql}"/>
+				<filter token="include.news-fixup469.sql" value="${include.news-fixup469.sql}"/>
+				<filter token="include.news-fixup470.sql" value="${include.news-fixup470.sql}"/>
+				<filter token="include.news-fixup472.sql" value="${include.news-fixup472.sql}"/>
+				<filter token="include.news-fixup473.sql" value="${include.news-fixup473.sql}"/>
+				<filter token="include.news-fixup474.sql" value="${include.news-fixup474.sql}"/>
+				<filter token="include.news-fixup475.sql" value="${include.news-fixup475.sql}"/>
+				<filter token="include.news-fixup476.sql" value="${include.news-fixup476.sql}"/>
+				<filter token="include.news-fixup477.sql" value="${include.news-fixup477.sql}"/>
+				<filter token="include.news-fixup500.sql" value="${include.news-fixup500.sql}"/>
+				<filter token="include.news-fixup502.sql" value="${include.news-fixup502.sql}"/>
+				<filter token="include.news-fixup503.sql" value="${include.news-fixup503.sql}"/>
+				<filter token="include.news-fixup504.sql" value="${include.news-fixup504.sql}"/>
+				<filter token="include.news-fixup510.sql" value="${include.news-fixup510.sql}"/>
+				<filter token="include.news-fixup513.sql" value="${include.news-fixup513.sql}"/>
+				<filter token="include.news-fixup514.sql" value="${include.news-fixup514.sql}"/>
+				<filter token="include.news-fixup515.sql" value="${include.news-fixup515.sql}"/>
+				<filter token="include.news-fixup517.sql" value="${include.news-fixup517.sql}"/>
+				<filter token="include.news-fixup601.sql" value="${include.news-fixup601.sql}"/>
+				<filter token="include.news-fixup602.sql" value="${include.news-fixup602.sql}"/>
+				<filter token="include.news-fixup603.sql" value="${include.news-fixup603.sql}"/>
+				<filter token="include.news-fixup604.sql" value="${include.news-fixup604.sql}"/>
+				<filter token="include.news-fixup605.sql" value="${include.news-fixup605.sql}"/>
+				<filter token="include.news-fixup606.sql" value="${include.news-fixup606.sql}"/>
+				<filter token="include.news-fixup700.sql" value="${include.news-fixup700.sql}"/>
+				<filter token="include.news-fixup701.sql" value="${include.news-fixup701.sql}"/>
+				<filter token="include.news-fixup702.sql" value="${include.news-fixup702.sql}"/>
+				<filter token="include.news-fixup703.sql" value="${include.news-fixup703.sql}"/>
+				<filter token="include.news-fixup704.sql" value="${include.news-fixup704.sql}"/>
+				<filter token="include.news-fixup705.sql" value="${include.news-fixup705.sql}"/>
+				<filter token="include.news-fixup706.sql" value="${include.news-fixup706.sql}"/>
+				<filter token="include.news-fixup707.sql" value="${include.news-fixup707.sql}"/>
+				<filter token="include.news-fixup710.sql" value="${include.news-fixup710.sql}"/>
+				<filter token="include.news-postfixup705.1.sql" value="${include.news-postfixup705.1.sql}"/>
+				<filter token="include.news-postfixup705.2.sql" value="${include.news-postfixup705.2.sql}"/>
+				<filter token="include.news-postfixup705.3.sql" value="${include.news-postfixup705.3.sql}"/>
+				<filter token="include.news-postfixup705.4.sql" value="${include.news-postfixup705.4.sql}"/>
+				<filter token="include.news-postfixup705.5.sql" value="${include.news-postfixup705.5.sql}"/>
+				<filter token="include.news-postfixup710.1.sql" value="${include.news-postfixup710.1.sql}"/>
+				<filter token="include.news-postfixup710.5.sql" value="${include.news-postfixup710.5.sql}"/>
+				<filter token="include.news-postfixup710.6.sql" value="${include.news-postfixup710.6.sql}"/>
+				<filter token="include.news-postfixup710.7.sql" value="${include.news-postfixup710.7.sql}"/>
+				
+				<filter token="include.search-fixup32.sql" value="${include.search-fixup32.sql}"/>
+				<filter token="include.search-fixup33.sql" value="${include.search-fixup33.sql}"/>
+				<filter token="include.search-fixup40.sql" value="${include.search-fixup40.sql}"/>
+				<filter token="include.search-fixup42.sql" value="${include.search-fixup42.sql}"/>
+				<filter token="include.search-fixup45.sql" value="${include.search-fixup45.sql}"/>
+				<filter token="include.search-fixup49.sql" value="${include.search-fixup49.sql}"/>
+				<filter token="include.search-fixup53.sql" value="${include.search-fixup53.sql}"/>
+				<filter token="include.search-fixup55.sql" value="${include.search-fixup55.sql}"/>
+				<filter token="include.search-fixup84.sql" value="${include.search-fixup84.sql}"/>
+				<filter token="include.search-fixup87.sql" value="${include.search-fixup87.sql}"/>
+				<filter token="include.search-fixup89.sql" value="${include.search-fixup89.sql}"/>
+				<filter token="include.search-fixup91.sql" value="${include.search-fixup91.sql}"/>
+				<filter token="include.search-fixup95.sql" value="${include.search-fixup95.sql}"/>
+				<filter token="include.search-fixup96.sql" value="${include.search-fixup96.sql}"/>
+				<filter token="include.search-fixup100.sql" value="${include.search-fixup100.sql}"/>
+				<filter token="include.search-fixup103.sql" value="${include.search-fixup103.sql}"/>
+				<filter token="include.search-fixup200.sql" value="${include.search-fixup200.sql}"/>			
+				<filter token="include.search-fixup201.sql" value="${include.search-fixup201.sql}"/>
+				<filter token="include.search-fixup207.sql" value="${include.search-fixup207.sql}"/>
+				<filter token="include.search-fixup208.sql" value="${include.search-fixup208.sql}"/>
+				<filter token="include.search-fixup462.sql" value="${include.search-fixup462.sql}"/>
+				<filter token="include.search-fixup464.sql" value="${include.search-fixup464.sql}"/>
+				<filter token="include.search-fixup468.sql" value="${include.search-fixup468.sql}"/>
+				<filter token="include.search-fixup500.sql" value="${include.search-fixup500.sql}"/>
+				<filter token="include.search-fixup603.sql" value="${include.search-fixup603.sql}"/>
+				<filter token="include.search-fixup710.sql" value="${include.search-fixup710.sql}"/>
+				<filter token="include.search-postfixup705.3.sql" value="${include.search-postfixup705.3.sql}"/>
+				
+				<!-- MIGRATION 45-50 -->
+				<filter token="include.onpremises-45-50-updateNullOrgId.sql" value="${include.onpremises-45-50-updateNullOrgId.sql}"/>
+				<filter token="include.sc-45-50-purge-as-tables.sql" value="${include.sc-45-50-purge-as-tables.sql}"/>
+				
+				
+				<!-- UPGRADE -->
+				<filter token="include.hp-upgrade-25-30b1a.sql" value="${include.hp-upgrade-25-30b1a.sql}"/>
+				<filter token="include.hp-upgrade-25-30b1b.sql" value="${include.hp-upgrade-25-30b1b.sql}"/>
+				<filter token="include.hp-upgrade-25-30b2a.sql" value="${include.hp-upgrade-25-30b2a.sql}"/>
+				<filter token="include.hp-upgrade-25-30b2b.sql" value="${include.hp-upgrade-25-30b2b.sql}"/>
+				<filter token="include.hp-upgrade30a.sql" value="${include.hp-upgrade30a.sql}"/>
+				<filter token="include.hp-upgrade30b.sql" value="${include.hp-upgrade30b.sql}"/>
+				
+				
+				<filter token="include.hp-upgrade-301-40b2.sql" value="${include.hp-upgrade-301-40b2.sql}"/>
+				<filter token="include.hp-upgrade-40b2-40.sql" value="${include.hp-upgrade-40b2-40.sql}"/>
+				
+				<filter token="include.news-upgrade-25-30b1a.sql" value="${include.news-upgrade-25-30b1a.sql}"/>
+				<filter token="include.news-upgrade-25-30b1b.sql" value="${include.news-upgrade-25-30b1b.sql}"/>
+				<filter token="include.news-upgrade-25-30b2a.sql" value="${include.news-upgrade-25-30b2a.sql}"/>
+				<filter token="include.news-upgrade-25-30b2b.sql" value="${include.news-upgrade-25-30b2b.sql}"/>
+				<filter token="include.news-upgrade-30b2-30.sql" value="${include.news-upgrade-30b2-30.sql}"/>
+				
+				
+				<filter token="include.news-upgrade-301-40b2.sql" value="${include.news-upgrade-301-40b2.sql}"/>
+				<filter token="include.news-upgrade-40b2-40.sql" value="${include.news-upgrade-40b2-40.sql}"/>
+
+				
+				<filter token="include.news-upgrade30a.sql" value="${include.news-upgrade30a.sql}"/>
+				<filter token="include.news-upgrade30b.sql" value="${include.news-upgrade30b.sql}"/>
+
+				<filter token="include.search-upgrade30.sql" value="${include.search-upgrade30.sql}"/>
+				<filter token="include.search-upgrade-30b2-30.sql" value="${include.search-upgrade-30b2-30.sql}"/>
+				
+				
+				<filter token="include.search-upgrade-301-40b2.sql" value="${include.search-upgrade-301-40b2.sql}"/>
+				<filter token="include.search-upgrade-40b2-40.sql" value="${include.search-upgrade-40b2-40.sql}"/>
+
+				<!--INIT DATA -->
+				<filter token="include.hp-initData.sql" value="${include.hp-initData.sql}"/>
+				<filter token="include.news-initData.sql" value="${include.news-initData.sql}"/>
+				<filter token="include.search-initData.sql" value="${include.search-initData.sql}"/>
+				<!--STATS (DB2 AND SQLSERVER) -->
+				<filter token="include.hp-updateStats.sql" value="${include.hp-updateStats.sql}"/>
+				<filter token="include.news-updateStats.sql" value="${include.news-updateStats.sql}"/>
+				<filter token="include.search-updateStats.sql" value="${include.search-updateStats.sql}"/>
+				<!--DELETE ROWS -->
+				<filter token="include.hp-deleteAllRows.sql" value="${include.hp-deleteAllRows.sql}"/>
+				<filter token="include.news-deleteAllRows.sql" value="${include.news-deleteAllRows.sql}"/>
+				<filter token="include.search-deleteAllRows.sql" value="${include.search-deleteAllRows.sql}"/>
+				<!-- PREDBXFER -->
+				<filter token="include.hp-predbxfer30.sql" value="${include.hp-predbxfer30.sql}"/>
+				<filter token="include.hp-predbxfer40.sql" value="${include.hp-predbxfer40.sql}"/>
+					
+				<filter token="include.news-predbxfer30.sql" value="${include.news-predbxfer30.sql}"/>
+				<filter token="include.news-predbxfer40.sql" value="${include.news-predbxfer40.sql}"/>
+				
+				<filter token="include.search-predbxfer30.sql" value="${include.search-predbxfer30.sql}"/>
+				<filter token="include.search-predbxfer40.sql" value="${include.search-predbxfer40.sql}"/>
+
+				<!-- POSTDBXFER -->
+				<filter token="include.hp-postdbxfer30.sql" value="${include.hp-postdbxfer30.sql}"/>
+				<filter token="include.hp-postdbxfer40.sql" value="${include.hp-postdbxfer40.sql}"/>
+
+				<filter token="include.news-postdbxfer30.sql" value="${include.news-postdbxfer30.sql}"/>
+				<filter token="include.news-postdbxfer40.sql" value="${include.news-postdbxfer40.sql}"/>
+				
+				<filter token="include.search-postdbxfer30.sql" value="${include.search-postdbxfer30.sql}"/>
+				<filter token="include.search-postdbxfer40.sql" value="${include.search-postdbxfer40.sql}"/>
+				<!-- CLEARSCHEDULER (NEWS AND SEARCH) -->
+				<filter token="include.news-clearScheduler.sql" value="${include.news-clearScheduler.sql}"/>
+				<filter token="include.search-clearScheduler.sql" value="${include.search-clearScheduler.sql}"/>
+				<!-- CLEAR INDEX TABLES (SEARCH ONLY) -->
+				<filter token="include.search-clearIndexTables.sql" value="${include.search-clearIndexTables.sql}"/>
+				
+				<filter token="include.upgrade-301-40b2.sql" value="${include.upgrade-301-40b2.sql}"/>
+
+			</filterset>
+
+			<!-- the set of scripts where apply the include. This set of scripts will include also the
+	 			 scripts that don't need an include -->
+			<fileset dir="${basedir}/scripts/db/${dbvar}">
+				<include name="**/appGrants.sql"/>
+				<include name="**/clearScheduler.sql"/>
+				<include name="**/createDb.sql"/>
+				<include name="**/db291settings.sql"/>
+				<include name="**/deleteAllRows.sql"/>
+				<include name="**/deleteAllRows45.sql"/>
+				<include name="**/deleteAllRows451.sql"/>
+				<include name="**/dropDb.sql"/>
+				<include name="**/initData.sql"/>
+				<include name="**/postdbxfer20.sql"/>
+				<include name="**/postdbxfer201.sql"/>
+				<include name="**/postdbxfer25.sql"/>
+				<include name="**/postdbxfer30.sql"/>
+				<include name="**/postdbxfer301.sql"/>
+				<include name="**/postdbxfer40CR2.sql"/>
+				<include name="**/postdbxfer45.sql"/>
+				<include name="**/postdbxfer45CR4.sql"/>
+				<include name="**/postdbxfer50.sql"/>
+				<include name="**/postdbxfer50CR1.sql"/>			
+				<include name="**/postdbxfer50CR2.sql"/>
+				<include name="**/postdbxfer50CR3.sql"/>
+				<include name="**/postdbxfer50CR4.sql"/>
+				<include name="**/postdbxfer55.sql"/>
+				<include name="**/postdbxfer55CR1.sql"/>
+				<include name="**/postdbxfer55CR2.sql"/>
+				<include name="**/postdbxfer60.sql"/>
+				<include name="**/postdbxfer60CR1.sql"/>
+				<include name="**/postdbxfer60CR2.sql"/>
+				<include name="**/predbxfer20.sql"/>
+				<include name="**/predbxfer201.sql"/>
+				<include name="**/predbxfer25.sql"/>
+				<include name="**/predbxfer30.sql"/>
+				<include name="**/predbxfer301.sql"/>
+				<include name="**/predbxfer40CR2.sql"/>
+				<include name="**/predbxfer45.sql"/>
+				<include name="**/predbxfer45CR4.sql"/>
+				<include name="**/predbxfer50.sql"/>
+				<include name="**/predbxfer50CR1.sql"/>
+				<include name="**/predbxfer50CR2.sql"/>
+				<include name="**/predbxfer50CR3.sql"/>
+				<include name="**/predbxfer50CR4.sql"/>
+				<include name="**/predbxfer55.sql"/>				
+				<include name="**/predbxfer55CR1.sql"/>				
+				<include name="**/predbxfer55CR2.sql"/>				
+				<include name="**/predbxfer60.sql"/>
+				<include name="**/predbxfer60CR1.sql"/>
+				<include name="**/predbxfer60CR2.sql"/>
+				<include name="**/predbxfer60CR3.sql"/>
+			
+				<include name="**/reorg.sql"/>
+				<include name="**/updateStats.sql"/>
+				<include name="**/upgrade20.sql"/>
+				<include name="**/upgrade201.sql"/>
+				<include name="**/upgrade25.sql"/>
+				<include name="**/upgrade251.sql"/>
+				<include name="**/setInteg.sql"/>
+				<include name="**/clearSearchIndexTables.sql"/>
+
+				<!-- 50CR1 -->
+				<include name="**/predbxfer50CR1.sql"/>
+				<include name="**/postdbxfer50CR1.sql"/>
+				<include name="**/setInteg50CR1.sql"/>
+				<include name="**/appGrants50CR1.sql"/>
+				<include name="**/reorg50CR1.sql"/>
+				<include name="**/updateStats50CR1.sql"/>
+					
+				
+				<!-- UPGRADE -->
+				<include name="**/upgrade-25-30b1a.sql"/>
+				<include name="**/upgrade-25-30b1b.sql"/>
+				<include name="**/upgrade-25-30b2a.sql"/>
+				<include name="**/upgrade-25-30b2b.sql"/>
+				<include name="**/upgrade-30b2-30.sql"/>
+
+				<include name="**/upgrade-25-30a.sql"/>
+				<include name="**/upgrade-25-30b.sql"/>
+
+				<include name="**/upgrade-301-40.sql"/>
+				<include name="**/upgrade-301-40b2.sql"/>
+				
+				<include name="**/upgrade-40-40CR2.sql"/>
+				
+				
+				<include name="**/upgrade-40CR2-45.sql"/>
+				
+				<include name="**/upgrade-45-45CR3.sql"/>
+				<include name="**/upgrade-45CR3-45CR4.sql"/>
+				
+				
+				<include name="**/post-java-migration-301-40.sql"/>
+				<include name="**/post-java-migration-40-45.sql"/>
+				
+				
+				<include name="**/upgrade-45CR4-50.sql"/>
+				<include name="**/upgrade-50-50CR4.sql"/>
+				
+				<include name="**/upgrade-50-50CR1.sql"/>
+				<include name="**/upgrade-50CR1-50CR2.sql"/>		
+				<include name="**/upgrade-50CR2-50CR3.sql"/>
+				<include name="**/upgrade-50CR3-50CR4.sql"/>
+				<include name="**/upgrade-50CR4-55.sql"/>				
+				<include name="**/upgrade-55-55CR1.sql"/>				
+				<include name="**/upgrade-55CR1-55CR2.sql"/>				
+				<include name="**/upgrade-55CR2-60.sql"/>				
+				<include name="**/upgrade-60-60CR1.sql"/>				
+				<include name="**/upgrade-60CR1-60CR2.sql"/>				
+				<include name="**/upgrade-60CR2-60CR3.sql"/>				
+				<include name="**/upgrade-60CR3-60CR4.sql"/>
+				<include name="**/upgrade-60CR4-70.sql"/>
+				
+				<!-- FIXUP -->
+				<include name="**/fixup/fixup04.sql"/>
+				<include name="**/fixup/fixup05.sql"/>
+				<include name="**/fixup/fixup08.sql"/>
+				<include name="**/fixup/fixup09.sql"/>
+				<include name="**/fixup/fixup10_addingIndexes.sql"/>
+				<include name="**/fixup/fixup10.sql"/>
+				<include name="**/fixup/fixup11.sql"/>
+				<include name="**/fixup/fixup12.sql"/>
+				<include name="**/fixup/fixup13.sql"/>
+				<include name="**/fixup/fixup14.sql"/>
+				<include name="**/fixup/fixup15.sql"/>
+				<include name="**/fixup/fixup16.sql"/>
+				<include name="**/fixup/fixup17.sql"/>
+				<include name="**/fixup/fixup18.sql"/>
+				<include name="**/fixup/fixup19.sql"/>
+				<include name="**/fixup/fixup20.sql"/>
+				<include name="**/fixup/fixup21.sql"/>
+				<include name="**/fixup/fixup22.sql"/>
+				<include name="**/fixup/fixup23.sql"/>
+				<include name="**/fixup/fixup30.sql"/>
+				<include name="**/fixup/fixup31.sql"/>
+				<include name="**/fixup/fixup32.sql"/>
+				<include name="**/fixup/fixup33.sql"/>
+				<include name="**/fixup/fixup34.sql"/>
+				<include name="**/fixup/fixup34_a.sql"/>
+				<include name="**/fixup/fixup34_b.sql"/>
+				<include name="**/fixup/fixup35.sql"/>
+				<include name="**/fixup/fixup36.sql"/>
+				<include name="**/fixup/fixup37.sql"/>
+				<include name="**/fixup/fixup38.sql"/>
+				<include name="**/fixup/fixup39.sql"/>
+				<include name="**/fixup/fixup40.sql"/>
+				<include name="**/fixup/fixup41.sql"/>
+				<include name="**/fixup/fixup42.sql"/>
+				<include name="**/fixup/fixup43.sql"/>
+				<include name="**/fixup/fixup44.sql"/>
+				<include name="**/fixup/fixup45.sql"/>
+				<include name="**/fixup/fixup46.sql"/>
+				<include name="**/fixup/fixup47.sql"/>
+				<include name="**/fixup/fixup48.sql"/>
+				<include name="**/fixup/fixup49.sql"/>
+				<include name="**/fixup/fixup50.sql"/>
+				<include name="**/fixup/fixup51.sql"/>
+				<include name="**/fixup/fixup52.sql"/>
+				<include name="**/fixup/fixup53.sql"/>
+				<include name="**/fixup/fixup54.sql"/>
+				<include name="**/fixup/fixup55.sql"/>
+				<include name="**/fixup/fixup56.sql"/>
+				<include name="**/fixup/fixup80.sql"/>
+				<include name="**/fixup/fixup81.sql"/>
+				<include name="**/fixup/fixup82.sql"/>
+				<include name="**/fixup/fixup83.sql"/>
+				<include name="**/fixup/fixup84.sql"/>
+				<include name="**/fixup/fixup85.sql"/>
+				<include name="**/fixup/fixup86.sql"/>				
+				<include name="**/fixup/fixup87.sql"/>
+				<include name="**/fixup/fixup88.sql"/>
+				<include name="**/fixup/fixup89.sql"/>
+				<include name="**/fixup/fixup90.sql"/>
+				<include name="**/fixup/fixup91.sql"/>
+				<include name="**/fixup/fixup92.sql"/>
+				<include name="**/fixup/fixup93.sql"/>
+				<include name="**/fixup/fixup94.sql"/>
+				<include name="**/fixup/fixup95.sql"/>
+				<include name="**/fixup/fixup96.sql"/>
+				<include name="**/fixup/fixup97.sql"/>
+				<include name="**/fixup/fixup98.sql"/>
+				<include name="**/fixup/fixup99.sql"/>
+				<include name="**/fixup/fixup100.sql"/>
+				<include name="**/fixup/fixup101.sql"/>
+				<include name="**/fixup/fixup102.sql"/>
+				<include name="**/fixup/fixup103.sql"/>
+				<include name="**/fixup/fixup104.sql"/>
+				<include name="**/fixup/fixup105.sql"/>
+				<include name="**/fixup/fixup106.sql"/>
+				<include name="**/fixup/fixup107.sql"/>
+				<include name="**/fixup/fixup108.sql"/>
+				<include name="**/fixup/fixup109.sql"/>
+				<include name="**/fixup/fixup110.sql"/>
+				<include name="**/fixup/fixup200.sql"/>
+				<include name="**/fixup/fixup201.sql"/>
+				<include name="**/fixup/fixup202.sql"/>
+				<include name="**/fixup/fixup203.sql"/>
+				<include name="**/fixup/fixup204.sql"/>
+				<include name="**/fixup/fixup205.sql"/>
+				<include name="**/fixup/fixup206.sql"/>
+				<include name="**/fixup/fixup207.sql"/>
+				<include name="**/fixup/fixup208.sql"/>
+				<include name="**/fixup/fixup209.sql"/>
+				<include name="**/fixup/fixup210.sql"/>
+				
+				<include name="**/fixup/fixup211.sql"/>
+				<include name="**/fixup/fixup212.sql"/>
+				<include name="**/fixup/fixup213.sql"/>
+				
+				
+				<include name="**/fixup/fixup451.sql"/>
+
+				
+
+				<include name="**/fixup/fixup452.sql"/>
+				<include name="**/fixup/sc-fixup452.sql"/>
+				
+				<include name="**/fixup/sc-fixup453.sql"/>
+				<include name="**/fixup/fixup453.sql"/>
+
+				<include name="**/fixup/sc-fixup454.sql"/>				
+				<include name="**/fixup/fixup454.sql"/>
+
+				<include name="**/fixup/sc-fixup455.sql"/>				
+				<include name="**/fixup/fixup455.sql"/>
+
+				<include name="**/fixup/sc-fixup456.sql"/>				
+				<include name="**/fixup/fixup456.sql"/>
+				
+				<include name="**/fixup/sc-fixup457.sql"/>				
+				<include name="**/fixup/fixup457.sql"/>
+				
+				<include name="**/fixup/sc-fixup458.sql"/>				
+				<include name="**/fixup/fixup458.sql"/>
+				
+				<include name="**/fixup/sc-fixup459.sql"/>				
+				<include name="**/fixup/fixup459.sql"/>
+				
+				<include name="**/fixup/sc-fixup460.sql"/>				
+				<include name="**/fixup/fixup460.sql"/>
+				
+				<include name="**/fixup/sc-fixup461.sql"/>				
+				<include name="**/fixup/fixup461.sql"/>
+
+				<include name="**/fixup/sc-fixup462.sql"/>				
+				<include name="**/fixup/fixup462.sql"/>
+					
+				<include name="**/fixup/sc-fixup463.sql"/>				
+				<include name="**/fixup/fixup463.sql"/>
+				
+				<include name="**/fixup/sc-fixup464.sql"/>				
+				<include name="**/fixup/fixup464.sql"/>
+				
+				<include name="**/fixup/sc-fixup465.sql"/>				
+				<include name="**/fixup/fixup465.sql"/>
+				
+				<include name="**/fixup/sc-fixup466.sql"/>				
+				<include name="**/fixup/fixup466.sql"/>
+
+				<include name="**/fixup/sc-fixup467.sql"/>				
+				<include name="**/fixup/fixup467.sql"/>
+				<include name="**/fixup/fixup467_w3.sql"/>
+				
+				<include name="**/fixup/sc-fixup468.sql"/>				
+				<include name="**/fixup/fixup468.sql"/>
+				
+				<include name="**/fixup/sc-fixup469.sql"/>				
+				<include name="**/fixup/fixup469.sql"/>
+				<include name="**/fixup/fixup469_w3.sql"/>
+				
+				<include name="**/fixup/sc-fixup470.sql"/>				
+				<include name="**/fixup/fixup470.sql"/>
+				
+				<include name="**/fixup/fixup471.sql"/>
+				<include name="**/fixup/sc-fixup471.sql"/>
+				
+				<include name="**/fixup/fixup472.sql"/>
+				<include name="**/fixup/sc-fixup472.sql"/>
+				
+				<include name="**/fixup/fixup473.sql"/>
+				<include name="**/fixup/fixup473s.sql"/>
+				
+				<include name="**/fixup/fixup474.sql"/>
+				<include name="**/fixup/fixup474s.sql"/>
+				
+				<include name="**/fixup/fixup475.sql"/>
+				<include name="**/fixup/fixup475s.sql"/>
+				
+				<include name="**/fixup/fixup476.sql"/>
+				<include name="**/fixup/fixup476s.sql"/>
+				
+				<include name="**/fixup/fixup477.sql"/>
+				<include name="**/fixup/fixup477s.sql"/>
+
+				<include name="**/fixup/fixup500.sql"/>
+				<include name="**/fixup/fixup500s.sql"/>
+				
+				<include name="**/fixup/fixup501.sql"/>
+				<include name="**/fixup/fixup501s.sql"/>
+				
+				<include name="**/fixup/fixup502.sql"/>
+				<include name="**/fixup/fixup502s.sql"/>
+				
+				<include name="**/fixup/fixup503.sql"/>
+				<include name="**/fixup/fixup503s.sql"/>
+				
+				<include name="**/fixup/fixup504.sql"/>
+				<include name="**/fixup/fixup504s.sql"/>
+				
+				<include name="**/fixup/fixup510.sql"/>
+				<include name="**/fixup/fixup510s.sql"/>
+				
+				<include name="**/fixup/fixup511.sql"/>
+				<include name="**/fixup/fixup511s.sql"/>
+				
+				<include name="**/fixup/fixup512.sql"/>
+				<include name="**/fixup/fixup512s.sql"/>
+				
+				<include name="**/fixup/fixup513.sql"/>
+				<include name="**/fixup/fixup513s.sql"/>
+				
+				<include name="**/fixup/fixup514.sql"/>
+				<include name="**/fixup/fixup514s.sql"/>
+
+				<include name="**/fixup/fixup515.sql"/>
+				<include name="**/fixup/fixup515s.sql"/>
+				
+				<include name="**/fixup/fixup516.sql"/>
+				<include name="**/fixup/fixup516s.sql"/>
+				
+				<include name="**/fixup/fixup517.sql"/>
+				<include name="**/fixup/fixup517s.sql"/>
+				
+				<include name="**/fixup/fixup600.sql"/>
+				<include name="**/fixup/fixup600s.sql"/>
+				
+				<include name="**/fixup/fixup601.sql"/>
+				<include name="**/fixup/fixup601s.sql"/>
+				
+				<include name="**/fixup/fixup602.sql"/>
+				<include name="**/fixup/fixup602s.sql"/>
+				
+				<include name="**/fixup/fixup603.sql"/>
+				<include name="**/fixup/fixup603s.sql"/>
+
+				<include name="**/fixup/fixup604.sql"/>
+				<include name="**/fixup/fixup604s.sql"/>
+					
+				<include name="**/fixup/fixup605.sql"/>
+				<include name="**/fixup/fixup605s.sql"/>
+				
+				<include name="**/fixup/fixup606.sql"/>
+				<include name="**/fixup/fixup606s.sql"/>
+				
+				<include name="**/fixup/fixup607.sql"/>
+				<include name="**/fixup/fixup607s.sql"/>
+				
+				<include name="**/fixup/fixup700.sql"/>
+				<include name="**/fixup/fixup700s.sql"/>				
+					
+				<include name="**/fixup/fixup701.sql"/>
+				<include name="**/fixup/fixup701s.sql"/>				
+
+				<include name="**/fixup/fixup702.sql"/>
+				<include name="**/fixup/fixup702s.sql"/>				
+
+				<include name="**/fixup/fixup703.sql"/>
+				<include name="**/fixup/fixup703s.sql"/>				
+
+				<include name="**/fixup/fixup704.sql"/>
+				<include name="**/fixup/fixup704s.sql"/>				
+
+				<include name="**/fixup/fixup705.sql"/>
+				<include name="**/fixup/fixup705s.sql"/>				
+
+				<include name="**/fixup/fixup706.sql"/>
+				<include name="**/fixup/fixup706s.sql"/>		
+				
+				<include name="**/fixup/fixup707.sql"/>
+				<include name="**/fixup/fixup707s.sql"/>	
+				
+				<include name="**/fixup/fixup710.sql"/>
+				<include name="**/fixup/fixup710s.sql"/>				
+
+				<include name="**/fixup/postfixup705.1.sql"/>
+				<include name="**/fixup/postfixup705.2.sql"/>
+				<include name="**/fixup/postfixup705.3.sql"/>
+				<include name="**/fixup/postfixup705.4.sql"/>
+				<include name="**/fixup/postfixup705.5.sql"/>
+				
+				<include name="**/fixup/postfixup710.1.sql"/>				
+				<include name="**/fixup/postfixup710.2.sql"/>
+				<include name="**/fixup/postfixup710.3.sql"/>
+				<include name="**/fixup/postfixup710.4.sql"/>
+				<include name="**/fixup/postfixup710.5.sql"/>
+				<include name="**/fixup/postfixup710.6.sql"/>
+				<include name="**/fixup/postfixup710.7.sql"/>
+				<include name="**/fixup/postfixup710.8.sql"/>
+				<include name="**/fixup/postfixup710.9.sql"/>
+
+					<!-- MIGRATION 45-50 -->
+				<include name="**/fixup/onpremises-45-50-updateNullOrgId.sql"/>
+				
+				<!-- sc scripts -->
+				<include name="**/fixup/sc-45-50-purge-as-tables.sql"/>
+				<include name="**/sc-aug2013-fix-discrepancies.sql"/>
+				<include name="**/sc-compress-data-june.sql"/>
+
+				
+			</fileset>
+		</copy>
+
+		<delete dir="{temp.schema.dir}/${dbvar}/nested.includes/" failonerror="true" quiet="true"/>
+		
+		<taskdef name="if" classname="net.sf.antcontrib.logic.IfTask"/>
+		<taskdef name="propertyregex" classname="net.sf.antcontrib.property.RegexTask" />		
+		
+		
+		<property name="temp.fixup.version.num" value="711" />
+		<propertyregex property="temp.fixup.version.num" input="${temp.fixup.version}" regexp="[^0-9]" replace="" />
+		<available property="fixup.exists" file="${gen.schema.dir}/${dbvar}/fixup/fixup${temp.fixup.version.num}.sql"/>
+
+		
+		<echo message="temp.fixup.version '${temp.fixup.version}'"/>
+		<echo message="temp.fixup.version.num '${temp.fixup.version.num}'"/>
+		<echo message="fixup.exists '${fixup.exists}'"/>
+		 
+		<if>
+			<and>
+				<isset property="temp.fixup.version.num"/>
+				<isset property="fixup.exists"/>
+			</and>	
+			<then>
+				<echo message="Re-labelling fixup to tmpFixup${temp.fixup.version.num}.sql"/>
+				<move failonerror="no" tofile="${gen.schema.dir}/${dbvar}/fixup/tmpFixup${temp.fixup.version.num}.sql">
+		 		   	<fileset dir="${gen.schema.dir}/${dbvar}/fixup/">
+			 	      <include name="fixup${temp.fixup.version.num}.sql"/>
+			 	    </fileset>
+			 	</move>		 		
+			</then>					
+		</if>
+		
+	</target>
+
+	<!-- This is the main target -->
+	<target name="bld-schemas" depends="clean-gen-schema">
+
+		<copyTemplateSchemas 
+			srcComponent="dboard.sn.install/scripts/db.source/newshp" 
+			srcSchemaId="NewsHp Schema"
+			schemaSubstFile="${basedir}/schema_subst.properties"
+			outputDir="${temp.schema.dir}"/>
+
+		<copyTemplateSchemas 
+			srcComponent="dboard.sn.install/scripts/db.source/search" 
+			srcSchemaId="Search Schema"
+			schemaSubstFile="${basedir}/schema_subst.properties"
+			outputDir="${temp.schema.dir}"/>
+
+		<bldSchema dbvar="db2"/>
+		<bldSchema dbvar="oracle"/>
+		<bldSchema dbvar="sqlserver"/>
+		<bldSchema dbvar="as400"/>
+	</target>
+
+</project>
+
+
+
+
+

@@ -1,0 +1,44 @@
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+ "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2009, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+	<!-- Package regrouping the actions related to notification tab -->
+<struts>
+	<package name="notification" extends="homepage-default">
+
+		<action name="getNotificationSent"
+			class="com.ibm.lconn.homepage.web.action.notifications.NotificationSentAction">
+			<result name="success" type="dispatcher">
+				/web/jsp/notifications/notificationsSent.jspf
+            </result>
+		</action>
+
+		<action name="getNotificationReceived"
+			class="com.ibm.lconn.homepage.web.action.notifications.NotificationReceivedAction">
+			<result name="success" type="dispatcher">
+				/web/jsp/notifications/notificationsReceived.jspf
+            </result>
+		</action>
+
+		<action name="getNotificationTabs" class="com.ibm.lconn.homepage.web.action.notifications.NotificationTabAction">
+			<result name="success" type="dispatcher">
+				/web/jsp/notifications/notificationsTab.jspf
+            </result>
+		</action>
+	</package>
+</struts>
+

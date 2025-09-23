@@ -1,0 +1,74 @@
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- HCL Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright HCL Technologies Limited. 2011, 2021                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+
+<%-- Main tile containing the widget page elements --%>
+
+
+<%@page session="true" contentType="text/html; charset=UTF-8"
+	buffer="128kb"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@ taglib prefix="lc-cache" uri="http://www.ibm.com/connections/core/cache"%>
+
+<c:set var="myPage"> <fmt:message key="jsp.homepage.tab.myPage" /> </c:set>
+
+<script type="text/javascript">
+	dojo.publish(com.ibm.social.as.constants.events.CHANGEPAGETITLE, ['<fmt:message key="jsp.homepage.tab.myPage" />']);
+</script>
+
+<%-- TODO: investigate why there is a bg image here --%>
+<div class="lotusMain" id="lotusMain" style="background-image: none;">
+	<script type="text/javascript">
+	// just a holder to check if javascript is enabled
+	</script>
+
+<tiles:insertDefinition name="homepage.common.palette"></tiles:insertDefinition>
+<div id="lotusColLeft" class="lotusColLeft">
+	<tiles:insertAttribute name="leftColumn" />
+</div>
+
+<div id="lotusContent" class="lotusContent" role="main">
+	<noscript>
+	 <div class="lotusErrorBox lotusError" role="region" aria-label="<fmt:message key='jsp.homepage.javascript.disabled.msg.title' />">
+	      	<div class="lotusErrorContent">
+      		<img src="<lc-cache:uri template="${webResourcesRoot}/web/com.ibm.oneui.styles/css/images/iconErrorLarge.gif" />" alt="<fmt:message key='jsp.homepage.javascript.disabled.msg.title' />">
+      		<div class="lotusErrorForm">
+
+      			<h1><fmt:message key='jsp.homepage.javascript.disabled.msg.title' /></h1>
+      			<p><fmt:message key='jsp.homepage.javascript.disabled.msg.section1' /></p>
+      			<p><fmt:message key='jsp.homepage.javascript.disabled.msg.section2' /></p>
+	      	</div>
+      	</div>
+      </div>
+
+	</noscript>
+	<div id="hpplaceholder_top"></div> 
+
+<div id="hpplaceholder_widgets_content_top"></div>
+<table id="dndtable" class="lotusWidgetTable" role="presentation">
+	<%-- Displaying the main content for the home page --%>
+	<tr>
+		<td id="dnd" class="lotus2Col"><span style="position: absolute;">
+		<a name="firstColumn" id="firstColumn" href="javascript:;">&nbsp;</a> </span></td>
+		<td id="dnd2" class="lotus2Col"><span style="position: absolute;">
+		<a name="secondColumn" id="secondColumn">&nbsp;</a> </span></td>
+	</tr>
+</table>
+<%-- end content --%>
+<div id="hpplaceholder_widgets_content_bottom"></div>
+</div>
+<div id="hpplaceholder_bottom"></div>
+</div>

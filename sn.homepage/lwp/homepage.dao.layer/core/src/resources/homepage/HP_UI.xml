@@ -1,0 +1,197 @@
+<!DOCTYPE sqlMap
+	PUBLIC "-//iBATIS.com/DTD SQL Map 2.0//EN"
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2008, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<!--
+CREATE TABLE HOMEPAGE.HP_UI  (
+	UI_ID VARCHAR(36) NOT NULL,
+	PERSON_ID VARCHAR(36) NOT NULL,
+	PERSON_LANG VARCHAR(5) NOT NULL,
+	LAST_VISIT TIMESTAMP NOT NULL,
+	WELCOME_MODE SMALLINT DEFAULT 1 NOT NULL,
+	SHOW_DISABLED_WIDGETS SMALLINT DEFAULT 0 NOT NULL,
+	LAST_NOTIFY_VISIT TIMESTAMP
+)
+IN HOMEPAGETABSPACE;
+-->
+
+<sqlMap namespace="HP_UI">
+
+	<typeAlias alias="HP_UI" type="com.ibm.lconn.homepage.dao.model.UI" />
+
+	<resultMap id="HP_UIMap" class="HP_UI">
+		<result property="uiId" column="UI_ID" jdbcType="VARCHAR" />
+		<result property="personId" column="PERSON_ID" jdbcType="VARCHAR" />
+		<result property="personLang" column="PERSON_LANG" jdbcType="VARCHAR" />
+		<result property="lastVisit" column="LAST_VISIT" jdbcType="TIMESTAMP"/>
+		<result property="lastNotifyVisit" column="LAST_NOTIFY_VISIT" jdbcType="TIMESTAMP"/>
+		<result property="welcomeMode" column="WELCOME_MODE" jdbcType="BOOLEAN"/>
+		<result property="welcomeNote" column="WELCOME_NOTE" jdbcType="BOOLEAN" nullValue="1"/>
+		<result property="showDisabledWidgets" column="SHOW_DISABLED_WIDGETS" jdbcType="BOOLEAN"/>
+		<result property="organizationId" column="ORGANIZATION_ID" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="select-HP_UI" resultMap="HP_UIMap" >
+		<![CDATA[
+			SELECT UI_ID, PERSON_ID, PERSON_LANG, LAST_VISIT, LAST_NOTIFY_VISIT, WELCOME_MODE, WELCOME_NOTE, SHOW_DISABLED_WIDGETS, ORGANIZATION_ID
+			from $schema$.HP_UI
+		]]>
+			<isEqual prepend="WHERE" property="applyMT" compareValue="true">
+				ORGANIZATION_ID = #organizationId:VARCHAR#
+			</isEqual>
+	</select>
+
+	<insert id="insert-HP_UI" parameterClass="HP_UI" >
+		<![CDATA[
+			INSERT INTO $schema$.HP_UI
+				(UI_ID, PERSON_ID, PERSON_LANG, LAST_VISIT, WELCOME_MODE, WELCOME_NOTE, SHOW_DISABLED_WIDGETS, ORGANIZATION_ID)
+			VALUES
+				(#uiId:VARCHAR#, #personId:VARCHAR#, #personLang:VARCHAR#, #lastVisit:TIMESTAMP#, #welcomeMode:BOOLEAN#, #welcomeNote:BOOLEAN#,
+				#showDisabledWidgets:BOOLEAN#, #organizationId:VARCHAR#)
+		]]>
+	</insert>
+
+	<update id="update-HP_UI" parameterClass="HP_UI">
+		<![CDATA[
+			update $schema$.HP_UI set
+				PERSON_ID = #personId:VARCHAR#,
+				PERSON_LANG = #personLang:VARCHAR#,
+				LAST_VISIT = #lastVisit:TIMESTAMP#,
+				LAST_NOTIFY_VISIT = #lastNotifyVisit:TIMESTAMP#,
+				WELCOME_MODE = #welcomeMode:BOOLEAN#,
+				WELCOME_NOTE = #welcomeNote:BOOLEAN#,
+				SHOW_DISABLED_WIDGETS = #showDisabledWidgets:BOOLEAN#,
+				ORGANIZATION_ID = #organizationId:VARCHAR#
+			where UI_ID = #uiId:VARCHAR#
+		]]>
+	</update>
+
+	<update id="updateLastVisitByPersonId-HP_UI">
+		<![CDATA[
+			update $schema$.HP_UI set
+				LAST_VISIT = #lastVisit:TIMESTAMP#
+			where PERSON_ID = #personId:VARCHAR#
+		]]>
+			<isEqual prepend="AND" property="applyMT" compareValue="true">
+				ORGANIZATION_ID = #organizationId:VARCHAR#
+			</isEqual>
+	</update>
+
+	<update id="updateLanguageByPersonId-HP_UI">
+		<![CDATA[
+			update $schema$.HP_UI set
+				PERSON_LANG = #personLang:VARCHAR#
+			where PERSON_ID = #personId:VARCHAR#
+		]]>
+			<isEqual prepend="AND" property="applyMT" compareValue="true">
+				ORGANIZATION_ID = #organizationId:VARCHAR#
+			</isEqual>
+	</update>
+
+	<update id="updateLanguageAndLastVisitByPersonId-HP_UI">
+		<![CDATA[
+			update $schema$.HP_UI set
+				PERSON_LANG = #personLang:VARCHAR#,
+				LAST_VISIT = #lastVisit:TIMESTAMP#
+			where PERSON_ID = #personId:VARCHAR#
+		]]>
+			<isEqual prepend="AND" property="applyMT" compareValue="true">
+				ORGANIZATION_ID = #organizationId:VARCHAR#
+			</isEqual>
+	</update>
+
+
+	<delete id="delete-HP_UI">
+		<![CDATA[
+			delete from $schema$.HP_UI where UI_ID = #key#
+		]]>
+	</delete>
+
+	<select id="getByPK-HP_UI"  resultMap="HP_UIMap">
+		<![CDATA[
+			SELECT UI_ID, PERSON_ID, PERSON_LANG, LAST_VISIT, LAST_NOTIFY_VISIT, WELCOME_MODE, WELCOME_NOTE, SHOW_DISABLED_WIDGETS, ORGANIZATION_ID
+			from $schema$.HP_UI
+			where UI_ID = #key#
+		]]>
+	</select>
+
+	<update id="updateLanguage-HP_UI">
+		<![CDATA[
+			update $schema$.HP_UI set
+				PERSON_LANG = #personLang:VARCHAR#
+			where UI_ID = #uiId:VARCHAR#
+		]]>
+	</update>
+
+
+	<select id="getUserUIByPersonId-HP_UI"  resultMap="HP_UIMap">
+		<![CDATA[
+			SELECT UI_ID, PERSON_ID, PERSON_LANG, LAST_VISIT, LAST_NOTIFY_VISIT, WELCOME_MODE, WELCOME_NOTE, SHOW_DISABLED_WIDGETS, ORGANIZATION_ID
+			FROM $schema$.HP_UI
+			WHERE PERSON_ID = #personId:VARCHAR#
+		]]>
+	</select>
+
+	<update id="disableTestModeByUserID-HP_UI" >
+		<![CDATA[
+			UPDATE $schema$.HP_UI
+			SET    SHOW_DISABLED_WIDGETS = 0
+			WHERE  PERSON_ID = #personId:VARCHAR#
+		]]>
+			<isEqual prepend="AND" property="applyMT" compareValue="true">
+				ORGANIZATION_ID = #organizationId:VARCHAR#
+			</isEqual>
+	</update>
+
+	<update id="enableTestModeByUserID-HP_UI" >
+		<![CDATA[
+			UPDATE $schema$.HP_UI
+			SET    SHOW_DISABLED_WIDGETS = 1
+			WHERE  PERSON_ID = #personId:VARCHAR#
+		]]>
+			<isEqual prepend="AND" property="applyMT" compareValue="true">
+				ORGANIZATION_ID = #organizationId:VARCHAR#
+			</isEqual>
+	</update>
+
+	<select id="countNumberOfUniqueVisitors-HP_UI"  resultClass="java.lang.Integer">
+		<![CDATA[
+			select count(*)
+			from $schema$.HP_UI
+		]]>
+			<isEqual prepend="WHERE" property="applyMT" compareValue="true">
+				ORGANIZATION_ID = #organizationId:VARCHAR#
+			</isEqual>
+	</select>
+
+	<update id="resetWelcomeModeFlag-HP_UI" >
+		<![CDATA[
+			UPDATE $schema$.HP_UI
+			SET    WELCOME_MODE = 1
+			WHERE 1=1
+		]]>
+		<dynamic>
+			<isNotNull prepend="AND" property="personId">
+				PERSON_ID = #personId:VARCHAR#
+			</isNotNull>
+			<isEqual prepend="AND" property="applyMT" compareValue="true">
+				ORGANIZATION_ID = #organizationId:VARCHAR#
+			</isEqual>
+		</dynamic>
+	</update>
+
+</sqlMap>

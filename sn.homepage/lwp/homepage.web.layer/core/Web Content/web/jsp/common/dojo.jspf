@@ -1,0 +1,38 @@
+<%@ page session="false" contentType="text/html; charset=UTF-8"
+	buffer="128kb"%>
+<%--wscExemptBegin--%>
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- IBM Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright IBM Corp. 2008, 2015                                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+<%--wscExemptEnd--%>	
+	
+<%@ taglib prefix="hometags" uri="http://www.ibm.com/homepage/tags" %>
+<%@ taglib prefix="lc-cache" uri="http://www.ibm.com/connections/core/cache"%>
+
+<%-- Initialize and configure just Dojo --%>
+
+<%
+	String actualLocale = request.getLocale().toString().replace('_','-').toLowerCase();
+	
+	// SPR CZIT7FY47W: force pt-pt
+	if ("pt".equals(actualLocale)){
+		actualLocale = "pt-pt";
+	}
+	else if("iw".equals(actualLocale)){
+		actualLocale = "he";
+	}
+%>
+
+<%-- Init globals and init mum. Done on purpose even for side pages not using mum (tools, help, ...)--%>
+<jsp:include page='initGlobals.jspf' flush="false" />
+

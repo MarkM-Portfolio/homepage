@@ -1,0 +1,474 @@
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- HCL Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright HCL Technologies Limited. 2008, 2021                                 --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+
+<%--wscExemptBegin--%>
+<%--wscExemptEnd--%>
+
+<%@ page session="true" contentType="text/html; charset=UTF-8"
+         buffer="128kb"%>
+<%@ page errorPage="/web/jsp/common/errorPage.jsp"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="bidi" uri="http://www.ibm.com/lconn/tags/bidiutil"%>
+<%@ taglib prefix="lc-cache" uri="http://www.ibm.com/connections/core/cache"%>
+
+<%@page import="java.util.ResourceBundle"%>
+
+<div id="lotusMain" class="lotusMain">
+<div id="lotusColLeft" class="lotusColLeft">
+    <div class="lotusInfoBox" class="LotusColRight" aria-label="<fmt:message key="jsp.admin.tip.header" />" role="complementary">
+        <h3><fmt:message key="jsp.admin.tips" /></h3>
+        <h4><fmt:message key="jsp.admin.tip.header" /></h4>
+        <ul>
+            <li><fmt:message key="jsp.admin.tip.1" /></li>
+            <li><fmt:message key="jsp.admin.tip.2" /></li>
+        </ul>
+    </div>
+</div>
+
+<div id="lotusContent" class="lotusContent" role="main">
+
+<div class="lotusHeader" id="header">
+    <h1><fmt:message key="jsp.admin.title" /></h1>
+    <div class="lotusDetails">
+        <p><fmt:message key="jsp.admin.description" /></p>
+    </div>
+</div>
+
+<%--  Beginning add/edit form --%>
+
+<c:choose>
+<c:when test="${ widgetId eq '' }">
+<form class="lotusForm2 lotusLeftLabels" id="widgetForm" name="newWidgetForm" action="newWidget.action" method="post">
+</c:when>
+<c:otherwise>
+<form class="lotusForm2 lotusLeftLabels" id="widgetForm" name="editWidgetForm" action="editWidget.action" method="post">
+</c:otherwise>
+</c:choose>
+
+<input id="widgetId" type="hidden" name="widgetId" value="${widgetId}" />
+<input id="enabled" type="hidden" name="enabled" value="${enabled}" />
+<input id="statuswidgeturl" type="hidden" name="statuswidgeturl" value="" />
+<input id="statuswidgetsecureurl" type="hidden" name="statuswidgetsecureurl" value="" />
+<input id="statuswidgeticonurl" type="hidden" name="statuswidgeticonurl" value="" />
+<input id="statuswidgeticonsecureurl" type="hidden" name=statuswidgeticonsecureurl value="" />
+<input id="systemWidgetInEditor" type="hidden" value="${isSystemChecked}"/>
+<input type="hidden" id="X-Update-Nonce" name="X-Update-Nonce" value="${xUpdateNonce}" />
+
+<header class="lotusFormTitle">
+    <h1 class="lotusHeading" aria-describedby="header">
+        <c:choose>
+            <c:when test="${ widgetId eq '' }">
+                <fmt:message key="jsp.admin.add.page.title" />
+            </c:when>
+            <c:otherwise>
+                <fmt:message key="jsp.admin.edit.page.title" />
+            </c:otherwise>
+        </c:choose>
+    </h1>
+</header>
+
+<div id="adminError" class="lotusMessage2" role="alert" style="display:none;">
+    <img alt="Error" class="lconnSprite lconnSprite-iconError16" src="<lc-cache:uri template="{webResourcesRoot}/web/com.ibm.lconn.core.styles.oneui3/images/blank.gif" />" />
+    <span id="adminErrorText"></span>
+</div>
+
+
+<div id="adminEditForm" class="lotusFormBody">
+<%-- Widget Type: --%>
+<div id="widgetOrGadget" class="lotusFormField">
+    <label id="widgetOrGadgetLabel" class="lotusFormLabel">
+        <fmt:message key="jsp.admin.edit.widget.type" />
+    </label>
+    <div aria-labelledby="widgetOrGadgetLabel" class="lotusFieldWrapper" role="radiogroup" aria-required="true">
+        <div id="widgetOrGadgetIsWIdget">
+            <input class="lotusCheckbox" type="radio"  id="isWidget" name="isGadget" value="false" <c:if test="${ isGadget eq 'false' }">checked</c:if> <c:if test="${ widgetId ne '' }">disabled="disabled"</c:if> onclick="widgetAdmin.isGadgetClicked(this);"/><label class="lotusCheckbox" for="isWidget"><fmt:message key="jsp.admin.edit.widget.type.iwidget" /></label>
+        </div>
+        <div id="widgetOrGadgetIsGadget">
+            <input class="lotusCheckbox" type="radio"  id="isGadget" name="isGadget" value="true" <c:if test="${ isGadget eq 'true' }">checked</c:if>  <c:if test="${ widgetId ne '' }">disabled="disabled"</c:if> onclick="widgetAdmin.isGadgetClicked(this);"/><label class="lotusCheckbox" for="isGadget"><fmt:message key="jsp.admin.edit.widget.type.osgadget" /> </label>
+        </div>
+    </div>
+</div>
+
+<%-- Gadget specific settings --%>
+<div id="gadgetSettings" class="lotusFormField lotusIndent" <c:if test="${ isGadget eq 'false' }">style="display: none"</c:if> >
+    <fieldset class="lotusFieldset">
+        <legend><fmt:message key="jsp.admin.gadgetSettings.legend" /></legend>
+        <div id="gadgetsecurityField" class="lotusFormField">
+            <div id="gadgetSecurityLabel" class="lotusFormLabel">
+                <fmt:message key="jsp.admin.gadgetSettings.gadgetSecurityLabel" />
+            </div>
+            <%-- restricted/trusted --%>
+            <fieldset aria-labelledby="gadgetSecurityLabel" role="radiogroup" aria-required="true" aria-describedby="gadgetSettingsHelp" >
+                <legend style="display:none"><fmt:message key="jsp.admin.gadgetSettings.gadgetSecurityLabel" /></legend>
+                <div id="gadgetsecurityRestrictedWrapper" class="lotusFieldWrapper">
+                    <input class="lotusCheckbox" type="radio"  id="gadgetSecurityRestricted" name="isGadgetTrusted" <c:if test="${ isGadgetTrusted eq 'false' }"> checked</c:if> value="false" onclick="widgetAdmin.isSecurityClicked(this);"><label class="lotusCheckbox" for="gadgetSecurityRestricted"><fmt:message key="jsp.admin.gadgetSettings.gadgetSecurityRestricted" /></label>
+                </div>
+                <div id="gadgetsecurityUnrestrictedWrapper" class="lotusFieldWrapper">
+                    <input class="lotusCheckbox" type="radio"  id="gadgetsecurityUnrestricted" name="isGadgetTrusted" <c:if test="${ isGadgetTrusted eq 'true' }"> checked</c:if> value="true" onclick="widgetAdmin.isSecurityClicked(this);"><label class="lotusCheckbox" for="gadgetsecurityUnrestricted"><fmt:message key="jsp.admin.gadgetSettings.gadgetsecurityUnrestriced" /></label>
+                </div>
+                <%-- Use SSO --%>
+                <div id="sso_container">
+                    <div id="gadgetssoField" class="lotusFormField lotusIndent20">
+                        <div class="lotusFieldWrapper">
+                            <input id="gadgetsso" class="lotusCheckbox" type="checkbox" name="isGadgetSSO" ${isSSOChecked} value="true" onclick="widgetAdmin.ssoClicked(this);">
+                            <label class="lotusCheckbox" id="gadgetssoLabel" for="gadgetsso"><fmt:message key="jsp.admin.gadgetSettings.gadgetsso" /></label>
+                        </div>
+                    </div>
+                </div>
+                <div id="gadgetSettingsHelp" class="lotusMeta">
+                    <fmt:message key="jsp.admin.gadgetSettings.gadgetSettingsHelp" />
+                </div>
+            </fieldset>
+        </div>
+
+        <%-- UI integration points:  --%>
+        <div id="gadgetshareboxField" class="lotusFormField">
+            <div id="gadgetshareboxFieldLabel" class="lotusFormLabel">
+                <fmt:message key="jsp.admin.gadgetSettings.gadgetsecurityLabel" />
+            </div>
+            <fieldset class="lotusFieldSet">
+                <%-- Show in Share dialog --%>
+                <legend class="lotusAccess"><fmt:message key="jsp.admin.gadgetSettings.gadgetshareboxLabel" /></legend>
+                <div class="lotusFieldWrapper">
+                    <input id="gadgetsharebox" class="lotusCheckbox" type="checkbox" name="isGadgetInSharebox" value="true" ${isGadgetInShareboxChecked} onclick="widgetAdmin.isShareboxClicked(this);">
+                    <label class="lotusCheckbox" id="gadgetshareboxLabel" for="gadgetsharebox">
+                        <fmt:message key="jsp.admin.gadgetSettings.gadgetshareboxLabel" />
+                    </label>
+                </div>
+                <%-- Insertion point in Sharebox --%>
+                <div id="gadetinsertContainer">
+                    <div id="gadgetinsertField" class="lotusFormField">
+                        <label for="gadgetinsert" style="display:none">
+                            <fmt:message key="jsp.admin.gadgetSettings.gadgetsecurityLabel" />
+                        </label>
+                        <div class="lotusFieldWrapper">
+                            <select id="gadgetinsert" name="shareGadgetInsertionPoint" disabled="disabled">
+                                <c:forEach var="shareGadget" items="${shareGadgetsOptions}">
+                                    <option value="${shareGadget.id}" ${shareGadget.isSelected} ${shareGadget.isDisabled}>${shareGadget.name}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+
+
+        <%-- Contribute to Embedded Experience --%>
+        <div id="gadgeteeField" class="lotusFormField lotusIndent">
+            <div class="lotusFieldWrapper">
+                <input id="gadgetee" class="lotusCheckbox" type="checkbox" name="isGadgetInEE" ${isGadgetInEEChecked} value="true">
+                <label class="lotusCheckbox" for="gadgetee">
+                    <fmt:message key="jsp.admin.gadgetSettings.gadgeteeLabel" />
+                </label>
+            </div>
+        </div>
+
+        <%-- URL Access via Proxy --%>
+        <div id="gadgeturlaccessField" class="lotusFormField">
+            <div id="gadgeturlaccessLabel" class="lotusFormLabel">
+                <fmt:message key="jsp.admin.gadgetSettings.gadgeturlaccesslabel" />
+            </div>
+            <fieldset aria-labelledby="gadgeturlaccessLabel" role="radiogroup" aria-required="true" aria-describedby="widgetOrGadgetHelp" >
+                <legend><fmt:message key="jsp.admin.gadgetSettings.gadgeturlaccesslabel" /></legend>
+                <div id="gadgeturlaccessExternalWrapper" class="lotusFieldWrapper">
+                    <input class="lotusCheckbox" type="radio"  id="gadgeturlaccessExternal" name="isGadgetUrlPolicy" value="external_only" <c:if test="${ IsGadgetUrlPolicy eq 'external_only' }"> checked</c:if> >
+                    <label class="lotusCheckbox" for="gadgeturlaccessExternal"><fmt:message key="jsp.admin.gadgetSettings.gadgeturlaccessExternal" /></label>
+                </div>
+                <div id="gadgeturlaccessAnyWrapper" class="lotusFieldWrapper">
+                    <input class="lotusCheckbox" type="radio"  id="gadgeturlaccessAny" name="isGadgetUrlPolicy" value="intranet" <c:if test="${ IsGadgetUrlPolicy eq 'intranet' }"> checked</c:if>>
+                    <label class="lotusCheckbox" for="gadgeturlaccessAny"><fmt:message key="jsp.admin.gadgetSettings.gadgeturlaccessAny" /></label>
+                </div>
+                <div id="gadgeturlaccessCustomWrapper" class="lotusFieldWrapper">
+                    <input class="lotusCheckbox" type="radio"  id="gadgeturlaccessCustom" name="isGadgetUrlPolicy" value="custom" <c:if test="${ IsGadgetUrlPolicy eq 'custom' }"> checked</c:if>>
+                    <label class="lotusCheckbox" for="gadgeturlaccessCustom"><fmt:message key="jsp.admin.gadgetSettings.gadgeturlaccessCustom" /></label>
+                </div>
+                <div id="widgetOrGadgetHelp" class="lotusMeta">
+                    <fmt:message key="jsp.admin.gadgetSettings.widgetOrGadgetHelp" />
+                </div>
+            </fieldset>
+        </div>
+
+
+        <%-- Service Mappings --%>
+        <div id="serviceFieldMappingSection" class="lotusFormSection">
+
+            <header class="lotusFormSectionHeader">
+                <div class="lotusHeading2"><label for="serviceMappings"><fmt:message key="jsp.admin.gadgetSettings.serviceMappings" /></label></div>
+                <div id="serviceFieldMappingDescription" class="lotusMeta lotusIndent20"><fmt:message key="jsp.admin.gadgetSettings.oauthMappings" /></div>
+            </header>
+
+            <div class="lotusFormSectionBody">
+                <div id="serviceMappingsDefined">
+                    <div id="servicesFieldSet" class="lotusFormField lotusIndent">
+                        <div class="lotusFieldWrapper">
+                            <select id="serviceMappings" name="serviceMappings" aria-required="false" size=5 aria-describedby="serviceFieldMappingDescription" >
+                                <c:forEach var="serviceMapEntry" items="${serviceMapEntries}">
+                                    <option value="${serviceMapEntry.key}">${serviceMapEntry.key}->${serviceMapEntry.value}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <span id="serviceMappingsFieldButtons">
+                    <input class="lotusBtn" type="button" onclick="widgetAdmin.addServiceMapping(); return false;" value='<fmt:message key="jsp.admin.button.add.mapping"/>'>
+                    <input class="lotusBtn" type="button" onclick="widgetAdmin.editServiceMapping(); return false;" value='<fmt:message key="jsp.admin.button.edit.mapping"/>'>
+                    <input class="lotusBtn" type="button" onclick="widgetAdmin.deleteServiceMapping(); return false;" value='<fmt:message key="jsp.admin.button.delete.mapping"/>'>
+                </span>
+                <%-- Section for adding new Service mapping --%>
+                <div id="sectionMappingField" class="lotusFormField" style="display:none">
+                    <label id="gadgetoauthLabel" for="gadgetoauth">
+                        <fmt:message key="jsp.admin.gadgetSettings.gadgetoauthLabel" />
+                    </label>
+                    <div class="lotusFieldWrapper">
+                        <select id="gadgetoauth" name="gadgetoauth" aria-required="true">
+                            <c:forEach var="oauthClientName" items="${gadgetOauth}">
+                                <option value="${oauthClientName}">${oauthClientName}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div id="serviceCreateField" class="lotusFormField">
+                        <label for="serviceName">
+                            <fmt:message key="jsp.admin.gadgetSettings.serviceName" />
+                        </label>
+                        <div class="lotusFieldWrapper">
+                            <input class="lotusText" type="text" id="serviceName" name="serviceTitle" maxlength="25" />
+                        </div>
+                    </div>
+                    <div id="serviceCreateFieldButtons" class="lotusAlignRight">
+                        <input class="lotusBtn" type="button" onclick="widgetAdmin.addServiceMappingComplete(); return false;" value='<fmt:message key="jsp.admin.edit.button.ok"/>'>
+                        <input class="lotusBtn" type="button" onclick="widgetAdmin.cancelServiceMappingComplete(); return false;" value='<fmt:message key="jsp.admin.edit.button.cancel"/>'>
+                    </div>
+                </div>
+            </div>
+    </fieldset>
+</div>
+
+<%-- Widget Title --%>
+<div id="widgettitleField" class="lotusFormField">
+    <label for="widgettitle">
+        <span class="lotusFormRequired" title="Required field">*</span>
+        <fmt:message key="jsp.admin.edit.widget.name" />
+    </label>
+    <div class="lotusFieldWrapper">
+        <input class="lotusText" type="text" id="widgettitle" name="title" value="${fn:escapeXml(title)}" maxlength="25" aria-required="true" aria-describedby="widgetTitleHelp" />
+        <div id="widgetTitleHelp" class="lotusMeta">
+            <fmt:message key="jsp.admin.edit.widget.name.comment" />
+        </div>
+    </div>
+</div>
+
+<%-- Description:  --%>
+<div id="widgetdescriptionField" class="lotusFormField">
+    <label for="widgetdescription">
+        <fmt:message key="jsp.admin.edit.widget.description" />
+    </label>
+    <div class="lotusFieldWrapper">
+        <input class="lotusText" type="text" id="widgetdescription" name="text" value="${fn:escapeXml(text)}" ${isSystemChecked} maxlength="128" aria-describedby="widgetDescrHelp" />
+        <div id="widgetDescrHelp" class="lotusMeta">
+            <fmt:message key="jsp.admin.edit.widget.description.comment" />
+        </div>
+    </div>
+</div>
+
+<%-- URL Address: --%>
+<div id="widgeturlField" class="lotusFormField">
+    <label for="widgeturl">
+        <span class="lotusFormRequired" title="Required field">*</span>
+        <fmt:message key="jsp.admin.edit.widget.url" />
+    </label>
+    <div class="lotusFieldWrapper">
+        <input class="lotusText" type="text" dir="ltr" id="widgeturl" name="url" value="${fn:escapeXml(url)}" ${isSystemChecked} maxlength="256" aria-required="true" aria-describedby="widgetUrlHelp" />
+        <div id="widgetUrlHelp" class="lotusMeta">
+            <fmt:message key="jsp.admin.edit.widget.url.comment" />
+        </div>
+    </div>
+</div>
+
+<%-- Secure URL Address --%>
+<div id="widgetsecureurlField" class="lotusFormField">
+    <label for="widgetsecureurl">
+        <fmt:message key="jsp.admin.edit.widget.secureurl" />
+    </label>
+    <div class="lotusFieldWrapper">
+        <input class="lotusText" type="text" dir="ltr" id="widgetsecureurl" name="secureUrl" value="${fn:escapeXml(secureUrl)}" ${isSystemChecked} maxlength="256" aria-describedby="widgetSecureUrlHelp" />
+        <div id="widgetSecureUrlHelp" class="lotusMeta">
+            <fmt:message key="jsp.admin.edit.widget.secureurl.comment" />
+        </div>
+    </div>
+</div>
+
+<%-- Icon URL: --%>
+<div id="widgeticonurlField" class="lotusFormField">
+    <label for="widgeticonurl">
+        <fmt:message key="jsp.admin.edit.widget.iconurl" />
+    </label>
+    <div aria-labelledby="widgetIconUrlHelp" class="lotusFieldWrapper">
+        <input class="lotusText" type="text" dir="ltr" id="widgeticonurl" name="iconUrl" value="${fn:escapeXml(iconUrl)}" ${isSystemChecked} maxlength="256" aria-describedby="widgetIconUrlHelp" />
+        <div id="widgetIconUrlHelp" class="lotusMeta">
+            <fmt:message key="jsp.admin.edit.widget.iconurl.comment" />
+        </div>
+    </div>
+</div>
+
+<%-- Icon Secure URL: --%>
+<div id="widgeticonsecureurlField" class="lotusFormField">
+    <label id="widgeticonsecureurlLabel" for="widgeticonsecureurl">
+        <fmt:message key="jsp.admin.edit.widget.iconsecureurl" />
+    </label>
+    <div aria-labelledby="widgeticonsecureurlLabel" class="lotusFieldWrapper">
+        <input class="lotusText" type="text" dir="ltr" id="widgeticonsecureurl" name="secureIconUrl"
+               value="${fn:escapeXml(secureIconUrl)}" ${isSystemChecked} maxlength="256" aria-describedby="widgetIconSecureUrlHelp" />
+        <div id="widgetIconSecureUrlHelp" class="lotusMeta">
+            <fmt:message key="jsp.admin.edit.widget.iconsecureurl.comment" />
+        </div>
+    </div>
+</div>
+
+<%-- Use IBM Connections specific tags: --%>
+<div id="widgethomepagespecificField" class="lotusFormField">
+    <label id="widgethomepagespecificLabel" for="widgethomepagespecific" class="lotusFormLabel">
+        <fmt:message key="jsp.admin.edit.widget.homepagespecific" />
+    </label>
+
+    <input class="lotusCheckbox" type="checkbox" onclick="widgetAdmin.widgetHomepageSpecificValidation()"	id="widgethomepagespecific" name="homepageSpecific" value="true" ${isHomepageSpecificChecked} ${isSystemChecked}/>
+
+		<span class="lotusHidden">
+			<label id="widgethomepagespecificLabel_rpt" for="widgethomepagespecific">
+                <fmt:message key="jsp.admin.edit.widget.homepagespecific" />
+            </label>
+		</span>
+</div>
+
+<%-- Display on the Widgets page:  --%>
+<div id="widgettab_widgetField" class="lotusFormField">
+    <label id="widgettab_widgetLabel" class="lotusFormLabel" for="widgettab_widget">
+        <span class="lotusFormRequired" title="Required field">*</span>
+        <fmt:message key="jsp.admin.edit.widget.tab.widget" />
+    </label>
+    <div aria-labelledby="widgettab_widgetLabel" class="lotusFieldWrapper">
+        <input class="lotusCheckbox" type="checkbox" id="widgettab_widget" name="belongTabWidget"  value="true" ${isBelongTabWidgetChecked} ${isSystemChecked} aria-describedby="Help" aria-required="true"/>
+        <div id="Help" class="lotusMeta">
+            <fmt:message key="jsp.admin.edit.widget.tab.widget.comment" />
+        </div>
+    </div>
+			<span class="lotusHidden">
+				<label id="widgettab_widgetLabel_rpt" for="widgettab_widget">
+                    <span>*</span>
+                    <fmt:message key="jsp.admin.edit.widget.tab.widget" />
+                </label>
+			</span>
+</div>
+
+<%-- Display on the Updates page:  --%>
+<div id="widgettab_updateField" class="lotusFormField">
+    <label id="widgettab_updateLabel" class="lotusFormLabel" for="widgettab_update">
+        <span class="lotusFormRequired" title="Required field">*</span>
+        <fmt:message key="jsp.admin.edit.widget.tab.update" />
+    </label>
+    <div aria-labelledby="widgettab_updateLabel" class="lotusFieldWrapper">
+        <input class="lotusCheckbox" type="checkbox" id="widgettab_update" name="belongTabUpdate"  value="true" ${isBelongTabUpdateChecked} ${isSystemChecked} aria-describedby="widgettab_updateHelp" aria-required="true" />
+        <div id="widgettab_updateHelp" class="lotusMeta">
+            <fmt:message key="jsp.admin.edit.widget.tab.update.comment" />
+        </div>
+    </div>
+		<span class="lotusHidden">
+			<label id="widgettab_updateLabel_rpt" for="widgettab_update">
+                <span>*</span>
+                <fmt:message key="jsp.admin.edit.widget.tab.update" />
+            </label>
+		</span>
+</div>
+
+<%-- Opened by default: --%>
+<div id="widgetopenedField" class="lotusFormField">
+    <label id="widgetopenedLabel" for="widgetopened" class="lotusFormLabel">
+        <fmt:message key="jsp.admin.edit.widget.opened" /> </label>
+    </label>
+
+    <input class="lotusCheckbox" type="checkbox" id="widgetopened" name="defaultOpened" value="true" ${isDefaultOpenedChecked}  />
+		<span class="lotusHidden">
+			<label id="widgetopenedLabel_rpt" for="widgetopened">
+                <fmt:message key="jsp.admin.edit.widget.opened" />
+            </label>
+		</span>
+</div>
+
+<%-- Multiple Widgets --%>
+<div id="widgetview_container">
+    <div id="widgetviewField" class="lotusFormField">
+        <label id="widgetviewLabel" class="lotusFormLabel" for="widgetview">
+            <fmt:message key="jsp.admin.edit.widget.view" />
+        </label>
+        <div aria-labelledby="widgetviewLabel" class="lotusFieldWrapper">
+            <input class="lotusCheckbox" type="checkbox" id="widgetview" onclick="widgetAdmin.multipleWidgetClicked(this);" name="multipleInstanceAllowed"
+                   value="true" ${isMultipleInstanceAllowedChecked}  maxlength="25" aria-describedby="widgetviewHelp" />
+            <div id="widgetviewHelp" class="lotusMeta">
+                <fmt:message key="jsp.admin.edit.widget.view.comment" />
+            </div>
+        </div>
+				<span class="lotusHidden">
+					<label id="widgetviewLabel_rpt" for="widgetview">
+                        <fmt:message key="jsp.admin.edit.widget.view" />
+                    </label>
+				</span>
+    </div>
+</div>
+
+<div class="lotusFormField" id="prereqs">
+    <div class="lotusFormLabel" id="preReqLabel">
+        <fmt:message key="jsp.admin.edit.widget.prereqs" />
+    </div>
+    <fieldset aria-labelledby="preReqLabel">
+        <legend style="display:none"><fmt:message key="jsp.admin.edit.widget.prereqs" /></legend>
+        <c:forEach var="prereqName" items="${prereqCheck}" varStatus="status"> <%-- Use count to create unique ids for prereq controls --%>
+            <div class="lotusFieldWrapper">
+                <input class="lotusCheckbox" type="checkbox" id="prereqList<c:out value="${status.count}"/>" name="prereqList" value="${prereqName.key}" ${prereqName.value} ${isSystemChecked} />
+                <label for="prereqList<c:out value="${status.count}"/>" class="lotusCheckbox">
+                        ${prereqName.key}
+                </label>
+            </div>
+        </c:forEach>
+    </fieldset>
+</div>
+<span class="lotusIndent"><fmt:message key="jsp.widget.required" /></span>
+
+</div><%-- End lotusFormBody --%>
+
+
+
+<div class="lotusFormFooter lotusIndent">
+	<span class="lotusBtn lotusBtnAction lotusLeft">
+		<a role="button" href="javascript:widgetAdmin.submitEditForm();"><fmt:message key="jsp.admin.edit.button.save" /></a> 
+	</span> 
+	<span class="lotusBtn lotusBtnAction lotusLeft">
+		<a role="button" href="javascript:widgetAdmin.submitEditForm('openAdminPage');"><fmt:message key="jsp.admin.edit.button.cancel" /></a>
+	</span>
+</div>
+
+<script>
+    dojo.addOnLoad(function() {
+        // if this is a system gadget, set input fields in array to disabled state.
+        //
+        widgetAdmin.setFieldStates("${isSystemChecked}" == "disabled", ["gadgetsecurityField", "gadgetshareboxField", "gadgeteeField", "gadgeturlaccessField"]);
+    });
+</script>
+
+<%--  End add/edit form --%></div>
+<%--end content--%></div>
+<%--end main--%>

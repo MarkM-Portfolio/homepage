@@ -1,0 +1,157 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2007, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+-- {COPYRIGHT}
+
+---------------------------------------------------------------------------------
+------------------------ START HP FIXUP 101 -------------------------------------
+---------------------------------------------------------------------------------
+
+--------------------------------------
+-- CREATE THE TABLES FOR MT
+--------------------------------------    
+
+CREATE TABLE HOMEPAGE.MTCONFIG (
+	UUID			VARCHAR2(36) NOT NULL,
+	SCOPE 			VARCHAR2(32) NOT NULL,
+	ID 				VARCHAR2(128) NOT NULL,
+	CONFIG_VALUE 	VARCHAR2(1024),
+	SERVICE 		VARCHAR2(256),
+	NAME	 		VARCHAR2(64),
+	DESCRIPTION		VARCHAR2(64),
+	OVERRIDABLE 	NUMBER(5,0) DEFAULT 1 NOT NULL,
+	ISPOLICY		NUMBER(5,0) DEFAULT 0 NOT NULL,
+	ADMIN_VIS		NUMBER(5,0) DEFAULT 1 NOT NULL
+) TABLESPACE "HOMEPAGEREGTABSPACE";
+
+ALTER TABLE HOMEPAGE.MTCONFIG
+	 ADD (CONSTRAINT "PK_ID" PRIMARY KEY ("UUID") USING INDEX TABLESPACE "HOMEPAGEINDEXTABSPACE");
+	
+CREATE UNIQUE INDEX HOMEPAGE.SCOPE_AND_ID
+	ON HOMEPAGE.MTCONFIG (SCOPE, ID) TABLESPACE "HOMEPAGEINDEXTABSPACE";
+
+CREATE INDEX HOMEPAGE.SETTINGS_BY_ID
+    ON HOMEPAGE.MTCONFIG (ID) TABLESPACE "HOMEPAGEINDEXTABSPACE";
+   
+COMMIT;
+
+
+--------------------------------------
+-- OAUTH
+--------------------------------------    
+
+ALTER TABLE HOMEPAGE.WIDGET ADD (
+	WIDGET_POLICY_FLAGS NUMBER(9,0) DEFAULT 1 NOT NULL,
+	WIDGET_EXT_PROPERTIES VARCHAR2(2048)
+);
+
+COMMIT;
+
+ALTER TABLE HOMEPAGE.WIDGET ENABLE ROW MOVEMENT;
+
+COMMIT;
+
+ALTER TABLE HOMEPAGE.OAUTH1_CLIENT DROP CONSTRAINT CLNT_FK;
+
+ALTER TABLE HOMEPAGE.OAUTH1_CLIENT 
+	ADD CONSTRAINT CLNT_FK FOREIGN KEY (PROVIDERID) 
+	REFERENCES HOMEPAGE.OAUTH1_PROVIDER(ID);
+
+COMMIT;
+
+
+ALTER TABLE HOMEPAGE.OAUTH1_CLIENT DROP CONSTRAINT CLNT_TOKEN_FK; 
+
+ALTER TABLE HOMEPAGE.OAUTH1_CLIENT 
+	ADD CONSTRAINT CLNT_TOKEN_FK FOREIGN KEY (TOKENID) 
+	REFERENCES HOMEPAGE.OAUTH1_TOKEN(ID);
+
+COMMIT;
+
+
+ALTER TABLE HOMEPAGE.OAUTH1_CONTEXT DROP CONSTRAINT CONTEXT_CLNT_FK; 
+
+ALTER TABLE HOMEPAGE.OAUTH1_CONTEXT
+	ADD CONSTRAINT CONTEXT_CLNT_FK FOREIGN KEY (CLIENTID) 
+	REFERENCES HOMEPAGE.OAUTH1_CLIENT(ID);
+
+COMMIT;
+
+
+ALTER TABLE HOMEPAGE.OAUTH2_CLIENT DROP CONSTRAINT FK_CLIENT_PRO_NAME;
+
+ALTER TABLE HOMEPAGE.OAUTH2_CLIENT
+	ADD CONSTRAINT FK_CLIENT_PRO_NAME FOREIGN KEY(PROVIDER_NAME)
+	REFERENCES HOMEPAGE.OAUTH2_PROVIDER(NAME);
+
+COMMIT;
+
+
+
+DROP TABLE HOMEPAGE.OAUTH2_GADGET_BINDING;
+
+CREATE TABLE HOMEPAGE.OAUTH2_GADGET_BINDING (
+  ID VARCHAR2(36) NOT NULL PRIMARY KEY USING INDEX  TABLESPACE "NEWSINDEXTABSPACE",
+  WIDGET_ID VARCHAR2(36) NOT NULL,
+  URI_SHA1 CHAR(40) NOT NULL, 
+  SERVICE_NAME VARCHAR2(254)  NOT NULL,
+  URI VARCHAR2(1024) NOT NULL,
+  CLIENT_NAME VARCHAR2(254) NOT NULL,
+  OVERRIDES NUMBER(5,0) NOT NULL,
+  CONSTRAINT URI_GADGET_UK UNIQUE (URI_SHA1, SERVICE_NAME) USING INDEX  TABLESPACE "NEWSINDEXTABSPACE",
+  CONSTRAINT WIDGET_GADGET_UK UNIQUE (WIDGET_ID, SERVICE_NAME) USING INDEX  TABLESPACE "NEWSINDEXTABSPACE"
+)
+TABLESPACE "HOMEPAGEREGTABSPACE";
+
+ALTER TABLE HOMEPAGE.OAUTH2_GADGET_BINDING
+  ADD CONSTRAINT FK_BINDING_CLIENT FOREIGN KEY(CLIENT_NAME)
+  REFERENCES HOMEPAGE.OAUTH2_CLIENT(NAME);
+
+ALTER TABLE HOMEPAGE.OAUTH2_GADGET_BINDING
+  ADD CONSTRAINT FK_BINDING_WIDGET FOREIGN KEY(WIDGET_ID)
+  REFERENCES HOMEPAGE.WIDGET(WIDGET_ID);
+  
+CREATE INDEX OA2T_GBINDING_WID
+	ON HOMEPAGE.OAUTH2_GADGET_BINDING (WIDGET_ID) TABLESPACE "HOMEPAGEINDEXTABSPACE";
+
+ALTER TABLE HOMEPAGE.OAUTH2_GADGET_BINDING ENABLE ROW MOVEMENT;
+
+COMMIT;
+
+
+--
+-- Insert special non-UI panels needed for gadgets
+--
+
+-- hidden pane for gadgets
+INSERT INTO HOMEPAGE.HP_TAB 
+			(TAB_ID, DEFAULT_NAME, DEFAULT_N_COLUMNS, IS_NAME_CHANGEABLE, ENABLED)
+VALUES 		('_noui.gadgetpanx11e1b0c40800200c9a66' , '%panel.gadgets' , 1 , 0, 1);
+
+-- hidden pane for EE gadgets
+INSERT INTO HOMEPAGE.HP_TAB 
+			(TAB_ID, DEFAULT_NAME, DEFAULT_N_COLUMNS, IS_NAME_CHANGEABLE, ENABLED)
+VALUES 		('_noui.embeddedxx11e1b0c40800200c9a66' , '%panel.embedxp' , 1 , 0, 1);
+
+-- hidden pane for sharebox gadgets
+INSERT INTO HOMEPAGE.HP_TAB 
+			(TAB_ID, DEFAULT_NAME, DEFAULT_N_COLUMNS, IS_NAME_CHANGEABLE, ENABLED)
+VALUES 		('_noui.share_boxx11e1b0c40800200c9a66' , '%panel.sharebox' , 1 , 0, 1);
+
+COMMIT;
+
+
+---------------------------------------------------------------------------------
+------------------------ END HP FIXUP 101 ---------------------------------------
+---------------------------------------------------------------------------------

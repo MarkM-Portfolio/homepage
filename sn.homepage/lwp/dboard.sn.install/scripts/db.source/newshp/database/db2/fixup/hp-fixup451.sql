@@ -1,0 +1,172 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2007, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+-- {COPYRIGHT}
+
+----------------------------------------------------
+------------------------ START HP FIXUP 451 --------
+----------------------------------------------------
+
+-- [Work Item 88850] New: Add constraint to MT_ORGANIZATION table for ORGANIZATION_EXID to be unique [o]
+CREATE UNIQUE INDEX HOMEPAGE.UNQ_ORG_EXID
+	ON HOMEPAGE.MT_ORGANIZATION (ORGANIZATION_EXID)@
+
+-- 87406: Rename MT_METRIC_STAT to METRIC_STAT
+ALTER TABLE HOMEPAGE.MT_METRIC_STAT DROP CONSTRAINT PK_METRIC_STAT_ID@
+ALTER TABLE HOMEPAGE.MT_METRIC_STAT DROP CONSTRAINT FK_METRIC_STAT_ORG_ID@
+DROP INDEX HOMEPAGE.MT_METRICS_IDX@
+
+COMMIT@
+
+RENAME TABLE HOMEPAGE.MT_METRIC_STAT TO METRIC_STAT@
+
+COMMIT@
+
+ALTER TABLE HOMEPAGE.METRIC_STAT 
+    ADD CONSTRAINT PK_METRIC_STAT_ID PRIMARY KEY(METRIC_STAT_ID)@
+
+CREATE INDEX HOMEPAGE.METRIC_IDX
+    ON HOMEPAGE.METRIC_STAT (RECORDED_ON ASC, METRIC_TYPE)@
+    
+ALTER TABLE HOMEPAGE.METRIC_STAT 
+	ADD CONSTRAINT FK_METRIC_ORG_ID FOREIGN KEY (ORGANIZATION_ID) 
+	REFERENCES HOMEPAGE.MT_ORGANIZATION (ORGANIZATION_ID)@    
+
+COMMIT@
+
+REORG TABLE HOMEPAGE.METRIC_STAT@
+
+-----------------------------------------------------
+--  HOMEPAGE.MT_CFG_DEFINITIONS
+-----------------------------------------------------
+CREATE TABLE HOMEPAGE.MT_CFG_DEFINITIONS (
+	DEFINITION_ID	VARCHAR(36) NOT NULL,
+	NAME			VARCHAR(128) NOT NULL,
+	TITLE			VARCHAR(128),
+	DESCRIPTION		VARCHAR(256),
+	TYPE			VARCHAR(256),
+	EDITOR			VARCHAR(128),
+	CAN_MODIFY		SMALLINT NOT NULL DEFAULT 0,
+	DISPLAY			SMALLINT DEFAULT 0 NOT NULL,
+	REQUIRES		VARCHAR(128),
+	VALIDATOR		VARCHAR(256),
+	CATEGORY 		VARCHAR(128)
+)
+IN HOMEPAGETABSPACE@
+    
+ALTER TABLE HOMEPAGE.MT_CFG_DEFINITIONS
+	ADD CONSTRAINT PK_MT_CFG_DEFINITION PRIMARY KEY (DEFINITION_ID)@
+	
+
+CREATE UNIQUE INDEX HOMEPAGE.UNQ_NAME
+	ON HOMEPAGE.MT_CFG_DEFINITIONS (NAME)@
+		
+
+-----------------------------------------------------
+--  HOMEPAGE.MT_CFG_SETTINGS
+-----------------------------------------------------
+CREATE TABLE HOMEPAGE.MT_CFG_SETTINGS (
+	SETTING_ID		VARCHAR(36) NOT NULL,
+	ORGANIZATION_ID	VARCHAR(36) NOT NULL,
+	NAME			VARCHAR(128) NOT NULL,
+	VALUE			VARCHAR(256),
+	CAN_MODIFY		SMALLINT NOT NULL DEFAULT 0
+)
+IN HOMEPAGETABSPACE@
+
+ALTER TABLE HOMEPAGE.MT_CFG_SETTINGS
+	ADD CONSTRAINT PK_MT_CFG_SETTINGS PRIMARY KEY (SETTING_ID)@
+	
+ALTER TABLE HOMEPAGE.MT_CFG_SETTINGS 
+	ADD CONSTRAINT FK_CFG_SET_ORG_ID FOREIGN KEY (ORGANIZATION_ID) 
+	REFERENCES HOMEPAGE.MT_ORGANIZATION (ORGANIZATION_ID)@ 
+	
+CREATE UNIQUE INDEX HOMEPAGE.UNQ_ORG_NAME
+	ON HOMEPAGE.MT_CFG_SETTINGS (NAME, ORGANIZATION_ID)@	
+
+-----------------------------------------------------
+--  HOMEPAGE.MT_CFG_FILES
+-- 	TYPE: 0: BINARY FILE, 1: TXT FILE, 2: CONFIGURATION FILE
+-----------------------------------------------------
+CREATE TABLE HOMEPAGE.MT_CFG_FILES (
+	FILE_ID			VARCHAR(36) NOT NULL,
+	SETTING_ID		VARCHAR(36) NOT NULL,
+	TYPE			SMALLINT NOT NULL, 
+	FILENAME		VARCHAR(256),		
+	CACHE			SMALLINT NOT NULL DEFAULT 0,
+	C_CONTENT		CLOB,
+	B_CONTENT		BLOB,
+	ORGANIZATION_ID	VARCHAR(36) NOT NULL	
+)
+IN HOMEPAGETABSPACE@
+
+ALTER TABLE HOMEPAGE.MT_CFG_FILES
+	ADD CONSTRAINT PK_MT_CFG_FILE PRIMARY KEY (FILE_ID)@
+
+ALTER TABLE HOMEPAGE.MT_CFG_FILES 
+	ADD CONSTRAINT FK_SETTING_ID FOREIGN KEY (SETTING_ID) REFERENCES HOMEPAGE.MT_CFG_SETTINGS (SETTING_ID)@
+
+CREATE UNIQUE INDEX HOMEPAGE.UNQ_SETTING
+	ON HOMEPAGE.MT_CFG_FILES (SETTING_ID)@
+	
+ALTER TABLE HOMEPAGE.MT_CFG_FILES 
+	ADD CONSTRAINT FK_CFG_FILE_ORG_ID FOREIGN KEY (ORGANIZATION_ID) 
+	REFERENCES HOMEPAGE.MT_ORGANIZATION (ORGANIZATION_ID)@ 
+	
+	
+-- 89575: Add new entry to MT_ORGANIZATION table in initData for on premise organization
+UPDATE HOMEPAGE.MT_ORGANIZATION SET ORGANIZATION_EXID = '00000000-0000-0000-0000-000000000000' WHERE ORGANIZATION_ID ='00000000-0000-0000-0000-000000000000'@
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 91299: Database schema updates to support per-user performances and DAO layer
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-----------------------------------------
+-- HOMEPAGE.USER_PREFS
+-----------------------------------------
+CREATE TABLE HOMEPAGE.HP_USER_PREFS (
+	USER_PREFS_ID VARCHAR(36) NOT NULL,
+	PERSON_ID VARCHAR(36) NOT NULL,
+	PREF_NAME VARCHAR(400),
+	PREF_VALUE VARCHAR(1536),
+	LAST_UPDATE TIMESTAMP,
+	CREATE_DATE TIMESTAMP,
+	ORGANIZATION_ID VARCHAR(36) DEFAULT '00000000-0000-0000-0000-000000000000'
+)
+IN HOMEPAGETABSPACE@
+
+ALTER TABLE HOMEPAGE.HP_USER_PREFS
+    ADD CONSTRAINT PK_USER_PREFS_ID PRIMARY KEY(USER_PREFS_ID)@
+
+ALTER TABLE HOMEPAGE.HP_USER_PREFS 
+	ADD CONSTRAINT FK_USER_PREFS_PERS_ID FOREIGN KEY (PERSON_ID) REFERENCES HOMEPAGE.PERSON (PERSON_ID)@
+	
+ALTER TABLE HOMEPAGE.HP_USER_PREFS 
+	ADD CONSTRAINT FK_USER_PREFS_ORG_ID FOREIGN KEY (ORGANIZATION_ID) REFERENCES HOMEPAGE.MT_ORGANIZATION (ORGANIZATION_ID)@
+
+CREATE INDEX HOMEPAGE.USER_PREF_NAME_IDX
+	ON HOMEPAGE.HP_USER_PREFS (PREF_NAME)@
+
+CREATE INDEX HOMEPAGE.USER_PREF_PER_IDX
+	ON  HOMEPAGE.HP_USER_PREFS (PERSON_ID)@
+
+CREATE UNIQUE INDEX HOMEPAGE.USER_PREF_PER_NAME_UNQ
+	ON  HOMEPAGE.HP_USER_PREFS (PERSON_ID, PREF_NAME)@
+	
+COMMIT@	
+
+
+----------------------------------------------------
+------------------------ END   HP FIXUP 451 -------
+----------------------------------------------------

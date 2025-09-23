@@ -1,0 +1,47 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2001, 2009                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+USE HOMEPAGE;
+GO
+
+DELETE FROM HOMEPAGE.LOTUSCONNECTIONSTASK;
+GO
+DELETE FROM HOMEPAGE.LOTUSCONNECTIONSTREG;
+GO
+DELETE FROM HOMEPAGE.LOTUSCONNECTIONSLMGR;
+GO
+DELETE FROM HOMEPAGE.LOTUSCONNECTIONSLMPR;
+GO
+
+DELETE FROM HOMEPAGE.NR_SCHEDULER_TASK;
+GO
+DELETE FROM HOMEPAGE.NR_SCHEDULER_TREG;
+GO
+DELETE FROM HOMEPAGE.NR_SCHEDULER_LMGR;
+GO
+DELETE FROM HOMEPAGE.NR_SCHEDULER_LMPR;
+GO
+
+DELETE FROM HOMEPAGE.SR_OPTIMIZETASKDEF
+WHERE HOMEPAGE.SR_OPTIMIZETASKDEF.OPTIMIZE_TASK_ID = 'fd44131a-5075-4bcb-85a9-9e501bd010fa';
+GO
+DELETE FROM HOMEPAGE.SR_INDEXINGTASKDEF
+WHERE  HOMEPAGE.SR_INDEXINGTASKDEF.INDEXING_TASK_ID = '315a416c-78e2-4cf4-bcb2-69eb8d3a2583';
+GO
+DELETE FROM HOMEPAGE.SR_TASKDEF
+WHERE HOMEPAGE.SR_TASKDEF.TASK_ID = 'ea789e87-c262-484b-92f4-d60af4bef3d3';
+GO
+DELETE FROM HOMEPAGE.SR_TASKDEF
+WHERE HOMEPAGE.SR_TASKDEF.TASK_ID = '6f6ee109-6ad4-4926-afcb-d2a04a0e390d';
+GO

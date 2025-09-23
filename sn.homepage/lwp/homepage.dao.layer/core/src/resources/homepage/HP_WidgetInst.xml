@@ -1,0 +1,223 @@
+<!DOCTYPE sqlMap
+	PUBLIC "-//iBATIS.com/DTD SQL Map 2.0//EN"
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2008, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<!--
+CREATE TABLE HOMEPAGE.HP_WIDGET_INST  (
+	WIDGET_INST_ID VARCHAR(36) NOT NULL,
+	WIDGET_ID VARCHAR(36) NOT NULL,
+	TAB_INST_ID VARCHAR(36) NOT NULL,
+	WIDGET_SETTING VARCHAR(2048),
+	CONTAINER VARCHAR(36),
+	ORDER_SEQUENCE SMALLINT,
+	IS_FIXED SMALLINT,
+	IS_TOGGLED SMALLINT,
+	LAST_MODIFIED TIMESTAMP NOT NULL,
+	LAST_UPDATED TIMESTAMP
+);
+
+-->
+
+<sqlMap namespace="HP_WidgetInst">
+
+	<typeAlias alias="HP_WidgetInst" type="com.ibm.lconn.homepage.dao.model.WidgetInst" />
+
+	<resultMap id="HP_WidgetInstMap" class="HP_WidgetInst">
+		<result property="widgetInstId" column="WIDGET_INST_ID" jdbcType="VARCHAR" />
+		<result property="widgetId" column="WIDGET_ID" jdbcType="VARCHAR" />
+		<result property="tabInstanceId" column="TAB_INST_ID" jdbcType="VARCHAR" />
+		<result property="widgetSetting" column="WIDGET_SETTING" jdbcType="VARCHAR" />
+		<result property="container" column="CONTAINER" jdbcType="VARCHAR" />
+		<result property="orderSequence" column="ORDER_SEQUENCE" jdbcType="SMALLINT" />
+		<result property="isFixed" column="IS_FIXED" jdbcType="BOOLEAN" />
+		<result property="isToggled" column="IS_TOGGLED" jdbcType="BOOLEAN" />
+		<result property="lastModified" column="LAST_MODIFIED" jdbcType="TIMESTAMP" />
+		<result property="lastUpdated" column="LAST_UPDATED" jdbcType="TIMESTAMP" />
+		<result property="organizationId" column="ORGANIZATION_ID" jdbcType="VARCHAR" />
+
+	</resultMap>
+
+	<select id="select-HP_WIDGET_INST" resultMap="HP_WidgetInstMap" >
+		<![CDATA[
+			SELECT * from $schema$.HP_WIDGET_INST
+		]]>
+			<isEqual prepend="WHERE" property="applyMT" compareValue="true">
+				ORGANIZATION_ID = #organizationId:VARCHAR#
+			</isEqual>
+	</select>
+
+	<insert id="insert-HP_WIDGET_INST" parameterClass="HP_WidgetInst" >
+		<![CDATA[
+			INSERT INTO $schema$.HP_WIDGET_INST
+				(WIDGET_INST_ID, WIDGET_ID, TAB_INST_ID, WIDGET_SETTING, CONTAINER, ORDER_SEQUENCE, IS_FIXED, IS_TOGGLED, LAST_MODIFIED, LAST_UPDATED, ORGANIZATION_ID)
+			VALUES
+				(#widgetInstId:VARCHAR#, #widgetId:VARCHAR#, #tabInstanceId:VARCHAR#, #widgetSetting:VARCHAR#, #container:VARCHAR#, #orderSequence:SMALLINT#, #isFixed:BOOLEAN#, #isToggled:BOOLEAN#, #lastModified:TIMESTAMP#, #lastUpdated:TIMESTAMP#, #organizationId:VARCHAR#)
+		]]>
+	</insert>
+
+	<update id="update-HP_WIDGET_INST" parameterClass="HP_WidgetInst">
+		<![CDATA[
+			update $schema$.HP_WIDGET_INST set
+				WIDGET_ID = #widgetId:VARCHAR#,
+				TAB_INST_ID = #tabInstanceId:VARCHAR#,
+				WIDGET_SETTING = #widgetSetting:VARCHAR#,
+				CONTAINER = #container:VARCHAR#,
+				ORDER_SEQUENCE = #orderSequence:SMALLINT#,
+				IS_FIXED = #isFixed:BOOLEAN#,
+				IS_TOGGLED = #isToggled:BOOLEAN#,
+				LAST_MODIFIED = #lastModified:TIMESTAMP#,
+				LAST_UPDATED = #lastUpdated:TIMESTAMP#,
+				ORGANIZATION_ID = #organizationId:VARCHAR#
+			where WIDGET_INST_ID = #widgetInstId:VARCHAR#
+		]]>
+	</update>
+
+	<delete id="delete-HP_WIDGET_INST">
+		<![CDATA[
+			delete from $schema$.HP_WIDGET_INST where WIDGET_INST_ID = #key#
+		]]>
+	</delete>
+
+	<delete id="delete-HP_WIDGET_INST_MULTI">
+		<![CDATA[
+			delete from $schema$.HP_WIDGET_INST where WIDGET_INST_ID in
+		]]>
+		<iterate property="instanceIds" open="(" close=")" conjunction=",">
+			#instanceIds[]#
+		</iterate>
+	</delete>
+
+	<select id="getByPK-HP_WIDGET_INST"  resultMap="HP_WidgetInstMap">
+		<![CDATA[
+			select *
+			from $schema$.HP_WIDGET_INST
+			where WIDGET_INST_ID = #key:VARCHAR#
+		]]>
+	</select>
+
+	<select id="findWidgetsInstancesByPersonId-HP_WIDGET_INST"  resultMap="HP_WidgetInstMap">
+		<![CDATA[
+			select  HP_WIDGET_INST.WIDGET_INST_ID,
+					HP_WIDGET_INST.WIDGET_ID,
+					HP_WIDGET_INST.TAB_INST_ID,
+					HP_WIDGET_INST.WIDGET_SETTING,
+					HP_WIDGET_INST.CONTAINER,
+					HP_WIDGET_INST.ORDER_SEQUENCE,
+					HP_WIDGET_INST.IS_FIXED,
+					HP_WIDGET_INST.IS_TOGGLED,
+					HP_WIDGET_INST.LAST_MODIFIED,
+					HP_WIDGET_INST.LAST_UPDATED,
+					HP_WIDGET_INST.ORGANIZATION_ID
+
+			from    $schema$.PERSON PERSON,
+					$schema$.HP_UI HP_UI,
+					$schema$.HP_TAB_INST HP_TAB_INST,
+					$schema$.HP_WIDGET_INST HP_WIDGET_INST
+
+			where   PERSON.PERSON_ID=#personId# AND
+					PERSON.PERSON_ID=HP_UI.PERSON_ID AND
+					HP_UI.UI_ID=HP_TAB_INST.UI_ID AND
+					HP_TAB_INST.TAB_NAME=#defaultPanelName# AND
+					HP_WIDGET_INST.TAB_INST_ID = HP_TAB_INST.TAB_INST_ID
+		]]>
+			<isEqual prepend="AND" property="applyMT" compareValue="true">
+					HP_WIDGET_INST.ORGANIZATION_ID = #organizationId:VARCHAR#
+				AND HP_WIDGET_INST.ORGANIZATION_ID = HP_UI.ORGANIZATION_ID
+				AND HP_WIDGET_INST.ORGANIZATION_ID = HP_TAB_INST.ORGANIZATION_ID
+				AND HP_WIDGET_INST.ORGANIZATION_ID = PERSON.ORGANIZATION_ID
+			</isEqual>
+	</select>
+
+	<select id="getWidgetInstancesByTabInstanceId-HP_WIDGET_INST" resultMap="HP_WidgetInstMap">
+			select  HP_WIDGET_INST.WIDGET_INST_ID,
+					HP_WIDGET_INST.WIDGET_ID,
+					HP_WIDGET_INST.TAB_INST_ID,
+					HP_WIDGET_INST.WIDGET_SETTING,
+					HP_WIDGET_INST.CONTAINER,
+					HP_WIDGET_INST.ORDER_SEQUENCE,
+					HP_WIDGET_INST.IS_FIXED,
+					HP_WIDGET_INST.IS_TOGGLED,
+					HP_WIDGET_INST.LAST_MODIFIED,
+					HP_WIDGET_INST.LAST_UPDATED,
+					HP_WIDGET_INST.ORGANIZATION_ID
+			from    $schema$.HP_WIDGET_INST HP_WIDGET_INST
+			where   HP_WIDGET_INST.WIDGET_ID = #widgetId# AND
+					HP_WIDGET_INST.TAB_INST_ID = #tabInstId#
+			<isEqual prepend="AND" property="applyMT" compareValue="true">
+					HP_WIDGET_INST.ORGANIZATION_ID = #organizationId:VARCHAR#
+			</isEqual>
+	</select>
+
+	<select id="getPersonIdByWidgetInstanceId-HP_WIDGET_INST" resultClass="java.lang.String">
+			select  PERSON.PERSON_ID
+			from    $schema$.PERSON PERSON,
+					$schema$.HP_UI HP_UI,
+					$schema$.HP_TAB_INST HP_TAB_INST,
+					$schema$.HP_WIDGET_INST HP_WIDGET_INST
+			where   PERSON.PERSON_ID=HP_UI.PERSON_ID AND
+					HP_UI.UI_ID=HP_TAB_INST.UI_ID AND
+					HP_WIDGET_INST.TAB_INST_ID = HP_TAB_INST.TAB_INST_ID AND
+					HP_WIDGET_INST.WIDGET_INST_ID = #widgetInstId#
+			<isEqual prepend="AND" property="applyMT" compareValue="true">
+					HP_WIDGET_INST.ORGANIZATION_ID = #organizationId:VARCHAR#
+			</isEqual>
+	</select>
+
+	<select id="findWidgetsInstancesByTabInstance-HP_WIDGET_INST" resultMap="HP_WidgetInstMap">
+			select  HP_WIDGET_INST.WIDGET_INST_ID,
+					HP_WIDGET_INST.WIDGET_ID,
+					HP_WIDGET_INST.TAB_INST_ID,
+					HP_WIDGET_INST.WIDGET_SETTING,
+					HP_WIDGET_INST.CONTAINER,
+					HP_WIDGET_INST.ORDER_SEQUENCE,
+					HP_WIDGET_INST.IS_FIXED,
+					HP_WIDGET_INST.IS_TOGGLED,
+					HP_WIDGET_INST.LAST_MODIFIED,
+					HP_WIDGET_INST.LAST_UPDATED,
+					HP_WIDGET_INST.ORGANIZATION_ID
+			from    $schema$.HP_TAB_INST HP_TAB_INST,
+					$schema$.HP_WIDGET_INST HP_WIDGET_INST
+			where   HP_TAB_INST.TAB_INST_ID = #tabInstId# AND
+					HP_WIDGET_INST.TAB_INST_ID = HP_TAB_INST.TAB_INST_ID
+			<isEqual prepend="AND" property="applyMT" compareValue="true">
+					HP_WIDGET_INST.ORGANIZATION_ID = #organizationId:VARCHAR#
+				AND HP_WIDGET_INST.ORGANIZATION_ID = HP_TAB_INST.ORGANIZATION_ID
+		</isEqual>
+	</select>
+
+
+	<delete id="removeByWidgetId-HP_WIDGET_INST">
+		<![CDATA[
+			DELETE
+			FROM   $schema$.HP_WIDGET_INST HP_WIDGET_INST
+			WHERE  HP_WIDGET_INST.WIDGET_ID = #widgetId#
+		]]>
+			<isEqual prepend="AND" property="applyMT" compareValue="true">
+					HP_WIDGET_INST.ORGANIZATION_ID = #organizationId:VARCHAR#
+			</isEqual>
+	</delete>
+
+	<select id="getCountOpenWidgets-HP_WIDGET_INST" resultClass="java.lang.Long">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM   $schema$.HP_WIDGET_INST
+		]]>
+			<isEqual prepend="WHERE" property="applyMT" compareValue="true">
+					ORGANIZATION_ID = #organizationId:VARCHAR#
+			</isEqual>
+	</select>
+</sqlMap>

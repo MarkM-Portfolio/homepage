@@ -1,0 +1,24 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2011, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<div waiRole="presentation" dojoAttachEvent='onclick:onClick,onmouseenter:_onMouse,onmouseleave:_onMouse'>
+    <div waiRole="presentation" class='dijitTabInnerDiv' dojoAttachPoint='innerDiv'>
+        <div waiRole="presentation" class='dijitTabContent' dojoAttachPoint='tabContent'>
+        	<span class="stepNum">${step}</span>
+            <div dojoAttachPoint='containerNode,focusNode' class='tabLabel'>${!label}</div>
+            <div class="dijitInline closeNode" dojoAttachPoint='closeNode' dojoAttachEvent='onclick:onClickCloseButton'>
+            </div>
+        </div>
+    </div>
+</div>

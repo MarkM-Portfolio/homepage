@@ -1,0 +1,91 @@
+<%@ page session="false" contentType="text/html; charset=UTF-8"
+	buffer="128kb"%>
+<%--wscExemptBegin--%>
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- IBM Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright IBM Corp. 2008, 2015                                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+<%--wscExemptEnd--%>
+
+<%-- Init global JS variables under the namespace lconn.homepage.global --%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="dboard" uri="http://www.ibm.com/homepage/tags"%>
+<%@ taglib prefix="core" uri="http://www.ibm.com/lconn/tags/components"%>
+<%@ taglib prefix="lc-ui" uri="http://www.ibm.com/lconn/tags/coreuiutil"%>
+<%@ taglib prefix="lc-cache" uri="http://www.ibm.com/connections/core/cache"%>
+
+<%-- Init global structure --%>
+<script type="text/javascript">
+    if (typeof lconn == 'undefined'){
+	    var lconn = {};
+	    lconn.homepage = {};
+	    lconn.homepage.global = {};
+    }
+</script>
+
+<%@include file="/nav/templates/cnx8-react.jspf"%>
+
+<jsp:include page="/web/jsp/common/initError.jspf" flush="false" />
+
+<%-- Person details --%>
+<script type="text/javascript">
+	<%-- Not namespaced as we need to keep backward compatibility with 2.0 (some 3rd party widgets relies on these values)--%>
+	var user = 	"<lc-ui:escapeJavaScript>${session["user.info.email"]}</lc-ui:escapeJavaScript>";
+	var userid = "<lc-ui:escapeJavaScript>${session["user.info.id"]}</lc-ui:escapeJavaScript>";
+
+	<%-- New variable in 2.5. We can namespace as not bound to backward compatibility --%>
+	lconn.homepage.userName = "<lc-ui:escapeJavaScript>${session["user.info.name"]}</lc-ui:escapeJavaScript>";
+	lconn.homepage.userEmail = "<lc-ui:escapeJavaScript>${session["user.info.email"]}</lc-ui:escapeJavaScript>";
+	lconn.homepage.userExtId = "<lc-ui:escapeJavaScript>${session["user.info.id"]}</lc-ui:escapeJavaScript>";
+	var isExternalFlag = "<lc-ui:escapeJavaScript>${session["user.info.isExternal"]}</lc-ui:escapeJavaScript>";
+	lconn.homepage.userIsExternal = (isExternalFlag && isExternalFlag === "true") ? true : false;
+	
+	lconn.homepage.global.getUserId = (function(){
+		var userId = "<lc-ui:escapeJavaScript>${session["user.info.id"]}</lc-ui:escapeJavaScript>";
+
+		return function(){
+				return userId;
+		};
+	}());	 
+</script>
+
+<%-- Proxy --%>
+<script type="text/javascript">
+	<%-- construct proxy url for rewritting URLs on the fly --%>
+	lconn.homepage.global.proxyUrl = '${pageContext.request.requestURL}';
+	lconn.homepage.global.proxyUrl = lconn.homepage.global.proxyUrl.substring(0, lconn.homepage.global.proxyUrl.indexOf('${pageContext.request.servletPath}'));
+	lconn.homepage.global.proxyUrl += "/web/proxy";
+
+	<%-- keep global variable for backward compatibility (but widgets should not be using this...) --%>
+	var proxyUrl = lconn.homepage.global.proxyUrl;
+</script>
+
+<%-- isSecure --%>
+<script type="text/javascript">
+	<lc-cache:versionStamp var="cache" />
+
+	lconn.homepage.global.isSecure = <%= request.isSecure() %>;
+	lconn.homepage.global.contextRoot = "<lc-ui:escapeJavaScript>${pageContext.request.contextPath}</lc-ui:escapeJavaScript>";
+	lconn.homepage.global.build = "<lc-ui:escapeJavaScript>${cache}</lc-ui:escapeJavaScript>";
+</script>
+
+<%-- Services references --%>
+<script type="text/javascript">
+	lconn.homepage.global.services = <core:componentsReferenceTag />;	
+</script>
+
+<%-- ActionRequired total number --%>
+<script type="text/javascript">
+	lconn.homepage.global.actionRequiredTotal = "${actionRequiredTotal}";
+</script>

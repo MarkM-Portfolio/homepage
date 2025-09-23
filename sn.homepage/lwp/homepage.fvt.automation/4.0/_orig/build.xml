@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2010, 2013                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+<project name="homepage-automation" default="package" basedir=".">
+	<description>Connections4.0 GUI BVT Suite</description>
+	<!-- set global properties for this build -->
+	<property name="src" location="src" />
+	<property name="build" location="build" />
+	<property name="bin" location="bin" />
+	<property name="lib" location="lib" />
+	<property name="reports.dir" location="test-reports" />
+	<property name="output.jar" value="${build}/homepage_automation.jar" />
+	<property name="testng.jar" value="${lib}/testng-6.3.jar" />
+	<property name="selenium.jar" value="${lib}/selenium-server.jar" />
+	<property name="log4j.jar" value="${lib}/log4j-1.2.16.jar" />
+
+	<path id="test.classpath">
+		<pathelement location="${output.jar}" />
+		<fileset dir="${lib}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<delete dir="${build}" />
+	</target>
+
+	<target name="init" depends="clean">
+		<tstamp />
+		<mkdir dir="${build}" />
+		<mkdir dir="${build}/classes" />
+		<mkdir dir="${build}/test_config" />
+	</target>
+
+	<target name="compile" depends="init" description="compile the source ">
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac srcdir="${src}" destdir="${build}/classes" classpath="${testng.jar}:${log4j.jar}:${selenium.jar}" debug="on" includeantruntime="false" includes="**/*" />
+		<copy todir="${build}/classes">
+			<fileset dir="${src}">
+				<include name="**/*.properties" />
+				<include name="**/*.xml" />
+				<include name="**/*.csv" />
+				<include name="**/*.json" />
+				<include name="**/*.yaml" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="package" depends="compile">
+		<jar jarfile="${output.jar}" basedir="${build}/classes">
+			<zipfileset src="${selenium.jar}" excludes="META-INF/*" />
+			<zipfileset src="${testng.jar}" excludes="META-INF/*" />
+			<zipfileset src="${log4j.jar}" excludes="META-INF/*" />
+			<manifest>
+				<attribute name="Main-Class" value="com.ibm.atmn.base.RunConfigManager" />
+				<attribute name="Class-Path" value="." />
+			</manifest>
+		</jar>
+		<copy todir="${build}/test_config" flatten="false">
+			<fileset dir="test_config">
+				<include name="**/*.properties" />
+				<include name="**/*.xml" />
+				<include name="**/*.csv" />
+				<include name="**/*.json" />
+				<include name="**/*.yaml" />
+			</fileset>
+		</copy>
+	</target>
+
+	<path id="cp">
+		<pathelement location="${testng.jar}" />
+		<pathelement location="${selenium.jar}" />
+		<pathelement location="${build}/classes/" />
+	</path>
+
+	<taskdef name="testng" classpathref="cp" classname="org.testng.TestNGAntTask" />
+	<target name="test" depends="package">
+		<testng classpathref="cp" suiteThreadPoolSize="3">
+			<xmlfileset dir="${build}/classes/com/ibm/atmn/config" includes="testIE8.xml" />
+			<xmlfileset dir="${build}/classes/com/ibm/bvt/config" includes="testFirefox3.6.xml" />
+			<!--<xmlfileset dir="${build}/classes/com/ibm/bvt/config" includes="testIE9.xml"/>
+      		<xmlfileset dir="${build}/classes/com/ibm/bvt/config" includes="testFirefox7.xml"/>-->
+		</testng>
+	</target>
+
+</project>

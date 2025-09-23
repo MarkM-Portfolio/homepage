@@ -1,0 +1,409 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2001, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+-- 5724_S68                                              
+USE HOMEPAGE;
+GO
+
+-----------------------------------------------------------------------------------------------------------
+-- START HOMEPAGE 
+-----------------------------------------------------------------------------------------------------------
+
+
+-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+-- START: NewsHp Schema
+-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+-- REMOVING RECORDS -----------------
+
+GO
+
+
+
+DELETE FROM HOMEPAGE.HOMEPAGE_SCHEMA;
+GO
+
+DELETE FROM HOMEPAGE.LOGINNAME;
+GO
+
+DELETE FROM HOMEPAGE.HP_WIDGET_INST;
+GO
+
+DELETE FROM HOMEPAGE.HP_TAB_INST;
+GO
+
+DELETE FROM HOMEPAGE.HP_WIDGET_TAB; 
+GO
+
+DELETE FROM HOMEPAGE.HP_UI;
+GO
+
+DELETE FROM HOMEPAGE.HP_TAB;
+GO
+
+DELETE FROM HOMEPAGE.PREREQ;
+GO
+
+DELETE FROM HOMEPAGE.WIDGET;
+GO
+
+DELETE FROM HOMEPAGE.NT_NOTIFICATION_RECIPIENT;
+GO
+
+DELETE FROM HOMEPAGE.NT_NOTIFICATION;
+GO
+
+DELETE FROM HOMEPAGE.PERSON;
+GO
+
+DELETE FROM HOMEPAGE.MT_METRIC_STAT;
+GO
+
+DELETE FROM HOMEPAGE.NT_REPLYTO_RECIPIENT;
+GO
+
+DELETE FROM HOMEPAGE.NT_REPLYTO;
+GO
+
+DELETE FROM HOMEPAGE.MTCONFIG;
+GO
+
+
+
+-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+-- END NewsHp Schema
+-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+-----------------------------------------------------------------------------------------------------------
+-- END HOMEPAGE
+-----------------------------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------------------------
+-- START NEWS
+-----------------------------------------------------------------------------------------------------------
+
+
+-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+-- START: NewsHp Schema
+-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+DELETE FROM HOMEPAGE.NR_STORIES;
+GO
+
+DELETE FROM HOMEPAGE.NR_ENTRIES;
+GO
+
+DELETE FROM HOMEPAGE.NR_ENTRIES_ARCHIVE;
+GO
+
+DELETE FROM HOMEPAGE.NR_COMM_SETTINGS;
+GO
+
+DELETE FROM HOMEPAGE.DELETED_STORIES_QUEUE;
+GO
+
+-- News delete board tables
+DELETE FROM HOMEPAGE.BOARD_CURRENT_STATUS;
+GO
+
+DELETE FROM HOMEPAGE.BOARD_RECOMMENDATIONS;
+GO
+
+DELETE FROM HOMEPAGE.BOARD_OBJECT_REFERENCE;
+GO
+
+DELETE FROM HOMEPAGE.BOARD_COMMENTS;
+GO
+
+DELETE FROM HOMEPAGE.BOARD_ENTRIES;
+GO
+
+DELETE FROM HOMEPAGE.BOARD;
+
+GO
+
+-- New delete categories stories
+DELETE FROM HOMEPAGE.NR_RESPONSES_READERS;
+GO
+
+DELETE FROM HOMEPAGE.NR_PROFILES_READERS;
+GO
+
+DELETE FROM HOMEPAGE.NR_COMMUNITIES_READERS;
+GO
+
+DELETE FROM HOMEPAGE.NR_ACTIVITIES_READERS;
+GO
+
+DELETE FROM HOMEPAGE.NR_BLOGS_READERS;
+GO
+
+DELETE FROM HOMEPAGE.NR_BOOKMARKS_READERS;
+GO
+
+DELETE FROM HOMEPAGE.NR_FILES_READERS;
+GO
+
+DELETE FROM HOMEPAGE.NR_FORUMS_READERS;
+GO
+
+DELETE FROM HOMEPAGE.NR_WIKIS_READERS;
+GO
+
+DELETE FROM HOMEPAGE.NR_TAGS_READERS;
+GO
+
+DELETE FROM HOMEPAGE.NR_STATUS_UPDATE_READERS;
+GO
+
+DELETE FROM HOMEPAGE.NR_DISCOVERY_VIEW;
+GO
+
+DELETE FROM HOMEPAGE.NR_PROFILES_VIEW;
+GO
+
+DELETE FROM HOMEPAGE.NR_NOTIFICATION_SENT_READERS;
+GO
+
+DELETE FROM HOMEPAGE.NR_NOTIFICATION_RECEIV_READERS;
+GO
+
+DELETE FROM HOMEPAGE.NR_TOPICS_READERS;
+GO
+
+DELETE FROM HOMEPAGE.NR_AS_SEEDLIST;
+GO
+
+DELETE FROM HOMEPAGE.NR_AS_COLLECTION_CONFIG; 
+GO
+
+DELETE FROM HOMEPAGE.NR_AS_CRAWLER_STATUS; 
+GO
+
+-- NEWS deletion
+DELETE FROM HOMEPAGE.NR_NEWS_RECORDS;
+GO
+
+DELETE FROM HOMEPAGE.NR_SUBSCRIPTION;
+GO
+
+DELETE FROM HOMEPAGE.NR_SOURCE;
+GO
+
+DELETE FROM HOMEPAGE.NR_TEMPLATE;
+GO
+
+DELETE FROM HOMEPAGE.NR_CATEGORY_TYPE;
+GO
+
+DELETE FROM HOMEPAGE.NR_NEWS_SAVED;
+GO
+
+DELETE FROM HOMEPAGE.NR_NEWS_DISCOVERY;
+GO
+
+DELETE FROM HOMEPAGE.NR_NEWS_COMMENT_CONTENT;
+GO
+
+DELETE FROM HOMEPAGE.NR_NEWS_STATUS_CONTENT;
+GO
+
+DELETE FROM HOMEPAGE.NR_NEWS_STATUS_COMMENT;
+GO
+
+DELETE FROM HOMEPAGE.NR_NEWS_STATUS_NETWORK;
+GO
+
+DELETE FROM HOMEPAGE.NR_AGGREGATED_READERS;
+GO
+
+DELETE FROM HOMEPAGE.NR_COMM_PERSON_FOLLOW;
+GO
+
+DELETE FROM HOMEPAGE.NR_NETWORK;
+GO
+
+DELETE FROM HOMEPAGE.NR_STORIES_CONTENT;
+GO
+
+DELETE FROM HOMEPAGE.NR_COMM_FOLLOW;
+GO
+
+DELETE FROM HOMEPAGE.NR_FOLLOWS;	
+GO
+
+DELETE FROM HOMEPAGE.NR_RESOURCE;
+GO
+
+DELETE FROM HOMEPAGE.NR_RESOURCE_TYPE;
+GO
+
+-- EMail Digest deletion
+DELETE FROM HOMEPAGE.EMD_EMAIL_PREFS;
+GO
+
+DELETE FROM HOMEPAGE.EMD_TRANCHE_INFO;
+GO
+
+DELETE FROM HOMEPAGE.EMD_TRANCHE;
+GO
+
+DELETE FROM HOMEPAGE.EMD_RESOURCE_PREF;
+GO
+
+DELETE FROM HOMEPAGE.EMD_FREQUENCY_TYPE;
+GO
+
+-- Delete notifications NT_NOTIFICATIONs
+DELETE FROM HOMEPAGE.NT_NOTIFICATION_RECIPIENT;
+GO
+
+DELETE FROM HOMEPAGE.NT_NOTIFICATION;
+GO
+
+DELETE FROM HOMEPAGE.NR_SOURCE_TYPE;
+GO
+
+DELETE FROM HOMEPAGE.NR_RECOMMENDATION;
+GO
+
+DELETE FROM HOMEPAGE.NR_ATTACHMENT;    
+GO
+
+-- Delete actionable stories
+DELETE FROM HOMEPAGE.NR_ACTIONABLE_READERS;
+GO
+
+DELETE FROM HOMEPAGE.NR_SAVED_READERS;
+GO
+
+DELETE FROM HOMEPAGE.NR_DISCOVERY_VIEW;
+GO
+
+DELETE FROM HOMEPAGE.NR_AS_CONTENT_INDEX_STATS;
+GO
+
+DELETE FROM HOMEPAGE.OH2P_CLIENTCFG;
+GO
+
+DELETE FROM HOMEPAGE.OH2P_CACHE;
+GO
+
+DELETE FROM HOMEPAGE.OAUTH2_TOKEN;
+GO
+
+DELETE FROM HOMEPAGE.OAUTH2_GADGET_BINDING;
+GO
+
+DELETE FROM HOMEPAGE.OAUTH2_CLIENT;
+GO
+
+DELETE FROM HOMEPAGE.OAUTH2_PROVIDER;
+GO
+
+DELETE FROM HOMEPAGE.OAUTH1_CONTEXT;
+GO
+
+DELETE FROM HOMEPAGE.OAUTH1_CLIENT;
+GO
+
+DELETE FROM HOMEPAGE.OAUTH1_PROVIDER;
+GO
+
+DELETE FROM HOMEPAGE.OAUTH1_TOKEN;
+GO
+
+
+
+
+-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+-- END NewsHp Schema
+-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+-----------------------------------------------------------------------------------------------------------
+-- END NEWS
+-----------------------------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------------------------
+-- START SEARCH
+-----------------------------------------------------------------------------------------------------------
+
+
+-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+-- START: Search Schema
+-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+-- REMOVING RECORDS -----------------
+
+DELETE FROM HOMEPAGE.SR_FILECONTENTTASKDEF;
+
+DELETE FROM HOMEPAGE.SR_SANDTASKDEF;
+
+DELETE FROM HOMEPAGE.SR_BACKUPTASKDEF;
+
+DELETE FROM HOMEPAGE.SR_INDEXINGTASKDEF;
+
+DELETE FROM HOMEPAGE.SR_OPTIMIZETASKDEF;
+
+DELETE FROM HOMEPAGE.SR_TASKDEF;
+
+DELETE FROM HOMEPAGE.SR_FILESCONTENT;
+
+DELETE FROM HOMEPAGE.SR_MIGTASKDEFINFO;
+
+DELETE FROM HOMEPAGE.SR_INDEX_DOCS;
+
+DELETE FROM HOMEPAGE.SR_RESUME_TOKENS;
+
+DELETE FROM HOMEPAGE.SR_INDEX_MANAGEMENT;
+
+DELETE FROM HOMEPAGE.LOTUSCONNECTIONSLMGR;
+
+DELETE FROM HOMEPAGE.LOTUSCONNECTIONSLMPR;
+
+DELETE FROM HOMEPAGE.LOTUSCONNECTIONSTASK;
+
+DELETE FROM HOMEPAGE.LOTUSCONNECTIONSTREG;
+
+DELETE FROM HOMEPAGE.SR_FEEDBACK;
+
+DELETE FROM HOMEPAGE.SR_FEEDBACK_CONTEXT;
+
+DELETE FROM HOMEPAGE.SR_FEEDBACK_PARAMETERS;
+
+DELETE FROM HOMEPAGE.SR_STATS;
+
+DELETE FROM HOMEPAGE.SR_STRING_STATS;
+
+DELETE FROM HOMEPAGE.SR_NUMBER_STATS;
+
+DELETE FROM HOMEPAGE.SR_TIMER_STATS;
+
+DELETE FROM HOMEPAGE.SR_GLOBAL_SAND_PROPS; 
+
+-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+-- END Search Schema
+-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+-----------------------------------------------------------------------------------------------------------
+-- END SEARCH
+-----------------------------------------------------------------------------------------------------------
+
+
+COMMIT;

@@ -1,0 +1,22 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2011, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<div dojoAttachPoint="widgetTabContainer" style="display:block">
+	<span id="${id}_tabFieldLabel" dojoAttachPoint="msgNode" class="widgetTabField">${msgText}</span>
+	<select dojoAttachPoint="selectNode" disabled="true" class="widgetTabField" aria-labelledby="${id}_tabFieldLabel">
+		<option value="true">${enabledText}</option>
+		<option value="false">${disabledText}</option>
+	</select>
+	<input class="lotusFormButton widgetTabField" type="button" dojoAttachEvent='onclick: postStatus' title="${saveText}" value="${saveText}" />
+</div>

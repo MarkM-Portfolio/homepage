@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2008, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<!-- 5724-E76                                                          -->
+<com.ibm.ejs.models.base.bindings.webappbnd:WebAppBinding xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:com.ibm.ejs.models.base.bindings.webappbnd="webappbnd.xmi"  virtualHostName="default_host">
+  <webapp href="WEB-INF/web.xml"/>
+  <resRefBindings jndiName="jdbc/homepage" loginConfigurationName="DefaultPrincipalMapping">
+    <bindingResourceRef href="WEB-INF/web.xml#ResourceRef_1266516033939"/>
+    <properties name="com.ibm.mapping.authDataAlias" value="homepageJAASAuth" description="description"/>
+  </resRefBindings>
+  <ejbRefBindings xmi:id="EjbRefBinding_1266789797735" jndiName="ejb/connections/homepage/events/publisher">
+    <bindingEjbRef href="WEB-INF/web.xml#EJBLocalRef_1266516033840"/>
+  </ejbRefBindings>
+  <ejbRefBindings xmi:id="EjbRefBinding_1296210208926" jndiName="ejb/connections/news/stories">
+    <bindingEjbRef href="WEB-INF/web.xml#NewsStoryEJB"/>
+  </ejbRefBindings>
+</com.ibm.ejs.models.base.bindings.webappbnd:WebAppBinding>

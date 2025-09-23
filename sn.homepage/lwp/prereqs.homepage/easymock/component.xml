@@ -1,0 +1,38 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- (C) Copyright IBM Corp. 2006, 2007                                -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<component name="prereqs.homepage/easymock" 
+           type="binary" 
+           description="EasyMock" 
+           spec-version="2.4"
+           build-version=""
+           owner=""
+           owner-email="">
+
+<!-- 
+DEPENDENCY: 
+
+GroupId 				ArtifactId 				Version 	Type 	Optional
+commons-collections 	commons-collections 	3.2.1 		jar 	No
+junit 					junit 					3.8.2 		jar 	No
+org.slf4j 				slf4j-api 				1.5.6 		jar 	No
+ant 					ant 					1.5.4 		jar 	Yes
+org.apache.poi 			poi 					3.2-FINAL 	jar 	Yes
+-->
+
+   <output-group name="default">
+	  <output type="jar" visibility="public" platform="all" location="easymock-2.4.jar"/>
+   </output-group>
+
+</component>

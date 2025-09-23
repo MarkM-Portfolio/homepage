@@ -1,0 +1,28 @@
+sn.homepage/lwp/homepage.model/core/.apt_generated
+sn.homepage/lwp/prereqs.homepage/easymock/build
+sn.homepage/lwp/homepage.common/utils/build
+sn.homepage/lwp/homepage.common/utils/.apt_generated
+sn.homepage/lwp/homepage.tests/test_metrics
+sn.homepage/lwp/homepage.tests/src/com/ibm/lconn/homepage/test/web/initialization
+sn.homepage/lwp/homepage.tests/src/com/ibm/lconn/homepage/test/web/news
+sn.homepage/lwp/homepage.tests/jmeter/saved_responses
+sn.homepage/lwp/homepage.dao.layer/core/migration/schema.18/sqlserver
+sn.homepage/lwp/homepage.dao.layer/core/migration/schema.10/db2
+sn.homepage/lwp/homepage.dao.layer/core/migration/schema.10/sqlserver
+sn.homepage/lwp/homepage.dao.layer/core/migration/schema.3/db2
+sn.homepage/lwp/homepage.dao.layer/core/.apt_generated
+sn.homepage/lwp/homepage.fvt.automation/logs
+sn.homepage/lwp/homepage.fvt.automation/4.5/src/com/ibm/atmn/wd_homepagefvt/testcases/profiles/imfollowing/people
+sn.homepage/lwp/homepage.fvt.automation/4.5/src/com/ibm/atmn/wd_homepagefvt/testcases/files/imfollowing
+sn.homepage/lwp/homepage.fvt.automation/4.0/_orig/baselogs
+sn.homepage/lwp/homepage.fvt.automation/4.0/_orig/bin
+sn.homepage/lwp/homepage.fvt.automation/4.0/_orig/src/com/ibm/atmn/wd_homepagefvt/testcases/profiles/imfollowing
+sn.homepage/lwp/homepage.fvt.automation/4.0/_orig/src/com/ibm/atmn/wd_homepagefvt/testcases/files/imfollowing
+sn.homepage/lwp/homepage.fvt.automation/4.0/src/com/ibm/atmn/wd_homepagefvt/testcases/profiles/imfollowing
+sn.homepage/lwp/homepage.fvt.automation/4.0/src/com/ibm/atmn/wd_homepagefvt/testcases/files/imfollowing
+sn.homepage/lwp/homepage.web.layer/core/Web Content/WEB-INF/lib
+sn.homepage/lwp/homepage.web.layer/core/Web Content/web/jsp/requires
+sn.homepage/lwp/homepage.web.layer/core/src/com/ibm/lconn/homepage/web/config/gettingstarted
+tmp_for_move/extension
+tmp_for_move/widgets
+tmp_for_move/modules

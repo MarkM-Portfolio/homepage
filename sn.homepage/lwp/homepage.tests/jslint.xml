@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* IBM Confidential
+*
+* OCO Source Materials
+*
+* Copyright IBM Corp. 2006, 2015
+*
+* The source code for this program is not published or otherwise
+* divested of its trade secrets, irrespective of what has been
+* deposited with the U.S. Copyright Office.
+*
+-->
+
+
+<!-- Set of Ant tasks to run jslint on each js file in web project and construct a report -->
+<project name="jslint" default="jslint" basedir=".">
+    
+    <!-- Need to move this to component.xml if possible -->
+    <property name="dependencies.basedir" value="../prereqs.homepage/jslint"/>
+    
+    <property name="javascript.basedir" value="../homepage.web.layer/core/Web Content/script"/>
+    
+    <property name="jslint.output.dir" value="${basedir}/reports/jslint"/>
+    <property name="jslint.output.tmpdir" value="${jslint.output.dir}/tmp"/>
+    
+    <path id="jslint_classpath">
+        <pathelement location="../prereqs.homepage/jslint/js.jar"/>
+    </path>
+    
+    <taskdef resource="net/sf/antcontrib/antlib.xml">
+        <classpath>
+            <pathelement location="${env.WPLC_IMPORT}/../../lib/ant-contrib-1.0b3.jar"/>
+        </classpath>
+    </taskdef>
+    
+    <target name="jslint.init">
+        <delete dir="${jslint.output.dir}"/>
+        <mkdir dir="${jslint.output.dir}"/>
+        <mkdir dir="${jslint.output.tmpdir}"/>
+    </target>
+    
+    <target name="jslint.prepare" depends="jslint.init">
+        <!-- copy javascript files to analyze -->
+        <copy todir="${jslint.output.tmpdir}">
+            <fileset dir="${javascript.basedir}">
+                <include name="**/*.js"/>
+                <exclude name="**/nls/**"/>
+                <exclude name="**/tests/**"/>
+            </fileset>
+            <filterchain>
+                <concatfilter prepend="jslint.options"/>
+            </filterchain>
+        </copy>
+    </target>
+    
+    <target name="jslint.execute" depends="jslint.prepare">
+        <for param="file" parallel="true" threadCount="4">
+            <path>
+                <fileset dir="${jslint.output.tmpdir}">
+                    <include name="**/*.js"/>
+                </fileset>
+            </path>
+            <sequential>
+                <echo message="JsLint processing @{file}"/>
+                
+                <java dir="${basedir}" jar="${dependencies.basedir}/js.jar" failonerror="false" fork="true" output="@{file}.result" append="false">
+                    <arg value="${dependencies.basedir}/jslint.js"/>
+                    <arg value="@{file}"/>
+                </java>
+            </sequential>
+        </for>
+    </target>
+    
+    <target name="jslint.generate-report" depends="jslint.execute">        
+        <tstamp>
+            <format property="generate.time" pattern="dd/MM/yyyy hh:mm aa" unit="second"/>
+        </tstamp>       
+		
+		<echo append="true" file="${jslint.output.dir}/report.txt" message="Report generated at ${generate.time}" /> 
+        
+        <for param="file" parallel="false">
+            <path>
+                <fileset dir="${jslint.output.tmpdir}">
+                    <include name="**/*.result"/>
+                </fileset>
+            </path>
+            <sequential>
+                <echo append="true" file="${jslint.output.dir}/report.txt" message="${line.separator}${line.separator}"/>
+                <echo append="true" file="${jslint.output.dir}/report.txt">==== @{file} ==== ${line.separator}</echo>
+                <concat destfile="${jslint.output.dir}/report.txt" append="true">
+                    <fileset file="@{file}"/>
+                </concat>
+            </sequential>
+        </for>
+		
+		<replaceregexp file="${jslint.output.dir}/report.txt" match=".js.result" replace=".js" flags="g" />		
+    </target>
+	
+	<target name="jslint.cleanup">
+		 <delete dir="${jslint.output.tmpdir}"/>
+	</target>
+	
+	<target name="jslint">
+		<antcall target="jslint.generate-report" />	
+		<antcall target="jslint.cleanup" />	
+	</target>
+</project>

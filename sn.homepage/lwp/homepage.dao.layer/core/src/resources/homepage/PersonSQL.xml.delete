@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+ PUBLIC "-//iBATIS.com/DTD SQL Map 2.0//EN"
+ "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2006, 2012                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<!-- 
+CREATE TABLE HOMEPAGE.PERSON  (
+		  PERSON_ID VARCHAR(36) NOT NULL,
+		  DISPLAYNAME VARCHAR(256) NOT NULL,
+		  EXID VARCHAR(256) NOT NULL,
+		  USER_MAIL VARCHAR(256),
+		  USER_MAIL_LOWER VARCHAR(256),
+		  DISPLAYNAME_LOWER VARCHAR(256),
+		  IS_ACTIVE SMALLINT DEFAULT 1 NOT NULL,
+		  STATE SMALLINT DEFAULT 0 NOT NULL,
+		  LAST_UPDATE TIMESTAMP,
+		  CREATIN_DATE TIMESTAMP
+)
+IN HOMEPAGETABSPACE;
+-->
+
+<!-- 
+CREATE TABLE HOMEPAGE.LOGINNAME (
+	PERSON_ID VARCHAR(36) NOT NULL,
+	LOGINNAME VARCHAR(256) NOT NULL
+);
+-->
+
+
+
+<sqlMap namespace="Person">
+    
+    <typeAlias alias="Person" type="com.ibm.lconn.homepage.dao.model.Person"/>
+    <typeAlias alias="PersonWithLoginNames" type="com.ibm.lconn.homepage.dao.model.PersonWithLoginNames"/>
+    
+    <typeAlias alias="LoginName" type="com.ibm.lconn.homepage.dao.model.LoginName"/>
+    
+    <resultMap id="LoginNameMap" class="LoginName">
+        <result property="id" column="PERSON_ID" jdbcType="VARCHAR"/>
+        <result property="loginName" column="LOGINNAME" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+	<resultMap id="UserResultMap" class="Person">
+		<result property="personId" column="PERSON_ID" jdbcType="VARCHAR" />
+		<result property="displayName" column="DISPLAYNAME" jdbcType="VARCHAR" />
+		<result property="exId" column="EXID" jdbcType="VARCHAR" />
+		<result property="userMail" column="USER_MAIL" jdbcType="VARCHAR" />
+		<result property="userMailLower" column="USER_MAIL_LOWER" jdbcType="VARCHAR" />
+		<result property="displaynameLower" column="DISPLAYNAME_LOWER" jdbcType="VARCHAR" />
+		<!-- <result property="isActive" column="IS_ACTIVE" jdbcType="SMALLINT" /> -->
+		<result property="stateAsInt" column="STATE" jdbcType="SMALLINT" />
+		<result property="lastUpdate" column="LAST_UPDATE" jdbcType="TIMESTAMP" />
+		<result property="creationDate" column="CREATION_DATE" jdbcType="TIMESTAMP" />
+		<result property="profType" column="PROF_TYPE" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- TODO: why prefixed with PERSON_ -->
+	<resultMap id="UserLoginnamesMap" class="PersonWithLoginNames" groupBy="personId">
+		<result property="loginNames" resultMap="Person.LoginNameMap" />
+		<result property="personId" column="PERSON_PERSON_ID" jdbcType="VARCHAR" />
+		<result property="displayName" column="PERSON_DISPLAYNAME" jdbcType="VARCHAR" />
+		<result property="exId" column="PERSON_EXID" jdbcType="VARCHAR" />
+		<result property="userMail" column="PERSON_USER_MAIL" jdbcType="VARCHAR" />
+		<result property="userMailLower" column="PERSON_USER_MAIL_LOWER" jdbcType="VARCHAR" />
+		<result property="displaynameLower" column="PERSON_DISPLAYNAME_LOWER" jdbcType="VARCHAR" />
+		<!-- <result property="isActive" column="PERSON_IS_ACTIVE" jdbcType="SMALLINT" /> -->
+		<result property="stateAsInt" column="PERSON_STATE" jdbcType="SMALLINT" />
+		<result property="profType" column="PERSON_PROF_TYPE" jdbcType="VARCHAR" />		
+	</resultMap>
+    
+	<!-- <typeHandler javaType="com.ibm.lconn.homepage.dao.model.Person$State" callback="com.ibm.lconn.homepage.dao.model.PersonStateTypeHandler"/> -->
+    
+    <select id="select-PERSON" parameterClass="String" resultMap="UserResultMap">
+        <![CDATA[
+			SELECT * from $schema$.PERSON
+		]]>
+    </select>
+    
+    <select id="getByPK-PERSON" resultMap="UserResultMap">
+        <![CDATA[
+		    select *
+	    	from $schema$.PERSON
+	    	where PERSON_ID = #key:VARCHAR#
+	    ]]>
+    </select>
+    
+	<insert id="insert-PERSON" parameterClass="Person" >
+		<![CDATA[
+			INSERT INTO $schema$.PERSON
+				(	
+					PERSON_ID, 
+					DISPLAYNAME, 
+					EXID, 
+					USER_MAIL, 
+					USER_MAIL_LOWER, 
+					DISPLAYNAME_LOWER,
+					STATE,
+					LAST_UPDATE,
+					CREATION_DATE,
+					PROF_TYPE
+				)
+			VALUES
+				(#personId:VARCHAR#, #displayName:VARCHAR#, #exId:VARCHAR#, #userMail:VARCHAR#, #userMailLower:VARCHAR#, #displaynameLower:VARCHAR#, #stateAsInt:SMALLINT#,#lastUpdate:TIMESTAMP#,#creationDate:TIMESTAMP#,#profType:VARCHAR# )
+		]]>
+	</insert>
+    
+  	<update id="update-PERSON" parameterClass="Person">
+		<![CDATA[
+		 	update $schema$.PERSON set 
+		  		DISPLAYNAME = #displayName:VARCHAR#,
+		  		EXID = #exId:VARCHAR#,
+		  		USER_MAIL = #userMail:VARCHAR#,
+		  		USER_MAIL_LOWER = #userMailLower:VARCHAR#,
+		  		DISPLAYNAME_LOWER =  #displaynameLower:VARCHAR#,
+				STATE = #stateAsInt:SMALLINT#,
+				LAST_UPDATE = #lastUpdate:TIMESTAMP#,
+				PROF_TYPE = #profType:VARCHAR#
+		  	where PERSON_ID = #personId:VARCHAR#
+		]]>
+  	</update>
+    
+    <delete id="delete-PERSON">
+        <![CDATA[
+		   	delete from $schema$.PERSON where PERSON_ID = #key#
+		]]>
+    </delete>
+    
+    <update id="updateExternalId-PERSON" parameterClass="Person">
+        <![CDATA[
+            UPDATE $schema$.PERSON 
+            SET    EXID = #exId:VARCHAR#
+            WHERE  PERSON_ID = #personId:VARCHAR#
+		]]>
+    </update>
+    
+    <update id="updateExternalIDDisplayName-PERSON" parameterClass="Person">
+        <![CDATA[
+            UPDATE $schema$.PERSON SET    
+            	EXID = #exId:VARCHAR#,
+            	DISPLAYNAME = #displayName:VARCHAR#,
+            	DISPLAYNAME_LOWER =  #displaynameLower:VARCHAR#
+            WHERE  PERSON_ID = #personId:VARCHAR#
+		]]>
+    </update>
+    
+    
+    <select id="getByEmail-PERSON" resultMap="UserResultMap">
+        <![CDATA[
+		    select *
+	    	from $schema$.PERSON
+	    	where USER_MAIL = #mail:VARCHAR#
+	    ]]>
+    </select>
+    
+	<select id="getPersonWithLoginNamesByExtId-PERSON"  resultMap="UserLoginnamesMap" >
+		<![CDATA[
+			SELECT  $schema$.LOGINNAME.LOGINNAME, 
+					$schema$.LOGINNAME.PERSON_ID, 
+					$schema$.PERSON.PERSON_ID as PERSON_PERSON_ID, 
+					$schema$.PERSON.DISPLAYNAME as PERSON_DISPLAYNAME, 
+					$schema$.PERSON.EXID as PERSON_EXID, 
+					$schema$.PERSON.USER_MAIL as PERSON_USER_MAIL,
+					$schema$.PERSON.USER_MAIL_LOWER as PERSON_USER_MAIL_LOWER,
+					$schema$.PERSON.DISPLAYNAME_LOWER as PERSON_DISPLAYNAME_LOWER,
+					$schema$.PERSON.STATE as PERSON_STATE,
+					$schema$.PERSON.PROF_TYPE as PERSON_PROF_TYPE
+			FROM $schema$.PERSON LEFT JOIN $schema$.LOGINNAME
+			ON $schema$.PERSON.PERSON_ID = $schema$.LOGINNAME.PERSON_ID
+			WHERE $schema$.PERSON.EXID  =  #extId:VARCHAR#
+			ORDER BY $schema$.LOGINNAME.LOGINNAME			
+		]]>
+	</select>
+    
+	<select id="getPersonWithLoginNamesByLoginName-PERSON" resultMap="UserLoginnamesMap">
+	    <![CDATA[
+			SELECT  $schema$.LOGINNAME.LOGINNAME, 
+					$schema$.LOGINNAME.PERSON_ID, 
+					$schema$.PERSON.PERSON_ID as PERSON_PERSON_ID, 
+					$schema$.PERSON.DISPLAYNAME as PERSON_DISPLAYNAME, 
+					$schema$.PERSON.EXID as PERSON_EXID, 
+					$schema$.PERSON.USER_MAIL as PERSON_USER_MAIL,
+					$schema$.PERSON.USER_MAIL_LOWER as PERSON_USER_MAIL_LOWER,
+					$schema$.PERSON.DISPLAYNAME_LOWER as PERSON_DISPLAYNAME_LOWER,
+					$schema$.PERSON.STATE as PERSON_STATE,
+					$schema$.PERSON.PROF_TYPE as PERSON_PROF_TYPE
+			FROM  $schema$.LOGINNAME, $schema$.PERSON
+			WHERE $schema$.LOGINNAME.PERSON_ID = (
+			    SELECT $schema$.PERSON.PERSON_ID FROM  $schema$.PERSON,  $schema$.LOGINNAME WHERE $schema$.PERSON.PERSON_ID = $schema$.LOGINNAME.PERSON_ID AND $schema$.LOGINNAME.LOGINNAME = #loginName#
+			) AND $schema$.PERSON.PERSON_ID = $schema$.LOGINNAME.PERSON_ID
+	    ]]>
+	</select>
+    
+	<select id="getPersonWithLoginNamesByMail-PERSON" resultMap="UserLoginnamesMap">
+	<![CDATA[
+			SELECT  $schema$.LOGINNAME.LOGINNAME, 
+					$schema$.LOGINNAME.PERSON_ID, 
+					$schema$.PERSON.PERSON_ID as PERSON_PERSON_ID, 
+					$schema$.PERSON.DISPLAYNAME as PERSON_DISPLAYNAME, 
+					$schema$.PERSON.EXID as PERSON_EXID, 
+					$schema$.PERSON.USER_MAIL as PERSON_USER_MAIL,
+					$schema$.PERSON.USER_MAIL_LOWER as PERSON_USER_MAIL_LOWER,
+					$schema$.PERSON.DISPLAYNAME_LOWER as PERSON_DISPLAYNAME_LOWER,
+					$schema$.PERSON.STATE as PERSON_STATE,
+					$schema$.PERSON.PROF_TYPE as PERSON_PROF_TYPE					
+			FROM  $schema$.PERSON LEFT JOIN $schema$.LOGINNAME
+			ON $schema$.LOGINNAME.PERSON_ID = $schema$.PERSON.PERSON_ID
+			WHERE $schema$.PERSON.USER_MAIL  =  #email:VARCHAR#
+			ORDER BY $schema$.LOGINNAME.LOGINNAME
+	    ]]>
+	</select>
+    
+    <cacheModel id="personExtToInt-conversion" type="MEMORY">
+        <flushInterval hours="1"/>
+        <flushOnExecute statement="insert-PERSON"/>
+        <flushOnExecute statement="delete-PERSON"/>
+        <flushOnExecute statement="update-PERSON"/>
+        <flushOnExecute statement="updateExternalId-PERSON"/>
+        <flushOnExecute statement="updateExternalIDDisplayName-PERSON"/>
+        <property name="reference-type" value="WEAK" />
+    </cacheModel>
+    
+    <select id="getPersonInternalId-PERSON" resultClass="String" cacheModel="personExtToInt-conversion">
+        <![CDATA[
+			SELECT PERSON_ID
+			FROM   $schema$.PERSON
+			WHERE  EXID = #externalId#
+		]]>
+    </select>
+    
+    <cacheModel id="personIntToExt-conversion" type="MEMORY">
+        <flushInterval hours="1"/>
+        <flushOnExecute statement="insert-PERSON"/>
+        <flushOnExecute statement="delete-PERSON"/>
+        <flushOnExecute statement="update-PERSON"/>
+        <flushOnExecute statement="updateExternalId-PERSON"/>
+        <flushOnExecute statement="updateExternalIDDisplayName-PERSON"/>
+        <property name="reference-type" value="WEAK" />
+    </cacheModel>
+
+    <select id="getPersonExternalId-PERSON" resultClass="String" cacheModel="personIntToExt-conversion">
+        <![CDATA[
+			SELECT EXID
+			FROM   $schema$.PERSON
+			WHERE  PERSON_ID = #internalId#
+		]]>
+    </select>
+    
+    <select id="getNameByInternalId-PERSON" resultClass="String">
+        <![CDATA[
+			SELECT DISPLAYNAME
+			FROM   $schema$.PERSON
+			WHERE  PERSON_ID = #internalId#
+		]]>
+    </select>
+    
+    <select id="getNameByExternalId-PERSON" resultClass="String">
+        <![CDATA[
+			SELECT DISPLAYNAME
+			FROM   $schema$.PERSON
+			WHERE  EXID = #externalId#
+		]]>
+    </select>
+    
+    <select id="getCountPerson-PERSON" resultClass="Long">
+        <![CDATA[
+			SELECT COUNT(*)
+			FROM   $schema$.PERSON
+		]]>
+    </select>
+    
+    <!-- NOTE: Has to be a count of HP_UI - PERSON would be inaccurate as it contains
+    users who may never have logged into the Home Page. -->
+    <select id="getCountHPPerson-PERSON" resultClass="Long">
+        <![CDATA[
+			SELECT COUNT(*)
+			FROM   $schema$.HP_UI
+		]]>
+    </select>
+    
+    <select id="getNumberUniqueVisit" parameterClass="java.util.Map" resultClass="long">
+        <![CDATA[
+			SELECT 	COUNT(*) 
+			from 	$schema$.PERSON PERSON, 
+					$schema$.HP_UI HP_UI
+			where 	PERSON.PERSON_ID = HP_UI.PERSON_ID AND HP_UI.LAST_VISIT BETWEEN #begin# AND #end#
+		]]>
+    </select>
+    
+	<select id="getActivePersonListByQuery-PERSON" parameterClass="java.util.Map" resultMap="UserResultMap">
+		SELECT
+			<dynamic>
+				<isEqual property="dbVendor" compareValue="sqlserver">
+					TOP 15
+				</isEqual>
+			</dynamic>		 
+		 			*
+
+			<dynamic>
+				<isEqual property="dbVendor" compareValue="oracle">
+					FROM ( SELECT *
+				</isEqual>		
+			</dynamic>
+
+			 			FROM PERSON
+						WHERE DISPLAYNAME_LOWER LIKE #query:VARCHAR#	
+						AND STATE = 0
+					
+			
+			<dynamic>
+				<isEqual property="dbVendor" compareValue="oracle">
+					<![CDATA[
+						ORDER BY DISPLAYNAME )
+						WHERE rownum <= 15
+					]]>
+				</isEqual>
+			</dynamic>
+			
+			<dynamic>
+				<isEqual property="dbVendor" compareValue="db2">
+						ORDER BY DISPLAYNAME FETCH FIRST 15 ROWS ONLY
+											OPTIMIZE FOR 15 ROWS
+				</isEqual>
+			</dynamic>
+			
+			<dynamic>
+				<isEqual property="dbVendor" compareValue="sqlserver">
+						ORDER BY DISPLAYNAME
+				</isEqual>
+			</dynamic>
+	</select>
+    
+    <select id="getCountActivePersonListByQuery-PERSON" parameterClass="java.util.Map" resultClass="long">
+        SELECT COUNT(*)
+        FROM $schema$.PERSON
+        WHERE DISPLAYNAME_LOWER LIKE #query:VARCHAR#
+		AND STATE = 0
+    </select>
+    
+	<select id="findPersonsByLastUpdatedDate-PERSON" resultMap="UserResultMap">
+        <![CDATA[
+		select *
+	    	from HOMEPAGE.PERSON
+	    	where LAST_UPDATE > #lastUpdate:TIMESTAMP#
+	    ]]>
+    </select>
+
+   <select id="getByEmailLower-PERSON" resultMap="UserResultMap">
+        <![CDATA[
+		    select *
+	    	from $schema$.PERSON
+	    	where USER_MAIL_LOWER = #emailLower:VARCHAR#
+	    ]]>
+    </select>    
+    
+</sqlMap>

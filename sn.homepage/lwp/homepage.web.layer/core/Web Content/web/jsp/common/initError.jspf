@@ -1,0 +1,37 @@
+<%@ page session="false" contentType="text/html; charset=UTF-8"
+	buffer="128kb"%>
+<%--wscExemptBegin--%>
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- IBM Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright IBM Corp. 2008, 2015                                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+<%--wscExemptEnd--%>
+
+<%-- Init global JS variables under the namespace lconn.homepage.global --%>
+
+<script type="text/javascript">
+
+	lconn.homepage.global.isErrorMsgDisplayed = false;
+
+	function toggleErrorMsg(el) {		
+		if (lconn.homepage.global.isErrorMsgDisplayed) {
+			document.getElementById("stackTrace").style.display = "none";
+			lconn.homepage.global.isErrorMsgDisplayed = false;
+			el.innerHTML = document.getElementById("showErrorMsg").innerHTML;
+		} else {
+			document.getElementById("stackTrace").style.display = "";
+			lconn.homepage.global.isErrorMsgDisplayed = true;
+			el.innerHTML = document.getElementById("hideErrorMsg").innerHTML;
+		}
+	}
+	
+</script>

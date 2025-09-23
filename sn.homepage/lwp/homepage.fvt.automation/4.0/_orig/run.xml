@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2010, 2013                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+<project name="LC4.0_BVT_GUI_S2-TNG" default="test" basedir=".">
+  <description>Connections GUI BVT Suite</description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="bin" location="bin"/>
+  <property name="lib" location="lib"/>
+  <property name="reports.dir" location="test-reports"/>
+  <property name="output.jar" value="${bin}/lc3.5.bvt.gui.jar"/>
+  <property name="testng.jar" value="${lib}/testng-6.2.jar"/>
+  <property name="selenium.jar" value="${lib}/selenium-server.jar"/>
+
+  <path id="cp">
+    <pathelement location="${testng.jar}"/>
+  	<pathelement location="${selenium.jar}"/>
+    <pathelement location="${build}/classes/"/>
+  </path>
+	
+  <taskdef name="testng" classpathref="cp" classname="org.testng.TestNGAntTask" />
+  <target name="test">
+    <testng classpathref="cp" suiteThreadPoolSize="10">
+      <xmlfileset dir="${build}/classes/com/ibm/bvt/config" includes="testFirefox3.6.xml"/>
+      <xmlfileset dir="${build}/classes/com/ibm/bvt/config" includes="testIE9.xml"/>
+    </testng>
+  </target>
+
+</project>

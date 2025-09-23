@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2008, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<!-- 5724-S68                                                          -->
+<config id="gettingstarted-config" version="3.0" buildlevel="LC3.0_20100316_0017"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="gettingstarted-config.xsd" enabled="true">
+    <steps>	
+    
+    <!-- This step is displayed in a new deployment but should be either disabled or 
+         replaced with your own content before you make your deployment available to users. -->
+	<step enabled="true">
+		<title bundle="com.ibm.lconn.homepage.resources.nls.jsp.jsp_resources">jsp.start.step1.tab.title</title>
+		<body-links
+			secure="${lcurl:homepage.secure}/web/stepOnePage.action"
+			unsecure="${lcurl:homepage.unsecure}/web/stepOnePage.action" />
+	</step>
+
+	<step enabled="true">
+		<title bundle="com.ibm.lconn.homepage.resources.nls.jsp.jsp_resources">jsp.start.share.tab.title</title>
+		<body-links 
+			secure="${lcurl:homepage.secure}/web/shareStepPage.action"
+			unsecure="${lcurl:homepage.unsecure}/web/shareStepPage.action" />
+	</step>
+	
+	<step enabled="true">
+		<title bundle="com.ibm.lconn.homepage.resources.nls.jsp.jsp_resources">jsp.start.explore.tab.title</title>
+		<body-links 
+			secure="${lcurl:homepage.secure}/web/exploreStepPage.action"
+			unsecure="${lcurl:homepage.unsecure}/web/exploreStepPage.action" />
+	</step>
+    </steps>	
+</config>

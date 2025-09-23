@@ -1,0 +1,65 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2007, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+-- {COPYRIGHT}
+
+---------------------------------------------------------------------------------
+------------------------ START NEWS FIXUP 451 -----------------------------------
+---------------------------------------------------------------------------------
+
+-- 89208: Remove DEFAULT constraints from BOARD tables: BOARD,  BOARD_COMMENTS, BOARD_CURRENT_STATUS 
+-- BOARD_ENTRIES, BOARD_MENTIONS, BOARD_OBJECT_REFERENCE, BOARD_RECOMMENDATIONS 
+ALTER TABLE HOMEPAGE.BOARD ALTER COLUMN ORGANIZATION_ID DROP DEFAULT@
+COMMIT@
+
+ALTER TABLE HOMEPAGE.BOARD_COMMENTS ALTER COLUMN ORGANIZATION_ID DROP DEFAULT@
+COMMIT@
+
+ALTER TABLE HOMEPAGE.BOARD_CURRENT_STATUS ALTER COLUMN ORGANIZATION_ID DROP DEFAULT@
+COMMIT@
+
+ALTER TABLE HOMEPAGE.BOARD_ENTRIES ALTER COLUMN ORGANIZATION_ID DROP DEFAULT@
+COMMIT@
+
+ALTER TABLE HOMEPAGE.BOARD_MENTIONS ALTER COLUMN ORGANIZATION_ID DROP DEFAULT@
+COMMIT@
+
+ALTER TABLE HOMEPAGE.BOARD_OBJECT_REFERENCE ALTER COLUMN ORGANIZATION_ID DROP DEFAULT@
+COMMIT@
+
+ALTER TABLE HOMEPAGE.BOARD_RECOMMENDATIONS ALTER COLUMN ORGANIZATION_ID DROP DEFAULT@
+COMMIT@
+
+
+-- 89815: Query vs DISCOVERY and PROFILE_VIEW - need to review the access plan and study indexes to use ORGANIZATION_ID
+-- NEW DISCOVERY_VIEW index for SC to support public reads
+CREATE INDEX HOMEPAGE.DISCOVERY_VIEW_ORG_IDX 
+   	ON HOMEPAGE.NR_DISCOVERY_VIEW (ORGANIZATION_ID, USE_IN_ROLLUP, IS_VISIBLE, CREATION_DATE, IS_BROADCAST, ROLLUP_ENTRY_ID, SOURCE_TYPE, STORY_ID)@
+COMMIT@
+
+-- NEW PROFILES_VIEW index for SC to support public reads
+CREATE INDEX HOMEPAGE.PROFILES_VIEW_ORG_IDX 
+   	ON HOMEPAGE.NR_PROFILES_VIEW (ORGANIZATION_ID, USE_IN_ROLLUP, IS_VISIBLE, CREATION_DATE, IS_BROADCAST, ROLLUP_ENTRY_ID, SOURCE_TYPE, STORY_ID)@
+COMMIT@   	
+   	
+
+---------------------------------------------------------------------------------
+------------------------ END   NEWS FIXUP 451 -------------------------------------
+---------------------------------------------------------------------------------
+
+ 
+
+  
+  
+  

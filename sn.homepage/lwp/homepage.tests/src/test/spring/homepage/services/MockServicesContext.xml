@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- *****************************************************************
+-->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2002, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- *****************************************************************
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:aop="http://www.springframework.org/schema/aop"
+ xmlns:tx="http://www.springframework.org/schema/tx"
+ xmlns:context="http://www.springframework.org/schema/context"
+ xsi:schemaLocation="
+ 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd 
+ 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd 
+ 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+ 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+    
+     <import resource="classpath:spring/homepage/database/DatabaseContext.xml"/>
+     <import resource="classpath:spring/home-news/database/DatabaseContext.xml"/>
+     <import resource="classpath:spring/home-news/service/ServiceContext.xml"/>
+     <import resource="classpath:spring/homepage/services/ServicesContext.xml"/>
+     <import resource="classpath:/spring/homepage/resources/ResourceBundleContext.xml" />
+    
+    <!-- Transaction management. Allows to use @Transactional in our classes -->
+    <!-- transactionManager is defined in the DAO layer (DatabaseIBatis.xml) -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    
+    <!-- Permit @Autowiring -->
+    <context:annotation-config />
+    
+    <!-- News EJB Factory -->
+    <bean id="newsBeanFactory" class="com.ibm.lconn.homepage.services.utils.NewsBeanFactory" />    
+    
+    <!-- Model Converter -->
+    <bean id="modelConverter" class="com.ibm.lconn.homepage.services.utils.impl.ModelConverterImpl">
+        <property name="catalogServiceUIResourceBundle" ref="catalogServiceUIResourceBundle"/><!-- ref defined in ResourceBundleContext.xml in homepage.common/utils  -->
+        <property name="serviceResourceBundle" ref="serviceResourceBundle"/><!-- ref defined in ResourceBundleContext.xml in homepage.common/utils  -->
+        <!--  <property name="configurationService" ref="configurationService"/> -->
+    </bean>
+
+    <bean id="componentConfigurationCachingService" class="com.ibm.lconn.homepage.services.configuration.caching.impl.ComponentConfigurationCachingServiceImpl"/>
+    
+    <bean id="configurationService" class="com.ibm.lconn.homepage.services.impl.ConfigurationServiceImpl">
+    	<property name="componentConfigurationCachingService" ref="componentConfigurationCachingService"/>
+    </bean>
+
+    <bean id="serverMetricsServices" class="com.ibm.lconn.homepage.services.impl.ServerMetricsServicesImpl">
+        <property name="serviceResourceBundle" ref="serviceResourceBundle"/><!-- ref defined in ResourceBundleContext.xml in homepage.common/utils  -->
+        <property name="serverMetricsCachingService" ref="serverMetricsCachingService"/>
+		<property name="statisticsDao" ref="mockMetricStatDao"/><!-- ref defined in DatabaseDao.xml in homepage.dao.layer/core  -->
+		<property name="systemMetrics" ref="systemMetricsDao"/><!-- ref defined in DatabaseDao.xml in homepage.dao.layer/core  -->
+    </bean>
+    
+    <!-- User services -->
+    <bean id="userServices" class="com.ibm.lconn.homepage.services.impl.UserServicesImpl">
+        <property name="webResourceBundle" ref="webResourceBundle"/><!-- ref defined in ResourceBundleContext.xml in homepage.common/utils  -->
+        <property name="serviceResourceBundle" ref="serviceResourceBundle"/><!-- ref defined in ResourceBundleContext.xml in homepage.common/utils  -->
+        <property name="uiDao" ref="uiDao"/><!-- ref defined in DatabaseDao.xml in homepage.dao.layer/core  -->
+        <property name="personDao" ref="HPNEWS-DATABASE:personDao"/><!-- ref defined in DatabaseDao.xml in homepage.dao.layer/core  -->
+        <property name="waltzSyncService" ref="waltzSyncService"/>
+        <property name="modelConverter" ref="modelConverter"/>
+        <property name="tabInstDao" ref="tabInstDao"/>
+        <property name="widgetInstDao" ref="widgetInstDao"/>
+    </bean>
+    
+    <!-- Tab Services -->
+    <bean id="tabServices" class="com.ibm.lconn.homepage.services.impl.TabServicesImpl">
+        <property name="serviceResourceBundle" ref="serviceResourceBundle"/><!-- ref defined in ResourceBundleContext.xml in homepage.common/utils  -->
+        <property name="uiServicesUtils" ref="uiServicesUtils"/><!-- ref defined in ResourceBundleContext.xml in homepage.common/utils  -->
+        <property name="widgetLayoutServices" ref="widgetLayoutServices"/><!-- ref defined in ServicesContext.xml -->
+        <property name="tabInstDao" ref="tabInstDao"/><!-- ref defined in DatabaseDao.xml in homepage.dao.layer/core  -->
+        <property name="userServices" ref="userServices"/><!-- ref defined in DatabaseDao.xml in homepage.dao.layer/core  -->
+        <property name="modelConverter" ref="modelConverter"/>
+    </bean>
+    
+    <!-- Widget Services -->
+    
+    <!-- Get instance of REjb mock -->
+    <bean id="widgetCatalogServices" 
+    	  class="com.ibm.lconn.homepage.test.services.mock.MockWidgetServicesRemote" 
+    	  factory-method="getWidgetCatalogService"/>
+    <bean id="widgetLayoutServices" 
+    	  class="com.ibm.lconn.homepage.test.services.mock.MockWidgetServicesRemote"
+    	  factory-method="getWidgetLayoutService" />
+    <!-- Get instance of REjb mock -->
+    
+
+    
+     <bean id="deletedWidgetChecker" class="com.ibm.lconn.homepage.services.widget.impl.DeletedWidgetCheckerImpl">
+    	<property name="widgetCatalogServices" ref="widgetCatalogServices"/>
+    </bean>   
+    
+ 	 
+  <!--  <bean id="deletedWidgetChecker" 
+		class="com.ibm.lconn.homepage.test.dao.ibatis.MockDeletedWidgetChecker"
+		factory-method="getMockChecker"/>  -->
+    
+    <bean id="widgetServices" class="com.ibm.lconn.homepage.services.widget.impl.WidgetServicesImpl">
+        <property name="catalogServiceUIResourceBundle" ref="catalogServiceUIResourceBundle"/><!-- ref defined in ResourceBundleContext.xml in homepage.common/utils  -->
+        <property name="webResourceBundle" ref="webResourceBundle"/><!-- ref defined in ResourceBundleContext.xml in homepage.common/utils  -->
+        <property name="tabServices" ref="tabServices"/><!-- ref defined in DatabaseDao.xml in homepage.dao.layer/core  -->
+        <property name="widgetInstDao" ref="widgetInstDao"/><!-- ref defined in DatabaseDao.xml in homepage.dao.layer/core  -->
+        <property name="modelConverter" ref="modelConverter"/>
+        <property name="catalogService" ref="widgetCatalogServices"/>
+    </bean>
+    
+     <!-- Waltz Sync Service -->
+    
+    <bean id="waltzSyncService" class="com.ibm.lconn.hpnews.service.waltz.impl.WaltzSyncService" parent="HPNEWS-SERVICE:waltzSyncService">
+        <property name="personDao" ref="HPNEWS-DATABASE:personDao"/><!-- ref defined in DatabaseDao.xml in homepage.dao.layer/core  -->
+        <property name="loginNameDao" ref="HPNEWS-DATABASE:loginNameDao"/><!-- ref defined in DatabaseDao.xml in homepage.dao.layer/core  -->
+        <property name="dsProvider" ref="HPNEWS-SERVICE:dsProvider"/>
+    </bean>
+  
+    <!-- UI Services -->
+    
+    <!-- TODO: no transaction in UI Service in 2.5 - Was it itended? -->
+    
+    <bean id="uiServices" class="com.ibm.lconn.homepage.services.impl.UIServicesImpl">
+        <property name="serviceResourceBundle" ref="serviceResourceBundle"/><!-- ref defined in ResourceBundleContext.xml in homepage.common/utils  -->
+        <property name="personDao" ref="HPNEWS-DATABASE:personDao"/><!-- ref defined in DatabaseDao.xml in homepage.dao.layer/core  -->
+        <property name="widgetInstDao" ref="widgetInstDao"/><!-- ref defined in DatabaseDao.xml in homepage.dao.layer/core  -->
+        <property name="modelConverter" ref="modelConverter"/>
+        <property name="configurationService" ref="configurationService" />
+        <property name="catalogServiceUIResourceBundle" ref="catalogServiceUIResourceBundle" />
+    </bean>
+    
+    <!-- Person Service MBEAN -->
+    
+    <bean id="homepagePersonService" class="com.ibm.lconn.homepage.services.mbean.admin.impl.HomepagePersonService">
+        <property name="serviceResourceBundle" ref="serviceResourceBundle"/><!-- ref defined in ResourceBundleContext.xml in homepage.common/utils  -->
+        <property name="personDao" ref="HPNEWS-DATABASE:personDao"/><!-- ref defined in DatabaseDao.xml in homepage.dao.layer/core  -->
+        <property name="waltzSyncService" ref="waltzSyncService"/>
+        <property name="modelConverter" ref="modelConverter"/>
+        <property name="uiDao" ref="uiDao"/><!-- ref defined in DatabaseDao.xml in homepage.dao.layer/core  -->
+    </bean>
+    
+    <!-- MBean Facade -->    
+    <bean id="homepageMBeanFacade" class="com.ibm.lconn.homepage.services.mbean.admin.impl.HomepageMBeanFacade">
+        <property name="serviceResourceBundle" ref="serviceResourceBundle"/><!-- ref defined in ResourceBundleContext.xml in homepage.common/utils  -->
+    </bean>
+    
+    <!-- WAS Admin Service -->
+    
+    <bean id="wasAdminService" class="com.ibm.lconn.homepage.services.utils.impl.WASAdminServiceImpl"/>
+    
+    <bean id="systemMetrics" class="com.ibm.lconn.homepage.services.impl.SystemMetricsImpl">
+        <property name="serverMetricsServices" ref="serverMetricsServices"/>
+    </bean>
+    
+    <bean id="homepageMetricsService" class="com.ibm.lconn.homepage.services.mbean.admin.impl.HomepageMetricsService">
+        <property name="systemMetrics" ref="systemMetrics"/>
+    </bean>
+    
+    <!-- Security Services -->
+    <!-- No transaction in 2.5, might want to add some -->
+    
+    <bean id="securityServices" class="com.ibm.lconn.homepage.services.impl.SecurityServicesImpl">
+        <property name="tabInstDao" ref="tabInstDao"/>
+        <property name="widgetInstDao" ref="widgetInstDao"/>
+        <property name="tabServices" ref="tabServices"/>
+    </bean>
+    
+    <bean id="serverMetricsCachingService" class="com.ibm.lconn.homepage.services.impl.ServerMetricsCachingServiceImpl">
+    </bean>
+    
+    <bean id="newsService" class="com.ibm.lconn.homepage.services.impl.NewsServiceImpl">
+    	<property name="jspResourceBundle" ref="jspResourceBundle"/><!-- ref defined in ResourceBundleContext.xml in homepage.common/utils  -->
+    	<property name="newsBeanFactory" ref="newsBeanFactory" />
+    </bean>  
+    
+    <bean id="mockMetricStatDao" class="com.ibm.lconn.homepage.test.services.mock.MetricStatDao" parent="HPNEWS-DATABASE:crudDao">
+    </bean>
+    
+</beans>

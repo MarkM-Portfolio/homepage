@@ -1,0 +1,32 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2011, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<div>
+	<div dojoAttachPoint="containerNode">
+		<div aria-live="assertive" aria-atomic="true" aria-relevant="all" tabindex="0" aria-labelledby="${id}_curStatusNode">
+			<span id="${id}_curStatusNode" dojoAttachPoint="statusNode" class="lotusLeft meta" ></span>
+		</div>
+		<span class="lotusRight">
+			<span dojoAttachPoint="previousActionNode">
+				<span class="meta" style="display:none;">${_resourceBundle.PREVIOUS}</span>
+				<a style="display:none;" href="#" dojoAttachEvent="onclick:_onPrevious" title="${_resourceBundle.PREVIOUS}">${_resourceBundle.PREVIOUS}</a>			
+			</span>
+			<span class="divider" role="img" aria-hidden="true">|</span>
+			<span dojoAttachPoint="nextActionNode">
+				<span class="meta" style="display:none;">${_resourceBundle.NEXT}</span>
+				<a style="display:none;" href="#" dojoattachEvent="onclick:_onNext" title="${_resourceBundle.NEXT}">${_resourceBundle.NEXT}</a>			
+			</span>
+		</span>&nbsp;
+	</div>	
+</div>

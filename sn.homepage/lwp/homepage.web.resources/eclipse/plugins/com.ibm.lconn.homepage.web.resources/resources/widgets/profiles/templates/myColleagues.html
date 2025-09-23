@@ -1,0 +1,43 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2011, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<div style="padding-top: 5px;" dojoAttachPoint="containerNode">
+
+<h3 class="widgetTitle" dojoAttachPoint="titleNode" style="height:20px;">
+	<span class="lotusLeft" id="${id}_ViewDropDown" dojoAttachPoint="profileTitleNode">${_resourceBundle.PROFILES_MY_COLLEAGUES_VIEW}</span><span dojoAttachPoint="menuModeButtonNode"></span>&nbsp;
+</h3>
+<div dojoAttachPoint="colleaguesBoardingNode" style="display:none">
+
+</div>
+<div dojoAttachPoint="loadingNode">
+	<center><img src="${_loadingImagePath}" class="loading"	alt="${loading}"/></center>
+</div>
+<div dojoAttachPoint="errorNode" style="display:none;"></div>
+<div dojoattachpoint="noColleaguesNode" style="display:none;" class="welcomeNode">
+			<div class="lconnEmpty">
+				${noColleaguesTitle}<br>${noColleaguesMsg}
+				<div style="font-style: normal; padding-top: 10px;">
+					<a href="" dojoattachpoint="colleaguesLink" >${goToYourProfilePage}</a>
+				</div>
+			</div>
+		</div>
+
+<div dojoAttachPoint="myColleaguesNode"></div>
+<div dojoAttachPoint="widgetFooter" class="widgetFooter">
+<span dojoAttachPoint="colleagueRequestContainer" style="display:none">
+	<a href="${_colleaguesLocation}" dojoAttachPoint="colleagueRequests" target="_blank" class="lotusLeft widgetColleaguesLink"></a>&nbsp;
+</span>
+<div dojoAttachPoint="scrollerNode"></div>
+</div>
+</div>

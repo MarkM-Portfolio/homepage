@@ -1,0 +1,70 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2001, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<iw:iwidget name="mywiki" xmlns:iw="http://www.ibm.com/xmlns/prod/iWidget" iScope="lconn.homepage.core.base.widgets.wiki.WikiHomepageClass" useHomepageEnhancedFeatures="true">
+	<!-- <iw:resource uri="{homepage}/static/web/widgets/{version}/wiki/WikiHomepageClass.js"/> -->
+
+	<iw:event id="edit" handled="true" onEvent="onEdit" /> 	
+	<iw:event id="help" handled="true" onEvent="onHelp" />
+	<iw:event id="onRefreshNeeded" handled="true" onEvent="onRefresh" />
+	<iw:event id="onUnload" handled="true" onEvent="onDestroy" />
+
+	<iw:itemSet id="attributes">
+		<iw:item id="numberRecentWikiEntries" value="3" />
+	</iw:itemSet>
+
+	<iw:itemSet id="defaultParams">    	
+		<iw:item id="xsltUrl" value="wiki.xsl"/>
+		<iw:item id="mappingRemoteUrl" value="{wikis}/home/mywikis?role=owner"/>
+		<iw:item id="helpUrl" value="{help}/topic/com.ibm.lotus.connections.homepage.help/t_hp_using_my_wikis_widget.html"/>
+  	</iw:itemSet>
+
+	<iw:itemSet id="feeds">
+		<iw:item id="defaultURL" value="{wikis}/form/api/wikis/feed?page=1&amp;sk=updated"/>
+		<iw:item id="photoSvc" value="{profiles}/photo.do"/>
+		<iw:item id="myWikiURL" value="{wikis}/form/api/mywikis/feed?sK=updated&amp;sO=dsc&amp;includeTags=true"/>
+	</iw:itemSet>
+	
+	<iw:itemSet id="modes">
+		<iw:item id="currentMode" value="MyWikis"/>
+	</iw:itemSet>
+	
+    <iw:content mode="view">
+        <![CDATA[ 
+
+		<div id="_IWID_options_metadata" style="display: none"/>
+
+		<hp:options xmlns:hp="http://www.ibm.com/homepage">
+			<hp:option hp:id="numberRecentWikiEntries" hp:type="select" hp:caption="{WIKIS_AMOUNT_ENTRIES}">
+			<hp:choice hp:id="1" hp:value="1"></hp:choice>
+			<hp:choice hp:id="2" hp:value="2"></hp:choice>
+			<hp:choice hp:id="3" hp:value="3"></hp:choice>
+			<hp:choice hp:id="4" hp:value="4"></hp:choice>
+			<hp:choice hp:id="5" hp:value="5"></hp:choice>
+			<hp:choice hp:id="6" hp:value="6"></hp:choice>
+			<hp:choice hp:id="7" hp:value="7"></hp:choice>
+			<hp:choice hp:id="8" hp:value="8"></hp:choice>
+			<hp:choice hp:id="9" hp:value="9"></hp:choice>
+			<hp:choice hp:id="10" hp:value="10"></hp:choice>
+		</hp:option>
+
+	
+		</hp:options>
+
+		</div>
+   
+   		<div id="_IWID_root"/>
+		]]> 
+     </iw:content>
+</iw:iwidget>

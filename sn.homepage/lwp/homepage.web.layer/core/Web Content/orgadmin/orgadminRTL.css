@@ -1,0 +1,67 @@
+/* ***************************************************************** */
+/*                                                                   */
+/* IBM Confidential                                                  */
+/*                                                                   */
+/* OCO Source Materials                                              */
+/*                                                                   */
+/* Copyright IBM Corp. 2008, 2016                                    */
+/*                                                                   */
+/* The source code for this program is not published or otherwise    */
+/* divested of its trade secrets, irrespective of what has been      */
+/* deposited with the U.S. Copyright Office.                         */
+/*                                                                   */
+/* ***************************************************************** */
+
+/*    Styles for orgadmin.jsp mirroring                              */
+
+body[dir='rtl'] .lotusIcon {
+    margin-right:0;
+    margin-left: 3px;
+}
+
+body[dir='rtl'] .lotusMessage2 .lotusIcon {
+    float: right;
+    margin-right: 0;
+    margin-left: 5px;
+}
+
+body[dir='rtl'] div.section_info div.title h2 {
+        float: right;
+        padding: 0 0 2px 5px;
+}
+
+body[dir='rtl'] div.section_info div.title span.link {
+        float: left;
+        padding: 0 2px 2px 0;
+}
+
+body[dir='rtl'] div.section_info div.settingsValue {
+        float: right;
+        text-align: right;
+}
+
+body[dir='rtl'] div.section_info div.settingsDescription {
+        float: left;
+        text-align: left;
+}
+
+body[dir='rtl'] div.section_info div.descriptionEdit label {
+        float: right;
+        padding-left: 10px;
+        text-align: left;
+        margin-right: 15px;
+}
+
+body[dir='rtl'] div.section_info div.descriptionEdit input.inputText {
+        float: right;
+}
+
+body[dir='rtl'] .lotusColLeft {
+        float: right;
+}
+
+body[dir='rtl'] .lotusTitleBarContent {
+        float: right;
+        padding-left: 0;
+        margin-right: 20px;
+}

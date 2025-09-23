@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* HCL Confidential
+*
+* OCO Source Materials
+*
+* Copyright HCL Technologies Limited. 2021
+*
+* The source code for this program is not published or otherwise
+* divested of its trade secrets, irrespective of what has been
+* deposited with the U.S. Copyright Office.
+*
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+    <import resource="classpath:spring/homepage/database/DatabaseContext.xml"/>
+    <import resource="classpath:spring/homepage/services/EnvironmentBeanContext.xml"/>
+    <import resource="classpath:spring/homepage/services/ServicesContext.xml"/>
+    <import resource="classpath:spring/homepage/services/MbeanServiceContext.xml"/>
+    <import resource="classpath:spring/homepage/resources/ResourceBundleContext.xml"/>  
+    <import resource="classpath:spring/homepage/services/UserLifeCycle.xml"/>
+    
+    <bean id="urlNormalizer" class="com.ibm.lconn.homepage.web.utils.impl.UrlNormalizerImpl">
+        <property name="serviceResourceBundle" ref="webResourceBundle" />
+        <property name="configurationService" ref="configurationService" />
+    </bean>
+    
+    <!-- Utils to send event to NR -->
+    <bean id="eventUtils" class="com.ibm.lconn.homepage.web.utils.impl.EventUtils">
+        <property name="webResourceBundle" ref="webResourceBundle"/>
+    </bean>
+    <bean id="newsConfigUtils" class="com.ibm.lconn.homepage.web.utils.impl.NewsConfigUtils" init-method="onInit">
+        <property name="webResourceBundle" ref="webResourceBundle"/>
+    </bean>
+
+    <import resource="/homepage-web-appctx.xml"/>
+    
+    <context:component-scan base-package="com.ibm.lconn.homepage" />
+    <context:annotation-config />
+    <mvc:annotation-driven />
+
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"></mvc:mapping>
+            <mvc:exclude-mapping path="/login/" />
+            <bean class="com.ibm.lconn.homepage.web.interceptor.UserInfoInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"></mvc:mapping>
+            <mvc:exclude-mapping path="/login/" />
+            <bean class="com.ibm.lconn.homepage.web.interceptor.TabInfoInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"></mvc:mapping>
+            <mvc:exclude-mapping path="/login/" />
+            <bean class="com.ibm.lconn.homepage.web.interceptor.FBAResponseHeaderInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/web/widgets/"></mvc:mapping>
+            <mvc:exclude-mapping path="/login/" />
+            <bean class="com.ibm.lconn.homepage.web.interceptor.ExternalUserWidgetInfoInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+    
+    <mvc:resources mapping="/nav/**" location="classpath:/nav/" />
+    <mvc:resources mapping="/web/**" location="classpath:/web/" />
+    <mvc:resources mapping="/_custom/**" location="classpath:/_custom/" />
+    <mvc:resources mapping="/v8/**" location="classpath:/v8/" />
+        
+    <bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer" id="tilesConfigurer">
+        <property name="definitions" value="/WEB-INF/tiles.xml"></property>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.tiles3.TilesViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"></property>
+        <property name="order" value="0"></property>
+    </bean>
+    
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+    <!-- All configuration is now done by the manager - since Spring V3.2 -->
+        <property name="contentNegotiationManager" ref="cnManager"/>
+    </bean>
+     
+    <bean id="cnManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="ignoreAcceptHeader" value="true"/>
+        <property name="defaultContentType" value="text/html"/>
+        
+        <property name="mediaTypes">
+            <map>
+                <entry key="html" value="text/html"/>
+                <entry key="json" value="application/json"/>
+                <entry key="csv" value="application/csv"/>
+                <entry key="png" value="image/png"/>
+            </map>
+        </property>
+    </bean>
+
+    <!-- This custom view resolver handles json responses -->
+    <!--
+    <bean class="com.ibm.ess.ic.ic360.webapp.JsonViewResolver"/>
+    -->
+    
+    <!-- This message converter is responsible for prepare POST RequestBody for the View Controllers -->
+    <!--
+    <bean id="jsonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="jsonHttpMessageConverter"/>
+            </list>
+        </property>
+    </bean>
+    -->
+   
+</beans>

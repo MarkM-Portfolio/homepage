@@ -1,0 +1,225 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2007, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+-- {COPYRIGHT}
+
+---------------------------------------------------------------------------------
+------------------------ START SEARCH -------------------------------------------
+---------------------------------------------------------------------------------
+
+
+----------------------------------------
+--  SR_INDEXINGTASKDEF
+----------------------------------------
+
+UPDATE HOMEPAGE.SR_INDEXINGTASKDEF SET INDEXING_TASK_SERVICES=LOWER(INDEXING_TASK_SERVICES)
+GO
+
+UPDATE HOMEPAGE.SR_INDEXINGTASKDEF SET INDEXING_TASK_SERVICES='all_configured' 
+WHERE INDEXING_TASK_ID='315a416c-78e2-4cf4-bcb2-69eb8d3a2583';
+GO
+
+UPDATE  HOMEPAGE.SR_INDEXINGTASKDEF SET INDEXING_TASK_SERVICES=INDEXING_TASK_SERVICES+'-forums'
+WHERE   INDEXING_TASK_SERVICES LIKE '%communities%' AND INDEXING_TASK_SERVICES NOT LIKE '%forums%'
+GO
+
+----------------------------------------
+--  SR_RESUME_TOKENS
+----------------------------------------
+
+
+ALTER TABLE HOMEPAGE.SR_RESUME_TOKENS 
+ALTER COLUMN TOKEN NVARCHAR(256) NULL
+GO
+
+
+	
+----------------------------------------
+--  SR_FEEDBACK
+----------------------------------------
+
+CREATE TABLE HOMEPAGE.SR_FEEDBACK (
+	ID NVARCHAR(36) NOT NULL,
+	PERSON_ID  NVARCHAR(36) NOT NULL,
+	CLIENT_ID VARCHAR(256) NOT NULL,
+	ACTION VARCHAR(256) NOT NULL,
+	FEEDBACK_TIME DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	ITEM_ID  VARCHAR(256) NOT NULL 
+) ON [PRIMARY]
+GO
+
+ALTER TABLE HOMEPAGE.SR_FEEDBACK
+	ADD CONSTRAINT PK_FEEDBACK_ID PRIMARY KEY (ID)
+GO	
+	
+ALTER TABLE HOMEPAGE.SR_FEEDBACK
+	ADD CONSTRAINT FK_SRFB_PERSON_ID FOREIGN KEY (PERSON_ID)
+	REFERENCES HOMEPAGE.PERSON(PERSON_ID)
+GO	
+	
+
+CREATE INDEX SR_FEEDBACK_CLIENT_IDX
+		ON HOMEPAGE.SR_FEEDBACK (CLIENT_ID)
+GO
+
+{SQL_GRANT_START} HOMEPAGE.SR_FEEDBACK {SQL_GRANT_STOP}
+----------------------------------------
+--  SR_FEEDBACK_CONTEXT
+----------------------------------------
+
+CREATE TABLE HOMEPAGE.SR_FEEDBACK_CONTEXT (
+	CONTEXT_ID NVARCHAR(36) NOT NULL,
+	ID NVARCHAR(36) NOT NULL,
+	TYPE  VARCHAR(256) NOT NULL,
+	TYPE_VALUE VARCHAR(256) NOT NULL,
+	WEIGHT VARCHAR(256) NOT NULL
+) ON [PRIMARY]
+GO
+
+
+ALTER TABLE HOMEPAGE.SR_FEEDBACK_CONTEXT
+	ADD CONSTRAINT PK_FBK_CTXT_ID PRIMARY KEY (CONTEXT_ID)
+GO	
+
+ALTER TABLE HOMEPAGE.SR_FEEDBACK_CONTEXT
+	ADD CONSTRAINT FK_FBK_CTXT_ID FOREIGN KEY (ID)
+	REFERENCES HOMEPAGE.SR_FEEDBACK(ID) ON DELETE CASCADE
+GO	
+
+{SQL_GRANT_START} HOMEPAGE.SR_FEEDBACK_CONTEXT {SQL_GRANT_STOP}
+GO
+
+----------------------------------------
+--  SR_FEEDBACK_PARAMETERS
+----------------------------------------
+
+CREATE TABLE HOMEPAGE.SR_FEEDBACK_PARAMETERS (
+	PARAMETERS_ID NVARCHAR(36) NOT NULL,
+	ID NVARCHAR(36) NOT NULL,
+	PARAM  VARCHAR(256) NOT NULL,
+	PARAM_VALUE VARCHAR(256) NOT NULL
+) ON [PRIMARY]
+GO
+	
+ALTER TABLE HOMEPAGE.SR_FEEDBACK_PARAMETERS
+	ADD CONSTRAINT PK_FBK_PARAMS_ID PRIMARY KEY (PARAMETERS_ID)
+GO	
+	
+ALTER TABLE HOMEPAGE.SR_FEEDBACK_PARAMETERS
+	ADD CONSTRAINT FK_FBK_PARAMS_ID FOREIGN KEY (ID)
+	REFERENCES HOMEPAGE.SR_FEEDBACK(ID) ON DELETE CASCADE
+GO	
+
+{SQL_GRANT_START} HOMEPAGE.SR_FEEDBACK_PARAMETERS {SQL_GRANT_STOP}
+GO
+----------------------------------------
+--  SR_STATS
+----------------------------------------
+
+CREATE TABLE HOMEPAGE.SR_STATS(
+	STAT_ID		NVARCHAR(36) NOT NULL,
+	STAT_KEY 	NVARCHAR(256) NOT NULL,
+	STAT_TYPE	NUMERIC(5,0) NOT NULL,
+	UPDATED		DATETIME NOT NULL
+) ON [PRIMARY]
+GO
+
+ALTER TABLE HOMEPAGE.SR_STATS
+	ADD CONSTRAINT PK_SR_STAT_ID PRIMARY KEY (STAT_ID)
+GO	
+
+ALTER TABLE HOMEPAGE.SR_STATS
+	ADD CONSTRAINT UNIQUE_STAT_KEY UNIQUE (STAT_KEY)
+GO	
+
+
+{SQL_GRANT_START} HOMEPAGE.SR_STATS {SQL_GRANT_STOP}
+GO
+----------------------------------------
+--  SR_STRING_STATS
+----------------------------------------
+
+CREATE TABLE HOMEPAGE.SR_STRING_STATS(
+	STRING_STAT_ID		NVARCHAR(36) NOT NULL,
+	STAT_ID				NVARCHAR(36) NOT NULL,
+	STAT_VALUE			NVARCHAR(256)  NOT NULL
+) ON [PRIMARY]
+GO
+
+ALTER TABLE HOMEPAGE.SR_STRING_STATS
+	ADD CONSTRAINT PK_STR_STAT_ID PRIMARY KEY (STRING_STAT_ID)
+GO	
+
+ALTER TABLE HOMEPAGE.SR_STRING_STATS
+	ADD CONSTRAINT FK_STR_STAT_ID FOREIGN KEY (STAT_ID)
+	REFERENCES HOMEPAGE.SR_STATS(STAT_ID) ON DELETE CASCADE
+GO	
+
+{SQL_GRANT_START} HOMEPAGE.SR_STRING_STATS {SQL_GRANT_STOP}
+GO
+----------------------------------------
+--  SR_NUMBER_STATS
+----------------------------------------
+
+CREATE TABLE HOMEPAGE.SR_NUMBER_STATS(
+	NUMBER_STAT_ID		NVARCHAR(36) NOT NULL,
+	STAT_ID				NVARCHAR(36) NOT NULL,
+	STAT_VALUE			NUMERIC(19,0) NOT NULL
+) ON [PRIMARY]
+GO
+
+ALTER TABLE HOMEPAGE.SR_NUMBER_STATS
+	ADD CONSTRAINT PK_NUM_STAT_ID PRIMARY KEY (NUMBER_STAT_ID)
+GO	
+
+
+ALTER TABLE HOMEPAGE.SR_NUMBER_STATS
+	ADD CONSTRAINT FK_NUM_STAT_ID FOREIGN KEY (STAT_ID)
+	REFERENCES HOMEPAGE.SR_STATS(STAT_ID) ON DELETE CASCADE
+GO	
+	
+{SQL_GRANT_START} HOMEPAGE.SR_NUMBER_STATS {SQL_GRANT_STOP}
+GO
+
+----------------------------------------
+--  SR_TIMER_STATS
+----------------------------------------
+
+CREATE TABLE HOMEPAGE.SR_TIMER_STATS(
+	TIMER_STAT_ID		NVARCHAR(36) NOT NULL,
+	STAT_ID				NVARCHAR(36) NOT NULL,
+	AVERAGE				NUMERIC(19,0) NOT NULL,
+	MINIMUM				NUMERIC(19,0) NOT NULL,
+	MAXIMUM				NUMERIC(19,0) NOT NULL,
+	COUNTER				NUMERIC(5,0)	NOT NULL
+) ON [PRIMARY]
+GO
+
+ALTER TABLE HOMEPAGE.SR_TIMER_STATS
+	ADD CONSTRAINT PK_TMR_STAT_ID PRIMARY KEY (TIMER_STAT_ID)
+GO	
+	
+ALTER TABLE HOMEPAGE.SR_TIMER_STATS
+	ADD CONSTRAINT FK_TMR_STAT_ID FOREIGN KEY (STAT_ID)
+	REFERENCES HOMEPAGE.SR_STATS(STAT_ID) ON DELETE CASCADE
+GO	
+
+
+{SQL_GRANT_START} HOMEPAGE.SR_TIMER_STATS {SQL_GRANT_STOP}
+GO
+
+	
+---------------------------------------------------------------------------------
+------------------------ END SEARCH ---------------------------------------------
+---------------------------------------------------------------------------------

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2011, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+<plugin>
+    <extension point="net.jazz.ajax.webBundles">
+    	<alias value="lconn.homepage" />
+    </extension>
+	
+	<extension point="net.jazz.ajax.dojoResourceModules">
+    	<dojoResourceModule package="lconn.homepage" name="jsp" 
+    		file="/com/ibm/lconn/homepage/resources/nls/jsp/jsp_resources.properties" />
+    	<dojoResourceModule package="lconn.homepage" name="activitystream" 
+    		file="/com/ibm/lconn/homepage/resources/nls/activitystream/activitystream_resources.properties" />
+    	<dojoResourceModule package="lconn.homepage" name="hpuistrings" 
+    		file="/com/ibm/lconn/homepage/resources/nls/ui/ui_resources.properties" />
+    	<dojoResourceModule package="lconn.homepage" name="widgetstrings" 
+    		file="/com/ibm/lconn/homepage/resources/nls/widgets/widgets_resources.properties" />
+     	<dojoResourceModule package="lconn.homepage" name="activitystreamconfig" 
+    		file="/com/ibm/lconn/homepage/resources/nls/activitystream/config/activitystreamconfig_resources.properties" />
+    </extension>
+</plugin>

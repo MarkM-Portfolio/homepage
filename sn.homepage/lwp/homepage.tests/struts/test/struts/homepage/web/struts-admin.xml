@@ -1,0 +1,91 @@
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+ "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2009, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<!-- Package regrouping the actions related to Admin tab -->
+<struts>
+	<package name="admin" extends="homepage-default" namespace="/admin">
+	   <action name="newWidget" class="com.ibm.lconn.homepage.web.action.admin.NewWidgetAction">
+			<result name="success" type="tiles">
+               homepage.admin.adminPage
+            </result>
+        </action>
+        
+       	<action name="removeWidgets" class="com.ibm.lconn.homepage.web.action.admin.RemoveWidgetsAction">
+			<result name="success" type="tiles">
+               homepage.admin.adminPage
+            </result>
+        </action>
+        
+        <action name="enableWidgets" class="com.ibm.lconn.homepage.web.action.admin.EnableWidgetsAction">
+			<result name="success" type="tiles">
+               homepage.admin.adminPage
+            </result>
+        </action>
+        
+        <action name="enableTestMode" class="com.ibm.lconn.homepage.web.action.admin.EnableTestModeAction">
+			<result name="success" type="tiles">
+               homepage.admin.adminPage
+            </result>
+        </action>
+        
+        <action name="editWidget" class="com.ibm.lconn.homepage.web.action.admin.EditWidgetAction">
+			<result name="success" type="tiles">
+              homepage.admin.adminPage
+            </result>
+        </action>
+        
+        <action name="disableWidgets" class="com.ibm.lconn.homepage.web.action.admin.DisableWidgetsAction">
+			<result name="success" type="tiles">
+              homepage.admin.adminPage
+            </result>
+        </action>
+        
+        
+        <action name="openEditForm" class="com.ibm.lconn.homepage.web.action.admin.OpenEditFromAction">
+			<result name="success" type="tiles">
+              homepage.admin.editForm
+            </result>
+        </action>
+        
+        <action name="newOpenEditForm" class="com.ibm.lconn.homepage.web.action.admin.OpenEditFromAction" method = "newOpenEditForm">
+			<result name="success" type="tiles">
+              homepage.admin.editForm
+            </result>
+        </action>
+        
+        <action name="refreshCash" class="com.ibm.lconn.homepage.web.action.admin.AbstractWidgetAdminAction" method = "refreshDescriptorCache">
+			<result name="success" type="tiles">
+              homepage.admin.adminPage
+            </result>
+        </action>
+       
+        <action name="openAdminPage" class="com.ibm.lconn.homepage.web.action.admin.OpenAdminPageAction">
+			<result name="success" type="tiles">
+              homepage.admin.adminPage
+            </result>
+        </action>
+        
+        <action name="clearWidgetCache" class="com.ibm.lconn.homepage.web.action.admin.ClearWidgetCacheAction">
+			<result name="success" type="tiles">
+              homepage.admin.adminPage
+            </result>
+        </action>
+	
+	</package>
+	
+</struts>

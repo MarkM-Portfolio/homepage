@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2006, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+	version="2.0">
+
+	<description>Tag library to assist generation of JSP pages in the Connections Homepage</description>
+	<tlib-version>1.1</tlib-version>
+	<short-name>dboard</short-name>
+	<uri>http://www.ibm.com/homepage/tags</uri>
+
+	<tag>
+		<name>newsIcon</name>
+		<tag-class>
+			com.ibm.lconn.web.taglib.sprites.IconTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>source</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>alt</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>eventName</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>		
+		</attribute>
+		<attribute>
+			<name>customMapping</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>		
+		</attribute>
+		<attribute>
+			<name>resourceBundlePrefix</name>
+			<required>no</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<name>userNameByExtId</name>
+		<tag-class>
+			com.ibm.lconn.web.taglib.jsp.UserNameTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>externalId</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<name>convertDateToClientTimeZone</name>
+		<tag-class>
+			com.ibm.lconn.web.taglib.jsp.ConvertDateToClientTimeZoneTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>pattern</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>clientTZOffSet</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<name>componentsReferenceTag</name>
+		<tag-class>
+			com.ibm.lconn.web.taglib.components.ComponentsReferenceTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>jsVarName</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<name>BuildNumberTag</name>
+		<tag-class>com.ibm.lconn.web.taglib.jsp.BuildNumberTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+      		<name>removeSpaces</name>
+	      	<required>false</required>
+	      	<rtexprvalue>true</rtexprvalue>
+	   </attribute>		
+	</tag>
+	
+	<tag>
+		<name>homepagePageState</name>
+		<tag-class>com.ibm.lconn.web.taglib.jsp.HomepagePageState</tag-class>
+		<body-content>empty</body-content>
+	</tag>
+	
+	<function>
+		<description>Return availability of a given Connections component from LotusConnections-Config</description>
+		<name>isComponentEnabled</name>
+		<function-class>
+			com.ibm.lconn.web.taglib.components.ComponentConfig</function-class>
+		<function-signature>boolean isComponentEnabled(
+			java.lang.String)</function-signature>	
+	</function>
+	
+	<function>
+		<description>Get custom authentication settings</description>
+		<name>getCustomAuthSettings</name>
+		<function-class>
+			com.ibm.lconn.web.taglib.components.ComponentConfig</function-class>
+		<function-signature>com.ibm.ventura.internal.config.helper.api.VenturaConfigurationHelper.CustomAuthenticationSettings getCustomAuthSettings()</function-signature>
+	</function>
+	
+	<function>
+		<description>Return the service url of a given Connections component from LotusConnections-Config</description>
+		<name>getComponentUrl</name>
+		<function-class>
+			com.ibm.lconn.web.taglib.components.ComponentConfig</function-class>
+		<function-signature>java.lang.String getComponentUrl(
+			java.lang.String, 
+			boolean)</function-signature>	
+	</function>
+	
+	<function>
+		<description>Return matching on a regular expression</description>
+		<name>matches</name>
+		<function-class>
+			com.ibm.lconn.web.taglib.jsp.JspFunctions</function-class>
+		<function-signature>boolean matches(
+			java.lang.String, java.lang.String)</function-signature>	
+	</function>
+
+	<function>
+		<description>Get resourced strings</description>
+		<name>getResourceStr</name>
+		<function-class>
+			com.ibm.lotus.connections.dashboard.service.metrics.internal.MetricsCollector</function-class>
+		<function-signature>java.lang.String getResourceStrC(
+			java.lang.String)</function-signature>
+	</function>
+	
+	<function>
+		<description>Get token for copy of metrics hashmap</description>
+		<name>getMetricHashMapToken</name>
+		<function-class>
+			com.ibm.lotus.connections.dashboard.service.metrics.internal.MetricsCollector</function-class>
+		<function-signature>java.lang.String getMetricHashMapTokenC()</function-signature>
+	</function>
+
+	<function>
+		<description>
+			Destroy (null) hashmap related to token
+		</description>
+		<name>destroyMetricHashMap</name>
+		<function-class>
+			com.ibm.lotus.connections.dashboard.service.metrics.internal.MetricsCollector</function-class>
+		<function-signature>java.lang.String
+			destroyMetricHashMapC(java.lang.String)</function-signature>
+	</function>
+
+	<function>
+		<description>Looks up metric values</description>
+		<name>getMetricValueForKey</name>
+		<function-class>
+			com.ibm.lotus.connections.dashboard.service.metrics.internal.MetricsCollector</function-class>
+		<function-signature>java.lang.Long getMetricValueForKeyC(
+			java.lang.String,
+			java.lang.String)</function-signature>
+	</function>
+
+	<function>
+		<description>
+			Get date.
+		</description>
+		<name>getMetricDate</name>
+		<function-class>
+			com.ibm.lotus.connections.dashboard.service.metrics.internal.MetricsCollector</function-class>
+		<function-signature>java.util.Date getMetricDateC( java.lang.String)</function-signature>
+	</function>
+
+	<function>
+		<description>Looks up metric values description</description>
+		<name>getMetricDescriptionForKey</name>
+		<function-class>
+			com.ibm.lotus.connections.dashboard.service.metrics.internal.MetricsCollector</function-class>
+		<function-signature>java.lang.String getMetricDescriptionForKeyC(
+			java.lang.String)</function-signature>
+	</function>
+</taglib>

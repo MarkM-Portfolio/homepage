@@ -1,0 +1,108 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2008, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+connect to HOMEPAGE;
+
+----------------------------------------------------------
+-- CREATE THE USER HOMEPAGEUSER and role HOMEPAGEUSER_ROLE
+----------------------------------------------------------
+CREATE ROLE HOMEPAGEUSER_ROLE;
+CREATE USER "HOMEPAGEUSER" PROFILE "DEFAULT" IDENTIFIED BY "&1" DEFAULT TABLESPACE "HOMEPAGEREGTABSPACE" TEMPORARY TABLESPACE "TEMP" ACCOUNT UNLOCK;
+ 
+-----------------------------------------------------------------------------------------------------------
+--  1 Adding the LOCALE and DISPLAYNAME attribute to the EMD_RECIPIENTS
+-----------------------------------------------------------------------------------------------------------
+ALTER TABLE HOMEPAGE.EMD_RECIPIENTS
+	ADD LOCALE VARCHAR2(5);
+
+ALTER TABLE HOMEPAGE.EMD_RECIPIENTS
+	ADD DISPLAYNAME VARCHAR2(256);
+
+-----------------------------------------------------------------------------------------------------------
+--  2 Adding the TEXT_META_TEMPLATE an empty space
+-----------------------------------------------------------------------------------------------------------
+UPDATE HOMEPAGE.NR_NEWS_RECORDS SET TEXT_META_TEMPLATE = ' ';
+ 
+-----------------------------------------------------------------------------------------------------------
+--  3 Adding the default value to 0 for IS_PRIVATE in the table HOMEPAGE.NR_SOURCE
+-----------------------------------------------------------------------------------------------------------
+UPDATE HOMEPAGE.NR_SOURCE SET IS_PRIVATE = 0;
+
+-----------------------------------------------------------------------------------------------------------
+--  4 Upgrade fixup number to 13
+-----------------------------------------------------------------------------------------------------------
+
+-- Updating the schema version from 12 to 13
+UPDATE  HOMEPAGE.HOMEPAGE_SCHEMA SET DBSCHEMAVER = 13
+WHERE   DBSCHEMAVER = 12;
+
+
+--------------------------------------------------------------------------------
+-- GRANT HOMEPAGEUSER - HOMEPAGEUSER_ROLE
+--------------------------------------------------------------------------------
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.HOMEPAGE_SCHEMA TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.PERSON TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.LOGINNAME TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.PREREQ TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.WIDGET  TO HOMEPAGEUSER_ROLE;
+
+
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.HP_UI  TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.HP_TAB  TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.HP_TAB_INST  TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.HP_WIDGET_INST  TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.HP_WIDGET_TAB  TO HOMEPAGEUSER_ROLE;
+
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.NT_NOTIFICATION TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.NT_NOTIFICATION_RECIPIENT TO HOMEPAGEUSER_ROLE;
+
+-- NEWS REPOSITORY
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.NR_SOURCE TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.NR_SUBSCRIPTION TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.NR_NEWS_RECORDS TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.NR_TEMPLATE TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.NR_EVENT_RECORDS TO HOMEPAGEUSER_ROLE;
+
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.EMD_JOBS TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.EMD_JOBS_STATS TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.EMD_RECIPIENTS TO HOMEPAGEUSER_ROLE;
+
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.NR_SCHEDULER_LMGR TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.NR_SCHEDULER_LMPR TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.NR_SCHEDULER_TASK TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.NR_SCHEDULER_TREG TO HOMEPAGEUSER_ROLE;
+
+-- SEARCH
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.SR_TASKDEF TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.SR_OPTIMIZETASKDEF TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.SR_INDEXINGTASKDEF TO HOMEPAGEUSER_ROLE;
+
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.LOTUSCONNECTIONSLMGR TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.LOTUSCONNECTIONSLMPR TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.LOTUSCONNECTIONSTASK TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.LOTUSCONNECTIONSTREG TO HOMEPAGEUSER_ROLE;
+
+GRANT ALTER SESSION TO HOMEPAGEUSER_ROLE;
+GRANT CREATE SESSION TO HOMEPAGEUSER_ROLE;
+GRANT CREATE SYNONYM TO HOMEPAGEUSER_ROLE;
+GRANT SELECT_CATALOG_ROLE, HOMEPAGEUSER_ROLE TO HOMEPAGEUSER;
+
+COMMIT;
+
+--------------------------------------
+-- DISCONNECT
+--------------------------------------
+DISCONNECT ALL;
+
+QUIT;

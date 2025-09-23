@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- HCL Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright HCL Technologies Limited. 2010, 2021                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<tiles-definitions>
+
+    <!-- Main Tabs/Pages -->
+    <!-- gettingStarted page -->
+    <definition name="homepage.main.gettingStarted" template="/web/jsp/tiles/mainTemplate.jsp">
+        <put-attribute name="headSection" value="homepage.gettingStarted.headSection" />
+        <put-attribute name="header" value="homepage.gettingStarted.header" />
+        <put-attribute name="main" value="homepage.gettingStarted.main" />
+        <put-attribute name="footer" value="homepage.common.footer" />
+    </definition>
+
+    <!-- activity stream page -->
+    <definition name="homepage.main.activityStream" template="/web/jsp/tiles/mainTemplate.jsp">
+        <put-attribute name="headSection" value="homepage.activityStream.headSection" />
+        <put-attribute name="header" value="homepage.activityStream.header" />
+        <put-attribute name="main" value="homepage.activityStream.main" />
+        <put-attribute name="footer" value="homepage.common.footer" />
+    </definition>
+
+    <!-- widgets page -->
+    <definition name="homepage.main.widgetsPage" template="/web/jsp/tiles/mainTemplate.jsp">
+        <put-attribute name="CSSBodyClass" value="lconnHomepageMyPage" />
+        <put-attribute name="headSection" value="homepage.widgets.headSection" />
+        <put-attribute name="header" value="homepage.widgets.header" />
+        <put-attribute name="main" value="homepage.widgets.main" />
+        <put-attribute name="footer" value="homepage.common.footer" />
+    </definition>
+
+    <!-- About page -->
+    <definition name="homepage.main.about" template="/web/jsp/tiles/mainTemplate.jsp">
+        <put-attribute name="CSSBodyClass" value="lotusAbout" />
+        <put-attribute name="headSection" value="homepage.static.headSection" />
+        <put-attribute name="header" value="homepage.static.header" />
+        <put-attribute name="main" value="homepage.about.main" />
+        <put-attribute name="footer" value="/web/jsp/tiles/about/footer.jspf" />
+    </definition>
+
+    <!-- Admin page -->
+    <definition name="homepage.admin.adminPage" template="/web/jsp/tiles/mainTemplate.jsp">
+        <put-attribute name="headSection" value="homepage.admin.headSection" />
+        <put-attribute name="header" value="homepage.admin.header" />
+        <put-attribute name="main" value="homepage.main.adminPage" />
+        <put-attribute name="footer" value="homepage.common.footer" />
+    </definition>
+
+    <definition name="homepage.admin.editForm" template="/web/jsp/tiles/mainTemplate.jsp">
+        <put-attribute name="headSection" value="homepage.admin.headSection" />
+        <put-attribute name="header" value="homepage.admin.header" />
+        <put-attribute name="main" value="homepage.main.editForm" />
+        <put-attribute name="footer" value="homepage.common.footer" />
+    </definition>
+
+    <!-- Metrics page -->
+    <definition name="homepage.main.metricsPage" template="/web/jsp/tiles/mainTemplate.jsp">
+        <put-attribute name="CSSBodyClass" value="lotusMetrics" />
+        <put-attribute name="headSection" value="homepage.static.headSection" />
+        <put-attribute name="header" value="homepage.static.header" />
+        <put-attribute name="main" value="homepage.metrics.main" />
+        <put-attribute name="footer" value="homepage.common.footer" />
+    </definition>
+
+    <definition name="homepage.main.notSet" template="/web/jsp/tiles/mainTemplate.jsp">
+        <put-attribute name="headSection" value="homepage.static.headSection" />
+        <put-attribute name="header" value="homepage.static.header" />
+        <put-attribute name="main" value="homepage.metrics.notSet" />
+        <put-attribute name="footer" value="homepage.common.footer" />
+    </definition>
+    <!-- TODO -->
+
+    <!-- Tools page -->
+    <definition name="homepage.main.tools" template="/web/jsp/tiles/mainTemplate.jsp">
+        <put-attribute name="headSection" value="homepage.static.headSection" />
+        <put-attribute name="header" value="homepage.static.header" />
+        <put-attribute name="main" value="homepage.tools.main" />
+        <put-attribute name="footer" value="homepage.common.footer" />
+    </definition>
+
+    <!-- AS Entry Post page -->
+    <definition name="homepage.main.testASPostPage" template="/web/jsp/tiles/mainTemplate.jsp">
+        <put-attribute name="headSection" value="homepage.static.headSection" />
+        <put-attribute name="header" value="homepage.static.header" />
+        <put-attribute name="main" value="/web/jsp/test/testAS.jsp" />
+        <put-attribute name="footer" value="homepage.common.footer" />
+    </definition>
+    <!-- end main templates -->
+
+
+    <!-- Single JSPs for Spring mapping -->
+    <definition name="homepage.login" template="/login/index.jsp"></definition>
+    <definition name="homepage.error" template="/nav/templates/error.jsp"></definition>
+    <definition name="homepage.index" template="/web/jsp/index.jsp"></definition>
+    <definition name="homepage.redirectLegacy" template="/web/jsp/redirectLegacy.jsp?updates"></definition>
+    <definition name="homepage.redirectLegacy.homeRedirect" template="/web/jsp/redirectLegacy.jsp?homepageRedirectAction"></definition>
+    <definition name="homepage.palette.jsonWidgetCatalog" template="/web/jsp/common/palette/jsonWidgetCatalog.jsp"></definition>
+    <definition name="homepage.startTab.stepOne" template="/web/jsp/startTab/stepOne.jspf"></definition>
+    <definition name="homepage.startTab.shareStepPage" template="/web/jsp/startTab/shareStepPage.jspf"></definition>
+    <definition name="homepage.startTab.exploreStepPage" template="/web/jsp/startTab/exploreStepPage.jspf"></definition>
+    <!-- end single JSPs -->
+
+
+    <!-- head section (what goes in <head>) -->
+
+    <!-- Most basic definition for <head> section. Real implementation extends this -->
+    <definition name="homepage.abstract.headSection" template="/web/jsp/tiles/common/headerSectionTile.jspf">
+        <put-attribute name="css" value="/web/jsp/common/defaultCSS.jspf" />
+    </definition>
+
+    <!-- Main "tabs": udpates and widget pages -->
+
+    <!-- Head section used by most of our static pages (about, tools, ...). Just need to include dojo on the page for drop down search bar -->
+    <definition name="homepage.static.headSection" extends="homepage.abstract.headSection">
+        <!-- Just need dojo in About page -->
+        <put-attribute name="bootStrapJavaScript" value="/web/jsp/common/init/includeJsStatic.jspf" />
+    </definition>
+
+    <definition name="homepage.abstract.headSectionMainTab" extends="homepage.abstract.headSection">
+        <put-attribute name="widgetDescriptors" value="/web/jsp/common/iWidget/xmlFormater.jspf" />
+        <put-attribute name="businessCardInit" value="/web/jsp/common/customHeaders.jspf" />
+    </definition>
+
+    <definition name="homepage.activityStream.headSection" extends="homepage.abstract.headSectionMainTab">
+        <put-attribute name="bootStrapJavaScript" value="/web/jsp/activityStream/init/bootStrapJsActivityStream.jspf" />
+    </definition>
+
+    <definition name="homepage.widgets.headSection" extends="homepage.abstract.headSectionMainTab">
+        <put-attribute name="bootStrapJavaScript" value="/web/jsp/widgetsTab/init/bootStrapJsWidgetPage.jspf" />
+    </definition>
+
+    <definition name="homepage.gettingStarted.headSection" extends="homepage.abstract.headSectionMainTab">
+        <put-attribute name="bootStrapJavaScript" value="/web/jsp/startTab/init/bootStrapJsStart.jspf" />
+    </definition>
+
+    <definition name="homepage.admin.headSection" extends="homepage.abstract.headSection">
+        <put-attribute name="bootStrapJavaScript" value="homepage.common.dojo" />
+        <put-attribute name="adminHeadJavaScript" value="/admin/adminHeader.jspf" />
+    </definition>
+
+    <!-- end head section -->
+
+    <!-- header -->
+
+    <!-- Common header to our page: contains navigation bar + main tabs with search box -->
+    <definition name="homepage.abstract.header" template="/web/jsp/tiles/common/header.jspf">
+        <put-attribute name="debugModeLabel" value="/web/jsp/common/printDebugMode.jspf" />
+        <put-attribute name="navigationBar" value="/web/jsp/common/pageHeader.jspf" />
+        <put-attribute name="searchBox" value="/web/jsp/common/search.jspf" />
+        <put-attribute name="homeHeading" value="/web/jsp/common/homeHeading.jspf" />
+    </definition>
+
+    <definition name="homepage.activityStream.header" extends="homepage.abstract.header">
+        <put-attribute name="menuBar" value="homepage.activityStream.menuBar" />
+        <put-attribute name="placeBar" value="homepage.activityStream.placeBar" />
+    </definition>
+
+    <definition name="homepage.widgets.header" extends="homepage.abstract.header">
+        <put-attribute name="menuBar" value="homepage.widgets.menuBar" />
+        <put-attribute name="placeBar" value="homepage.widgets.placeBar" />
+    </definition>
+
+    <definition name="homepage.gettingStarted.header" extends="homepage.abstract.header">
+        <put-attribute name="menuBar" value="homepage.gettingStarted.menuBar" />
+        <put-attribute name="placeBar" value="homepage.gettingStarted.placeBar" />
+    </definition>
+
+
+    <definition name="homepage.admin.header" extends="homepage.abstract.header">
+        <put-attribute name="menuBar" value="homepage.admin.menuBar" />
+        <put-attribute name="placeBar" value="homepage.admin.placeBar" />
+    </definition>
+
+    <!-- Header used by most of our static pages (about, tools, ...). Just include tab bar -->
+    <definition name="homepage.static.header" extends="homepage.abstract.header">
+        <put-attribute name="menuBar" value="homepage.common.menuBar" />
+    </definition>
+
+    <!-- end header -->
+
+    <!-- Tabs -->
+    <!-- Main tab header section. tabName attribute (optional) needs to be passed to select a specific tab -->
+    <definition name="homepage.common.menuBar" template="/web/jsp/common/tabs.jspf">
+        <put-attribute name="tabName" value="common" />
+    </definition>
+
+    <definition name="homepage.activityStream.menuBar" extends="homepage.common.menuBar">
+        <put-attribute name="tabName" value="updates" />
+    </definition>
+
+    <definition name="homepage.widgets.menuBar" extends="homepage.common.menuBar">
+        <put-attribute name="tabName" value="widgets" />
+    </definition>
+
+    <definition name="homepage.gettingStarted.menuBar" extends="homepage.common.menuBar">
+        <put-attribute name="tabName" value="gettingStarted" />
+    </definition>
+
+    <definition name="homepage.admin.menuBar" extends="homepage.common.menuBar">
+        <put-attribute name="tabName" value="admin" />
+    </definition>
+
+
+    <!-- end Tabs -->
+
+
+    <!-- Place header -->
+
+    <definition name="homepage.abstract.placeBar" template="/web/jsp/common/placeBar.jspf">
+        <put-attribute name="displayCustomizationButton" value="true" />
+    </definition>
+
+    <definition name="homepage.activityStream.placeBar" extends="homepage.abstract.placeBar">
+        <put-attribute name="tabName" value="updates" />
+    </definition>
+
+    <definition name="homepage.widgets.placeBar" extends="homepage.abstract.placeBar">
+        <put-attribute name="tabName" value="widgets" />
+    </definition>
+
+    <definition name="homepage.gettingStarted.placeBar" extends="homepage.abstract.placeBar">
+        <put-attribute name="tabName" value="gettingStarted" />
+        <put-attribute name="displayCustomizationButton" value="false" />
+    </definition>
+
+    <definition name="homepage.admin.placeBar" extends="homepage.abstract.placeBar">
+        <put-attribute name="tabName" value="admin" />
+        <put-attribute name="displayCustomizationButton" value="false" />
+    </definition>
+
+    <!-- End Place header -->
+
+    <!-- Left Column -->
+    <definition name="homepage.abstract.leftColumn" template="/web/jsp/common/leftColumn.jspf"></definition>
+
+    <definition name="homepage.gettingStarted.leftColumn" extends="homepage.abstract.leftColumn">
+        <put-attribute name="page" value="gettingStarted" />
+    </definition>
+
+    <definition name="homepage.activityStream.leftColumn" extends="homepage.abstract.leftColumn">
+        <put-attribute name="page" value="activityStream" />
+    </definition>
+
+    <definition name="homepage.widgets.leftColumn" extends="homepage.abstract.leftColumn">
+        <put-attribute name="page" value="widgets" />
+    </definition>
+
+    <definition name="homepage.admin.leftColumn" extends="homepage.abstract.leftColumn">
+        <put-attribute name="page" value="admin" />
+    </definition>
+    <!-- End Left Column -->
+
+    <!-- Common definitions -->
+    <definition name="homepage.common.footer" template="/web/jsp/common/footer.jspf" />
+    <definition name="homepage.common.dojo" template="/web/jsp/common/dojo.jspf" />
+
+    <!-- End Common definitions -->
+
+    <!-- Palette container + init code.-->
+    <definition name="homepage.common.palette" template="/web/jsp/common/palette/palette.jspf" />
+
+    <!-- Getting started tabs -->
+    <definition name="homepage.gettingStarted.main" template="/web/jsp/startTab/gettingStarted.jspf">
+        <put-attribute name="leftColumn" value="homepage.gettingStarted.leftColumn" />
+    </definition>
+
+    <!-- Activity Stream Section -->
+    <definition name="homepage.activityStream.main" template="/web/jsp/tiles/activityStream/mainTile.jspf">
+        <put-attribute name="leftColumn" value="homepage.activityStream.leftColumn" />
+    </definition>
+
+    <!-- Widgets page main section -->
+    <definition name="homepage.widgets.main" template="/web/jsp/tiles/widgets/mainTile.jspf">
+        <put-attribute name="leftColumn" value="homepage.widgets.leftColumn" />
+    </definition>
+
+    <!-- About page main section -->
+    <definition name="homepage.about.main" template="/web/jsp/tiles/about/mainTile.jspf" />
+
+    <!-- Metrics page main section -->
+    <definition name="homepage.metrics.main" template="/web/jsp/tiles/metrics/mainTile.jspf" />
+    <definition name="homepage.metrics.notSet" template="/web/jsp/tiles/metrics/notSet.jspf" />
+
+    <!-- Tool page main section - main page comes from sn.infra (core) -->
+    <definition name="homepage.tools.main" template="/web/jsp/tiles/tools/mainTile.jspf" />
+    <definition name="core.toolspage" template="/nav/tools/tools.jsp" />
+
+    <!-- Admin page main section -->
+    <definition name="homepage.main.adminPage" template="/admin/adminPageTiles.jspf">
+        <put-attribute name="leftColumn" value="homepage.admin.leftColumn" />
+    </definition>
+    <definition name="homepage.main.editForm" template="/admin/editFormTiles.jspf" />
+
+    <!-- Orient Me -->
+    <definition name="homepage.orient.header" template="/web/jsp/common/orient/pageHeader.jspf" />
+
+    <!-- Page Wrapper -->
+    <definition name="homepage.page.wrapper" template="/web/jsp/common/pageWrapper.jspf" />
+    
+</tiles-definitions>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* HCL Confidential
+*
+* OCO Source Materials
+*
+* Copyright HCL Technologies Limited. 2021
+*
+* The source code for this program is not published or otherwise
+* divested of its trade secrets, irrespective of what has been
+* deposited with the U.S. Copyright Office.
+*
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:c="http://www.springframework.org/schema/c"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <!-- maximum upload size for a single request. That means the total size of all upload files cannot exceed this configured maximum. Default is unlimited (value of -1). -->
+        <property name="maxUploadSize" value="-1"/>
+
+        <!-- files with size below this value are stored in memory, otherwise they will be stored in disk directly. Default is 10KB (10240 bytes). Here it is set to 1MB. -->
+        <property name="maxInMemorySize" value="1048576"/>
+        <!-- 1MB -->
+    </bean>
+
+    <!--
+    <bean id="nlsService" class="com.ibm.ess.ic.ic360.ui.nls.NlsServiceImpl" />
+
+    <bean id="localeResolver" class="com.ibm.ess.ic.ic360.ui.nls.ICXTLocaleResolver" />
+    <bean id="messageSource" class="com.ibm.ess.ic.ic360.ui.nls.ICXTResourceBundleMessageSource">
+        <property name="basename" value="/nls/messages" />
+        <property name="defaultEncoding" value="UTF-8" />
+        <property name="cacheSeconds" value="3600" />
+    </bean>
+    -->
+
+    <!-- Import util services see: ic360/core/ic360.services.util/src/main/resources/com/ibm/ess/ic/ic360/util/ic360-appCtx.xml -->
+
+    <!--
+    <import resource="classpath:/com/ibm/ess/ic/ic360/util/ic360-appCtx.xml" />
+    -->
+
+    <!-- Import shared webapp services see: ic360/shared/ic360.shared.webapp/src/main/resources/com/ibm/ess/ic/ic360/shared/webapp/ic360-appCtx.xml -->
+    <!--
+    <import resource="classpath:/com/ibm/ess/ic/ic360/shared/webapp/ic360-appCtx.xml" />
+    -->
+
+    <!-- Import DB services see: ic360/ic360.services.db/src/main/resources/com/ibm/ess/ic/ic360/db/ic360-appCtx.xml -->
+    <!--
+    <import resource="classpath:/com/ibm/ess/ic/ic360/db/ic360-appCtx.xml" />
+    -->
+
+    <!-- Import XML services see: ic360/ic360.services.model/src/main/resources/com/ibm/ess/ic/ic360/model/ic360-appCtx.xml -->
+    <!--
+    <import resource="classpath:/com/ibm/ess/ic/ic360/model/ic360-appCtx.xml" />
+    -->
+
+    <!-- Import IBM Connections REST services see: ic360/ic360/ic360.services.restapi/src/main/resources/com/ibm/ess/ic/ic360/restapi/ic360-appCtx.xml -->
+    <!--
+    <import resource="classpath:/com/ibm/ess/ic/ic360/restapi/ic360-appCtx.xml" />
+    -->
+
+    <!-- Import Persistence services see: ic360/ic360.services.persistence/src/main/resources/com/ibm/ess/ic/ic360/persistence/ic360-appCtx.xml -->
+    <!--
+    <import resource="classpath:/com/ibm/ess/ic/ic360/persistence/ic360-appCtx.xml" />
+    -->
+
+    <!-- Import Formatting services see: ic360/ic360.services.formatting/src/main/resources/com/ibm/ess/ic/ic360/formatting/ic360-appCtx.xml -->
+    <!--
+    <import resource="classpath:/com/ibm/ess/ic/ic360/formatting/ic360-appCtx.xml" />
+    -->
+    
+    <!-- PDF-Export related Beans -->
+    <!-- This config should be utilized for pdf-export scenarios. -->
+    <!--
+    <bean id="restConfig" class="com.ibm.ess.ic.ic360.ui.module.pdfexport.config.PdfExportConnectionsRestConfig" />
+    -->
+    
+    <!-- Import Content Partializing services see: ic360/ic360/ic360.services.partializing/src/main/resources/com/ibm/ess/ic/ic360/partializing/ic360-appCtx.xml -->
+    <!--
+    <import resource="classpath:/com/ibm/ess/ic/ic360/partializing/ic360-appCtx.xml" />
+    -->
+    <!-- /PDF-Export related Beans -->
+
+</beans>

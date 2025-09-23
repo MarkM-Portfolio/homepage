@@ -1,0 +1,3 @@
+/*global dojo: true, dijit: true, dojox: true, com: true, lconn: true, console: true */
+/*jslint browser:true, white: false, onevar: false, undef: true, nomen: false, eqeqeq: false, plusplus: false, bitwise: false, regexp: true, strict: false, newcap: true, immed: false, maxerr: 1000, laxbreak: true, on: false */
+

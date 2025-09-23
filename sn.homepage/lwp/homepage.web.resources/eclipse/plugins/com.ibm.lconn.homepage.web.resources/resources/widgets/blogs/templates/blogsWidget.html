@@ -1,0 +1,45 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2011, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<div dojoAttachPoint="root" style="padding-top: 5px;" class="topContainer">
+
+	<div dojoAttachPoint="blogsCentralLoading">
+		<center><img src="${_loadingImagePath}" class='loading' alt='${loading}' /></center>
+	</div>
+	<div dojoAttachPoint="boardingNode" style="display:none"></div>	
+	<div dojoAttachPoint="errorNode" style="display: none"></div>
+
+	   <div class="welcomeNode" dojoattachpoint="welcomeNode" style="display:none;">
+			<div class="lconnEmpty">
+				${noBlogEntry1}.&nbsp;${noBlogEntry2}
+				<div style="font-style: normal; padding-top: 10px;">
+					<a href="" dojoattachpoint="blogLink" >${noBlogEntry3}</a>
+				</div>
+			</div>
+		</div>
+
+	<div dojoAttachPoint="blogsCentralContainer" style="display: none">
+        <h3 tabindex="0" class="widgetTitle lotusLeft" dojoattachpoint="titleNode" role="presentation"> 
+            ${blogWidgetTitle}
+        </h3>
+
+		<div dojoAttachPoint="blogsCentralNode">
+		</div>		
+		
+		<div class="widgetFooter" align="right">
+			<div dojoAttachPoint="scrollerNode"></div>
+		</div>	
+	
+	</div>
+</div>

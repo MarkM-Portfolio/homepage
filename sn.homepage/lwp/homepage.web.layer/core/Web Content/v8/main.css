@@ -1,0 +1,1362 @@
+/* ***************************************************************** */
+/*                                                                   */
+/* HCL Confidential                                                  */
+/*                                                                   */
+/* OCO Source Materials                                              */
+/*                                                                   */
+/* Copyright HCL Technologies Limited 2021, 2021                     */
+/*                                                                   */
+/* The source code for this program is not published or otherwise    */
+/* divested of its trade secrets, irrespective of what has been      */
+/* deposited with the U.S. Copyright Office.                         */
+/*                                                                   */
+/* ***************************************************************** */
+
+/*
+ * This CSS Class contains updates on existing style rules in order to
+ * change the appearance in accordings with the CNX8 UI redesign
+ */
+
+/* 
+ * STRUCTURAL CHANGES
+ * - positioning of main components
+ */
+/* Push right column (widgets lower */
+#lotusColRight {
+    position: relative;
+    top: 150px;
+    margin-bottom: 150px;
+}
+/* Allow header (Share Something:) to be movable by script */
+#activityStreamHeader {
+    position: relative;
+    transition: all 0.5s ease 0s;
+    left: 25px;
+}
+/* Allow sharebox (What do you want to share?) to be movable by script. 
+   Also set overflow to hidden -> Otherwise the box uses a lot of empty space below, pushing the actual stream down */
+.streamHeaderInner {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s ease 0s;
+    left: 25px;
+}
+/* Reset overflow from hidden to initial -> allow the Sharebox to show outside of actual container (overlap with right column) */
+#lotusContent {
+    overflow: initial;
+}
+/* Set overflow hidden for Activity Stream in particular -> to not overlap with right column, counteract resetting on lotusContent */
+#asPermLinkAnchor {
+    overflow: hidden;
+}
+/* Hide border between Activity Stream and - filter area */
+.lotusui30 .lotusStream .filterAreaInner {
+    border-bottom: 0px;
+    position: relative;
+}
+/* hide elements that are not required on the page */
+#lotusFrame .lotusTitleBar2 {
+    display: none;
+}
+#asDesc {
+    display: none;
+}
+/* hide lotusframe until content rendered, then unhide */
+#lotusFrame {
+    display: none;
+}
+
+/* 
+ * ACTIVITY STREAM ENTRY CHANGES
+ * - entry color, hover effects, click effects
+ * - alignment of actions
+ */
+/* Add drop shadow to individual entries in Activity Stream */
+#asPermLinkAnchor > li {
+    box-shadow: 0 4px 10px 0 rgb(0 0 0 / 10%);
+    border: 1px solid #e8e8e8;
+    margin: 25px 50px 25px 25px;
+}
+#asPermLinkAnchor .noContentItem {
+    padding-bottom: 10px !important;
+}
+/* Enforce base color in normal state.
+   Transition to highlighting color and use color on focus */
+.lotusPost:nth-child(2), .lotusPost {
+    transition: 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+.lotusPost:nth-child(2):hover, .lotusPost:hover, .lotusui30 .lotusBoard .lotusStream .lotusPostSelected {
+    transition: 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+/* align like container with other lotusActions */
+.lotusStream .lotusWidgetBody#activityStreamMain .activityStreamNewsItemContainer .lotusCommentItem .lotusLike {
+    position: relative;
+    bottom: 1px;
+    margin-left: 5px;
+}
+/* Remove margin for lotus like heart and count to stay on same line/reduce space inbetweeen in Activity Stream entries */
+.lotusui30 .lotusStream #activityStreamMain.lotusWidgetBody .lotusInlinelist.lotusActions .lotusLikeCount {
+    margin: unset;
+}
+.lotusui30 .lotusStream #activityStreamMain.lotusWidgetBody .lotusInlinelist.lotusActions .lotusLikeAction {
+    margin: unset;
+}
+/* Correctly align first dot on actions, a little to low in prev. styles */
+.lotusui30 .lotusStream #activityStreamMain.lotusWidgetBody .lotusInlinelist.lotusActions .lotusLikeCount .lotusLikeConnector {
+    bottom: 5px;
+    width: 4px;
+}
+/* slight increase of file post details box height */
+.lotusui30 .lotusStream .lotusWidgetBody#activityStreamMain div.lotusPostDetails.lotusChunk {
+    padding-bottom: 4px;
+}
+/* activity stream delete icon change */
+.activityStreamNewsItemContainer .lotusDelete img,.activityStreamNewsItemContainer .lotusDelete .lotusAltText{
+    display:none
+}
+/* use trash can for delete image on feed */
+.activityStreamNewsItemContainer .lotusDelete{
+    display:inline-block;
+    height:18px;
+    width:18px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root' focusable='false' viewBox='0 0 32 32' aria-hidden='true' role='presentation' data-mui-test='trash-canIcon' style='font-size: 2em;'%3E%3Cpath d='M12 12h2v12h-2zm6 0h2v12h-2z'%3E%3C/path%3E%3Cpath d='M4 6v2h2v20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8h2V6zm4 22V8h16v20zm4-26h8v2h-8z'%3E%3C/path%3E%3C/svg%3E");
+}
+/* remove underline for abbr value (timestamp) */
+.lotusui30 .lotusStream #activityStreamMain.lotusWidgetBody .lotusInlinelist .timeago, .lotusui30 .lotusStream #activityStreamMain.lotusWidgetBody a.timeago, .lotusui30 .lotusStream #activityStreamMain.lotusWidgetBody abbr.timeago {
+    text-decoration: unset;
+}
+
+/* snackbar change for center aligning text */
+.lotusui30 .lotusStream .streamHeaderInner .lotusMessage2 .lotusMessageBody {
+    padding: unset;
+}
+
+/*  */
+
+/*
+ * ACTIVITY STREAM ENTRY COMMENT CHANGES
+ */
+/* remove border, background color to use same as Activity Stream itself */
+.lotusui30 .lotusBoard ul.lotusCommentList li.lotusCommentItem, .lotusui30 .lotusBoard .lotusStream .lotusWidgetBody#activityStreamMain ul.lotusCommentList .lotusPost, .lotusui30 .lotusStream .lotusWidgetBody#activityStreamMain .lotusCommentList, .lotusui30 .lotusStream .lotusWidgetBody#activityStreamMain .lotusCommentList li.additionalComments, .lotusui30 .lotusBoard ul.lotusCommentList > li {
+    border: unset;
+    background: unset !important;
+}
+/* add some more spacing between comment items to show seperation */
+.lotusui30 .lotusBoard ul.lotusCommentList li.lotusCommentItem {
+    padding: 0px 0px 5px 0px;
+}
+/* add some right padding for author icon */
+.lotusui30 .lotusStream .lotusWidgetBody#activityStreamMain .lotusCommentList .lotusPostAuthorInfo {
+    padding-right: 15px;
+}
+/* remove triangle on top of comment list indicating the comments belong to the post */
+.lotusui30 .lotusBoard .lotusStream .lotusWidgetBody#activityStreamMain .lotusCommentList:after {
+    background-image: unset;
+}
+/* slightly align post comment text box */
+.lotusui30 .lotusBoard .lotusAddComment .lotusStreamUpdate .lconnRTE .cke_contents {
+    padding: 5px;
+}
+/* add some more padding to cke textbox, also remove an odd border top there */
+.lotusui30 .lotusBoard .lotusStreamUpdate .lconnRTE .cke_inner {
+    padding: 2px;
+}
+.cke_top {
+    border: unset !important;
+}
+.activityStreamPage .lotusContent #messageContainer {
+    overflow: hidden;
+    margin: auto;
+}
+.lotusStream .lotusPost .lotusAddComment {
+    padding-bottom: 10px;
+    display: none;
+}
+/* The "Add a comment..." input box appears on hover or for selected posts but does not affect the size of the entry, leading to very little space on the bottom in case it is displayed.
+   This adds a min height when it is displayed to make it look more consistent */
+.lotusStream .lotusPost:nth-child(2):hover .lotusAddComment, .lotusStream .lotusPost:hover .lotusAddComment, .lotusStream .lotusPost:nth-child(2):focus .lotusAddComment, .lotusStream .lotusPost:focus .lotusAddComment, .lotusStream .lotusPostSelected .lotusAddComment {
+    display: block;
+    padding-bottom: 10px !important;
+}
+/* allow activity stream entry to be wider */
+.lotusui30 .lotusBoard .lotusStream .lotusPostContent {
+    max-width: 900px;    
+}
+.lotusMeta .asLinkContainer .lotusLike {
+    top: 1px;
+}
+
+/* CNXSERV-16853 - apply correct styling for comment buttons */
+/* render as secondary button */
+.app-homepage .dijitDialog .lotusDialog .lotusDialogFooter input.lotusFormButton.cancel {
+    border: unset !important;
+    color: var(--color-button) !important;
+    background-color: unset !important;
+    text-transform: initial !important;
+    display: inline-block !important;
+}
+.app-homepage .dijitDialog .lotusDialog .lotusDialogFooter input.lotusFormButton.cancel:hover {
+    color:var(--color-button-hover) !important;
+    background-color: rgba(1, 83, 155, 0.1) !important;
+    text-decoration: none;
+}
+
+.app-homepage .dijitDialog .lotusDialog .lotusDialogFooter input.lotusFormButton.submit {
+    float: right;
+}
+
+/*
+ * CONTENT FILTER CHANGES
+ * - adjust selected filter design
+ * - adjust select dropdown design
+ */
+ /* Hide focus outline, adjust link color and font, add custom arrow icon */
+.filterAreaInner .asFilterMenu select {
+    display: none;
+}
+/* adjust positioning and style for dropdown */
+.filterAreaInner .lotusRight {
+    float: unset;
+    display: flex;
+    justify-content: flex-end;
+    height: 40px;
+    padding-right: 40px;
+}
+#custom_stream_content_filter {
+    display: inline-block;
+    z-index: 1;
+    padding-left: 10px;
+}
+#custom_stream_tags_filter {
+    /* padding-top: 5px; */
+}
+
+#custom_stream_personal_filter {
+    position: absolute;
+    display: inline-block;
+    z-index: 1;
+    /* padding-top: 5px; */
+}
+:is(#custom_stream_content_filter, #custom_stream_tags_filter, #custom_stream_personal_filter) span {
+    color: var(--color-link) !important;
+}
+#custom_stream_personal_filter .MuiBadge-root span {
+    color: var(--color-badge-text) !important;
+}
+#custom_stream_content_filter span.MuiChip-label {
+    color: var(--color-text-primary) !important;
+}
+
+#menu-filter.MuiPopover-root .MuiMenu-list li.MuiListItem-button {
+    font-size: var(--font-size-medium) !important;
+}
+
+/* set minimum height for AS content so filter doesn't cut off in case the stream is empty (due to overflow) */
+.lotusui30_layout .lotusMain.activityStreamPage .lotusContent {
+    min-height: 600px;
+}
+.lotusui30_layout .lotusMain {
+    min-height: 600px;
+    transition: min-height 0.15s ease-out;
+}
+
+/* remove border from activity stream loader to make it not look out of place */
+.lotusui30 .lotusBoard .loaderMain {
+    border: unset;
+}
+
+.lotusui30 .lotusStream .lotusWidgetBody#activityStreamMain ul > li.pagingHandler {
+    border: unset;
+}
+
+
+/* 
+ * TOP UPDATES CHANGES
+ */
+#top-updates {
+    position: relative;
+    bottom: 50px;
+    min-height: 800px;
+    top: 0px;
+}
+
+/* ic stream controls navigation is not part of top updates, but reserves space - hide this to remove empty space */
+#top-updates .ic-stream-controls nav {
+    display: none;
+}
+
+#top-updates .ic-stream-controls {
+    top: 40px;
+}
+
+/* keep a min height in case the icon is hidden on content-filter click event (otherwise leads to below content moving around) */
+#top-updates .cnx8-filterbar-root {
+    min-height: 48px;
+}
+
+/* remove seperator for stream controls (border) */
+#top-updates .ic-stream-controls-separator {
+    display: none;
+}
+
+/* adjust personal filter styling to match design guidelines */
+#top-updates .MuiInput-underline:before {
+    border: unset;
+}
+
+/* remove border-bottom when element is focused */
+#top-updates .categories-select.Mui-focused:after {
+    border: 0;
+}
+
+#top-updates .categories-select .MuiSelect-select:focus {
+    background-color: unset;
+}
+
+#top-updates .categories-select .Mui-focused:after, .MuiInput-underline:after {
+    border: 0;
+}
+/* unset min width for top updates, still enforce it for activity stream */
+.lotusui30_body .lotusFrame {
+    min-width: unset !important;
+}
+.lotusui30_body .lotusFrame .activityStreamPage {
+    min-width: 1000px !important;
+} 
+
+/* CNXSERV-13422 Success popup overlaps with navigation */
+.template-homepage .notification-alert-container {
+    top:100px;
+}
+/* when admin banner is enabled */
+.has-banner .template-homepage .notification-alert-container {
+    top:163px;
+}
+
+/* CNXSERV-16128 Latest Updates link in notification */
+#top-updates span.ic-notification-alert-link {
+    pointer-events: none;
+}
+/* 
+ * LATEST UPDATES CHANGES
+ */
+.lotusui30 .lotusStream .lotusWidgetBody#activityStreamMain .headerFins {
+    display: none;
+}
+
+.lotusui30 .lotusStream .lotusWidgetBody#activityStreamMain .streamHeaderInner .lotusPaging {
+    display: none;
+}
+
+/* CNXSERV-16497 adjust font style to avoid italic */
+.lotusui30 #activityStreamHeader .shareSome-desc, .lotusui30 #activityStreamHeader .shareSome-desc i {
+    font-style: normal;
+}
+
+/* CNXSERV-16788 - decouple share box with absolute positioning to allow it to take up more space */
+#activityStreamMain {
+    position: relative;
+    top: 120px;
+    /* CNXSERV-17207 add padding bottom to counteract the top shifting (make more space for last entries at bottom */
+    padding-bottom: 120px;
+}
+#activityStreamMain .streamHeaderInner {
+    width: 90%;
+    position: absolute !important;
+    top: -120px;
+}
+#activityStreamMain div {
+    padding-bottom: 0px;
+    transition: all 0.25s ease;
+}
+#activityStreamMain div.isExpanded {
+    padding-bottom: 50px;
+    transition: all 0.2s;
+}
+.activityStreamPage.lotusMain .lotusColRight {
+    z-index: 1;
+}
+
+/* hide tags 'manage tags' section */
+.placeholderHeaderRightSub, .placeholderHeaderRight {
+    display: none;
+}
+
+.tagManagerDialog #addTagsCombo div input {
+    padding: 5px;
+    min-height: 25px;
+    margin: 5px 0px 10px 0px;
+}
+
+.tagManagerDialog .lotusDialog .lotusMessage2 span {
+    color: var(--color-info-message-text) !important;
+    width: 350px;
+}
+
+.app-homepage .tagManagerDialog.dijitDialog .lotusDialog .lotusDialogFooter :is(input.lotusFormButton.cancel, input.lotusFormButton.cancel:hover) {
+    color: unset !important;
+    background-color: unset !important;
+    cursor: unset !important;
+}
+
+/* Fix for CNXSERV-13424 [Activity Stream][RTL] Close icon out of chip */
+[dir="rtl"] .content-filter-selected .MuiChip-deleteIcon {
+    margin: 0 -6px 0 5px;
+    width: 1em;
+    height: 1em;
+}
+
+/* adjustments for People who like this... popup on AS entries */
+.lotusui30 .lotusLikeLightBox .lotusLikeHeader {
+    padding: 10px 15px;
+}
+
+.lotusui30 .lotusLikeLightBox ul li {
+    padding: 5px 15px !important;
+}
+
+.lotusui30 .dijitPopup .lotusPopup .lotusPopupClose {
+    right: 10px;
+    top: 10px;
+}
+
+.lotusui30 .lotusDialog .lotusDialogHeader .lotusDialogClose {
+    top: 14px;
+    right: 14px;
+}
+
+/* fix positioning for Stop Following modal icons */
+.lconnStopFollow .followingInfo .lotusArrow {
+    padding: 2px;
+    position: relative;
+    top: 2px;
+}
+
+/* 
+ * CNXSERV-11434 fix width for file picker (broke due to font size adjustments)
+ */
+ .dj_webkit .lotusui30 .lotusForm.lotusDialog .lotusText {
+    width: 90%;
+}
+
+/*
+ * CNXSERV-11394 Fix width for the add file popup in status update form. 
+*/
+.lotusui30 .lconnPicker .lotusForm .lotusText {
+	width: 90%
+}
+
+/* CNXSERV-13423 [Activity Stream] Post button is not bold but all others are */
+.lotusui30 .lotusStream #activityStreamMain.lotusWidgetBody .lotusPost .lotusInlinelist a strong {
+    font-weight: var(--font-weight-bold) !important;
+}
+
+/* CNXSERV-13413 Fix Dancing icons centered to left justified when homepage filter used */
+#side-navigation ul li {
+    text-align: center !important;
+    justify-content: center !important;
+    width: auto;
+}
+
+/* 
+ * SEARCH BOX
+ */
+/* buttons used in enchanted select conflicts with search button (e.g. background color) */
+#search-wrapper button:first-child {
+    padding: 0px 10px 0px 10px;
+    border-right: 1px solid #75818C;
+    border-radius: 0px 0px 0px 0px;
+}
+
+#search-wrapper button:last-child {
+    padding: 0px 7.2px 0px 7.2px;
+    border-radius: 0 1px 1px 0;
+}
+
+/*
+ * MY PAGE CHANGES
+ */
+#paletteLink {
+    height: 25px;
+    min-width: 69px;
+    letter-spacing: 0.02px;
+    line-height: 24.5px;
+    font-size: var(--font-size-medium) !important;
+    padding-left: 5px;
+}
+
+#beforePaletteLink {
+	margin: 0px;
+}
+
+#widgetCustomizer {
+	display: flex;
+    align-items: center;
+	cursor: pointer;
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+/* align my page customizer with widgets */
+#widgetCustomizer.myPageCustomizer {
+    position: relative;
+    right: 10px;
+    top: 20px;    
+}
+/* custom positioned activity stream customize button */
+#widgetCustomizer.asCustomizer {
+}
+/* https://jira.cwp.pnp-hcl.com/browse/CNXSERV-14026 hide customize option when search view is open */
+.searchFrame #widgetCustomizer {
+    display: none;
+}
+/* use transition when moving container to make it look smooth */
+#palette_modal_id {
+    transition: left 0.2s ease-out, top 0.2s ease-out, opacity 0.6s ease-in;
+}
+.lotusPaletteBody a {
+    font-weight: var(--font-weight-normal) !important;
+    color: var(--color-text-primary) !important;
+}
+.lotusPaletteBody a:hover {
+    color: var(--color-link-hover) !important;
+}
+.lotusPaletteBody li.lotusSelected a {
+    border-left: 4px solid var(--color-tab-border-selected);
+    color: var(--color-tab-text-selected) !important;
+}
+.lotusPaletteBody .lotusAdded * {
+    color: var(--color-text-secondary) !important;
+}
+.lotusWidgetTable .lotusWidget h2,
+.lotusWidgetTable .lotusWidget h2 * {
+    font-size: var(--font-size-large) !important;
+}
+.lotusWidgetTable .lotusWidget .entry * {
+    font-size: var(--font-size-small) !important;
+}
+.lotusWidgetTable .lotusWidget h3,
+.lotusWidgetTable .lotusWidget h3 *,
+.lotusWidgetTable .lotusWidget .entry h4,
+.lotusWidgetTable .lotusWidget .entry h4 * {
+    font-size: var(--font-size-medium) !important;
+}
+/* margin between my page widgets */
+.lotusui30 .lotusContent .lotusWidget,
+.lotusui30 .lotusPortlet {
+  margin: 10px 10px 20px !important;
+  padding: 20px !important;
+}
+
+
+/* 
+ * ADMIN PAGE 
+ */
+/* remove border since this looks broken */
+.lotusui30 .lotusTable .lotusForm {
+    border: unset;
+}
+/* correct formatting for admin buttons */
+#widgetTabConfiguration input.widgetTabField {
+    color: var(--color-button) !important;
+    font-size: var(--font-size-medium) !important;
+	background-color: var(--color-button-text) !important;
+	border: 1px solid var(--color-button) !important;
+}
+#widgetTabConfiguration input.widgetTabField:hover {
+    background-color: rgba(1, 83, 155, 0.1) !important;
+    border: 1px solid var(--color-button) !important;
+}
+/* admin page is in table which uses different styles; revert this */
+.lotusui30 .lotusTable td * {
+    color: inherit !important;
+    font-size: inherit !important;
+    word-break: break-all !important;
+}
+.lotusui30 .lotusTable td h1 {
+    font-size: var(--font-size-xlarge) !important;
+}
+
+/* 
+ * Embedded Experience updates
+ */
+/* change header background */
+.lotusui30 .lotusFlyout .lotusFlyoutHeader {
+    padding: 15px;
+}
+.lotusui30 .lotusFlyout .lotusClose {
+    top: 10px;
+    right: 5px;
+}
+/* make sure vcard is same text size in header */
+.lotusui30 .lotusFlyout .lotusFlyoutHeader .vcard>a,
+.lotusui30 .lotusFlyout .lotusFlyoutHeader .flyoutTitleInner a {
+    vertical-align: top;
+    position: relative;
+    bottom: unset !important;
+    font-size: var(--font-size-medium) !important;
+    word-break: unset !important;
+}
+
+/* CNXSERV-14846 - Share Experience selection box size and font inconsistent in Homepage */
+div#share_wrapper_list ul.MuiList-padding li {
+    padding: 6px 16px 6px 22px;
+    font-size: var(--font-size-large) !important;
+}
+/*CNXSERV-16505-Admin page buttons and My page cancel button stylings*/
+.app-homepage #lotusContent :is(.cnxSecondaryBtn a, input.cancel-button.lotusFormButton) {
+    background-color: var(--color-button-text) !important;
+    border: 1px solid var(--color-button) !important;
+    color: var(--color-button) !important;
+    box-shadow: none !important;
+}
+.app-homepage #lotusContent :is(.cnxSecondaryBtn a, input.cancel-button.lotusFormButton):hover{
+    background-color: rgba(1, 83, 155, 0.1) !important;
+    border: 1px solid var(--color-button) !important;
+    color: var(--color-button) !important;
+}
+
+/*CNXSERV-16505-Add a file- Disable button stylings*/
+.app-homepage .lotusDialogFooter input#submit_button.lotusBtnDisabled {
+    color: var(--color-button-disabled-text) !important;
+    background-color: var(--color-button-disabled) !important;
+}
+
+/*CNXSERV-16505-Invite to My Network pop up secondary button styling*/
+.app-homepage .cnx8lotusDialogFooter input.lotusBtn.cnx8lotusBtn {
+    color: var(--color-button) !important;
+    font-weight: var(--font-weight-normal) !important;
+}
+.app-homepage .cnx8lotusDialogFooter input.lotusBtn.cnx8lotusBtn:hover{
+    color: var(--color-button-hover) !important;
+    box-shadow: none !important;
+    background-color: rgba(1, 83, 155, 0.1) !important;
+}
+
+/* CNXSERV-16129 - limit size of EE to prevent cutting off content */
+.dijitPopup .lotusStyledScroll {
+    max-height: 600px !important;
+}
+
+.dijitPopup .lotusWrapper, .dijitPopup .lotusFlyout {
+    max-height: 675px !important;
+}
+
+/*******************************ADD FILES********************************************************/
+/*CNXSERV-16473, CNXSERV-16472 and CNXSERV-16787 Files: add files dialog changes  */
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusDialogBorder {
+  width: 550px !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .files-enable-new-folder-icon.tabbedSwitch,
+div[id^=lconn_share_widget_Dialog_].lconnPicker .files-enable-new-folder-icon.tabbedSwitch  .switchPane,
+div[id^=lconn_share_widget_Dialog_].lconnPicker .files-enable-new-folder-icon.tabbedSwitch  .switchPane .switchContainer,
+div[id^=lconn_share_widget_Dialog_].lconnPicker .files-enable-new-folder-icon.tabbedSwitch .lconnPickerSourceArea,
+div[id^=lconn_share_widget_Dialog_].lconnPicker .files-enable-new-folder-icon.tabbedSwitch .lconnPickerSourceArea .lotusUploadFile {
+  width: inherit !important;
+}
+
+.cnx8-ui div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusDialogHeader .lotusDialogClose img, 
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage2 .lotusDelete img {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root' focusable='false' fill='grey' viewBox='0 0 32 32' aria-hidden='true' role='presentation' data-mui-test='closeIcon' style='font-size: 3em;'%3E%3Cpath d='M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4l6.6 6.6L8 22.6 9.4 24l6.6-6.6 6.6 6.6 1.4-1.4-6.6-6.6L24 9.4z'%3E%3C/path%3E%3C/svg%3E") !important;
+  height: 24px !important;
+  width: 24px !important;
+  background-repeat: no-repeat;
+  background-position: center !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusUploadFile tr.lotusFormFieldRow td {
+  display: block;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusUploadFile .lotusFormFieldRow td {
+  display: block;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusUploadFile .lotusFormFieldRow td input:not([type=button]) {
+  padding: 5px !important;
+  border-radius: 2px !important;
+  width: calc(100% - 12px) !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusUploadFile .lotusFormFieldRow textarea {
+  width: calc(100% - 34px) !important;
+  border-radius: 2px !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusUploadFile .lotusFormFieldRow {
+  display: block;	
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusUploadFile .lotusFormTable colgroup col,
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusUploadFile .lotusFormTable td div table colgroup col{
+  width: 0% !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusUploadFile tr.lotusFormFieldRow td, 
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusUploadFile td.lotusFormFieldRow {
+  padding-bottom: 5px !important;
+}
+
+.dj_webkit div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusUploadFile .lotusText {
+  width: calc(100% - 12px) !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusUploadFile table tr.lotusFormFieldRow td {
+  vertical-align: middle;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusUploadFile table tr.lotusFormFieldRow td input:not([type=button]) {
+  padding: 5px! important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusUploadFile .lconnUploadContainer #lconn_btn_browse_files {
+  color: var(--color-button-text) !important;
+  font-size: var(--font-size-medium) !important;
+  font-family: var(--font-family) !important;
+  font-weight: var(--font-weight-normal) !important;
+  text-transform: capitalize !important;
+  text-shadow: none !important;
+  padding: 8px 24px !important;
+  min-width: 80px !important;
+  min-height: 36px !important;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms !important;
+  border-radius: 2px !important;
+  background-image: unset !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusUploadFile .lconnUploadContainer #lconn_btn_browse_files:hover {
+  background-color: var(--color-button-hover) !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker #cancel_button {
+  background-color: #fff !important;
+  color: var(--color-link) !important;
+  box-shadow: none !important;
+  font-weight: var(--font-weight-medium) !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusSearch.pickerSearchBar div[id^=lconn_files_widget_FilePickerCompactInner_][id*=_content_searchDiv],
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusSearch.pickerSearchBar div[id^=lconn_files_widget_PersonalFolderPicker_][id*=_content_searchDiv] {
+  border: none !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusSearch.pickerSearchBar div[id^=lconn_files_widget_FilePickerCompactInner_][id*=_content_searchDiv] input.lotusText,
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusSearch.pickerSearchBar div[id^=lconn_files_widget_PersonalFolderPicker_][id*=_content_searchDiv] input.lotusText {
+  border: 1px solid !important;
+  height: 28px !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusSearch.pickerSearchBar .lotusBtnImg.lotusBtnImgSearch {
+  background-color: var(--color-button) !important;
+  width: 10% !important;
+  height: 24px !important;
+  padding: 3px !important;
+  background-repeat: no-repeat;
+  background-image: url(/connections/resources/web/com.ibm.lconn.core.styles.oneui3/images/blogs/search-tags.svg?etag=20220616.143209);
+  fill: #f1f1f1;
+  background-position: center;
+  background-size: 18px;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusSearch.pickerSearchBar .lotusBtnImg.lotusBtnImgDelete {
+  background-color: var(--color-button) !important;
+  width: 10% !important;
+  height: 24px !important;
+  padding: 3px !important;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 22px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root' focusable='false' fill='white' viewBox='0 0 32 32' aria-hidden='true' role='presentation' data-mui-test='closeIcon' style='font-size: 3em;'%3E%3Cpath d='M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4l6.6 6.6L8 22.6 9.4 24l6.6-6.6 6.6 6.6 1.4-1.4-6.6-6.6L24 9.4z'%3E%3C/path%3E%3C/svg%3E") !important;
+}
+
+ div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusSearch.pickerSearchBar .lotusBtnImg .lotusSearchButton {
+  width: 24px !important;
+  height: 24px !important;
+  background-image: none !important;
+} 
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusSearch.pickerSearchBar .lotusBtnImg .lotusDelete {
+  width: 24px !important;
+  height: 24px !important;
+  filter: brightness(0) invert(1);
+  background-repeat: no-repeat;
+  margin: 0 !important;
+  cursor: pointer;
+  opacity: 1 !important;
+  background-image: none !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusSearch.pickerSearchBar .lotusText  input.lotusText {
+  width: 84% !important;
+  padding: 0px 0px 0px 5px !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusSearch.pickerSearchBar select {
+  padding: 0px 0px 0px 5px !important;
+  border: none !important;
+  height: 31px !important;
+  color: var(--color-link) !important;
+  font-weight: bold;
+  -moz-appearance: none;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage {
+  display: flex;
+  flex-wrap: unset !important;
+  padding: 0 !important;
+  align-items: center;
+  border-radius: 2px !important;
+  background-color: var(--color-info-message) !important;
+  padding: 0 !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage {
+  background-color: var(--color-info-message) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lconnFileUploadStatus {
+  padding-left: 0 !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage .lconnFileUploadStatusMessage {
+  padding: 5px !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage .lotusDelete {
+  position: unset !important;
+  margin-left: auto !important;
+  margin-right: 5px !important;
+  transform: scale(1) !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage {
+  border-left: 4px solid #C10C0D;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage.lotusWarning {
+  border-left: 4px solid #FFB400 !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage.lotusInfo {
+  border-left: 4px solid #354958 !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage.lotusSuccess {
+  border-left: 4px solid #bed732 !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage.lconnSharedExternal {
+  border-left: 0 !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage img.lotusIcon.lotusIconMsgWarning,
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage.lotusWarning img {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root jss36' focusable='false' viewBox='0 0 32 32' aria-hidden='true' role='presentation' data-mui-test='warningIcon' fill='%23FFB400'%3E%3Cpath d='M16 2a14 14 0 1 0 14 14A14 14 0 0 0 16 2zm0 26a12 12 0 1 1 12-12 12 12 0 0 1-12 12z'%3E%3C/path%3E%3Cpath d='M15 8h2v11h-2zm1 14a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 16 22z'%3E%3C/path%3E%3C/svg%3E") !important;
+  background-position: center !important;
+  width: 25px !important;
+  height: 25px !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage img.lotusIcon.lotusIconMsgError {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root' fill='%23C10C0D' focusable='false' viewBox='0 0 32 32' aria-hidden='true' role='presentation' data-mui-test='errorIcon' style='font-size: 3em;'%3E%3Cpath d='M2 16A14 14 0 1 0 16 2 14 14 0 0 0 2 16zm23.15 7.75L8.25 6.85a12 12 0 0 1 16.9 16.9zM8.24 25.16a12 12 0 0 1-1.4-16.89l16.89 16.89a12 12 0 0 1-15.49 0z'%3E%3C/path%3E%3C/svg%3E") !important;
+  background-position: center !important;
+  width: 25px !important;
+  height: 25px !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage img.lotusIcon.lotusIconMsgSuccess,
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage.lotusSuccess img {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root jss36' focusable='false' viewBox='0 0 32 32' aria-hidden='true' role='presentation' data-mui-test='checkmark--outlineIcon' fill='%23bed732'%3E%3Cpath d='M16 2a14 14 0 1 0 14 14A14 14 0 0 0 16 2zm0 26a12 12 0 1 1 12-12 12 12 0 0 1-12 12z'%3E%3C/path%3E%3Cpath d='M14 21.5l-5-4.96 1.59-1.57L14 18.35 21.41 11 23 12.58l-9 8.92z'%3E%3C/path%3E%3C/svg%3E") !important;
+  background-position: center !important;
+  height: 25px !important;
+  width: 25px !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage img.lotusIcon.lotusIconMsgInfo,
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage.lotusInfo img {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root jss36' focusable='false' viewBox='0 0 32 32' aria-hidden='true' role='presentation' data-mui-test='informationIcon' fill='%23354958'%3E%3Cpath d='M17 22v-9h-4v2h2v7h-3v2h8v-2h-3zM16 7a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 16 7z'%3E%3C/path%3E%3Cpath d='M16 30a14 14 0 1 1 14-14 14 14 0 0 1-14 14zm0-26a12 12 0 1 0 12 12A12 12 0 0 0 16 4z'%3E%3C/path%3E%3C/svg%3E") !important;
+  background-position: center !important;
+  height: 25px !important;
+  width: 25px !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage .lconnFileUploadStatusMessage,
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage .lconnFileUploadStatusMessage span,
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage .lconnFileUploadStatusMessage span:hover {
+  color:white !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage div.lotusMessageBody span {
+  color:white !important;
+  padding: 0 !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage div.lotusMessageBody {
+  padding: 5px !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusFormErrorField.lconnCompactMessage {
+  padding: 0 5px;
+  background-color: transparent !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage .lconnFileUploadStatusMessage a,
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lotusMessage .lconnFileUploadStatusMessage a:hover {
+  color: white !important;
+  text-decoration-line: underline !important;
+  font-weight: var(--font-weight-bold) !important;
+}
+
+div[id^=lconn_share_widget_Dialog_].lconnPicker .lconnFilesTree .headerSelector .header .icon .lconn-ftype16 {
+  margin-top: 5px !important;
+}
+
+/*CNXSERV-14484 - Customize my page palette*/
+/*palette Header*/
+.app-homepage #paletteWrapper .app_palette_modal.modal-wide {
+    width: 820px !important;
+}
+.app-homepage .lotusRight.lotusPaletteClose .otherFramework16 {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root' focusable='false' viewBox='0 0 32 32' aria-hidden='true' role='presentation' data-mui-test='closeIcon' style='font-size: 3em;'%3E%3Cpath d='M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4l6.6 6.6L8 22.6 9.4 24l6.6-6.6 6.6 6.6 1.4-1.4-6.6-6.6L24 9.4z'%3E%3C/path%3E%3C/svg%3E") !important;
+    background-position: unset !important;
+    width: 20px;
+    height: 20px;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .app_palette_modal_header {
+    padding: 18px 24px 0;
+    height: 45px;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .app_palette_modal_header .app_palette_modal_header_title {
+    font-size: var(--font-size-large) !important;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .app_palette_modal_header .app_palette_modal_tabs_ul {
+    position: relative;
+    left: 0;
+    margin: 40px 0 0 0;
+    padding-inline-start: unset;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .app_palette_modal_header .app_palette_modal_tabs_ul li a strong {
+    color: #3D5466 !important;
+    font-weight: normal;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .app_palette_modal_header .app_palette_modal_tabs_ul li a:focus {
+    outline: none !important;
+    text-decoration: none !important;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .app_palette_modal_header .app_palette_modal_tabs_ul li a:hover,
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .app_palette_modal_header .app_palette_modal_tabs_ul li a:active {
+    text-decoration: none !important;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .app_palette_modal_header .app_palette_modal_tabs_ul li {
+    margin-right: 20px;
+    padding: 0 20px;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .app_palette_modal_header .app_palette_modal_tabs_ul li.lotusSelected {
+    border-bottom: 2px solid #01539B;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .app_palette_modal_header .app_palette_modal_tabs_ul li.lotusSelected a strong,
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .app_palette_modal_header .app_palette_modal_tabs_ul li a strong:hover {
+    color: #01539B !important;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .app_palette_modal_header span.lotusRight.lotusAdded p {
+    margin-top: -35px;
+}
+/*palette body*/
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .lotusPaletteBody {
+    margin-top: 65px;
+    padding: 0 24px;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .lotusPaletteBody .lotusPaletteNav {
+    padding: 0 !important;
+    margin:0 !important;
+    width: 122px;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .lotusPaletteBody .lotusPaletteNav .lotusMenu li a{
+    padding: 2px 10px !important;
+    color: #3D5466 !important;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .lotusPaletteBody .lotusPaletteNav .lotusMenu li.lotusSelected{
+    background-color: #e0e0e0 !important;
+    border-left: unset !important;
+    margin: 0 !important;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .lotusPaletteBody .lotusPaletteContentAreaNode{
+    width: 84%;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .lotusPaletteBody .lotusPaletteContentAreaNode 
+.lotusPaletteContent {
+    padding: 0 0 0 100px !important;
+    width: auto !important;
+    float: none !important;
+    min-height: 330px !important;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .lotusPaletteBody .lotusPaletteContentAreaNode .lotusPaletteContent 
+.lotusPaletteWidget {
+    width: 225px;
+    height: 36px;
+    float: left;
+    margin: 0 !important;
+    display: flex !important;
+    padding: 0 0 18px 0 !important;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .lotusPaletteBody .lotusPaletteContentAreaNode .lotusPaletteContent 
+.lotusPaging {
+   position: relative !important;
+   left: 0 !important;
+   bottom: 0 !important;
+   top: 20px;
+   margin-bottom: 35px;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .lotusPaletteBody .lotusPaletteContentAreaNode .lotusPaletteContent 
+.lotusPaletteWidget .lotusInner {
+    border: 1px solid #01539B;
+    border-radius: 2px;
+    padding: 5px 10px;
+    height: unset !important;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .lotusPaletteBody .lotusPaletteContentAreaNode .lotusPaletteContent 
+.lotusPaletteWidget .lotusInner:hover {
+    background: #ccddeb;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .lotusPaletteBody .lotusPaletteContentAreaNode .lotusPaletteContent 
+.lotusPaletteWidget .lotusWidgetTitle {
+    padding-top: 4px;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .lotusPaletteBody .lotusPaletteContentAreaNode .lotusPaletteContent 
+.lotusPaletteWidget div {
+    vertical-align: unset !important;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .lotusPaletteBody .lotusPaletteContentAreaNode .lotusPaletteContent 
+.lotusPaletteWidget .lotusInner .lotusWidgetTitle h4 a{
+    color: #01539B !important;
+    margin-right: 10px;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .lotusPaletteBody .lotusPaletteContentAreaNode .lotusPaletteContent 
+.lotusPaletteWidget a.lotusIcon {
+    height: 24px;
+    width: 24px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root' focusable='false' viewBox='0 0 32 32' aria-hidden='true' role='presentation' data-mui-test='addIcon' style='font-size: 3em;' fill='%2301539B'%3E%3Cpath d='M17 15V7h-2v8H7v2h8v8h2v-8h8v-2h-8z'%3E%3C/path%3E%3C/svg%3E") !important;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .lotusPaletteBody .lotusPaletteContentAreaNode .lotusPaletteContent 
+.lotusPaletteWidget .lotusWidgetTitle h4.lotusTitle {
+    line-height: 1.4em !important;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .lotusPaletteBody .lotusPaletteContentAreaNode 
+.lotusPaletteContent .lotusPaletteWidget .lotusInner .lotusWidgetTitle h4 a:hover{
+    text-decoration: none !important;
+}
+/*change layout*/
+.lotusLargeWidgets .lotusPaletteWidget{
+    float: none !important;
+    margin: 20px 0 0 0 !important;
+    height: auto !important;
+}
+.app-homepage #palette_modal_id #paletteWrapper .app_palette_modal .lotusPaletteBody .lotusPaletteContentAreaNode 
+.lotusPaletteContent .lotusLargeWidgets .lotusPaletteWidget .lotusInner {
+    border: none !important;
+    padding: 0;
+    height: 148px !important;
+    width: 148px;
+    margin-left: -85px;
+}
+.lotusui .lotusLargeWidgets .lotusPaletteWidget div.lotusIcon {
+    width: 100% !important;
+    height: 100% !important;
+}
+.lotusLargeWidgets .lotusPaletteWidget div.lotusIcon span {
+    height: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.lotusui30 .lotusLargeWidgets .lotusPaletteWidget div.lotusIcon span img {
+    width: 149px !important;
+    height: 149px !important;
+    border: unset !important;
+    border-radius: 5px;
+}
+.lotusLargeWidgets .lotusPaletteWidget .lotusInner .lotusTitle {
+    position: absolute !important;
+    margin: -84px 0 0 200px;
+}
+.lotusLargeWidgets .lotusPaletteWidget .lotusInner .lotusTitle h4 a:focus {
+    outline-style: none !important;
+}
+.lotusPaletteWidget .lotusTitle h4 .titleNodeSpanSelected {
+    color: #4178be !important;
+}
+/************************Files END******************************************************/
+
+/* CNXSERV-16842 Link color in widgets seems incorrect
+ * Link color in widget
+ * Link color for Post and Add a file in top updates
+ */
+ .app-homepage .homepage-widget a,
+ .app-homepage .homepage-widget a.lotusAction,
+ .app-homepage #om_tab_panel .option-bar :is(div.add-file, div.post-btn:not(.disabled)){
+   color: var(--color-link) !important;
+ }
+ .app-homepage .homepage-widget a:hover,
+ .app-homepage .homepage-widget a.lotusAction:hover,
+ .app-homepage #om_tab_panel .option-bar :is(div.add-file, div.post-btn:not(.disabled)):hover{
+   color: var(--color-link-hover) !important;
+ }
+ .app-homepage #om_tab_panel .option-bar  div.post-btn.disabled{
+   color: var(--color-button-disabled) !important;
+ }
+ 
+/* Notification badge color */
+.app-homepage .notificationBadge span.MuiBadge-badge{
+  color: var(--color-badge-text) !important;
+}
+
+/* CNXSERV-16849 - added close icon for repost elements */
+.app-homepage.lotusui30 .repostMessage .lotusDelete {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root' focusable='false' viewBox='0 0 32 32' aria-hidden='true' role='presentation' data-mui-test='closeIcon' style='font-size: 3em;'%3E%3Cpath d='M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4l6.6 6.6L8 22.6 9.4 24l6.6-6.6 6.6 6.6 1.4-1.4-6.6-6.6L24 9.4z'%3E%3C/path%3E%3C/svg%3E") !important;
+    background-position: unset !important;
+    height: 24px !important;
+    width: 24px !important;
+    top: 10px !important;
+}
+
+/*CNXSERV-16848, CNXSERV-16850 - snackbar redesign*/
+.lotusError{
+    border-left: 4px solid #C10C0D !important;
+}
+.lotusMessage2{
+    width: fit-content !important;
+    flex-wrap: nowrap !important;
+    border-left: 4px solid #C10C0D !important;/*for dialog's error alert border left*/
+}
+.activityStreamPage .lotusMessage2 .lotusMessageBody{
+    padding: 10px 10px 10px 0px !important;
+    margin-right: 20px !important;
+}
+.activityStreamPage .lotusMessage2 a.lotusDelete{
+    position: unset !important;
+    outline: none !important;
+}
+.activityStreamPage a.lotusDelete img {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root' focusable='false' viewBox='0 0 32 32' aria-hidden='true' role='presentation' data-mui-test='closeIcon' style='font-size: 3em;'%3E%3Cpath d='M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4l6.6 6.6L8 22.6 9.4 24l6.6-6.6 6.6 6.6 1.4-1.4-6.6-6.6L24 9.4z'%3E%3C/path%3E%3C/svg%3E") !important;
+    background-position: unset !important;
+    height: 18px !important;
+    width: 18px !important;
+}
+.activityStreamPage .lotusMessage2 .lotusIcon {
+    margin: 0 12px 0 0;
+}
+.lotusMessage2 img.lotusIcon.lotusIconMsgError{
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root jss103' focusable='false' viewBox='0 0 32 32' aria-hidden='true' role='presentation' data-mui-test='errorIcon' fill='%23C10C0D'%3E%3Cpath d='M2 16A14 14 0 1 0 16 2 14 14 0 0 0 2 16zm23.15 7.75L8.25 6.85a12 12 0 0 1 16.9 16.9zM8.24 25.16a12 12 0 0 1-1.4-16.89l16.89 16.89a12 12 0 0 1-15.49 0z'%3E%3C/path%3E%3C/svg%3E") !important;
+    width: 24px !important;
+    height: 24px !important;
+}
+.activityStreamPage .lotusMessage2 img.lotusIcon.lotusIconMsgWarning {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root jss36' focusable='false' viewBox='0 0 32 32' aria-hidden='true' role='presentation' data-mui-test='warningIcon' fill='%23FFB400'%3E%3Cpath d='M16 2a14 14 0 1 0 14 14A14 14 0 0 0 16 2zm0 26a12 12 0 1 1 12-12 12 12 0 0 1-12 12z'%3E%3C/path%3E%3Cpath d='M15 8h2v11h-2zm1 14a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 16 22z'%3E%3C/path%3E%3C/svg%3E") !important;
+    background-position: unset !important;
+    height: 24px !important;
+    width: 24px !important;
+}
+.activityStreamPage .lotusMessage2.lotusWarning{
+    border-left: 4px solid #FFB400 !important;
+    margin: 0px 0px 30px !important;
+}
+/*CNXSERV-17198 - Different color issue fixed*/
+.activityStreamPage .lotusMessage2 img.lotusIcon.lotusIconMsgSuccess {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root jss36' focusable='false' viewBox='0 0 32 32' aria-hidden='true' role='presentation' data-mui-test='checkmark--outlineIcon' fill='%23bed732'%3E%3Cpath d='M16 2a14 14 0 1 0 14 14A14 14 0 0 0 16 2zm0 26a12 12 0 1 1 12-12 12 12 0 0 1-12 12z'%3E%3C/path%3E%3Cpath d='M14 21.5l-5-4.96 1.59-1.57L14 18.35 21.41 11 23 12.58l-9 8.92z'%3E%3C/path%3E%3C/svg%3E") !important;
+    background-position: unset !important;
+    height: 24px !important;
+    width: 24px !important;
+}
+.activityStreamPage .lotusMessage2.lotusSuccess, .activityStreamPage .lotusMessage2.lotusConfirm{
+    border-left: 4px solid #bed732 !important;
+}
+.activityStreamPage .lotusMessage2.lotusInfo{
+    border-left: 4px solid #2abdea !important;
+}
+.activityStreamPage #messageContainer {
+    margin: auto 58px !important;
+}
+
+/* CNXSERV-17054 link color on top updates and post button disabled */
+.app-homepage .ic-top-updates  .categories-select-wrapper .selectedFilterLabel,
+.app-homepage .ic-top-updates  .categories-select-wrapper svg.MuiSvgIcon-root,
+.app-homepage .ic-top-updates #filterIconCNX8 svg.MuiSvgIcon-root{
+	color: var(--color-link) !important;
+}
+.app-homepage .option-bar div.post-btn.disabled,
+.app-homepage #lotusContent .lotusActions a.lotusPersonInactive{
+    color: var(--color-button-disabled) !important;
+    pointer-events: none;
+}
+
+/* CNXSERV-17136 */
+/*add padding bottom when URI Preview is shown */
+#activityStreamMain div.isExpanded.uriPreviewShown {
+    padding-bottom: 120px;
+}
+/*add px in top when URI Preview is shown */
+#lotusColRight.lotusColRight.uriPreviewShown {
+    position: relative;
+    top: 250px !important;
+    margin-bottom: 150px;
+}
+/*CNXSERV-17230 - snackbars updates for Top Updates*/
+.template-homepage .notification-alert-container {
+    height: 52px !important;
+    margin-top: 10px;
+    position: inherit !important;
+}
+.template-homepage .notification-alert-container .alert-container{
+    color: #FFFFFF;
+    display: flex;
+    padding: 6px 16px 6px 0;
+    flex-grow: unset !important;
+    flex-wrap: wrap;
+    align-items: center;
+    border-radius: 6px 0 0 6px;
+    background-color: #273641 !important;
+}
+/*ic-success*/
+.template-homepage .ic-notification.ic-success{
+    background-color: #273641 !important;
+    border-left: 4px solid #bed732;
+    border-radius: 2px;
+    height: 52px;
+    padding: 6px 5px 6px 16px;
+    margin-right: 20px;
+}
+.template-homepage .ic-notification.ic-success .ic-messagetext{
+    color: #FFFFFF !important;
+    padding: 10px 10px 10px 0px !important;
+    margin: 0 0 0 12px !important;
+}
+.template-homepage .ic-notification.ic-success .ic-messagetext #om_alert_message{
+    color: #FFFFFF !important;
+}
+.template-homepage .ic-notification.ic-success .ic-messagetext .ic-notification-alert-link{
+    color: #FFFFFF !important;
+}
+.template-homepage .ic-notification.ic-success span.leftIcon{
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root jss36' focusable='false' viewBox='0 0 32 32' aria-hidden='true' role='presentation' data-mui-test='checkmark--outlineIcon' fill='%23bed732'%3E%3Cpath d='M16 2a14 14 0 1 0 14 14A14 14 0 0 0 16 2zm0 26a12 12 0 1 1 12-12 12 12 0 0 1-12 12z'%3E%3C/path%3E%3Cpath d='M14 21.5l-5-4.96 1.59-1.57L14 18.35 21.41 11 23 12.58l-9 8.92z'%3E%3C/path%3E%3C/svg%3E") !important;
+    height: 24px !important;
+    width: 24px !important;
+    background-color: unset !important;
+}
+.template-homepage .ic-notification.ic-success span.leftIcon svg{
+    display: none;
+}
+/*ic-error, ic-danger*/
+.template-homepage .ic-notification.ic-error, .template-homepage .ic-notification.ic-danger{
+    background-color: #273641 !important;
+    border-left: 4px solid #C10C0D;
+    border-radius: 2px;
+    height: 52px;
+    padding: 6px 5px 6px 16px;
+    margin-right: 20px;
+}
+.template-homepage .ic-notification.ic-error .ic-messagetext, 
+.template-homepage .ic-notification.ic-danger .ic-messagetext{
+    color: #FFFFFF !important;
+    padding: 10px 10px 10px 0px !important;
+    margin: 0 0 0 12px !important;
+}
+.template-homepage .ic-notification.ic-error .ic-messagetext #om_alert_message, 
+.template-homepage .ic-notification.ic-danger .ic-messagetext #om_alert_message{
+    color: #FFFFFF !important;
+}
+.template-homepage .ic-notification.ic-error .ic-messagetext .ic-notification-alert-link,
+.template-homepage .ic-notification.ic-danger .ic-messagetext .ic-notification-alert-link{
+    color: #FFFFFF !important;
+}
+.template-homepage .ic-notification.ic-error span.leftIcon,
+.template-homepage .ic-notification.ic-danger span.leftIcon{
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root jss103' focusable='false' viewBox='0 0 32 32' aria-hidden='true' role='presentation' data-mui-test='errorIcon' fill='%23C10C0D'%3E%3Cpath d='M2 16A14 14 0 1 0 16 2 14 14 0 0 0 2 16zm23.15 7.75L8.25 6.85a12 12 0 0 1 16.9 16.9zM8.24 25.16a12 12 0 0 1-1.4-16.89l16.89 16.89a12 12 0 0 1-15.49 0z'%3E%3C/path%3E%3C/svg%3E") !important;
+    width: 24px !important;
+    height: 24px !important;
+    background-color: unset !important;
+}
+.template-homepage .ic-notification.ic-error span.leftIcon svg,
+.template-homepage .ic-notification.ic-danger span.leftIcon svg{
+    display: none;
+}
+/*ic-warning*/
+.template-homepage .ic-notification.ic-warning{
+    background-color: #273641 !important;
+    border-left: 4px solid #FFB400;
+    border-radius: 2px;
+    height: 52px;
+    padding: 6px 5px 6px 16px;
+    margin-right: 20px;
+}
+.template-homepage .ic-notification.ic-warning .ic-messagetext{
+    color: #FFFFFF !important;
+    padding: 10px 10px 10px 0px !important;
+    margin: 0 0 0 12px !important;
+}
+.template-homepage .ic-notification.ic-warning .ic-messagetext #om_alert_message{
+    color: #FFFFFF !important;
+}
+.template-homepage .ic-notification.ic-warning .ic-messagetext .ic-notification-alert-link{
+    color: #FFFFFF !important;
+}
+.template-homepage .ic-notification.ic-warning span.leftIcon{
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root jss36' focusable='false' viewBox='0 0 32 32' aria-hidden='true' role='presentation' data-mui-test='warningIcon' fill='%23FFB400'%3E%3Cpath d='M16 2a14 14 0 1 0 14 14A14 14 0 0 0 16 2zm0 26a12 12 0 1 1 12-12 12 12 0 0 1-12 12z'%3E%3C/path%3E%3Cpath d='M15 8h2v11h-2zm1 14a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 16 22z'%3E%3C/path%3E%3C/svg%3E") !important;
+    background-position: unset !important;
+    height: 24px !important;
+    width: 24px !important;
+}
+.template-homepage .ic-notification.ic-warning span.leftIcon svg{
+    display: none;
+}
+/*ic-info*/
+.template-homepage .ic-notification.ic-info{
+    background-color: #273641 !important;
+    border-left: 4px solid #2abdea ;
+    border-radius: 2px;
+    height: 52px;
+    padding: 6px 5px 6px 16px;
+    margin-right: 20px;
+}
+.template-homepage .ic-notification.ic-info .ic-messagetext{
+    color: #FFFFFF !important;
+    padding: 10px 10px 10px 0px !important;
+    margin: 0 0 0 12px !important;
+}
+.template-homepage .ic-notification.ic-info .ic-messagetext #om_alert_message{
+    color: #FFFFFF !important;
+}
+.template-homepage .ic-notification.ic-info .ic-messagetext .ic-notification-alert-link{
+    color: #FFFFFF !important;
+}
+.template-homepage .ic-notification.ic-info span.leftIcon{
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root jss36' focusable='false' viewBox='0 0 32 32' aria-hidden='true' role='presentation' data-mui-test='informationIcon' fill='%232abdea'%3E%3Cpath d='M17 22v-9h-4v2h2v7h-3v2h8v-2h-3zM16 7a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 16 7z'%3E%3C/path%3E%3Cpath d='M16 30a14 14 0 1 1 14-14 14 14 0 0 1-14 14zm0-26a12 12 0 1 0 12 12A12 12 0 0 0 16 4z'%3E%3C/path%3E%3C/svg%3E") !important;
+    height: 24px !important;
+    width: 24px !important;
+    background-position: unset !important;
+}
+.template-homepage .ic-notification.ic-info span.leftIcon svg{
+    display: none;
+}
+.template-homepage .notification-alert-container .alert-container .close{
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root' focusable='false' viewBox='0 0 32 32' aria-hidden='true' role='presentation' data-mui-test='closeIcon' fill='%23ffffff'%3E%3Cpath d='M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4l6.6 6.6L8 22.6 9.4 24l6.6-6.6 6.6 6.6 1.4-1.4-6.6-6.6L24 9.4z'%3E%3C/path%3E%3C/svg%3E") !important;
+    height: 22px !important;
+    width: 22px !important;
+    background-color: #273641 !important;
+    color: #FFFFFF !important;
+    margin-right: 0 !important;
+    cursor: pointer;
+}
+.template-homepage .notification-alert-container .alert-container .close span{
+    display: none;
+}
+/* color for 'MORE' and 'LESS' in filterbar search results */
+.app-homepage .filterbarTypeaheadContainer #ic-web-filterbar-ta .ui-typeahead-footer span,
+.app-homepage .filterbarTypeaheadContainer #ic-web-filterbar-ta .more-results span{
+    color: var(--color-link) !important;
+}

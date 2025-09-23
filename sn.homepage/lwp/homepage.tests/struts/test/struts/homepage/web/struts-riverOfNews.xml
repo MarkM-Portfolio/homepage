@@ -1,0 +1,40 @@
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+ "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2009, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<!-- Package regrouping the actions related to the river of news -->
+<struts>
+    <package name="riverOfNews" extends="homepage-default">
+       		
+		<action name="doFetchNewsStories" class="com.ibm.lconn.homepage.web.action.news.HomepageFetchNewsAction">
+			<result name="success" type="dispatcher">/web/jsp/river/storiesTemplaterControler.jspf</result>
+		</action>
+		
+		<action name="doFetchSubscriptions" class="com.ibm.lconn.homepage.web.action.news.HomepageFetchSubscriptionsAction">
+			<result name="success" type="dispatcher">/web/jsp/river/subscriptionJson.jsp</result>
+		</action>
+		
+		<action name="doManageNewsPersistence" class="com.ibm.lconn.homepage.web.action.news.HomepageSaveNewsAction">
+		</action>
+		
+		<action name="doSubscribeWatchlist" class="com.ibm.lconn.homepage.web.action.news.HomepageSubscribeWatchlistAction">
+		</action>
+		
+		<action name="doUnsubscribeWatchlist" class="com.ibm.lconn.homepage.web.action.news.HomepageUnsubscribeWatchlistAction">
+		</action>
+	</package>
+</struts>

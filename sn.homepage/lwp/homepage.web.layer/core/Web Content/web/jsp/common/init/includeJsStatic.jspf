@@ -1,0 +1,25 @@
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- HCL Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright HCL Technologies Limited. 2011, 2021                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+
+<%@ page session="false" contentType="text/html; charset=UTF-8"
+	buffer="128kb"%>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@ taglib prefix="lc-ui" uri="http://www.ibm.com/lconn/tags/coreuiutil" %>
+<%@ taglib prefix="lc-cache" uri="http://www.ibm.com/connections/core/cache"%>
+
+<tiles:insertDefinition name="homepage.common.dojo" />
+
+<lc-ui:dojo include="lconn.homepage.modules.static">
+	djConfig.staticRoot = "<lc-cache:uri template="${staticRoot}" />";
+</lc-ui:dojo>

@@ -1,0 +1,50 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2011, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<div dojoAttachPoint="root" class="topContainer">
+
+<div dojoAttachPoint="loadingNode">
+<center style="height: 20px;"><img dojoAttachPoint="loadingImageNode" class='loading'
+	alt='${_resourceBundle.ACTIVITIES_LOADING_ALT}' /></center>
+</div>
+
+<div dojoAttachPoint="errorNode" style="display: none"></div>
+
+<div dojoAttachPoint="containerNode" style="display: none">
+
+<div class="lotusCenter">
+<table border="0" cellspacing="0" cellpadding="0" class="activitiesTablePadding"
+	role="presentation">
+	<tr>
+		<td width="170" align="left" valign="top">
+		<div dojoAttachPoint="calendarNode"></div>
+		</td>
+	</tr>
+</table>
+</div>
+
+<div class="lotusCenter lotusTiny"><a target="_blank"
+	class="lotusAction" dojoAttachPoint="linkActivitiesNode">${_resourceBundle.ACTIVITIES_ADD_TODO}</a>
+</div>
+
+<div dojoAttachPoint="tempNode" style="display: none"></div>
+</div>
+
+<div dojoAttachPoint="popupTodoNode" class="popup"
+	style="display: none;"></div>
+<div dojoAttachPoint="popupTodoNode2" class="popup"
+	style="display: none;"></div>
+
+</div>
+

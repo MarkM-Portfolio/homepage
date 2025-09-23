@@ -1,0 +1,65 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2015                                          -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<project name="run jmeter homepage notification tests" basedir=".">
+    <path id="ant.jmeter.jar.path">
+        <pathelement location="${basedir}/ant-jmeter-1.1.1.jar"/>
+    </path>
+
+    <taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask" classpathref="ant.jmeter.jar.path"/>
+
+    <property name="jmeter.home" value="/home/decarey/Programs/apache-jmeter-2.11"/>
+
+    <jmeter jmeterhome="${jmeter.home}"
+            resultlog="${basedir}/jmeterResults.jtl"
+            jmeterlogfile="${basedir}/jmeter.notify.tests.log"
+            testplan="${basedir}/hompage.notify.jmx">
+
+        <property name="server.name" value="dubxpcvm2349.mul.ie.ibm.com"/>
+        <property name="http.port" value="9081"/>
+        <property name="https.port" value="9444"/>
+        <property name="user.mail.news.admin" value="news-admin@elvar.mul.ie.ibm.com"/>
+        <property name="user.mail.server" value="oxpar.mul.ie.ibm.com"/>
+        <property name="user.mail.port" value="143"/><!-- e.g. 143, 25, 25001-->
+        <property name="user.mail.type" value="imap"/> <!-- e.g. pop3 or imaps-->
+
+        <property name="user_1" value="ssocial1@oxpar.mul.ie.ibm.com"/>
+        <property name="user_2" value="ssocial2@oxpar.mul.ie.ibm.com"/>
+        <property name="user_3" value="ssocial3@oxpar.mul.ie.ibm.com"/>
+        <property name="user_4" value="ssocial4@oxpar.mul.ie.ibm.com"/>
+
+        <property name="email.read.delay.ms" value="10000"/>
+        <property name="responses.dir" value="${basedir}/saved_responses"/>
+
+        <property name="set.prefs.run" value="true"/>
+
+        <property name="activites.tests.run" value="true"/>
+        <property name="blogs.tests.run" value="true"/>
+        <property name="bookmarks.tests.run" value="true"/>
+        <property name="communities.tests.run" value="true"/>
+        <property name="files.tests.run" value="true"/>
+        <property name="profiles.tests.run" value="true"/>
+        <property name="wikis.tests.run" value="true"/>
+        <property name="news.tests.run" value="true"/>
+        <property name="moderation.tests.run" value="true"/>
+        <property name="microblog.tests.run" value="true"/>
+        <property name="digests.tests.run" value="true"/>
+    </jmeter>
+
+     <xslt        
+    in="${basedir}/jmeterResults.jtl"
+    out="${basedir}/jmeterResults.html"
+    style="${jmeter.home}/extras/jmeter-results-report.xsl"/>
+
+</project>

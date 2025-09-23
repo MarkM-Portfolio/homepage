@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * IBM Confidential
+ * 
+ * OCO Source Materials
+ * 
+ * Copyright IBM Corp. 2006, 2015                                    
+ * 
+ * The source code for this program is not published or otherwise
+ * divested of its trade secrets, irrespective of what has been
+ * deposited with the U.S. Copyright Office.
+ * 
+-->
+<project name="homepage.common/utils" default="development" basedir="."> 
+	  <!-- remove these on your real project -->
+  <property name="skip.javadoc" value="true"/>
+  <property name="skip.javadoc.public" value="true"/>    
+  <property name="skip.javadoc.full" value="true"/>        
+  <property name="whitespace.exclude" value="**/*.js"/>   
+  <property name="jsObfuscator.skipobfuscation" value="true"/>   
+	
+  <import file="${env.WPLC_IMPORT}/std_props.xml"/>
+  <import file="${env.WPLC_IMPORT}/std_dirs.xml"/>
+
+	
+  <property name="output.jar" value="${dir.lib}/homepage.utils.jar"/>                                
+    
+
+  <import file="${env.WPLC_IMPORT}/check.xml"/>
+  <import file="${env.WPLC_IMPORT}/compile.xml"/>
+  <import file="${env.WPLC_IMPORT}/rmic.xml"/>
+  <import file="${env.WPLC_IMPORT}/package_extra.xml"/>
+  <import file="${env.WPLC_IMPORT}/javadoc.xml"/>
+  <import file="${env.WPLC_IMPORT}/jdepend.xml"/>
+  <import file="${env.WPLC_IMPORT}/clean.xml"/>
+  <import file="${env.WPLC_IMPORT}/comp_zip.xml"/>
+  <import file="${env.WPLC_IMPORT}/std_targets.xml"/>
+  <import file="${env.WPLC_IMPORT}/process_nls.xml"/>
+  <import file="${env.WPLC_IMPORT}/performance.xml"/>
+  <import file="${env.WPLC_IMPORT}/dependencies.xml"/>  
+
+	<!-- Saving build version for about page -->
+	<property name="build.prop.file" location="${basedir}/../../build/homepage.common/utils/properties/src/com/ibm/lconn/homepage/resources/stats/BuildStats.properties" />
+	<property name="postcompile.override" value="createBuildPropFile" />
+
+	<target name="createBuildPropFile">
+		<echo message="Saving build number" />
+		<echo file="${build.prop.file}" append="false" message="# Mantis generated file. DO NOT EDIT!&#10;" />
+		<echo file="${build.prop.file}" append="true" message="&#10;" />
+		<echo file="${build.prop.file}" append="true" message="build.version=3.0_${env.CMVC_RELEASE}_${env.BUILDLEVEL}&#10;" />
+		<property name="build.prop.file.exists" value="true" />
+	</target>
+	
+</project>

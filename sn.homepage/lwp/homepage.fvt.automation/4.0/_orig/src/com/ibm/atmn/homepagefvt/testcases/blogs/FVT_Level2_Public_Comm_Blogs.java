@@ -1,0 +1,286 @@
+/* ***************************************************************** */
+/*                                                                   */
+/* IBM Confidential                                                  */
+/*                                                                   */
+/* OCO Source Materials                                              */
+/*                                                                   */
+/* Copyright IBM Corp. 2010, 2013                                    */
+/*                                                                   */
+/* The source code for this program is not published or otherwise    */
+/* divested of its trade secrets, irrespective of what has been      */
+/* deposited with the U.S. Copyright Office.                         */
+/*                                                                   */
+/* ***************************************************************** */
+
+package com.ibm.atmn.homepagefvt.testcases.blogs;
+
+
+import org.testng.annotations.Test;
+
+import com.ibm.atmn.homepagefvt.appobjects.common.CommonData;
+import com.ibm.atmn.homepagefvt.appobjects.common.CommonObjects;
+import com.ibm.atmn.homepagefvt.tasks.common.CommonMethods;
+import com.ibm.atmn.homepagefvt.appobjects.blogs.FVT_BlogsObjects;
+import com.ibm.atmn.homepagefvt.appobjects.communities.FVT_CommunitiesData;
+import com.ibm.atmn.homepagefvt.appobjects.communities.FVT_CommunitiesObjects;
+import com.ibm.atmn.homepagefvt.tasks.blogs.FVT_BlogsMethods;
+import static org.testng.AssertJUnit.*;
+
+public class FVT_Level2_Public_Comm_Blogs extends FVT_BlogsMethods{
+	/*
+	 * This is a functional test for the Blogs Component of IBM Connections
+	 */
+	
+	private static String PublicBlogCommunity = "";
+	private static String PublicBlogEntry = "";
+	
+	@Test
+	public void testCreateBlog_PublicComm() throws Exception {
+		
+		
+		System.out.println("INFO: Start of Blogs FVT_Level_2 testCreateBlog_PublicComm");
+	
+		// Login to communities
+		LoadComponent(CommonObjects.ComponentCommunities);
+			
+		Login(CommonData.IC_LDAP_Username450, CommonData.IC_LDAP_Password450);
+		
+		assertTrue("Fail: Communities is not open", sel.isTextPresent("Communities"));	
+		
+		clickLink("link=I'm an Owner");
+		
+		// Created a new community with moderated access
+
+		//Now Get the DateTime
+		String DateTimeStamp = CommonMethods.genDateBasedRandVal();
+		
+		//Create a moderated community
+		PublicBlogCommunity = CreateNewCommunity(FVT_CommunitiesData.PublicCommunityName+DateTimeStamp, FVT_CommunitiesData.CommunityHandle+DateTimeStamp, FVT_CommunitiesObjects.CommunityAccessOption1, "Members", FVT_CommunitiesObjects.CommunityMembersTypeAhead, FVT_CommunitiesObjects.selectedUserIdentifier, CommonData.LDAP_User_Typeahead+101, FVT_CommunitiesObjects.fullUserSearchIdentifier);
+
+		
+		//Add the blogs widget
+		AddWidgetToOverview("Blogs");
+
+		//Logout
+		Logout();
+		
+		VerifyNewsStory(" created a new blog named "+PublicBlogCommunity+".","Discover","Blogs", true);
+		
+		System.out.println("INFO: End of Blogs FVT_Level_2 testCreateBlog_PublicComm");
+		
+	}
+	
+	@Test (dependsOnMethods = { "testCreateBlog_PublicComm" })
+	public void testCreateBlogEntry_PublicComm() throws Exception {
+		
+		
+		System.out.println("INFO: Start of Blogs FVT_Level_2 testCreateBlogEntry_PublicComm");
+	
+		// Login to communities
+		LoadComponent(CommonObjects.ComponentCommunities);
+			
+		Login(CommonData.IC_LDAP_Username450, CommonData.IC_LDAP_Password450);
+		
+		assertTrue("Fail: Communities is not open", sel.isTextPresent("Communities"));	
+		
+		clickLink("link=I'm an Owner");
+		
+		//Go to public community
+		clickLink("link=" + PublicBlogCommunity);
+		
+		//Go to blogs
+		clickLink("link=Blog");
+		
+		// Created a new blog entry
+		PublicBlogEntry = CreateANewBlogEntry(PublicBlogCommunity + " Blog Entry");
+
+		//Logout
+		Logout();
+		
+		VerifyNewsStory(" created a new blog entry named "+PublicBlogEntry+" in the "+PublicBlogCommunity+" blog.","Discover","Blogs", true);
+		
+		System.out.println("INFO: End of Blogs FVT_Level_2 testCreateBlogEntry_PublicComm");
+		
+	}
+
+	@Test (dependsOnMethods = { "testCreateBlogEntry_PublicComm" })
+	public void testUpdateBlogEntry_PublicComm() throws Exception {
+		
+		
+		System.out.println("INFO: Start of Blogs FVT_Level_2 testUpdateBlogEntry_PublicComm");
+	
+		// Login to communities
+		LoadComponent(CommonObjects.ComponentCommunities);
+			
+		Login(CommonData.IC_LDAP_Username450, CommonData.IC_LDAP_Password450);
+		
+		assertTrue("Fail: Communities is not open", sel.isTextPresent("Communities"));	
+		
+		clickLink("link=I'm an Owner");
+		
+		//Go to public community
+		clickLink("link=" + PublicBlogCommunity);
+		
+		//Go to blogs
+		clickLink("link=Blog");
+		
+		//Go to blog entry
+		clickLink("link=" + PublicBlogEntry);
+		
+		//Update blog entry
+		CreateAUpdatedBlogEntry();
+	
+		//Logout
+		Logout();
+		
+		VerifyNewsStory(" updated the "+PublicBlogEntry+" blog entry in the "+PublicBlogCommunity+" blog.","Discover","Blogs", true);
+		
+		System.out.println("INFO: End of Blogs FVT_Level_2 testUpdateBlogEntry_PublicComm");
+		
+	}
+	
+	@Test (dependsOnMethods = { "testCreateBlogEntry_PublicComm" })
+	public void testAddCommentToBlog_PublicComm() throws Exception {
+		
+		
+		System.out.println("INFO: Start of Blogs FVT_Level_2 testUpdateBlogEntry_PublicComm");
+	
+		// Login to communities
+		LoadComponent(CommonObjects.ComponentCommunities);
+			
+		Login(CommonData.IC_LDAP_Username450, CommonData.IC_LDAP_Password450);
+		
+		assertTrue("Fail: Communities is not open", sel.isTextPresent("Communities"));	
+		
+		clickLink("link=I'm an Owner");
+		
+		//Go to public community
+		clickLink("link=" + PublicBlogCommunity);
+		
+		//Go to blogs
+		clickLink("link=Blog");
+		
+		//Go to blog entry
+		clickLink("link=" + PublicBlogEntry);
+		
+		//Update blog entry
+		AddACommentToEntry();
+	
+		//Logout
+		Logout();
+		
+		VerifyNewsStory(" commented on their own "+PublicBlogEntry+" blog entry in the "+PublicBlogCommunity+" blog.","Discover","Blogs", true);
+		
+		System.out.println("INFO: End of Blogs FVT_Level_2 testUpdateBlogEntry_PublicComm");
+		
+	}
+	
+	@Test (dependsOnMethods = { "testCreateBlogEntry_PublicComm" })
+	public void testCreateATrackbackTOEntry_PublicComm() throws Exception {
+		
+		
+		System.out.println("INFO: Start of Blogs FVT_Level_2 testCreateATrackbackTOEntry_PublicComm");
+	
+		// Login to communities
+		LoadComponent(CommonObjects.ComponentCommunities);
+			
+		Login(CommonData.IC_LDAP_Username450, CommonData.IC_LDAP_Password450);
+		
+		assertTrue("Fail: Communities is not open", sel.isTextPresent("Communities"));	
+		
+		clickLink("link=I'm an Owner");
+		
+		//Go to public community
+		clickLink("link=" + PublicBlogCommunity);
+		
+		//Go to blogs
+		clickLink("link=Blog");
+		
+		//Go to blog entry
+		clickLink("link=" + PublicBlogEntry);
+		
+		//Create a trackback to an entry
+		CreateATrackbackToEntry();
+	
+		//Logout
+		Logout();
+		
+		VerifyNewsStory(" left a trackback on their own RE: "+PublicBlogEntry+" blog entry in the "+PublicBlogCommunity+" blog.","Discover","Blogs", true);
+		
+		System.out.println("INFO: End of Blogs FVT_Level_2 testCreateATrackbackTOEntry_PublicComm");
+		
+	}
+	
+	@Test (dependsOnMethods = { "testCreateBlogEntry_PublicComm" })
+	public void testRecommendEntry_PublicComm() throws Exception {
+		
+		
+		System.out.println("INFO: Start of Blogs FVT_Level_2 testRecommendEntry_PublicComm");
+	
+		// Login to communities
+		LoadComponent(CommonObjects.ComponentCommunities);
+			
+		Login(CommonData.IC_LDAP_Username450, CommonData.IC_LDAP_Password450);
+		
+		assertTrue("Fail: Communities is not open", sel.isTextPresent("Communities"));	
+		
+		clickLink("link=I'm an Owner");
+		
+		//Go to public community
+		clickLink("link=" + PublicBlogCommunity);
+		
+		//Go to blogs
+		clickLink("link=Blog");
+		
+		//Go to blog entry
+		clickLink("link=" + PublicBlogEntry);
+		
+		//Recommend entry
+		clickLink(FVT_BlogsObjects.BlogsEntryRecommend);
+	
+		//Logout
+		Logout();
+		
+		VerifyNewsStory(" recommended their own "+PublicBlogEntry+" blog entry in the "+PublicBlogCommunity+" blog.","Discover","Blogs", true);
+		
+		System.out.println("INFO: End of Blogs FVT_Level_2 testRecommendEntry_PublicComm");
+		
+	}
+	
+	@Test (dependsOnMethods = { "testAddCommentToBlog_PublicComm" })
+	public void testRecommendComment_PublicComm() throws Exception {
+		
+		
+		System.out.println("INFO: Start of Blogs FVT_Level_2 testRecommendComment_PublicComm");
+	
+		// Login to communities
+		LoadComponent(CommonObjects.ComponentCommunities);
+			
+		Login(CommonData.IC_LDAP_Username450, CommonData.IC_LDAP_Password450);
+		
+		assertTrue("Fail: Communities is not open", sel.isTextPresent("Communities"));	
+		
+		clickLink("link=I'm an Owner");
+		
+		//Go to public community
+		clickLink("link=" + PublicBlogCommunity);
+		
+		//Go to blogs
+		clickLink("link=Blog");
+		
+		//Go to blog entry
+		clickLink("link=" + PublicBlogEntry);
+		
+		//Recommend entry
+		clickLink(FVT_BlogsObjects.BlogsCommentRecommend);
+	
+		//Logout
+		Logout();
+		
+		VerifyNewsStory(" recommended their own comment on "+PublicBlogEntry+".","Discover","Blogs", true);
+		
+		System.out.println("INFO: End of Blogs FVT_Level_2 testRecommendComment_PublicComm");
+		
+	}
+	
+}

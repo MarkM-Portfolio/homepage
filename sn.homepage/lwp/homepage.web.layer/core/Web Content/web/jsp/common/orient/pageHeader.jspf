@@ -1,0 +1,144 @@
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- HCL Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright HCL Technologies Limited. 2006, 2021                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+
+<%@ page session="true" contentType = "text/html; charset=UTF-8" buffer = "128kb"%>
+<%--wscExemptBegin--%>
+<%--wscExemptEnd--%>
+<%@ taglib prefix="corenav" uri="http://www.ibm.com/lconn/tags/corenav" %>
+<%@ taglib prefix="lc-ui" uri="http://www.ibm.com/lconn/tags/coreuiutil" %>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@ taglib prefix="bidi" uri="http://www.ibm.com/lconn/tags/bidiutil"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="com.ibm.ventura.internal.config.helper.api.VenturaConfigurationHelper" %>
+
+<bidi:direction />
+<c:set var="dir" value="ltr"/>
+<c:if test="${bidi}">
+	<c:set var="dir" value="rtl"/>
+</c:if>
+
+<tiles:importAttribute name="CSSBodyClass" toName="cssClass" ignore="true" />
+
+<%
+String localeIdBCP = request.getLocale().toString();
+localeIdBCP = localeIdBCP.toLowerCase();
+localeIdBCP = localeIdBCP.replace("_","-");
+pageContext.setAttribute("languageSettings", com.ibm.ventura.internal.config.helper.api.VenturaConfigurationHelper.Factory.getInstance().getLanguageSelectorSettings());
+%>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	dir="${dir}"
+	lang="<%=localeIdBCP%>"
+	xml:lang="<%=localeIdBCP%>">
+	<head>
+		<jsp:include page="../homepageAuth.jspf"/>
+		<lc-ui:dojo include="lconn.core.bundle_common" />
+		<lc-ui:stylesheets />
+	</head>
+	<body class="lotusui lotusui30dojo lotusui30_body lotusui30_fonts lotusui30 ${cssClass} lotusSpritesOn">
+		<div id="lotusFrame" class="lotusui30_layout lotusFrame">
+			<div role="banner">
+				<div id="lotusBanner" class="lotusBanner"> 
+					<corenav:header appname="homepage"
+						user="${sessionScope['user.info.name']}"
+						userId="${sessionScope['user.info.id']}"
+						help=""
+						login=""
+						logout=""/>
+				</div>
+				<script type="text/javascript">
+					// Require JS object for authentication.
+					dojo.require("lconn.core.auth");
+					if(typeof lconn.homepage.global.isAuthenticated != 'undefined'){
+						lconn.core.auth.setAuthCheck(lconn.homepage.global.isAuthenticated);
+					}
+				</script>
+				
+				 <%--Include Script to Show User Name and Allow Logout Behavior --%>
+				<script type="text/javascript">
+					//<![CDATA[
+					//dojo.addOnLoad(function() {
+					var headerUserName = document.getElementById('headerUserName');
+					if ( headerUserName ) {
+						//var currentUser = "<=session.getAttribute("user.info.name") >" ;
+						//currentUser = currentUser.replace(/[^a-zA-Z0-9 ]/,"");
+						//headerUserName.innerHTML = currentUser;
+						
+						var welcomeUserText = document.getElementById( 'headerUserText' );
+						if ( welcomeUserText != null) {
+							welcomeUserText.style.display = 'inline';
+						}
+					}
+					
+					var headerHelpLink = document.getElementById('headerHelpLink');
+					if(headerHelpLink != null) {
+						dojo.connect(headerHelpLink, "onclick", function(e) {
+							// Call with no arguments to launch default help topic
+							dojo.stopEvent(e);
+							openHelpWindow();
+						});
+					}
+					//});
+					//]]>
+				</script>
+				
+				<script type="text/javascript">
+					dojo.addOnLoad(function() {
+						/* The logout action is set up in the addOnLoad function so we are guaranteed the
+							authentication JS objects are available. */
+						var logoutLink = document.getElementById( 'logoutLink' );
+						if ( logoutLink != null) {
+							logoutLink.onclick = function() {
+							
+								// Check to see if the user is authenticated.
+								var authenticated = lconn.core.auth.isAuthenticated();
+								
+								if (authenticated) {
+									lconn.core.auth.logout();
+								} else {
+									lconn.core.auth.login();
+								}
+							
+								// Don't follow through with default browser action
+								return false;
+							};
+						}
+					})
+				</script>
+				
+				<script type="text/javascript">
+					dojo.require("lconn.core.header");
+					dojo.addOnLoad(function(){
+						lconn.core.header.apps.updateLoginRegion();
+						lconn.core.header.apps.updateBannerByRoles();
+					});
+				</script>
+				
+				<c:if test="${languageSettings.enabled}">
+				<script type="text/javascript">
+					function loadConnectionsLanguageSelector() {
+						try {
+							lconn.core.header.enableLanguageSelector("languageSelectorText", ${languageSettings.languagesAsJSONString}, "${languageSettings.cookieName}", "${languageSettings.cookieDomain}", ${languageSettings.cookieTimeout});
+						} catch (e) {
+							console.error(e);
+						}
+					}
+					if (dojo.exists("lconn.core.header") && !dojo.exists("_skipConnectionsLanguageSelector")) {
+						dojo.addOnLoad(loadConnectionsLanguageSelector);
+					}
+				</script>
+				</c:if>
+			</div>
+		</div>
+	</body>
+</html>

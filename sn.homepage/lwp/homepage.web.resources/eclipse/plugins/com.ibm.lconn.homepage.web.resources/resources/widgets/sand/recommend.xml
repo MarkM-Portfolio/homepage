@@ -1,0 +1,45 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2001, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<iw:iwidget name="Recommend" xmlns:iw="http://www.ibm.com/xmlns/prod/iWidget" iScope="lconn.homepage.core.base.widgets.sand.RecommendHomepageClass" useHomepageEnhancedFeatures="true">
+	<!-- <iw:resource uri="{homepage}/static/web/widgets/{version}/sand/RecommendHomepageClass.js"/> -->
+
+	<iw:event id="help" handled="true" onEvent="onHelp" />
+	<iw:event id="onRefreshNeeded" handled="true" onEvent="onRefresh" />
+	<iw:event id="onUnload" handled="true" onEvent="onDestroy" />
+
+	<iw:itemSet id="attributes">
+		<iw:item id="numberRecommendations" value="5" />
+	</iw:itemSet>
+
+	<iw:itemSet id="defaultParams">    	
+		<iw:item id="sourceList" value="activities,blogs,communities,wikis,ecm_files,files,dogear,forums"/>
+		<iw:item id="mappingRemoteUrl" value="{search}/"/>
+		<iw:item id="helpUrl" value="{help}/index.jsp?topic=/com.ibm.lotus.connections.homepage.help/t_hp_using_recommended_items_widget.html"/>
+  	</iw:itemSet>
+
+	<iw:itemSet id="feeds">
+		<iw:item id="defaultURL" value="{search}/atom/social/recommend"/>
+		<iw:item id="feedBackURL" value="{search}/api/feedback"/>
+		<iw:item id="profilesRoot" vlaue="{profiles}"/>
+	</iw:itemSet>
+	
+	<iw:itemSet id="modes">
+		<iw:item id="currentMode" value="Recommend"/>
+	</iw:itemSet>
+	
+    <iw:content mode="view">
+        <![CDATA[ <div id="_IWID_root"/> ]]> 
+     </iw:content>
+</iw:iwidget>

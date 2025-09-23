@@ -1,0 +1,47 @@
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+ "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2009, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<!-- Specific to unit test. We register "dummy" actions here that are "behind" the interceptor under test.
+This allows us to leverage the existing mock web environment set up in BaseStrutsSpringTestCase -->
+
+<struts>
+    <package name="interceptors-tests" extends="struts-default">
+        <interceptors>
+            <interceptor name="userInfoUnderTest" class="com.ibm.lconn.homepage.web.interceptor.UserInfoInterceptor">
+                <param name="skipInit">
+                    true
+                </param>
+            </interceptor>
+            <interceptor name="tabInfoUnderTest" class="com.ibm.lconn.homepage.web.interceptor.TabInfoInterceptor"/>
+        </interceptors>
+        
+        <action name="userInfoUnderTestSupportAction" class="org.apache.struts2.dispatcher.DefaultActionSupport">
+            <interceptor-ref name="userInfoUnderTest"/>
+        </action>
+        
+        <action name="tabInfoUnderTestSupportAction" class="org.apache.struts2.dispatcher.DefaultActionSupport">
+            <interceptor-ref name="tabInfoUnderTest"/>
+        </action>
+        
+        <action name="tabInfoUnderTestSupportActionWithMock" class="com.ibm.lconn.homepage.test.web.interceptor.TabAwareActionSupportWithMock">
+            <interceptor-ref name="tabInfoUnderTest">
+                <param name="tabTypeParam">UPDATE</param>
+            </interceptor-ref>
+        </action>
+    </package>
+</struts>

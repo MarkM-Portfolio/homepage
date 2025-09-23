@@ -1,0 +1,52 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2007, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+-- {COPYRIGHT}
+
+-- HOMEPAGE 
+ALTER TABLE HOMEPAGE.LOGINNAME DROP FOREIGN KEY "FK_LN_PERSON_ID";
+ALTER TABLE HOMEPAGE.HP_UI DROP FOREIGN KEY "FK_UI_PERSON_ID";
+ALTER TABLE HOMEPAGE.HP_TAB_INST DROP FOREIGN KEY "FK_UI_ID";
+ALTER TABLE HOMEPAGE.HP_TAB_INST DROP FOREIGN KEY "FK_TAB_INST_TAB_ID";
+ALTER TABLE HOMEPAGE.HP_WIDGET_INST DROP FOREIGN KEY "FK_WIDGET_ID";
+ALTER TABLE HOMEPAGE.HP_WIDGET_INST DROP FOREIGN KEY "FK_TAB_INST_ID";
+ALTER TABLE HOMEPAGE.HP_WIDGET_TAB DROP FOREIGN KEY "FK_WID_TAB_WID_ID";
+ALTER TABLE HOMEPAGE.HP_WIDGET_TAB DROP FOREIGN KEY "FK_WID_TAB_TAB_ID";
+ALTER TABLE HOMEPAGE.PREREQ DROP FOREIGN KEY "FK_PREREQ_WIDGET";
+
+ALTER TABLE HOMEPAGE.NT_NOTIFICATION DROP FOREIGN KEY "FK_SENDER_ID";
+ALTER TABLE HOMEPAGE.NT_NOTIFICATION DROP FOREIGN KEY "FK_F_RECIPIENT_ID";
+ALTER TABLE HOMEPAGE.NT_NOTIFICATION_RECIPIENT DROP FOREIGN KEY "FK_RECIP_NOTIF";
+ALTER TABLE HOMEPAGE.NT_NOTIFICATION_RECIPIENT DROP FOREIGN KEY "FK_RECIPIENT_ID";
+
+ALTER TABLE HOMEPAGE.LOGINNAME DROP UNIQUE "LOGINNAME_UNIQUE";
+DROP INDEX  HOMEPAGE.PERSON_EXID;
+
+-- HOMEPAGE deletion
+DELETE FROM HOMEPAGE.HOMEPAGE_SCHEMA;
+DELETE FROM HOMEPAGE.LOGINNAME;
+DELETE FROM HOMEPAGE.HP_WIDGET_INST;
+DELETE FROM HOMEPAGE.HP_TAB_INST;
+DELETE FROM HOMEPAGE.HP_WIDGET_TAB; 
+DELETE FROM HOMEPAGE.HP_UI;
+DELETE FROM HOMEPAGE.HP_TAB;
+DELETE FROM HOMEPAGE.PREREQ;
+DELETE FROM HOMEPAGE.WIDGET;
+
+-- Delete notifications NT_NOTIFICATIONs
+DELETE FROM HOMEPAGE.NT_NOTIFICATION_RECIPIENT;
+DELETE FROM HOMEPAGE.NT_NOTIFICATION;
+
+DELETE FROM HOMEPAGE.PERSON;
+DELETE FROM HOMEPAGE.MT_METRIC_STAT;

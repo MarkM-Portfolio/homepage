@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+        "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- HCL Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright HCL Technologies Limited 2009, 2021                     -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<beans>
+    <import resource="classpath:spring/home-news/database/DatabaseIbatis.xml"/>
+    
+    <!-- 
+    This bean definition must be overridden from the component with the right\dedicated jndi 
+    which the component are supposed to use:
+    i.e.: 
+    		news: jdbc/news
+    		homepage: jdbc/homepage
+    		search: jdbc/search
+    		etc..
+   	-->
+
+    <bean id="HPNEWS-DATABASE:dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:comp/env/jdbc/homepage"/>
+        <property name="lookupOnStartup" value="false"/>
+        <property name="cache" value="true"/>
+        <property name="proxyInterface" value="javax.sql.DataSource"/>
+    </bean>
+
+    <bean id="HPNEWS-DATABASE:sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocations">
+			<list>
+				<value>classpath:resources/ibatis-dynacache-on.xml</value>
+				<value>classpath:resources/home-news/sql-map-config.xml</value>
+				<value>classpath:resources/homepage/sql-map-config.xml</value>
+			</list>
+      	</property>
+		<property name="dataSource" ref = "HPNEWS-DATABASE:dataSource"/>
+    </bean>
+    
+</beans>

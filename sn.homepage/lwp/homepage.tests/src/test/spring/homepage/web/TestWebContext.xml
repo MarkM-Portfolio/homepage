@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2002, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:util="http://www.springframework.org/schema/util"
+ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+    
+     <bean id="mockAvailableWidgetList" class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+            <list>
+                <bean class="com.ibm.lconn.core.services.cre.remote.widget.model.Widget">
+                    <property name="widgetId" value="widget1"/>
+                    <property name="title" value="aa"/>
+                </bean>
+                <bean class="com.ibm.lconn.core.services.cre.remote.widget.model.Widget">
+                    <property name="widgetId" value="widget2"/>
+                    <property name="title" value="bb"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="mockAvailableWidgetTree" class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+            <map>
+                <entry key="cat1">
+                    <bean class="com.ibm.lconn.core.services.cre.remote.widget.model.WidgetCategory">
+                        <property name="id" value="ACTIVITIES"/>
+                    </bean>
+                </entry>
+                <entry key="cat2">
+                    <bean class="com.ibm.lconn.core.services.cre.remote.widget.model.WidgetCategory">
+                        <property name="id" value="OTHER"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean> 
+    
+    <bean id="mockUserInfo" class="com.ibm.lconn.homepage.test.web.mock.GenericMockFactory">
+        <property name="interfaceName" value="com.ibm.lconn.homepage.services.IUserServices"/>
+    </bean>
+    
+    <bean id="mockResourceBundle" class="com.ibm.lconn.homepage.test.web.mock.GenericMockFactory">
+        <property name="interfaceName" value="com.ibm.lconn.homepage.utils.ResourceBundle"/>
+    </bean>
+    
+    <bean id="mockTabInfoService" class="com.ibm.lconn.homepage.test.web.mock.GenericMockFactory">
+        <property name="interfaceName" value="com.ibm.lconn.homepage.services.ITabServices"/>
+    </bean>
+	<!--
+	<bean id="mockVenturaConfigurationProvider" class="com.ibm.lconn.homepage.test.web.mock.GenericMockFactory">
+        <property name="interfaceName" value="com.ibm.ventura.internal.config.api.VenturaConfigurationProvider"/>
+    </bean>
+	
+	<bean id="mockVenturaConfigurationHelper" class="com.ibm.lconn.homepage.test.web.mock.GenericMockFactory">
+        <property name="interfaceName" value="com.ibm.ventura.internal.config.helper.api.VenturaConfigurationHelper"/>
+    </bean> -->
+    
+    
+    <bean id="mockUserInfoInterceptor" class="com.ibm.lconn.homepage.test.web.mock.MockUserInfoInterceptor">
+        <!--
+		<property name="userServices" ref="mockUserInfo"/>
+        <property name="webResourceBundle" ref="mockResourceBundle"/>
+        <property name="venturaConfigurationProvider" ref="mockVenturaConfigurationProvider"/>
+        <property name="venturaConfigurationHelper" ref="mockVenturaConfigurationHelper"/> -->
+    </bean>
+    
+    <bean id="mockTabInfoInterceptor" class="com.ibm.lconn.homepage.web.interceptor.TabInfoInterceptor">
+        <property name="tabServices" ref="mockTabInfoService"/>
+        <property name="userServices" ref="mockUserInfo"/>
+        <property name="webResourceBundle" ref="mockResourceBundle"/>
+        
+    </bean>
+    
+    <!-- Mock VenturaConfigurationProvider -->
+	
+    <bean id="mockVenturaConfigurationProvider" class="com.ibm.lconn.homepage.test.services.mock.VenturaConfigurationServiceMockFactory" factory-method="createVenturaConfigurationProviderMock">        
+    </bean> 
+    
+    <!-- Mock VenturaConfigurationHelper -->
+	
+    <bean id="mockVenturaConfigurationHelper" class="com.ibm.lconn.homepage.test.services.mock.VenturaConfigurationServiceMockFactory" factory-method="createVenturaConfigurationHelperMock">
+    </bean> 
+</beans>

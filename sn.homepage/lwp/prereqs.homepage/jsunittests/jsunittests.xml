@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* IBM Confidential
+*
+* OCO Source Materials
+*
+* Copyright IBM Corp. 2006, 2009
+*
+* The source code for this program is not published or otherwise
+* divested of its trade secrets, irrespective of what has been
+* deposited with the U.S. Copyright Office.
+*
+-->
+
+<!-- Set of tasks used to setup projects allowing to run the javascript unit tests from a web browser -->
+
+<project name="jsunittests" default="setup-jsunittests-dev" basedir=".">
+    
+    <!--
+    Set of tasks whose objective is to make easier to setup a runnable web project for the unit tests
+    Two main options:
+      1. Run the task setup-jsunittests-dev (bld setup-jsunittests-dev) to set up a project under the /build directory
+    Then simply open the fire runTests.html in a browser to run the unit tests
+      2. Run the task runJsUnitTests to run the unit tests on the command line (using Rhino).
+    Note that this approach is not recommanded as it does not run the unit tests having a dependency on the DOM    
+
+
+     Important: Property jsunit.tmpdir MUST be set by the ant script incliding this file
+    -->
+
+	<target name="setup-tmp-dir">
+        <mkdir dir="${jsunit.tmpdir}"/>
+    </target>
+    
+    <!-- Create web project based on DOH containing our Unit Tests ready to run -->
+    <target name="setup-jsunittests-dev" depends="setup-tmp-dir">
+        <delete dir="${jsunit.tmpdir}"/>
+        
+        <echo message="${dojo.src.dir}"/>
+        <echo message="${homepage.web.dir}"/>
+        <!-- antcall target="prepare-code-under-test"/ -->
+    </target>
+    
+    <!-- Run Rhino unit tests from the command line -->
+    <target name="runJsUnitTests" depends="setup-jsunittests-dev">
+        <!--java dir="${basedir}/build/util/doh/" jar="${basedir}/build/util/shrinksafe/custom_rhino.jar" fork="true" failonerror="true">
+            <arg value="runner.js"/>
+            <arg value="testUrl=../../lconn/homepage/tests/module.js"/>
+            <arg value="testModule=lconn.homepage.tests.module"/>
+        </java-->
+    </target>
+    
+    <target name="clean">
+        <delete dir="${jsunit.tmpdir}"/>
+    </target>
+</project>
+

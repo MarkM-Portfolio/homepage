@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2001, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<!-- 5724-S68                                                          -->
+<xsd:schema targetNamespace="http://www.ibm.com/LotusConnections-config" 
+    xmlns="http://www.ibm.com/LotusConnections-config" 
+    xmlns:tns="http://www.ibm.com/LotusConnections-config" 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:sloc="http://www.ibm.com/service-location">
+
+
+  <xsd:import namespace="http://www.ibm.com/service-location" schemaLocation="service-location.xsd"/>
+
+  <xsd:element name="config">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="deployment"/>
+        <xsd:element ref="sloc:serviceReference" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element ref="style"/>
+        <xsd:element ref="customAuthentication" minOccurs='0' maxOccurs='1'/>
+        <xsd:element ref="customAuthenticator" minOccurs='0' maxOccurs='1'/>
+        <xsd:element ref="allowedContent" minOccurs='0' maxOccurs='1'/>
+        <xsd:element ref="avFilter" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element ref="forceSecureAtomFeeds" minOccurs="0" maxOccurs="1"/>
+        <xsd:element ref="forceConfidentialCommunications" minOccurs="0" maxOccurs="1"/>
+        <xsd:element ref="exposeEmail" minOccurs="0" maxOccurs="1"/> 
+        <xsd:element ref="languageSelector"/>
+<xsd:element ref="dynamicHosts" minOccurs="0" maxOccurs="1"/>
+<xsd:element ref="resources" minOccurs="0" maxOccurs="1"/>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required"/>
+      <xsd:attribute name="buildlevel" type="xsd:string" use="required"/>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name="tdiConfig">
+   <xsd:complexType>
+    <xsd:attribute name="id" type="xsd:string" use="required"/>
+      <xsd:attribute name="buildlevel" type="xsd:string" use="required"/>
+   </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="style">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="header"/>
+        <xsd:element ref="footer"/>
+        <xsd:element ref="images"/>
+        <xsd:element ref="caching"/>
+      </xsd:sequence>
+      <xsd:attribute name="enabled" type="xsd:boolean" use="required"/>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name="caching">
+    <xsd:complexType>
+      <xsd:attribute name="value" type="xsd:string"/>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="images">
+    <xsd:complexType>
+      <xsd:attribute name="url" type="xsd:anyURI"/>
+ <xsd:attribute name="ssl_url" type="xsd:anyURI"/>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name="header">
+    <xsd:complexType>
+      <xsd:attribute name="url" type="xsd:anyURI"/>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name="footer">
+    <xsd:complexType>
+      <xsd:attribute name="url" type="xsd:anyURI"/>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name="css">
+    <xsd:complexType>
+      <xsd:attribute name="url" type="xsd:anyURI"/>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name="cssRtl">
+    <xsd:complexType>
+      <xsd:attribute name="url" type="xsd:anyURI"/>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name="customAuthentication">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="authJSUrl"/>
+        <xsd:element ref="ssl_authJSUrl"/>
+        <xsd:element ref="authJSClassName"/>
+      </xsd:sequence>
+      <xsd:attribute name="enabled" type="xsd:boolean" use="required"/>
+      <xsd:attribute name="ssl_enabled" type="xsd:boolean" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="authJSUrl">
+    <xsd:complexType>
+      <xsd:attribute name="url" type="xsd:anyURI"/>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="ssl_authJSUrl">
+    <xsd:complexType>
+      <xsd:attribute name="url" type="xsd:anyURI"/>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="authJSClassName">
+    <xsd:complexType>
+      <xsd:attribute name="value" type="xsd:string"/>
+    </xsd:complexType>
+  </xsd:element>
+
+<xsd:element name="customAuthenticator">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element minOccurs="0" maxOccurs="unbounded" ref="attribute" />
+</xsd:sequence>
+<xsd:attribute name="name" type="xsd:string" />
+<xsd:attribute name="className" type="xsd:string" />
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="attribute">
+<xsd:complexType>
+<xsd:simpleContent>
+<xsd:extension base="xsd:string">
+<xsd:attribute name="key" use="required" type="xsd:string" />
+<xsd:attribute name="value" use="required" type="xsd:string" />
+</xsd:extension>
+</xsd:simpleContent>
+</xsd:complexType>
+</xsd:element>
+  
+  <!-- Default = FALSE -->
+  <xsd:element name="forceSecureAtomFeeds">
+     <xsd:complexType>
+       <xsd:attribute name="enabled" type="xsd:boolean"/>
+     </xsd:complexType>
+  </xsd:element>
+  
+  <!-- Default = FALSE -->
+  <xsd:element name="forceConfidentialCommunications">
+     <xsd:complexType>
+       <xsd:attribute name="enabled" type="xsd:boolean"/>
+     </xsd:complexType>
+  </xsd:element>
+  
+  <!-- Default = TRUE -->
+  <xsd:element name="exposeEmail">
+     <xsd:complexType>
+       <xsd:attribute name="enabled" type="xsd:boolean" default="true"/>
+     </xsd:complexType>
+  </xsd:element>
+  
+    <xsd:element name="allowedContent">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element ref="contentType" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="contentType">
+      <xsd:complexType>
+        <xsd:attribute name='name' use='required'>
+          <xsd:simpleType>
+             <xsd:restriction base="xsd:string">
+               <xsd:enumeration value="FLASH"/>
+               <xsd:enumeration value=""/>
+             </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name='enabled' use='required' type='xsd:boolean'/>
+      </xsd:complexType>
+    </xsd:element>
+
+   <xsd:element name='avFilter'>
+     <xsd:complexType>
+       <xsd:sequence>
+         <xsd:element ref='property' maxOccurs='unbounded'/>
+       </xsd:sequence>
+       <xsd:attribute name='class' use='required' type='xsd:NMTOKEN'/>
+     </xsd:complexType>
+   </xsd:element>
+
+   <xsd:element name='property'>
+     <xsd:complexType mixed='true'>
+       <xsd:attribute name='name' type='xsd:NMTOKEN'/>
+     </xsd:complexType>
+   </xsd:element>
+   
+   <xsd:element name='languageSelector'>
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element ref='language' minOccurs='0' maxOccurs='unbounded'/>
+</xsd:sequence>
+       <xsd:attribute name='enabled' type='xsd:boolean' use='required'/>
+       <xsd:attribute name='defaultLanguage' type='xsd:string'/>
+       <xsd:attribute name='cookieName' type='xsd:string'/>
+       <xsd:attribute name='cookieDomain' type='xsd:string'/>
+       <xsd:attribute name='usePermanentCookie' type='xsd:boolean' default='false'/>
+    </xsd:complexType>
+   </xsd:element>
+   
+<xsd:element name='language'>
+<xsd:complexType>
+<xsd:simpleContent>
+<xsd:extension base='xsd:string'>
+<xsd:attribute name='lang' type='xsd:string'/>
+</xsd:extension>
+</xsd:simpleContent>
+</xsd:complexType>
+</xsd:element>
+    <xsd:element name='host'>
+        <xsd:complexType>
+            <xsd:attribute type='xsd:anyURI' name='href' use='required'/>
+            <xsd:attribute type='xsd:anyURI' name='ssl_href' use='required'/>
+<xsd:attribute type='xsd:boolean' name='default' use='optional'/>
+        </xsd:complexType>
+    </xsd:element>
+    
+    <xsd:element name='dynamicHosts'>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref='host' minOccurs='1' maxOccurs='unbounded'/>
+            </xsd:sequence>
+            <xsd:attribute name='enabled' type='xsd:boolean' use='required'/>
+        </xsd:complexType>  
+    </xsd:element>
+    
+    <xsd:element name='deployment'>
+        <xsd:complexType>
+            <xsd:attribute type="xsd:NCName" name='deployment_id' use='required'/>
+       </xsd:complexType>
+    </xsd:element>
+
+   <!-- 
+Config for resource bundle loader
+-->
+    <xsd:element name="resources">
+     <xsd:complexType>
+     <xsd:sequence>
+     <xsd:element ref="localZipFile" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+     </xsd:sequence>
+     </xsd:complexType>
+<xsd:unique name="bundleFileUniquenss">
+<xsd:selector xpath="tns:localZipFile"/>
+<xsd:field xpath="@file"/>
+</xsd:unique>
+<xsd:unique name="bundleIdUniquness">
+<xsd:selector xpath="tns:*/tns:bundle"/>
+<xsd:field xpath="@bid"/>
+</xsd:unique>
+    </xsd:element>
+    <xsd:element name="localZipFile">
+     <xsd:complexType>
+     <xsd:sequence>
+     <xsd:element ref="bundle" minOccurs="1" maxOccurs="unbounded"></xsd:element>
+     </xsd:sequence>
+     <xsd:attribute name="file" type="xsd:string" use="required">
+     <xsd:annotation>
+     <xsd:documentation>
+     Expects a path to a zip file in LotusConnections-config/ext-i18n-resources/{file}
+     </xsd:documentation>
+     </xsd:annotation>
+     </xsd:attribute>
+     </xsd:complexType>
+<xsd:unique name="bundleNameUniquenss">
+<xsd:selector xpath="tns:bundle"/>
+<xsd:field xpath="@name"/>
+</xsd:unique>
+    </xsd:element>
+    <xsd:element name="bundle">
+     <xsd:complexType>
+     <xsd:attribute name="bid" type="xsd:NCName" use="required">
+     <xsd:annotation>
+     <xsd:documentation>
+     An ID for the bundle which is used to identify it elsewhere in the config
+     </xsd:documentation>
+     </xsd:annotation>
+     </xsd:attribute>
+     <xsd:attribute name="name" type="xsd:string" use="required">
+     <xsd:annotation>
+     <xsd:documentation>The full path to the resources contained in the bundle.</xsd:documentation>
+     </xsd:annotation>
+     </xsd:attribute>
+     </xsd:complexType>
+    </xsd:element>
+</xsd:schema>
+
+

@@ -1,0 +1,50 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2011, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<div dojoAttachPoint="root">
+
+<div style="padding-top: 5px;">
+<h3 class="widgetTitle" dojoAttachPoint="titleNode" style="height:20px;">
+	<span class="lotusLeft" id="${id}_ViewDropDown" style="height:20px;">${modeTitle}</span><span dojoAttachPoint="menuModeButtonNode"></span>&nbsp;
+</h3>
+</div>
+
+<div dojoAttachPoint="loadingNode" style="display:none;">
+	<center><img class="loading" src="${_loadingImagePath}" alt="loading" /></center>
+</div>
+
+<div dojoAttachPoint="errorNode" style="display: none"></div>
+
+<div dojoAttachPoint="containerNode" style="display:none;">
+
+
+<div dojoAttachPoint="welcomeNode" class="welcomeNode" style="display:none;">
+	<div class="lconnEmpty">
+		${_resourceBundle.ACTIVITIES_PUBLIC_ACTIVITIES_WELCOME_TITLE}<br/>
+		${_resourceBundle.ACTIVITIES_PUBLIC_ACTIVITIES_WELCOME_BODY}
+		<div style="font-style: normal"> 
+			<span ><a dojoAttachPoint="activityLink" href="">${_resourceBundle.ACTIVITIES_PUBLIC_ACTIVITIES_WELCOME_MORE_DETAILS}</a></span>
+		</div>
+	</div>
+</div>
+
+<div dojoAttachPoint="activityPane" style="display: none;">
+	<div dojoAttachPoint="contentNode"></div>
+	<div class="widgetFooter"><div dojoAttachPoint="scrollerNode"></div></div>
+</div>
+
+<div dojoAttachPoint="boardingNode" style="display: none;"></div>
+
+</div>
+</div>

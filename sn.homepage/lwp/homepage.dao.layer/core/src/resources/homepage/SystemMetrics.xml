@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+ PUBLIC "-//iBATIS.com/DTD SQL Map 2.0//EN"
+ "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2006, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<sqlMap namespace="Metrics">
+	<typeAlias alias="WidgetUsage" type="com.ibm.lconn.homepage.dao.model.WidgetUsage" />
+	
+	<resultMap id="WidgetUsageResultMap" class="WidgetUsage">
+		<result property="widgetId" column="WIDGET_ID" jdbcType="CHAR" />
+		<result property="title" column="WIDGET_TITLE" jdbcType="VARCHAR" />
+		<result property="nbUsers" column="TOTAL_WIDGETS" />
+	</resultMap>			
+
+    <select id="getNumberUniqueVisit-metrics" parameterClass="java.util.Map" resultClass="long">
+        <![CDATA[
+			SELECT 	COUNT(*) 
+			from 	$schema$.PERSON PERSON, 
+					$schema$.HP_UI HP_UI
+			where 	PERSON.PERSON_ID = HP_UI.PERSON_ID AND HP_UI.LAST_VISIT BETWEEN #begin# AND #end#
+		]]>
+    </select>
+    
+    <!-- NOTE: Has to be a count of HP_UI - PERSON would be inaccurate as it contains
+    users who may never have logged into the Home Page. -->
+    <select id="getCountHPPerson-PERSON-metrics" resultClass="Long">
+        <![CDATA[
+			SELECT COUNT(*)
+			FROM   $schema$.HP_UI
+		]]>
+    </select>
+    
+    	
+	<!-- added for SystemMetrics -->
+	<select id="getCountAllWidgets-metrics" resultClass="long">
+	    <![CDATA[
+		    SELECT COUNT(*) FROM $schema$.WIDGET WHERE WIDGET_ENABLED <> -1
+	    ]]>
+	</select>
+
+	<!-- added for SystemMetrics -->
+	<select id="getCountEnabledWidgets-metrics" resultClass="long">
+	    <![CDATA[
+		    SELECT COUNT(*) 
+		    FROM $schema$.WIDGET
+			WHERE WIDGET_ENABLED = 1
+	    ]]>
+	</select>
+
+	<!-- added for SystemMetrics -->
+	<select id="getWidgetsUsage-metrics" resultMap="WidgetUsageResultMap">
+	 	<![CDATA[
+		    SELECT 	*
+		    FROM $schema$.WIDGET	
+		    WHERE WIDGET_ENABLED > -1	    
+	     ]]>
+		<!-- 		SELECT 	WIDGET.WIDGET_ID, WIDGET.WIDGET_TITLE AS TITLE, COUNT(USER_ID) AS NB_USERS FROM WIDGET 
+		    		LEFT OUTER JOIN HOMEPAGE.USER_WIDGET_PREF ON WIDGET.WIDGET_ID = USER_WIDGET_PREF.WIDGET_ID 
+		    		WHERE COL_NUM<>0 OR ROW_NUM<>0 OR USER_WIDGET_PREF.WIDGET_ID IS NULL GROUP BY WIDGET.WIDGET_ID, WIDGET.WIDGET_TITLE ORDER BY WIDGET.WIDGET_ID
+		-->
+	</select>
+	
+	<select id="getCountOpenWidgets-HP_WIDGET_INST-metrics" resultClass="java.lang.Long">
+		<![CDATA[
+			SELECT COUNT(*) 
+			FROM $schema$.HP_WIDGET_INST, $schema$.WIDGET
+			WHERE $schema$.HP_WIDGET_INST.WIDGET_ID = $schema$.WIDGET.WIDGET_ID 
+				AND $schema$.WIDGET.WIDGET_ENABLED > -1
+		]]>
+	</select>
+	
+	<select id="getCountStoriesAdded" resultClass="java.lang.Long">	
+		<![CDATA[
+			SELECT COUNT(*) as counter FROM HOMEPAGE.NR_STORIES_CONTENT
+		]]>
+	</select>
+	
+	<select id="getCountStoriesAddedSince" resultClass="java.lang.Long">
+		<![CDATA[
+			SELECT count(*) as counter FROM HOMEPAGE.NR_STORIES_CONTENT
+			WHERE 	CREATION_DATE BETWEEN #begin# AND #end#			
+		]]>
+	</select>
+
+	<select id="getCountStoriesSaved" resultClass="java.lang.Long">
+		<![CDATA[
+			SELECT COUNT(*) 
+			FROM $schema$.NR_SAVED_READERS			
+		]]>
+	</select>
+
+	<select id="getCountStoriesSavedSince" resultClass="java.lang.Long">
+		<![CDATA[
+			SELECT 	COUNT(*) 
+			FROM 	$schema$.NR_SAVED_READERS 
+			WHERE 	CREATION_DATE BETWEEN #begin# AND #end#
+		]]>
+	</select>
+
+	<select id="getCountPopularWidgets" resultMap="WidgetUsageResultMap">
+		<![CDATA[
+			SELECT W.WIDGET_ID, W.WIDGET_TITLE, S.TOTAL_WIDGETS
+			FROM $schema$.WIDGET W
+			INNER JOIN
+				(SELECT WIDGET_ID, COUNT(WIDGET_ID) AS TOTAL_WIDGETS FROM $schema$.HP_WIDGET_INST GROUP BY WIDGET_ID) S 
+				ON W.WIDGET_ID=S.WIDGET_ID 
+			WHERE W.WIDGET_ENABLED > -1
+			ORDER BY S.TOTAL_WIDGETS DESC
+		]]>
+	</select>
+		<select id="getCountCustomizedPages" resultClass="java.lang.Long">
+		<![CDATA[
+			SELECT COUNT(*) 
+			FROM $schema$.HP_TAB_INST
+			WHERE TAB_ID LIKE '%panel.customx%'
+		]]>
+	</select>
+    
+</sqlMap>

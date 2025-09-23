@@ -1,0 +1,44 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2016                                   
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+-- 5724_S68                                              
+
+CONNECT TO HOMEPAGE@
+
+-- news-fixup707 should not be included on cloud as it is likely not performant enough yet
+
+------------------------------------------------------------------------------------------------
+-- UPDATE SCHEMA VERSION AND RELEASE VERSION to 707 (we do not update POSTSCHEMAVER)
+------------------------------------------------------------------------------------------------
+UPDATE  HOMEPAGE.HOMEPAGE_SCHEMA SET DBSCHEMAVER = 707, RELEASEVER = '5.5.0.0 CR2' 
+WHERE   DBSCHEMAVER = 706@
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+COMMIT@
+
+--------------------------------------
+-- FLUSH
+--------------------------------------
+FLUSH PACKAGE CACHE DYNAMIC@
+
+--------------------------------------
+-- TERMINATE
+--------------------------------------
+connect reset@
+terminate@

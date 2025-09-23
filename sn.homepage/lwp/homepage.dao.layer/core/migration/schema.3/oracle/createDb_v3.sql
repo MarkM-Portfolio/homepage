@@ -1,0 +1,162 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2008, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+-- DB2   	ORACLE
+-- CHAR 	-> CHAR
+-- VARCHAR	-> VARCHAR2
+-- SMALLINT	-> NUMBER(5,0)
+-- INTEGER	-> NUMBER(10 ,0)
+-- BIGINT	-> NUMBER(19 ,0)
+-- CLOB(max)	-> CLOB
+-- BLOB(max)	-> BLOB
+-- TIMESTAMP	-> TIMESTAMP
+
+--------------------------------------
+-- CREATE THE TABLESPACE
+--------------------------------------
+CREATE SMALLFILE TABLESPACE "HOMEPAGEREGTABSPACE" DATAFILE 'HOMEPAGEREGTABSPACE' SIZE 800M REUSE AUTOEXTEND ON NEXT 200M MAXSIZE UNLIMITED LOGGING EXTENT MANAGEMENT LOCAL SEGMENT SPACE MANAGEMENT AUTO;
+CREATE SMALLFILE TABLESPACE "HOMEPAGEINDEXTABSPACE" DATAFILE 'HOMEPAGEINDEXTABSPACE' SIZE 800M REUSE AUTOEXTEND ON NEXT 200M MAXSIZE UNLIMITED LOGGING EXTENT MANAGEMENT LOCAL SEGMENT SPACE MANAGEMENT AUTO; 
+
+--------------------------------------
+-- CREATE THE USER\SCHEMA
+--------------------------------------
+CREATE USER "HOMEPAGE" PROFILE "DEFAULT" IDENTIFIED BY "&1" DEFAULT TABLESPACE "HOMEPAGEREGTABSPACE" TEMPORARY TABLESPACE "TEMP" ACCOUNT UNLOCK;
+COMMIT;
+
+-------------------------------------
+-- ALTER HOMEPAGE USER, assumes already created
+-------------------------------------
+GRANT "CONNECT" TO "HOMEPAGE";
+ALTER USER "HOMEPAGE" DEFAULT ROLE ALL;
+GRANT ALTER TABLESPACE TO "HOMEPAGE";
+GRANT UNLIMITED TABLESPACE TO "HOMEPAGE";
+
+--------------------------------------
+-- CREATE THE TABLES
+--------------------------------------
+CREATE TABLE "HOMEPAGE"."HOMEPAGE_SCHEMA" ( 
+      "COMPKEY" VARCHAR2(36) NOT NULL ,
+      "DBSCHEMAVER" NUMBER(10, 0) NOT NULL
+   ) 
+TABLESPACE "HOMEPAGEREGTABSPACE";
+
+CREATE TABLE "HOMEPAGE"."PERSON"  (
+		  USER_ID VARCHAR2(256) NOT NULL,
+		  USER_MAIL VARCHAR2(256) NOT NULL,
+		  LAST_VISIT TIMESTAMP NOT NULL,
+		  WELCOME_MODE NUMBER(1) DEFAULT 1 NOT NULL
+)
+TABLESPACE "HOMEPAGEREGTABSPACE";
+
+CREATE TABLE "HOMEPAGE"."USER_WIDGET_PREF"  (
+	USER_WIDGET_PREF_ID VARCHAR2(36) NOT NULL,
+	USER_ID VARCHAR2(256) NOT NULL,
+	WIDGET_ID VARCHAR2(36) NOT NULL,
+	PAGE_ID VARCHAR2(36),
+	WIDGET_SETTING VARCHAR2(2048),
+	MAX_MIN NUMBER(1),
+	ROW_NUM NUMBER(10,0),
+	COL_NUM NUMBER(10,0)
+)
+TABLESPACE "HOMEPAGEREGTABSPACE";
+
+CREATE TABLE "HOMEPAGE"."WIDGET" (
+		WIDGET_ID VARCHAR2(36) NOT NULL,
+		WIDGET_TITLE VARCHAR2(256) NOT NULL,
+		WIDGET_TEXT VARCHAR2(256),
+		WIDGET_URL VARCHAR2(256) NOT NULL,
+		WIDGET_ICON VARCHAR2(256),
+		WIDGET_ENABLED CHAR(1) DEFAULT 'N' NOT NULL,
+		WIDGET_SYSTEM CHAR(1) DEFAULT 'N' NOT NULL,
+		WIDGET_HOMEPAGE_SPECIFIC CHAR(1) DEFAULT 'N' NOT NULL
+	)
+TABLESPACE "HOMEPAGEREGTABSPACE";
+
+CREATE TABLE "HOMEPAGE"."PREREQ" (
+		PREREQ_ID VARCHAR2(36) NOT NULL,
+		APP_ID VARCHAR2(36) NOT NULL,
+		WIDGET_ID VARCHAR2(36) NOT NULL
+	)
+TABLESPACE "HOMEPAGEREGTABSPACE";	
+
+--------------------------------------
+-- CREATE THE CONSTRAINTS
+--------------------------------------
+
+ALTER TABLE "HOMEPAGE"."PERSON" 
+    ADD (CONSTRAINT "PK_USER_ID" PRIMARY KEY("USER_ID")
+    USING INDEX TABLESPACE "HOMEPAGEINDEXTABSPACE");
+
+ALTER TABLE "HOMEPAGE"."USER_WIDGET_PREF"
+    ADD (CONSTRAINT "PK_USER_FP_ID" PRIMARY KEY("USER_WIDGET_PREF_ID")
+    USING INDEX TABLESPACE "HOMEPAGEINDEXTABSPACE");
+
+ALTER TABLE "HOMEPAGE"."USER_WIDGET_PREF"
+    ADD CONSTRAINT "FK_USER_ID" FOREIGN KEY ("USER_ID")
+	REFERENCES HOMEPAGE.PERSON("USER_ID");
+
+ALTER TABLE "HOMEPAGE"."WIDGET"
+	ADD (CONSTRAINT "WIDGET_PK" PRIMARY KEY ("WIDGET_ID")
+    USING INDEX TABLESPACE "HOMEPAGEINDEXTABSPACE");
+
+ALTER TABLE "HOMEPAGE"."PREREQ" 
+	ADD (CONSTRAINT "PREREQ_PK" PRIMARY KEY ("PREREQ_ID")
+    USING INDEX TABLESPACE "HOMEPAGEINDEXTABSPACE");
+
+ALTER TABLE "HOMEPAGE"."PREREQ" ADD CONSTRAINT "PREREQ_WIDGET_FK" FOREIGN KEY ("WIDGET_ID")
+	REFERENCES "HOMEPAGE"."WIDGET" ("WIDGET_ID")
+	ON DELETE CASCADE;
+	
+--------------------------------------
+-- CREATE THE INDEXES
+--------------------------------------
+
+CREATE UNIQUE INDEX "HOMEPAGE"."USERID_WIDGET_UNIQUE" 
+	ON "HOMEPAGE"."USER_WIDGET_PREF"("USER_ID", "WIDGET_ID");
+	
+-- More to come...
+
+--------------------------------------
+-- CREATE THE VIEWS
+--------------------------------------
+
+-- TBD
+
+--------------------------------------
+-- POPULATE THE TABLES
+--------------------------------------
+
+ INSERT INTO "HOMEPAGE"."HOMEPAGE_SCHEMA"
+	( "COMPKEY", "DBSCHEMAVER") 
+ VALUES 
+	( 'HOMEPAGE', 3);
+
+
+--------------------------------------
+-- ENABLE ROW MOVEMENT (for backup, epxort/import)
+--------------------------------------
+ALTER TABLE "HOMEPAGE"."HOMEPAGE_SCHEMA" ENABLE ROW MOVEMENT;
+ALTER TABLE "HOMEPAGE"."PERSON" 
+ALTER TABLE "HOMEPAGE"."USER_WIDGET_PREF"
+ALTER TABLE "HOMEPAGE"."WIDGET"
+ALTER TABLE "HOMEPAGE"."PREREQ"
+
+COMMIT;
+
+--------------------------------------
+-- DISCONNECT
+--------------------------------------
+DISCONNECT ALL;
+
+QUIT;

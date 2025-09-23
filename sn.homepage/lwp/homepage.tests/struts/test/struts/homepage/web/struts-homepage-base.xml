@@ -1,0 +1,91 @@
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+ "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2009, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<!-- Base package for HP. Define common stuffs such as the interceptors, common result handling and exception handling -->
+
+<struts>
+    <package name="homepage-default" extends="struts-default" namespace="/web">
+        <!-- Configuration for our custom interceptors stack -->
+        <result-types>
+            <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult"/>
+        </result-types>
+        
+        <interceptors>
+            <interceptor name="userInfo" class="mockUserInfoInterceptor"/>  
+			<interceptor name="tabInfo" class="mockTabInfoInterceptor"/>
+            
+            <interceptor-stack name="updatePageStack">
+                <interceptor-ref name="userInfo"/>
+                <interceptor-ref name="tabInfo">
+                    <param name="tabTypeParam">
+                        UPDATE
+                    </param>
+                </interceptor-ref>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+            
+            <interceptor-stack name="widgetPageStack">
+                <interceptor-ref name="userInfo"/>
+                <interceptor-ref name="tabInfo">
+                    <param name="tabTypeParam">
+                        WIDGET
+                    </param>
+                </interceptor-ref>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+            
+            <interceptor-stack name="defaultHomepageStack">
+                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="userInfo"/>
+                <!-- no param here - tabInstance Id should be set by the client as HTTP request -->
+                <interceptor-ref name="tabInfo"/>
+            </interceptor-stack>
+            
+            <!-- Same as defaultHomepageStack except that the tabinfo interceptor is not invoked -->
+            <interceptor-stack name="noTabHomepageStack">
+                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="userInfo"/>
+            </interceptor-stack>
+			
+			<!-- Same as defaultHomepageStack except that the tabinfo interceptor is not invoked -->
+            <interceptor-stack name="noTabHomepageStack">
+                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="userInfo"/>
+            </interceptor-stack>			
+        </interceptors>
+        
+        <!-- Any action in homepage-default package gets this stack, unless otherwise specified -->
+        <default-interceptor-ref name="defaultHomepageStack"/>
+        
+        <!-- Default results -->
+        <global-results>
+            <result name="login" type="redirect">
+                /auth/login.jsp
+            </result>
+            <result name="error" type="dispatcher">
+                /web/jsp/common/errorPage.jsp
+            </result>
+        </global-results>
+        
+        <global-exception-mappings>
+            <exception-mapping exception="com.ibm.lconn.homepage.web.WebException" result="error"/>
+            <!-- <exception-mapping exception="java.lang.Exception" result="Exception"/> -->
+        </global-exception-mappings>
+    </package>
+</struts>
+

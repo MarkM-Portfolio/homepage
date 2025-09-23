@@ -1,0 +1,65 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2011, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<div dojoAttachPoint="containerNode">
+
+<h3 class="widgetTitle" dojoAttachPoint="titleNode">
+<span class="lotusLeft" dojoAttachPoint="profileTitleNode"></span><span dojoAttachPoint="menuModeButtonNode"></span>&nbsp;
+</h3>
+<div dojoAttachPoint="boardingNode" style="display:none;"></div>
+<div dojoAttachPoint="loadingNode" style="display:none;">
+	<center><img src="${_loadingImagePath}" class='loading'	alt='${loading}' /></center>
+</div>
+<div dojoAttachPoint="noSearchPerformed" style="display:none;">No search being performed</div>
+
+<div dojoattachpoint="noSearchResults" style="display:none; padding-top: 1px; padding-left: 10px;">
+			<div class="lconnEmpty">
+				${noResultsTitle}&nbsp;
+							<p dojoAttachPoint="noResultMessage"/>
+				<div style="font-style: normal; padding-top: 10px;">
+					<a dojoAttachPoint="SearchLink" href="" target="_blank">${goToYourSearchPage}</a>
+				</div>
+			</div>
+		</div>
+
+
+
+<div dojoAttachPoint="profileSearchNode" style="display:none;">
+<div dojoAttachPoint="errorNode" style="display:none"></div>
+
+</div>
+<div dojoAttachPoint="widgetFooter" class="widgetFooter">
+<div dojoAttachPoint="scrollerNode">
+</div>
+</div>
+<div style="background-color: #e7eef6;padding:5px 5px 5px 5px;margin:5px 0px 0px 0px;text-align:center;">
+	<img dojoAttachPoint="searchFooterImageNode" style="padding-right:10px;vertical-align:middle;" alt="${_resourceBundle.PROFILES_SEARCH_ICON_ALT}"/>
+	<span dojoAttachPoint="searchByStringNode" style="vertical-align:middle;">${searchByLabel}</span>
+		<select dojoAttachPoint="searchComboNode" style="border:1px solid #a7a9bb;vertical-align:middle;">
+			<option dojoAttachPoint="nameComboNode" selected="selected" value="Name">
+				${nameLabel}
+			</option>
+			<option dojoAttachPoint="tagComboNode" value="Tag">
+				${tagLabel}
+			</option>
+		</select>
+				
+		<input dojoAttachPoint="textBoxNode" type="text" dojoType="dijit.form.ValidationTextBox" style="border:1px solid #a7a9bb;vertical-align:middle;"/>
+		
+		<input type="image" dojoAttachPoint="searchButtonNode" 
+			style="vertical-align:middle;border:1px solid #2F76B9;" dojoAttachEvent="onclick:searchProfilesPage" title="${_resourceBundle.PROFILES_SEARCH_ICON_ALT}"/>
+		
+</div>
+
+</div>

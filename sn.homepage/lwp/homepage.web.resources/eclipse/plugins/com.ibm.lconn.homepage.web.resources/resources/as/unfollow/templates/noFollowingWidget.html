@@ -1,0 +1,30 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2012, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<div class="lconnStopFollow">
+	<h3>${strings.unfollowNoFollowingStoryText}</h3>
+	<div class="followingInfo lotusSection">
+		<div dojoAttachPoint="infoHeader" class="followingInfoHeader" dojoAttachEvent="onclick: infoClicked" >
+			<a title="${strings.unfollowExpandText}" href="javascript:;" class="lotusSprite lotusArrow lotusTwistyClosed" 
+				dojoAttachPoint="infoTwisty" aria-expanded="false" role="button" aria-controls="followingInfoSection">
+				<span class="lotusAltText">?</span>
+			</a>
+			${strings.unfollowInfoText}
+		</div>
+		<div id="followingInfoSection" aria-live="assertive" aria-relevant="all" dojoAttachPoint="infoSection"
+			 tabindex="0" class="lotusHidden" role="document" aria-hidden="true">
+			<div class="followingInfoText">${strings.unfollowInfoDescText}</div>
+		</div>
+	</div>
+</div>

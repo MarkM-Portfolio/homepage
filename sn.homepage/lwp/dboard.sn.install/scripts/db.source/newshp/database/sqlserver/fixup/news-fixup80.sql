@@ -1,0 +1,2218 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2007, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+-- {COPYRIGHT}
+
+--------------------------------------------------------------------------------------------
+-- [start] 49953 -  At migration time we lose some informations regarding few stories.
+--------------------------------------------------------------------------------------------
+-- Before to start migration we need to sanitize the source name of the following source
+-- tag.activities
+-- tag.blogs
+-- tag.communities
+-- tag.files
+-- tag.homepage
+-- tag.profiles
+-- tag.wikis
+--------------------------------------------------------------------------------------------
+UPDATE HOMEPAGE.NR_STORIES SET SOURCE = 'activities' WHERE SOURCE = 'tag.activities';
+GO
+
+UPDATE HOMEPAGE.NR_STORIES SET SOURCE = 'blogs' WHERE SOURCE = 'tag.blogs';
+GO
+
+UPDATE HOMEPAGE.NR_STORIES SET SOURCE = 'communities' WHERE SOURCE = 'tag.communities';
+GO
+
+UPDATE HOMEPAGE.NR_STORIES SET SOURCE = 'files' WHERE SOURCE = 'tag.files';
+GO
+
+UPDATE HOMEPAGE.NR_STORIES SET SOURCE = 'homepage' WHERE SOURCE = 'tag.homepage';
+GO
+
+UPDATE HOMEPAGE.NR_STORIES SET SOURCE = 'profiles' WHERE SOURCE = 'tag.profiles';
+GO
+
+UPDATE HOMEPAGE.NR_STORIES SET SOURCE = 'wikis' WHERE SOURCE = 'tag.wikis';
+GO
+
+UPDATE HOMEPAGE.NR_STORIES SET SOURCE = 'dogear' WHERE SOURCE = 'tag.dogear';
+GO
+
+--------------------------------
+
+-- HOMEPAGE.NR_RESPONSES_STORIES
+UPDATE HOMEPAGE.NR_RESPONSES_STORIES SET SOURCE = 'activities' WHERE SOURCE = 'tag.activities';
+GO
+
+UPDATE HOMEPAGE.NR_RESPONSES_STORIES SET SOURCE = 'blogs' WHERE SOURCE = 'tag.blogs';
+GO
+
+UPDATE HOMEPAGE.NR_RESPONSES_STORIES SET SOURCE = 'communities' WHERE SOURCE = 'tag.communities';
+GO
+
+UPDATE HOMEPAGE.NR_RESPONSES_STORIES SET SOURCE = 'files' WHERE SOURCE = 'tag.files';
+GO
+
+UPDATE HOMEPAGE.NR_RESPONSES_STORIES SET SOURCE = 'homepage' WHERE SOURCE = 'tag.homepage';
+GO
+
+UPDATE HOMEPAGE.NR_RESPONSES_STORIES SET SOURCE = 'profiles' WHERE SOURCE = 'tag.profiles';
+GO
+
+UPDATE HOMEPAGE.NR_RESPONSES_STORIES SET SOURCE = 'wikis' WHERE SOURCE = 'tag.wikis';
+GO
+
+UPDATE HOMEPAGE.NR_RESPONSES_STORIES SET SOURCE = 'dogear' WHERE SOURCE = 'tag.dogear';
+GO
+
+
+-- HOMEPAGE.NR_PROFILES_STORIES
+UPDATE HOMEPAGE.NR_PROFILES_STORIES SET SOURCE = 'activities' WHERE SOURCE = 'tag.activities';
+GO
+
+UPDATE HOMEPAGE.NR_PROFILES_STORIES SET SOURCE = 'blogs' WHERE SOURCE = 'tag.blogs';
+GO
+
+UPDATE HOMEPAGE.NR_PROFILES_STORIES SET SOURCE = 'communities' WHERE SOURCE = 'tag.communities';
+GO
+
+UPDATE HOMEPAGE.NR_PROFILES_STORIES SET SOURCE = 'files' WHERE SOURCE = 'tag.files';
+GO
+
+UPDATE HOMEPAGE.NR_PROFILES_STORIES SET SOURCE = 'homepage' WHERE SOURCE = 'tag.homepage';
+GO
+
+UPDATE HOMEPAGE.NR_PROFILES_STORIES SET SOURCE = 'profiles' WHERE SOURCE = 'tag.profiles';
+GO
+
+UPDATE HOMEPAGE.NR_PROFILES_STORIES SET SOURCE = 'wikis' WHERE SOURCE = 'tag.wikis';
+GO
+
+UPDATE HOMEPAGE.NR_PROFILES_STORIES SET SOURCE = 'dogear' WHERE SOURCE = 'tag.dogear';
+GO
+
+-- HOMEPAGE.NR_COMMUNITIES_STORIES
+UPDATE HOMEPAGE.NR_COMMUNITIES_STORIES SET SOURCE = 'activities' WHERE SOURCE = 'tag.activities';
+GO
+
+UPDATE HOMEPAGE.NR_COMMUNITIES_STORIES SET SOURCE = 'blogs' WHERE SOURCE = 'tag.blogs';
+GO
+
+UPDATE HOMEPAGE.NR_COMMUNITIES_STORIES SET SOURCE = 'communities' WHERE SOURCE = 'tag.communities';
+GO
+
+UPDATE HOMEPAGE.NR_COMMUNITIES_STORIES SET SOURCE = 'files' WHERE SOURCE = 'tag.files';
+GO
+
+UPDATE HOMEPAGE.NR_COMMUNITIES_STORIES SET SOURCE = 'homepage' WHERE SOURCE = 'tag.homepage';
+GO
+
+UPDATE HOMEPAGE.NR_COMMUNITIES_STORIES SET SOURCE = 'profiles' WHERE SOURCE = 'tag.profiles';
+GO
+
+UPDATE HOMEPAGE.NR_COMMUNITIES_STORIES SET SOURCE = 'wikis' WHERE SOURCE = 'tag.wikis';
+GO
+
+UPDATE HOMEPAGE.NR_COMMUNITIES_STORIES SET SOURCE = 'dogear' WHERE SOURCE = 'tag.dogear';
+GO
+
+-- HOMEPAGE.NR_ACTIVITIES_STORIES
+UPDATE HOMEPAGE.NR_ACTIVITIES_STORIES SET SOURCE = 'activities' WHERE SOURCE = 'tag.activities';
+GO
+
+UPDATE HOMEPAGE.NR_ACTIVITIES_STORIES SET SOURCE = 'blogs' WHERE SOURCE = 'tag.blogs';
+GO
+
+UPDATE HOMEPAGE.NR_ACTIVITIES_STORIES SET SOURCE = 'communities' WHERE SOURCE = 'tag.communities';
+GO
+
+UPDATE HOMEPAGE.NR_ACTIVITIES_STORIES SET SOURCE = 'files' WHERE SOURCE = 'tag.files';
+GO
+
+UPDATE HOMEPAGE.NR_ACTIVITIES_STORIES SET SOURCE = 'homepage' WHERE SOURCE = 'tag.homepage';
+GO
+
+UPDATE HOMEPAGE.NR_ACTIVITIES_STORIES SET SOURCE = 'profiles' WHERE SOURCE = 'tag.profiles';
+GO
+
+UPDATE HOMEPAGE.NR_ACTIVITIES_STORIES SET SOURCE = 'wikis' WHERE SOURCE = 'tag.wikis';
+GO
+
+UPDATE HOMEPAGE.NR_ACTIVITIES_STORIES SET SOURCE = 'dogear' WHERE SOURCE = 'tag.dogear';
+GO
+
+-- HOMEPAGE.NR_BLOGS_STORIES
+UPDATE HOMEPAGE.NR_BLOGS_STORIES SET SOURCE = 'activities' WHERE SOURCE = 'tag.activities';
+GO
+
+UPDATE HOMEPAGE.NR_BLOGS_STORIES SET SOURCE = 'blogs' WHERE SOURCE = 'tag.blogs';
+GO
+
+UPDATE HOMEPAGE.NR_BLOGS_STORIES SET SOURCE = 'communities' WHERE SOURCE = 'tag.communities';
+GO
+
+UPDATE HOMEPAGE.NR_BLOGS_STORIES SET SOURCE = 'files' WHERE SOURCE = 'tag.files';
+GO
+
+UPDATE HOMEPAGE.NR_BLOGS_STORIES SET SOURCE = 'homepage' WHERE SOURCE = 'tag.homepage';
+GO
+
+UPDATE HOMEPAGE.NR_BLOGS_STORIES SET SOURCE = 'profiles' WHERE SOURCE = 'tag.profiles';
+GO
+
+UPDATE HOMEPAGE.NR_BLOGS_STORIES SET SOURCE = 'wikis' WHERE SOURCE = 'tag.wikis';
+GO
+
+UPDATE HOMEPAGE.NR_BLOGS_STORIES SET SOURCE = 'dogear' WHERE SOURCE = 'tag.dogear';
+GO
+
+-- HOMEPAGE.NR_BOOKMARKS_STORIES
+UPDATE HOMEPAGE.NR_BOOKMARKS_STORIES SET SOURCE = 'activities' WHERE SOURCE = 'tag.activities';
+GO
+
+UPDATE HOMEPAGE.NR_BOOKMARKS_STORIES SET SOURCE = 'blogs' WHERE SOURCE = 'tag.blogs';
+GO
+
+UPDATE HOMEPAGE.NR_BOOKMARKS_STORIES SET SOURCE = 'communities' WHERE SOURCE = 'tag.communities';
+GO
+
+UPDATE HOMEPAGE.NR_BOOKMARKS_STORIES SET SOURCE = 'files' WHERE SOURCE = 'tag.files';
+GO
+
+UPDATE HOMEPAGE.NR_BOOKMARKS_STORIES SET SOURCE = 'homepage' WHERE SOURCE = 'tag.homepage';
+GO
+
+UPDATE HOMEPAGE.NR_BOOKMARKS_STORIES SET SOURCE = 'profiles' WHERE SOURCE = 'tag.profiles';
+GO
+
+UPDATE HOMEPAGE.NR_BOOKMARKS_STORIES SET SOURCE = 'wikis' WHERE SOURCE = 'tag.wikis';
+GO
+
+UPDATE HOMEPAGE.NR_BOOKMARKS_STORIES SET SOURCE = 'dogear' WHERE SOURCE = 'tag.dogear';
+GO
+
+-- HOMEPAGE.NR_FILES_STORIES
+UPDATE HOMEPAGE.NR_FILES_STORIES SET SOURCE = 'activities' WHERE SOURCE = 'tag.activities';
+GO
+
+UPDATE HOMEPAGE.NR_FILES_STORIES SET SOURCE = 'blogs' WHERE SOURCE = 'tag.blogs';
+GO
+
+UPDATE HOMEPAGE.NR_FILES_STORIES SET SOURCE = 'communities' WHERE SOURCE = 'tag.communities';
+GO
+
+UPDATE HOMEPAGE.NR_FILES_STORIES SET SOURCE = 'files' WHERE SOURCE = 'tag.files';
+GO
+
+UPDATE HOMEPAGE.NR_FILES_STORIES SET SOURCE = 'homepage' WHERE SOURCE = 'tag.homepage';
+GO
+
+UPDATE HOMEPAGE.NR_FILES_STORIES SET SOURCE = 'profiles' WHERE SOURCE = 'tag.profiles';
+GO
+
+UPDATE HOMEPAGE.NR_FILES_STORIES SET SOURCE = 'wikis' WHERE SOURCE = 'tag.wikis';
+GO
+
+UPDATE HOMEPAGE.NR_FILES_STORIES SET SOURCE = 'dogear' WHERE SOURCE = 'tag.dogear';
+GO
+
+-- HOMEPAGE.NR_FORUMS_STORIES
+UPDATE HOMEPAGE.NR_FORUMS_STORIES SET SOURCE = 'activities' WHERE SOURCE = 'tag.activities';
+GO
+
+UPDATE HOMEPAGE.NR_FORUMS_STORIES SET SOURCE = 'blogs' WHERE SOURCE = 'tag.blogs';
+GO
+
+UPDATE HOMEPAGE.NR_FORUMS_STORIES SET SOURCE = 'communities' WHERE SOURCE = 'tag.communities';
+GO
+
+UPDATE HOMEPAGE.NR_FORUMS_STORIES SET SOURCE = 'files' WHERE SOURCE = 'tag.files';
+GO
+
+UPDATE HOMEPAGE.NR_FORUMS_STORIES SET SOURCE = 'homepage' WHERE SOURCE = 'tag.homepage';
+GO
+
+UPDATE HOMEPAGE.NR_FORUMS_STORIES SET SOURCE = 'profiles' WHERE SOURCE = 'tag.profiles';
+GO
+
+UPDATE HOMEPAGE.NR_FORUMS_STORIES SET SOURCE = 'wikis' WHERE SOURCE = 'tag.wikis';
+GO
+
+UPDATE HOMEPAGE.NR_FORUMS_STORIES SET SOURCE = 'dogear' WHERE SOURCE = 'tag.dogear';
+GO
+
+-- HOMEPAGE.NR_WIKIS_STORIES
+UPDATE HOMEPAGE.NR_WIKIS_STORIES SET SOURCE = 'activities' WHERE SOURCE = 'tag.activities';
+GO
+
+UPDATE HOMEPAGE.NR_WIKIS_STORIES SET SOURCE = 'blogs' WHERE SOURCE = 'tag.blogs';
+GO
+
+UPDATE HOMEPAGE.NR_WIKIS_STORIES SET SOURCE = 'communities' WHERE SOURCE = 'tag.communities';
+GO
+
+UPDATE HOMEPAGE.NR_WIKIS_STORIES SET SOURCE = 'files' WHERE SOURCE = 'tag.files';
+GO
+
+UPDATE HOMEPAGE.NR_WIKIS_STORIES SET SOURCE = 'homepage' WHERE SOURCE = 'tag.homepage';
+GO
+
+UPDATE HOMEPAGE.NR_WIKIS_STORIES SET SOURCE = 'profiles' WHERE SOURCE = 'tag.profiles';
+GO
+
+UPDATE HOMEPAGE.NR_WIKIS_STORIES SET SOURCE = 'wikis' WHERE SOURCE = 'tag.wikis';
+GO
+
+UPDATE HOMEPAGE.NR_WIKIS_STORIES SET SOURCE = 'dogear' WHERE SOURCE = 'tag.dogear';
+GO
+
+-- HOMEPAGE.NR_TAGS_STORIES
+UPDATE HOMEPAGE.NR_TAGS_STORIES SET SOURCE = 'activities' WHERE SOURCE = 'tag.activities';
+GO
+
+UPDATE HOMEPAGE.NR_TAGS_STORIES SET SOURCE = 'blogs' WHERE SOURCE = 'tag.blogs';
+GO
+
+UPDATE HOMEPAGE.NR_TAGS_STORIES SET SOURCE = 'communities' WHERE SOURCE = 'tag.communities';
+GO
+
+UPDATE HOMEPAGE.NR_TAGS_STORIES SET SOURCE = 'files' WHERE SOURCE = 'tag.files';
+GO
+
+UPDATE HOMEPAGE.NR_TAGS_STORIES SET SOURCE = 'homepage' WHERE SOURCE = 'tag.homepage';
+GO
+
+UPDATE HOMEPAGE.NR_TAGS_STORIES SET SOURCE = 'profiles' WHERE SOURCE = 'tag.profiles';
+GO
+
+UPDATE HOMEPAGE.NR_TAGS_STORIES SET SOURCE = 'wikis' WHERE SOURCE = 'tag.wikis';
+GO
+
+UPDATE HOMEPAGE.NR_TAGS_STORIES SET SOURCE = 'dogear' WHERE SOURCE = 'tag.dogear';
+GO
+
+-----------------------------------
+
+-- HOMEPAGE.NR_COMM_PERSON_STORIES
+UPDATE HOMEPAGE.NR_COMM_PERSON_STORIES SET SOURCE = 'activities' WHERE SOURCE = 'tag.activities';
+GO
+
+UPDATE HOMEPAGE.NR_COMM_PERSON_STORIES SET SOURCE = 'blogs' WHERE SOURCE = 'tag.blogs';
+GO
+
+UPDATE HOMEPAGE.NR_COMM_PERSON_STORIES SET SOURCE = 'communities' WHERE SOURCE = 'tag.communities';
+GO
+
+UPDATE HOMEPAGE.NR_COMM_PERSON_STORIES SET SOURCE = 'files' WHERE SOURCE = 'tag.files';
+GO
+
+UPDATE HOMEPAGE.NR_COMM_PERSON_STORIES SET SOURCE = 'homepage' WHERE SOURCE = 'tag.homepage';
+GO
+
+UPDATE HOMEPAGE.NR_COMM_PERSON_STORIES SET SOURCE = 'profiles' WHERE SOURCE = 'tag.profiles';
+GO
+
+UPDATE HOMEPAGE.NR_COMM_PERSON_STORIES SET SOURCE = 'wikis' WHERE SOURCE = 'tag.wikis';
+GO
+
+UPDATE HOMEPAGE.NR_COMM_PERSON_STORIES SET SOURCE = 'dogear' WHERE SOURCE = 'tag.dogear';
+GO
+
+--HOMEPAGE.NR_NEWS_DISCOVERY
+UPDATE HOMEPAGE.NR_NEWS_DISCOVERY SET SOURCE = 'activities' WHERE SOURCE = 'tag.activities';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_DISCOVERY SET SOURCE = 'blogs' WHERE SOURCE = 'tag.blogs';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_DISCOVERY SET SOURCE = 'communities' WHERE SOURCE = 'tag.communities';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_DISCOVERY SET SOURCE = 'files' WHERE SOURCE = 'tag.files';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_DISCOVERY SET SOURCE = 'homepage' WHERE SOURCE = 'tag.homepage';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_DISCOVERY SET SOURCE = 'profiles' WHERE SOURCE = 'tag.profiles';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_DISCOVERY SET SOURCE = 'wikis' WHERE SOURCE = 'tag.wikis';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_DISCOVERY SET SOURCE = 'dogear' WHERE SOURCE = 'tag.dogear';
+GO
+
+--HOMEPAGE.NR_NEWS_SAVED
+UPDATE HOMEPAGE.NR_NEWS_SAVED SET SOURCE = 'activities' WHERE SOURCE = 'tag.activities';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_SAVED SET SOURCE = 'blogs' WHERE SOURCE = 'tag.blogs';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_SAVED SET SOURCE = 'communities' WHERE SOURCE = 'tag.communities';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_SAVED SET SOURCE = 'files' WHERE SOURCE = 'tag.files';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_SAVED SET SOURCE = 'homepage' WHERE SOURCE = 'tag.homepage';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_SAVED SET SOURCE = 'profiles' WHERE SOURCE = 'tag.profiles';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_SAVED SET SOURCE = 'wikis' WHERE SOURCE = 'tag.wikis';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_SAVED SET SOURCE = 'dogear' WHERE SOURCE = 'tag.dogear';
+GO
+
+--------------------------------------------------------------------------------------------
+-- [end] 49953 -  At migration time we lose some informations regarding few stories.
+--------------------------------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-- [START] PMR 48211,L6Q,000: Fixing Entries in following reletionship after migration
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+CREATE VIEW HOMEPAGE.TMP_FOLLOWS AS ( 
+   SELECT  NR_SUBSCRIPTION.PERSON_ID PERSON_ID, TEMP.CONTAINER_ID FOLLOWED_CONTAINER, RESOURCE_ID
+    FROM    HOMEPAGE.NR_SUBSCRIPTION NR_SUBSCRIPTION, HOMEPAGE.NR_RESOURCE NR_RESOURCE,
+            ( 
+            SELECT NR_SOURCE.CONTAINER_ID, NR_SOURCE.SOURCE_ID 
+            FROM HOMEPAGE.NR_SOURCE NR_SOURCE, HOMEPAGE.PERSON PERSON 
+            WHERE SOURCE = 'profiles' AND PERSON.PERSON_ID = NR_SOURCE.CONTAINER_ID 
+            ) TEMP 
+    WHERE   IS_EXPLICIT = 0 AND IS_ACTIVE = 1 AND NR_SUBSCRIPTION.SOURCE_ID = TEMP.SOURCE_ID AND TEMP.CONTAINER_ID = NR_RESOURCE.CONTAINER_ID
+);
+GO
+
+DELETE FROM HOMEPAGE.NR_FOLLOWS WHERE EXISTS 
+	(SELECT 1 FROM HOMEPAGE.TMP_FOLLOWS TMP_FOLLOWS WHERE NR_FOLLOWS.PERSON_ID = TMP_FOLLOWS.PERSON_ID AND NR_FOLLOWS.RESOURCE_ID = TMP_FOLLOWS.RESOURCE_ID );
+GO
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-- [END] PMR 48211,L6Q,000: Fixing Entries in following reletionship after migration
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------
+-- PRE sanitize sql as we start from a 3.0.1 and we need to migrate it to 4.0
+
+DROP INDEX NR_ATT_STORY_ID ON HOMEPAGE.NR_ATTACHMENT;
+DROP INDEX NR_REC_STORY_ID ON HOMEPAGE.NR_RECOMMENDATION;
+DROP INDEX NR_RECOMMENDER_STORY_ID ON HOMEPAGE.NR_RECOMMENDATION;
+
+ALTER TABLE HOMEPAGE.NR_ATTACHMENT DROP CONSTRAINT PK_ATTACHMENT;
+ALTER TABLE HOMEPAGE.NR_RECOMMENDATION DROP CONSTRAINT PK_RECOMMENDATION;
+
+
+EXEC sp_rename 'HOMEPAGE.NR_ATTACHMENT' 	,		'NR_ATTACHMENT_301';
+EXEC sp_rename 'HOMEPAGE.NR_RECOMMENDATION'	, 	'NR_RECOMMENDATION_301';
+
+ 
+
+GO
+
+-------------------------------------------------------
+-- RENAMING NATIONWIDE specific table
+-------------------------------------------------------
+
+----------------------------------------------------------------
+-- SPR #DMCE8ECKYM
+----------------------------------------------------------------
+-- #1 - Community Forum icon in news stories displays the Community icon
+-- When you migrate 2.5.0x content that includes a community with community forum content, 
+-- the story icon used in the 3.0.1 system appears to be misleading (Community icon currently  instead of Forum icon). 
+-- See screenshot below as an example. This is not a ship stop if fix not included.
+UPDATE HOMEPAGE.NR_STORIES SET SOURCE = 'forums' WHERE EVENT_NAME LIKE '%forum%';
+
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_DISCOVERY SET SOURCE = 'forums' WHERE EVENT_NAME LIKE '%forum%';
+
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_SAVED SET SOURCE = 'forums' WHERE EVENT_NAME LIKE '%forum%';
+
+GO
+
+-- #4 - Status Updates \ People I'm Following - should also include status by people in My Network
+-- If you are networked with a user in 2.5.0.3, their latest status should be present in the "People I'm Following" view in 3.0.1 when migrated.
+-- The default behaviour is that any network colleague making a status update automatically appears in your People I'm Following view.
+-- This is not a ship stop if fix not included, but we should be including all relevant data in the migration process.
+UPDATE HOMEPAGE.NR_NEWS_STATUS_NETWORK SET IS_FOLLOW_NEWS = 1 WHERE IS_NETWORK_NEWS = 1;
+
+GO
+
+-- #5 - Icon for Following a person is the Homepage icon instead of Profiles icon
+-- In LC 2.5.0.3, you will see a story for adding a user to your Homepage Watchlist. This story has a Homepage icon when migrated to LC 3.0.1
+-- Ideally this story should have a "Profiles" icon in LC 3.0.1, as this is now a profiles story - profiles.person.followed
+UPDATE HOMEPAGE.NR_STORIES  SET SOURCE = 'profiles' WHERE EVENT_NAME = 'profiles.person.followed';
+
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_DISCOVERY  SET SOURCE = 'profiles' WHERE EVENT_NAME = 'profiles.person.followed';
+
+GO
+
+
+UPDATE HOMEPAGE.NR_NEWS_SAVED  SET SOURCE = 'profiles' WHERE EVENT_NAME = 'profiles.person.followed';
+
+GO
+
+--------------------------------------------------------------
+-- CREATING A PARTITIONED TABLES
+--------------------------------------------------------------
+
+------------------------------------------------
+-- 1) NR_SOURCE_TYPE
+------------------------------------------------
+CREATE TABLE HOMEPAGE.NR_SOURCE_TYPE (
+	SOURCE_TYPE_ID nvarchar(36) NOT NULL,
+	SOURCE_TYPE_NAME nvarchar(36) NOT NULL, -- this is externalized
+	SOURCE_TYPE NUMERIC(5,0) NOT NULL,
+	SOURCE_TYPE_DESC nvarchar(256) NOT NULL
+) ON [PRIMARY]
+GO 
+
+ALTER TABLE HOMEPAGE.NR_SOURCE_TYPE 
+  	ADD CONSTRAINT PK_SRC_TYPE_ID PRIMARY KEY(SOURCE_TYPE_ID);
+
+ALTER TABLE HOMEPAGE.NR_SOURCE_TYPE 
+	ADD CONSTRAINT SRC_TYPE_UNIQUE UNIQUE(SOURCE_TYPE);
+GO
+-------------------------------------------------
+-- 2) ADDING SOURCE TYPE COLUMNS TO EXISTING TABLES
+-------------------------------------------------
+
+--------------------------------------------
+-- ADDING SOURCE_TYPE - NR_SOURCE
+--------------------------------------------
+ALTER TABLE HOMEPAGE.NR_SOURCE
+	ADD SOURCE_TYPE NUMERIC(5,0);
+GO
+
+UPDATE HOMEPAGE.NR_SOURCE
+	SET SOURCE_TYPE = 1 WHERE SOURCE = 'activities';
+GO
+
+UPDATE HOMEPAGE.NR_SOURCE
+	SET SOURCE_TYPE = 2 WHERE SOURCE = 'blogs';
+GO
+
+UPDATE HOMEPAGE.NR_SOURCE
+	SET SOURCE_TYPE = 3 WHERE SOURCE = 'communities';
+GO
+
+UPDATE HOMEPAGE.NR_SOURCE
+	SET SOURCE_TYPE = 4 WHERE SOURCE = 'wikis';
+GO
+
+UPDATE HOMEPAGE.NR_SOURCE
+	SET SOURCE_TYPE = 5 WHERE SOURCE = 'profiles';
+GO
+
+UPDATE HOMEPAGE.NR_SOURCE
+	SET SOURCE_TYPE = 6 WHERE SOURCE = 'homepage';
+GO
+
+UPDATE HOMEPAGE.NR_SOURCE
+	SET SOURCE_TYPE = 7 WHERE SOURCE = 'dogear';
+GO
+
+UPDATE HOMEPAGE.NR_SOURCE
+	SET SOURCE_TYPE = 8 WHERE SOURCE = 'files';
+GO
+
+UPDATE HOMEPAGE.NR_SOURCE
+	SET SOURCE_TYPE = 9 WHERE SOURCE = 'forums';
+GO	
+
+--------------------------------------------
+-- ADDING SOURCE_TYPE - NR_NEWS_SAVED
+--------------------------------------------
+ALTER TABLE HOMEPAGE.NR_NEWS_SAVED
+	ADD  SOURCE_TYPE NUMERIC(5,0);
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_SAVED
+	SET SOURCE_TYPE = 1 WHERE SOURCE = 'activities';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_SAVED
+	SET SOURCE_TYPE = 2 WHERE SOURCE = 'blogs';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_SAVED
+	SET SOURCE_TYPE = 3 WHERE SOURCE = 'communities';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_SAVED
+	SET SOURCE_TYPE = 4 WHERE SOURCE = 'wikis';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_SAVED
+	SET SOURCE_TYPE = 5 WHERE SOURCE = 'profiles';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_SAVED
+	SET SOURCE_TYPE = 6 WHERE SOURCE = 'homepage';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_SAVED
+	SET SOURCE_TYPE = 7 WHERE SOURCE = 'dogear';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_SAVED
+	SET SOURCE_TYPE = 8 WHERE SOURCE = 'files';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_SAVED
+	SET SOURCE_TYPE = 9 WHERE SOURCE = 'forums';
+GO	
+
+--------------------------------------------
+-- ADDING SOURCE_TYPE - NR_NEWS_DISCOVERY
+--------------------------------------------
+ALTER TABLE HOMEPAGE.NR_NEWS_DISCOVERY
+	ADD  SOURCE_TYPE NUMERIC(5,0);
+GO	
+
+UPDATE HOMEPAGE.NR_NEWS_DISCOVERY
+	SET SOURCE_TYPE = 1 WHERE SOURCE = 'activities';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_DISCOVERY
+	SET SOURCE_TYPE = 2 WHERE SOURCE = 'blogs';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_DISCOVERY
+	SET SOURCE_TYPE = 3 WHERE SOURCE = 'communities';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_DISCOVERY
+	SET SOURCE_TYPE = 4 WHERE SOURCE = 'wikis';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_DISCOVERY
+	SET SOURCE_TYPE = 5 WHERE SOURCE = 'profiles';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_DISCOVERY
+	SET SOURCE_TYPE = 6 WHERE SOURCE = 'homepage';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_DISCOVERY
+	SET SOURCE_TYPE = 7 WHERE SOURCE = 'dogear';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_DISCOVERY
+	SET SOURCE_TYPE = 8 WHERE SOURCE = 'files';
+GO
+
+UPDATE HOMEPAGE.NR_NEWS_DISCOVERY
+	SET SOURCE_TYPE = 9 WHERE SOURCE = 'forums';
+GO	
+
+--------------------------------------------
+-- ADDING SOURCE_TYPE - NR_RESOURCE
+--------------------------------------------	
+ALTER TABLE HOMEPAGE.NR_RESOURCE
+	ADD  SOURCE_TYPE NUMERIC(5,0);
+GO	
+
+UPDATE HOMEPAGE.NR_RESOURCE
+	SET SOURCE_TYPE = 1 WHERE SOURCE = 'activities';
+GO
+
+UPDATE HOMEPAGE.NR_RESOURCE
+	SET SOURCE_TYPE = 2 WHERE SOURCE = 'blogs';
+GO
+
+UPDATE HOMEPAGE.NR_RESOURCE
+	SET SOURCE_TYPE = 3 WHERE SOURCE = 'communities';
+GO
+
+UPDATE HOMEPAGE.NR_RESOURCE
+	SET SOURCE_TYPE = 4 WHERE SOURCE = 'wikis';
+GO
+
+UPDATE HOMEPAGE.NR_RESOURCE
+	SET SOURCE_TYPE = 5 WHERE SOURCE = 'profiles';
+GO
+
+UPDATE HOMEPAGE.NR_RESOURCE
+	SET SOURCE_TYPE = 6 WHERE SOURCE = 'homepage';
+GO
+
+UPDATE HOMEPAGE.NR_RESOURCE
+	SET SOURCE_TYPE = 7 WHERE SOURCE = 'dogear';
+GO
+
+UPDATE HOMEPAGE.NR_RESOURCE
+	SET SOURCE_TYPE = 8 WHERE SOURCE = 'files';
+GO
+
+UPDATE HOMEPAGE.NR_RESOURCE
+	SET SOURCE_TYPE = 9 WHERE SOURCE = 'forums';
+GO	
+	
+--------------------------------------------
+-- ADDING SOURCE_TYPE - NR_COMM_STORIES
+--------------------------------------------
+ALTER TABLE HOMEPAGE.NR_COMM_STORIES
+	ADD  SOURCE_TYPE NUMERIC(5,0);
+GO	
+
+UPDATE HOMEPAGE.NR_COMM_STORIES
+	SET SOURCE_TYPE = 3;
+GO
+
+--------------------------------------------
+-- ADDING SOURCE_TYPE - NR_COMM_PERSON_STORIES
+--------------------------------------------	
+ALTER TABLE HOMEPAGE.NR_COMM_PERSON_STORIES
+	ADD  SOURCE_TYPE NUMERIC(5,0);
+GO	
+
+UPDATE HOMEPAGE.NR_COMM_PERSON_STORIES
+	SET SOURCE_TYPE = 1 WHERE SOURCE = 'activities';
+GO
+
+UPDATE HOMEPAGE.NR_COMM_PERSON_STORIES
+	SET SOURCE_TYPE = 2 WHERE SOURCE = 'blogs';
+GO
+
+UPDATE HOMEPAGE.NR_COMM_PERSON_STORIES
+	SET SOURCE_TYPE = 3 WHERE SOURCE = 'communities';
+GO
+
+UPDATE HOMEPAGE.NR_COMM_PERSON_STORIES
+	SET SOURCE_TYPE = 4 WHERE SOURCE = 'wikis';
+GO
+
+UPDATE HOMEPAGE.NR_COMM_PERSON_STORIES
+	SET SOURCE_TYPE = 5 WHERE SOURCE = 'profiles';
+GO
+
+UPDATE HOMEPAGE.NR_COMM_PERSON_STORIES
+	SET SOURCE_TYPE = 6 WHERE SOURCE = 'homepage';
+GO
+
+UPDATE HOMEPAGE.NR_COMM_PERSON_STORIES
+	SET SOURCE_TYPE = 7 WHERE SOURCE = 'dogear';
+GO
+
+UPDATE HOMEPAGE.NR_COMM_PERSON_STORIES
+	SET SOURCE_TYPE = 8 WHERE SOURCE = 'files';
+GO
+
+UPDATE HOMEPAGE.NR_COMM_PERSON_STORIES
+	SET SOURCE_TYPE = 9 WHERE SOURCE = 'forums';
+GO
+
+
+-- categories tables
+--------------------------------------------
+-- ADDING SOURCE_TYPE - NR_RESPONSES_STORIES
+--------------------------------------------
+ALTER TABLE HOMEPAGE.NR_RESPONSES_STORIES
+	ADD  SOURCE_TYPE NUMERIC(5,0);
+GO	
+
+UPDATE HOMEPAGE.NR_RESPONSES_STORIES
+	SET SOURCE_TYPE = 1 WHERE SOURCE = 'activities';
+GO
+
+UPDATE HOMEPAGE.NR_RESPONSES_STORIES
+	SET SOURCE_TYPE = 2 WHERE SOURCE = 'blogs';
+GO
+
+UPDATE HOMEPAGE.NR_RESPONSES_STORIES
+	SET SOURCE_TYPE = 3 WHERE SOURCE = 'communities';
+GO
+
+UPDATE HOMEPAGE.NR_RESPONSES_STORIES
+	SET SOURCE_TYPE = 4 WHERE SOURCE = 'wikis';
+GO
+
+UPDATE HOMEPAGE.NR_RESPONSES_STORIES
+	SET SOURCE_TYPE = 5 WHERE SOURCE = 'profiles';
+GO
+
+UPDATE HOMEPAGE.NR_RESPONSES_STORIES
+	SET SOURCE_TYPE = 6 WHERE SOURCE = 'homepage';
+GO
+
+UPDATE HOMEPAGE.NR_RESPONSES_STORIES
+	SET SOURCE_TYPE = 7 WHERE SOURCE = 'dogear';
+GO
+
+UPDATE HOMEPAGE.NR_RESPONSES_STORIES
+	SET SOURCE_TYPE = 8 WHERE SOURCE = 'files';
+GO
+
+UPDATE HOMEPAGE.NR_RESPONSES_STORIES
+	SET SOURCE_TYPE = 9 WHERE SOURCE = 'forums';
+GO	
+	
+--------------------------------------------
+-- ADDING SOURCE_TYPE - NR_PROFILES_STORIES
+--------------------------------------------	
+ALTER TABLE HOMEPAGE.NR_PROFILES_STORIES
+	ADD  SOURCE_TYPE NUMERIC(5,0);
+GO
+
+UPDATE HOMEPAGE.NR_PROFILES_STORIES
+	SET SOURCE_TYPE = 1 WHERE SOURCE = 'activities';
+GO
+
+UPDATE HOMEPAGE.NR_PROFILES_STORIES
+	SET SOURCE_TYPE = 2 WHERE SOURCE = 'blogs';
+GO
+
+UPDATE HOMEPAGE.NR_PROFILES_STORIES
+	SET SOURCE_TYPE = 3 WHERE SOURCE = 'communities';
+GO
+
+UPDATE HOMEPAGE.NR_PROFILES_STORIES
+	SET SOURCE_TYPE = 4 WHERE SOURCE = 'wikis';
+GO
+
+UPDATE HOMEPAGE.NR_PROFILES_STORIES
+	SET SOURCE_TYPE = 5 WHERE SOURCE = 'profiles';
+GO
+
+UPDATE HOMEPAGE.NR_PROFILES_STORIES
+	SET SOURCE_TYPE = 6 WHERE SOURCE = 'homepage';
+GO
+
+UPDATE HOMEPAGE.NR_PROFILES_STORIES
+	SET SOURCE_TYPE = 7 WHERE SOURCE = 'dogear';
+GO
+
+UPDATE HOMEPAGE.NR_PROFILES_STORIES
+	SET SOURCE_TYPE = 8 WHERE SOURCE = 'files';
+GO
+
+UPDATE HOMEPAGE.NR_PROFILES_STORIES
+	SET SOURCE_TYPE = 9 WHERE SOURCE = 'forums';
+GO
+	
+--------------------------------------------
+-- ADDING SOURCE_TYPE - NR_COMMUNITIES_STORIES (never used)
+--------------------------------------------	
+ALTER TABLE HOMEPAGE.NR_COMMUNITIES_STORIES
+	ADD  SOURCE_TYPE NUMERIC(5,0);
+GO	
+	
+--------------------------------------------
+-- ADDING SOURCE_TYPE - NR_ACTIVITIES_STORIES
+--------------------------------------------	
+ALTER TABLE HOMEPAGE.NR_ACTIVITIES_STORIES
+	ADD  SOURCE_TYPE NUMERIC(5,0);
+GO
+
+UPDATE HOMEPAGE.NR_ACTIVITIES_STORIES
+	SET SOURCE_TYPE = 1 WHERE SOURCE = 'activities';
+GO
+
+UPDATE HOMEPAGE.NR_ACTIVITIES_STORIES
+	SET SOURCE_TYPE = 2 WHERE SOURCE = 'blogs';
+GO
+
+UPDATE HOMEPAGE.NR_ACTIVITIES_STORIES
+	SET SOURCE_TYPE = 3 WHERE SOURCE = 'communities';
+GO
+
+UPDATE HOMEPAGE.NR_ACTIVITIES_STORIES
+	SET SOURCE_TYPE = 4 WHERE SOURCE = 'wikis';
+GO
+
+UPDATE HOMEPAGE.NR_ACTIVITIES_STORIES
+	SET SOURCE_TYPE = 5 WHERE SOURCE = 'profiles';
+GO
+
+UPDATE HOMEPAGE.NR_ACTIVITIES_STORIES
+	SET SOURCE_TYPE = 6 WHERE SOURCE = 'homepage';
+GO
+
+UPDATE HOMEPAGE.NR_ACTIVITIES_STORIES
+	SET SOURCE_TYPE = 7 WHERE SOURCE = 'dogear';
+GO
+
+UPDATE HOMEPAGE.NR_ACTIVITIES_STORIES
+	SET SOURCE_TYPE = 8 WHERE SOURCE = 'files';
+GO
+
+UPDATE HOMEPAGE.NR_ACTIVITIES_STORIES
+	SET SOURCE_TYPE = 9 WHERE SOURCE = 'forums';
+GO
+
+--------------------------------------------
+-- ADDING SOURCE_TYPE - NR_BLOGS_STORIES
+--------------------------------------------	
+ALTER TABLE HOMEPAGE.NR_BLOGS_STORIES
+	ADD  SOURCE_TYPE NUMERIC(5,0);
+GO
+
+UPDATE HOMEPAGE.NR_BLOGS_STORIES
+	SET SOURCE_TYPE = 1 WHERE SOURCE = 'activities';
+GO
+
+UPDATE HOMEPAGE.NR_BLOGS_STORIES
+	SET SOURCE_TYPE = 2 WHERE SOURCE = 'blogs';
+GO
+
+UPDATE HOMEPAGE.NR_BLOGS_STORIES
+	SET SOURCE_TYPE = 3 WHERE SOURCE = 'communities';
+GO
+
+UPDATE HOMEPAGE.NR_BLOGS_STORIES
+	SET SOURCE_TYPE = 4 WHERE SOURCE = 'wikis';
+GO
+
+UPDATE HOMEPAGE.NR_BLOGS_STORIES
+	SET SOURCE_TYPE = 5 WHERE SOURCE = 'profiles';
+GO
+
+UPDATE HOMEPAGE.NR_BLOGS_STORIES
+	SET SOURCE_TYPE = 6 WHERE SOURCE = 'homepage';
+GO
+
+UPDATE HOMEPAGE.NR_BLOGS_STORIES
+	SET SOURCE_TYPE = 7 WHERE SOURCE = 'dogear';
+GO
+
+UPDATE HOMEPAGE.NR_BLOGS_STORIES
+	SET SOURCE_TYPE = 8 WHERE SOURCE = 'files';
+GO
+
+UPDATE HOMEPAGE.NR_BLOGS_STORIES
+	SET SOURCE_TYPE = 9 WHERE SOURCE = 'forums';
+GO
+	
+--------------------------------------------
+-- ADDING SOURCE_TYPE - NR_BOOKMARKS_STORIES (never used)
+--------------------------------------------	
+ALTER TABLE HOMEPAGE.NR_BOOKMARKS_STORIES
+	ADD  SOURCE_TYPE NUMERIC(5,0);
+GO	
+	
+--------------------------------------------
+-- ADDING SOURCE_TYPE - NR_FILES_STORIES
+--------------------------------------------	
+ALTER TABLE HOMEPAGE.NR_FILES_STORIES
+	ADD  SOURCE_TYPE NUMERIC(5,0);
+GO	
+
+UPDATE HOMEPAGE.NR_FILES_STORIES
+	SET SOURCE_TYPE = 1 WHERE SOURCE = 'activities';
+GO
+
+UPDATE HOMEPAGE.NR_FILES_STORIES
+	SET SOURCE_TYPE = 2 WHERE SOURCE = 'blogs';
+GO
+
+UPDATE HOMEPAGE.NR_FILES_STORIES
+	SET SOURCE_TYPE = 3 WHERE SOURCE = 'communities';
+GO
+
+UPDATE HOMEPAGE.NR_FILES_STORIES
+	SET SOURCE_TYPE = 4 WHERE SOURCE = 'wikis';
+GO
+
+UPDATE HOMEPAGE.NR_FILES_STORIES
+	SET SOURCE_TYPE = 5 WHERE SOURCE = 'profiles';
+GO
+
+UPDATE HOMEPAGE.NR_FILES_STORIES
+	SET SOURCE_TYPE = 6 WHERE SOURCE = 'homepage';
+GO
+
+UPDATE HOMEPAGE.NR_FILES_STORIES
+	SET SOURCE_TYPE = 7 WHERE SOURCE = 'dogear';
+GO
+
+UPDATE HOMEPAGE.NR_FILES_STORIES
+	SET SOURCE_TYPE = 8 WHERE SOURCE = 'files';
+GO
+
+UPDATE HOMEPAGE.NR_FILES_STORIES
+	SET SOURCE_TYPE = 9 WHERE SOURCE = 'forums';
+GO
+
+--------------------------------------------
+-- ADDING SOURCE_TYPE - NR_FORUMS_STORIES
+--------------------------------------------	
+ALTER TABLE HOMEPAGE.NR_FORUMS_STORIES
+	ADD  SOURCE_TYPE NUMERIC(5,0);
+GO
+
+UPDATE HOMEPAGE.NR_FORUMS_STORIES
+	SET SOURCE_TYPE = 1 WHERE SOURCE = 'activities';
+GO
+
+UPDATE HOMEPAGE.NR_FORUMS_STORIES
+	SET SOURCE_TYPE = 2 WHERE SOURCE = 'blogs';
+GO
+
+UPDATE HOMEPAGE.NR_FORUMS_STORIES
+	SET SOURCE_TYPE = 3 WHERE SOURCE = 'communities';
+GO
+
+UPDATE HOMEPAGE.NR_FORUMS_STORIES
+	SET SOURCE_TYPE = 4 WHERE SOURCE = 'wikis';
+GO
+
+UPDATE HOMEPAGE.NR_FORUMS_STORIES
+	SET SOURCE_TYPE = 5 WHERE SOURCE = 'profiles';
+GO
+
+UPDATE HOMEPAGE.NR_FORUMS_STORIES
+	SET SOURCE_TYPE = 6 WHERE SOURCE = 'homepage';
+GO
+
+UPDATE HOMEPAGE.NR_FORUMS_STORIES
+	SET SOURCE_TYPE = 7 WHERE SOURCE = 'dogear';
+GO
+
+UPDATE HOMEPAGE.NR_FORUMS_STORIES
+	SET SOURCE_TYPE = 8 WHERE SOURCE = 'files';
+GO
+
+UPDATE HOMEPAGE.NR_FORUMS_STORIES
+	SET SOURCE_TYPE = 9 WHERE SOURCE = 'forums';
+GO
+
+--------------------------------------------
+-- ADDING SOURCE_TYPE - NR_WIKIS_STORIES
+--------------------------------------------	
+ALTER TABLE HOMEPAGE.NR_WIKIS_STORIES
+	ADD  SOURCE_TYPE NUMERIC(5,0);
+GO	
+
+UPDATE HOMEPAGE.NR_WIKIS_STORIES
+	SET SOURCE_TYPE = 1 WHERE SOURCE = 'activities';
+GO
+
+UPDATE HOMEPAGE.NR_WIKIS_STORIES
+	SET SOURCE_TYPE = 2 WHERE SOURCE = 'blogs';
+GO
+
+UPDATE HOMEPAGE.NR_WIKIS_STORIES
+	SET SOURCE_TYPE = 3 WHERE SOURCE = 'communities';
+GO
+
+UPDATE HOMEPAGE.NR_WIKIS_STORIES
+	SET SOURCE_TYPE = 4 WHERE SOURCE = 'wikis';
+GO
+
+UPDATE HOMEPAGE.NR_WIKIS_STORIES
+	SET SOURCE_TYPE = 5 WHERE SOURCE = 'profiles';
+GO
+
+UPDATE HOMEPAGE.NR_WIKIS_STORIES
+	SET SOURCE_TYPE = 6 WHERE SOURCE = 'homepage';
+GO
+
+UPDATE HOMEPAGE.NR_WIKIS_STORIES
+	SET SOURCE_TYPE = 7 WHERE SOURCE = 'dogear';
+GO
+
+UPDATE HOMEPAGE.NR_WIKIS_STORIES
+	SET SOURCE_TYPE = 8 WHERE SOURCE = 'files';
+GO
+
+UPDATE HOMEPAGE.NR_WIKIS_STORIES
+	SET SOURCE_TYPE = 9 WHERE SOURCE = 'forums';
+GO
+
+--------------------------------------------
+-- ADDING SOURCE_TYPE - NR_TAGS_STORIES
+--------------------------------------------	
+ALTER TABLE HOMEPAGE.NR_TAGS_STORIES
+	ADD  SOURCE_TYPE NUMERIC(5,0);
+GO
+
+UPDATE HOMEPAGE.NR_TAGS_STORIES
+	SET SOURCE_TYPE = 1 WHERE SOURCE = 'activities';
+GO
+
+UPDATE HOMEPAGE.NR_TAGS_STORIES
+	SET SOURCE_TYPE = 2 WHERE SOURCE = 'blogs';
+GO
+
+UPDATE HOMEPAGE.NR_TAGS_STORIES
+	SET SOURCE_TYPE = 3 WHERE SOURCE = 'communities';
+GO
+
+UPDATE HOMEPAGE.NR_TAGS_STORIES
+	SET SOURCE_TYPE = 4 WHERE SOURCE = 'wikis';
+GO
+
+UPDATE HOMEPAGE.NR_TAGS_STORIES
+	SET SOURCE_TYPE = 5 WHERE SOURCE = 'profiles';
+GO
+
+UPDATE HOMEPAGE.NR_TAGS_STORIES
+	SET SOURCE_TYPE = 6 WHERE SOURCE = 'homepage';
+GO
+
+UPDATE HOMEPAGE.NR_TAGS_STORIES
+	SET SOURCE_TYPE = 7 WHERE SOURCE = 'dogear';
+GO
+
+UPDATE HOMEPAGE.NR_TAGS_STORIES
+	SET SOURCE_TYPE = 8 WHERE SOURCE = 'files';
+GO
+
+UPDATE HOMEPAGE.NR_TAGS_STORIES
+	SET SOURCE_TYPE = 9 WHERE SOURCE = 'forums';
+GO
+
+-------------------------------------------------
+-- 3) ADDING PARTITIONED TABLES
+-------------------------------------------------
+
+----------------------------------------------------------------------
+-- 1) HOMEPAGE.NR_SRC_STORIES_ACT
+----------------------------------------------------------------------
+CREATE TABLE HOMEPAGE.NR_SRC_STORIES_ACT (
+	STORY_ID nvarchar(36) NOT NULL,
+	EVENT_NAME nvarchar(256) NOT NULL,
+	SOURCE nvarchar(36),
+	CONTAINER_ID nvarchar(256),	
+	CONTAINER_NAME nvarchar(256),
+	CONTAINER_URL nvarchar(2048),
+	ITEM_NAME nvarchar(256),
+	ITEM_URL nvarchar(2048),
+	ITEM_ATOM_URL nvarchar(2048),
+	ITEM_ID nvarchar(36), -- NEW
+	ITEM_CORRELATION_ID nvarchar(36), -- NEW	
+	CREATION_DATE DATETIME NOT NULL,
+	BRIEF_DESC nvarchar(512),
+	ACTOR_UUID nvarchar(36),
+	EVENT_RECORD_UUID nvarchar(36) NOT NULL,
+	TAGS nvarchar(1024),
+	META_TEMPLATE nvarchar(4000) DEFAULT '' NOT NULL,
+	TEXT_META_TEMPLATE nvarchar(1024),
+	R_META_TEMPLATE nvarchar(4000),
+	R_TEXT_META_TEMPLATE nvarchar(1024),
+	N_COMMENTS NUMERIC(5,0) DEFAULT 0 NOT NULL, -- NEW
+	N_RECOMMANDATIONS NUMERIC(5,0) DEFAULT 0 NOT NULL, -- NEW
+	IS_COMMUNITY_STORY NUMERIC(5,0) DEFAULT 0,
+	ITEM_CORRELATION_NAME nvarchar(256),
+	SOURCE_TYPE NUMERIC(5,0),
+	CONSTRAINT   	CK_SRC1_TYPE
+    				CHECK
+    				(SOURCE_TYPE = 1)
+) ON [PRIMARY]
+GO
+
+ALTER TABLE HOMEPAGE.NR_SRC_STORIES_ACT
+    ADD CONSTRAINT PK_ACT_STORY_ID PRIMARY KEY(STORY_ID);
+
+CREATE INDEX NR_SRC_STORIES_ACT_DATE
+	ON HOMEPAGE.NR_SRC_STORIES_ACT(CREATION_DATE DESC);
+
+CREATE INDEX SRC_ACT_CONTAINED_ID
+    ON HOMEPAGE.NR_SRC_STORIES_ACT (CONTAINER_ID);
+
+CREATE INDEX SRC_ACT_STORIES_ITEM_ID
+    ON HOMEPAGE.NR_SRC_STORIES_ACT (ITEM_ID);
+
+CREATE INDEX SRC_ACT_STORIES_ITEM_CORR_ID
+    ON HOMEPAGE.NR_SRC_STORIES_ACT (ITEM_CORRELATION_ID);
+
+CREATE INDEX NR_SRC_STORIES_ACT_SIDX
+    ON HOMEPAGE.NR_SRC_STORIES_ACT (SOURCE_TYPE);
+
+----------------------------------------------------------------------
+-- 2) HOMEPAGE.NR_SRC_STORIES_BLG
+----------------------------------------------------------------------
+CREATE TABLE HOMEPAGE.NR_SRC_STORIES_BLG (
+	STORY_ID nvarchar(36) NOT NULL,
+	EVENT_NAME nvarchar(256) NOT NULL,
+	SOURCE nvarchar(36),
+	CONTAINER_ID nvarchar(256),	
+	CONTAINER_NAME nvarchar(256),
+	CONTAINER_URL nvarchar(2048),
+	ITEM_NAME nvarchar(256),
+	ITEM_URL nvarchar(2048),
+	ITEM_ATOM_URL nvarchar(2048),
+	ITEM_ID nvarchar(36), -- NEW
+	ITEM_CORRELATION_ID nvarchar(36), -- NEW	
+	CREATION_DATE DATETIME NOT NULL,
+	BRIEF_DESC nvarchar(512),
+	ACTOR_UUID nvarchar(36),
+	EVENT_RECORD_UUID nvarchar(36) NOT NULL,
+	TAGS nvarchar(1024),
+	META_TEMPLATE nvarchar(4000) DEFAULT '' NOT NULL,
+	TEXT_META_TEMPLATE nvarchar(1024),
+	R_META_TEMPLATE nvarchar(4000),
+	R_TEXT_META_TEMPLATE nvarchar(1024),
+	N_COMMENTS NUMERIC(5,0) DEFAULT 0 NOT NULL, -- NEW
+	N_RECOMMANDATIONS NUMERIC(5,0) DEFAULT 0 NOT NULL, -- NEW
+	IS_COMMUNITY_STORY NUMERIC(5,0) DEFAULT 0,
+	ITEM_CORRELATION_NAME nvarchar(256),
+	SOURCE_TYPE NUMERIC(5,0),
+	CONSTRAINT   	CK_SRC2_TYPE
+    				CHECK
+    				(SOURCE_TYPE = 2)
+) ON [PRIMARY]
+GO
+
+ALTER TABLE HOMEPAGE.NR_SRC_STORIES_BLG
+    ADD CONSTRAINT PK_BLG_STORY_ID PRIMARY KEY (STORY_ID);
+
+CREATE INDEX NR_SRC_STORIES_BLG_DATE
+	ON HOMEPAGE.NR_SRC_STORIES_BLG(CREATION_DATE DESC);
+
+CREATE INDEX SRC_BLG_STORIES_CONTAINED_ID
+    ON HOMEPAGE.NR_SRC_STORIES_BLG (CONTAINER_ID);
+
+CREATE INDEX SRC_BLG_STORIES_ITEM_ID
+    ON HOMEPAGE.NR_SRC_STORIES_BLG (ITEM_ID);
+
+CREATE INDEX SRC_BLG_STORIES_ITEM_CORR_ID
+    ON HOMEPAGE.NR_SRC_STORIES_BLG (ITEM_CORRELATION_ID);
+
+CREATE INDEX NR_SRC_STORIES_BLG_SIDX
+    ON HOMEPAGE.NR_SRC_STORIES_BLG (SOURCE_TYPE);
+
+
+----------------------------------------------------------------------
+-- 3) HOMEPAGE.NR_SRC_STORIES_COM
+----------------------------------------------------------------------
+CREATE TABLE HOMEPAGE.NR_SRC_STORIES_COM (
+	STORY_ID nvarchar(36) NOT NULL,
+	EVENT_NAME nvarchar(256) NOT NULL,
+	SOURCE nvarchar(36),
+	CONTAINER_ID nvarchar(256),	
+	CONTAINER_NAME nvarchar(256),
+	CONTAINER_URL nvarchar(2048),
+	ITEM_NAME nvarchar(256),
+	ITEM_URL nvarchar(2048),
+	ITEM_ATOM_URL nvarchar(2048),
+	ITEM_ID nvarchar(36), -- NEW
+	ITEM_CORRELATION_ID nvarchar(36), -- NEW	
+	CREATION_DATE DATETIME NOT NULL,
+	BRIEF_DESC nvarchar(512),
+	ACTOR_UUID nvarchar(36),
+	EVENT_RECORD_UUID nvarchar(36) NOT NULL,
+	TAGS nvarchar(1024),
+	META_TEMPLATE nvarchar(4000) DEFAULT '' NOT NULL,
+	TEXT_META_TEMPLATE nvarchar(1024),
+	R_META_TEMPLATE nvarchar(4000),
+	R_TEXT_META_TEMPLATE nvarchar(1024),
+	N_COMMENTS NUMERIC(5,0) DEFAULT 0 NOT NULL, -- NEW
+	N_RECOMMANDATIONS NUMERIC(5,0) DEFAULT 0 NOT NULL, -- NEW
+	IS_COMMUNITY_STORY NUMERIC(5,0) DEFAULT 0,
+	ITEM_CORRELATION_NAME nvarchar(256),
+	SOURCE_TYPE NUMERIC(5,0),
+	CONSTRAINT   	CK_SRC3_TYPE
+    				CHECK
+    				(SOURCE_TYPE = 3)
+) ON [PRIMARY]
+GO
+
+ALTER TABLE HOMEPAGE.NR_SRC_STORIES_COM
+    ADD CONSTRAINT PK_COM_STORY_ID PRIMARY KEY(STORY_ID);
+
+CREATE INDEX NR_SRC_STORIES_COM_DATE
+	ON HOMEPAGE.NR_SRC_STORIES_COM (CREATION_DATE DESC);
+
+CREATE INDEX SRC_COM_STORIES_CONTAINED_ID
+    ON HOMEPAGE.NR_SRC_STORIES_COM (CONTAINER_ID);
+
+CREATE INDEX SRC_COM_STORIES_ITEM_ID
+    ON HOMEPAGE.NR_SRC_STORIES_COM (ITEM_ID);
+
+CREATE INDEX SRC_COM_STORIES_ITEM_CORR_ID
+    ON HOMEPAGE.NR_SRC_STORIES_COM (ITEM_CORRELATION_ID);
+
+CREATE INDEX NR_SRC_STORIES_COM_SIDX
+    ON HOMEPAGE.NR_SRC_STORIES_COM (SOURCE_TYPE);
+  
+    
+----------------------------------------------------------------------
+-- 4) HOMEPAGE.NR_SRC_STORIES_WIK
+----------------------------------------------------------------------
+CREATE TABLE HOMEPAGE.NR_SRC_STORIES_WIK (
+	STORY_ID nvarchar(36) NOT NULL,
+	EVENT_NAME nvarchar(256) NOT NULL,
+	SOURCE nvarchar(36),
+	CONTAINER_ID nvarchar(256),	
+	CONTAINER_NAME nvarchar(256),
+	CONTAINER_URL nvarchar(2048),
+	ITEM_NAME nvarchar(256),
+	ITEM_URL nvarchar(2048),
+	ITEM_ATOM_URL nvarchar(2048),
+	ITEM_ID nvarchar(36), -- NEW
+	ITEM_CORRELATION_ID nvarchar(36), -- NEW	
+	CREATION_DATE DATETIME NOT NULL,
+	BRIEF_DESC nvarchar(512),
+	ACTOR_UUID nvarchar(36),
+	EVENT_RECORD_UUID nvarchar(36) NOT NULL,
+	TAGS nvarchar(1024),
+	META_TEMPLATE nvarchar(4000) DEFAULT '' NOT NULL,
+	TEXT_META_TEMPLATE nvarchar(1024),
+	R_META_TEMPLATE nvarchar(4000),
+	R_TEXT_META_TEMPLATE nvarchar(1024),
+	N_COMMENTS NUMERIC(5,0) DEFAULT 0 NOT NULL, -- NEW
+	N_RECOMMANDATIONS NUMERIC(5,0) DEFAULT 0 NOT NULL, -- NEW
+	IS_COMMUNITY_STORY NUMERIC(5,0) DEFAULT 0,
+	ITEM_CORRELATION_NAME nvarchar(256),
+	SOURCE_TYPE NUMERIC(5,0),
+	CONSTRAINT   	CK_SRC4_TYPE
+    				CHECK
+    				(SOURCE_TYPE = 4)
+) ON [PRIMARY]
+GO
+
+ALTER TABLE HOMEPAGE.NR_SRC_STORIES_WIK
+    ADD CONSTRAINT PK_WIK_STORY_ID PRIMARY KEY(STORY_ID);
+
+CREATE INDEX NR_SRC_STORIES_WIK_DATE
+	ON HOMEPAGE.NR_SRC_STORIES_WIK(CREATION_DATE DESC);
+
+CREATE INDEX SRC_WIK_STORIES_CONTAINED_ID
+    ON HOMEPAGE.NR_SRC_STORIES_WIK (CONTAINER_ID);
+
+CREATE INDEX SRC_WIK_STORIES_ITEM_ID
+    ON HOMEPAGE.NR_SRC_STORIES_WIK (ITEM_ID);
+
+CREATE INDEX SRC_WIK_STORIES_ITEM_CORR_ID
+    ON HOMEPAGE.NR_SRC_STORIES_WIK (ITEM_CORRELATION_ID);
+
+CREATE INDEX NR_SRC_STORIES_WIK_SIDX
+    ON HOMEPAGE.NR_SRC_STORIES_WIK (SOURCE_TYPE);
+  
+    
+----------------------------------------------------------------------
+-- 5) HOMEPAGE.NR_SRC_STORIES_PRF
+----------------------------------------------------------------------
+CREATE TABLE HOMEPAGE.NR_SRC_STORIES_PRF (
+	STORY_ID nvarchar(36) NOT NULL,
+	EVENT_NAME nvarchar(256) NOT NULL,
+	SOURCE nvarchar(36),
+	CONTAINER_ID nvarchar(256),	
+	CONTAINER_NAME nvarchar(256),
+	CONTAINER_URL nvarchar(2048),
+	ITEM_NAME nvarchar(256),
+	ITEM_URL nvarchar(2048),
+	ITEM_ATOM_URL nvarchar(2048),
+	ITEM_ID nvarchar(36), -- NEW
+	ITEM_CORRELATION_ID nvarchar(36), -- NEW	
+	CREATION_DATE DATETIME NOT NULL,
+	BRIEF_DESC nvarchar(512),
+	ACTOR_UUID nvarchar(36),
+	EVENT_RECORD_UUID nvarchar(36) NOT NULL,
+	TAGS nvarchar(1024),
+	META_TEMPLATE nvarchar(4000) DEFAULT '' NOT NULL,
+	TEXT_META_TEMPLATE nvarchar(1024),
+	R_META_TEMPLATE nvarchar(4000),
+	R_TEXT_META_TEMPLATE nvarchar(1024),
+	N_COMMENTS NUMERIC(5,0) DEFAULT 0 NOT NULL, -- NEW
+	N_RECOMMANDATIONS NUMERIC(5,0) DEFAULT 0 NOT NULL, -- NEW
+	IS_COMMUNITY_STORY NUMERIC(5,0) DEFAULT 0,
+	ITEM_CORRELATION_NAME nvarchar(256),
+	SOURCE_TYPE NUMERIC(5,0),
+	CONSTRAINT   	CK_SRC5_TYPE
+    				CHECK
+    				(SOURCE_TYPE = 5)
+) ON [PRIMARY]
+GO
+
+ALTER TABLE HOMEPAGE.NR_SRC_STORIES_PRF
+    ADD CONSTRAINT PK_PRF_STORY_ID PRIMARY KEY(STORY_ID);
+
+CREATE INDEX NR_SRC_STORIES_PRF_DATE
+	ON HOMEPAGE.NR_SRC_STORIES_PRF(CREATION_DATE DESC);
+
+CREATE INDEX SRC_PRF_STORIES_CONTAINED_ID
+    ON HOMEPAGE.NR_SRC_STORIES_PRF (CONTAINER_ID);
+
+CREATE INDEX SRC_PRF_STORIES_ITEM_ID
+    ON HOMEPAGE.NR_SRC_STORIES_PRF (ITEM_ID);
+
+CREATE INDEX SRC_PRF_STORIES_ITEM_CORR_ID
+    ON HOMEPAGE.NR_SRC_STORIES_PRF (ITEM_CORRELATION_ID);
+
+CREATE INDEX NR_SRC_STORIES_PRF_SIDX
+    ON HOMEPAGE.NR_SRC_STORIES_PRF (SOURCE_TYPE);
+    
+
+----------------------------------------------------------------------
+-- 6) HOMEPAGE.NR_SRC_STORIES_HP
+----------------------------------------------------------------------
+CREATE TABLE HOMEPAGE.NR_SRC_STORIES_HP (
+	STORY_ID nvarchar(36) NOT NULL,
+	EVENT_NAME nvarchar(256) NOT NULL,
+	SOURCE nvarchar(36),
+	CONTAINER_ID nvarchar(256),	
+	CONTAINER_NAME nvarchar(256),
+	CONTAINER_URL nvarchar(2048),
+	ITEM_NAME nvarchar(256),
+	ITEM_URL nvarchar(2048),
+	ITEM_ATOM_URL nvarchar(2048),
+	ITEM_ID nvarchar(36), -- NEW
+	ITEM_CORRELATION_ID nvarchar(36), -- NEW	
+	CREATION_DATE DATETIME NOT NULL,
+	BRIEF_DESC nvarchar(512),
+	ACTOR_UUID nvarchar(36),
+	EVENT_RECORD_UUID nvarchar(36) NOT NULL,
+	TAGS nvarchar(1024),
+	META_TEMPLATE nvarchar(4000) DEFAULT '' NOT NULL,
+	TEXT_META_TEMPLATE nvarchar(1024),
+	R_META_TEMPLATE nvarchar(4000),
+	R_TEXT_META_TEMPLATE nvarchar(1024),
+	N_COMMENTS NUMERIC(5,0) DEFAULT 0 NOT NULL, -- NEW
+	N_RECOMMANDATIONS NUMERIC(5,0) DEFAULT 0 NOT NULL, -- NEW
+	IS_COMMUNITY_STORY NUMERIC(5,0) DEFAULT 0,
+	ITEM_CORRELATION_NAME nvarchar(256),
+	SOURCE_TYPE NUMERIC(5,0),
+	CONSTRAINT   	CK_SRC6_TYPE
+    				CHECK
+    				(SOURCE_TYPE = 6)
+) ON [PRIMARY]
+GO
+
+ALTER TABLE HOMEPAGE.NR_SRC_STORIES_HP
+    ADD CONSTRAINT PK_HP_STORY_ID PRIMARY KEY (STORY_ID);
+
+CREATE INDEX NR_SRC_STORIES_HP_DATE
+	ON HOMEPAGE.NR_SRC_STORIES_HP(CREATION_DATE DESC);
+
+CREATE INDEX SRC_HP_STORIES_CONTAINED_ID
+    ON HOMEPAGE.NR_SRC_STORIES_HP (CONTAINER_ID);
+
+CREATE INDEX SRC_HP_STORIES_ITEM_ID
+    ON HOMEPAGE.NR_SRC_STORIES_HP (ITEM_ID);
+
+CREATE INDEX SRC_HP_STORIES_ITEM_CORR_ID
+    ON HOMEPAGE.NR_SRC_STORIES_HP (ITEM_CORRELATION_ID);
+
+CREATE INDEX NR_SRC_STORIES_HP_SIDX
+    ON HOMEPAGE.NR_SRC_STORIES_HP (SOURCE_TYPE);
+   
+
+----------------------------------------------------------------------
+-- 7) HOMEPAGE.NR_SRC_STORIES_DGR
+----------------------------------------------------------------------
+CREATE TABLE HOMEPAGE.NR_SRC_STORIES_DGR (
+	STORY_ID nvarchar(36) NOT NULL,
+	EVENT_NAME nvarchar(256) NOT NULL,
+	SOURCE nvarchar(36),
+	CONTAINER_ID nvarchar(256),	
+	CONTAINER_NAME nvarchar(256),
+	CONTAINER_URL nvarchar(2048),
+	ITEM_NAME nvarchar(256),
+	ITEM_URL nvarchar(2048),
+	ITEM_ATOM_URL nvarchar(2048),
+	ITEM_ID nvarchar(36), -- NEW
+	ITEM_CORRELATION_ID nvarchar(36), -- NEW	
+	CREATION_DATE DATETIME NOT NULL,
+	BRIEF_DESC nvarchar(512),
+	ACTOR_UUID nvarchar(36),
+	EVENT_RECORD_UUID nvarchar(36) NOT NULL,
+	TAGS nvarchar(1024),
+	META_TEMPLATE nvarchar(4000) DEFAULT '' NOT NULL,
+	TEXT_META_TEMPLATE nvarchar(1024),
+	R_META_TEMPLATE nvarchar(4000),
+	R_TEXT_META_TEMPLATE nvarchar(1024),
+	N_COMMENTS NUMERIC(5,0) DEFAULT 0 NOT NULL, -- NEW
+	N_RECOMMANDATIONS NUMERIC(5,0) DEFAULT 0 NOT NULL, -- NEW
+	IS_COMMUNITY_STORY NUMERIC(5,0) DEFAULT 0,
+	ITEM_CORRELATION_NAME nvarchar(256),
+	SOURCE_TYPE NUMERIC(5,0),
+	CONSTRAINT   	CK_SRC7_TYPE
+    				CHECK
+    				(SOURCE_TYPE = 7)
+) ON [PRIMARY]
+GO
+
+ALTER TABLE HOMEPAGE.NR_SRC_STORIES_DGR
+    ADD CONSTRAINT PK_DGR_STORY_ID PRIMARY KEY(STORY_ID);
+
+CREATE INDEX NR_SRC_STORIES_DGR_DATE
+	ON HOMEPAGE.NR_SRC_STORIES_DGR(CREATION_DATE DESC);
+
+CREATE INDEX SRC_DGR_STORIES_CONTAINED_ID
+    ON HOMEPAGE.NR_SRC_STORIES_DGR (CONTAINER_ID);
+
+CREATE INDEX SRC_DGR_STORIES_ITEM_ID
+    ON HOMEPAGE.NR_SRC_STORIES_DGR (ITEM_ID);
+
+CREATE INDEX SRC_DGR_STORIES_ITEM_CORR_ID
+    ON HOMEPAGE.NR_SRC_STORIES_DGR (ITEM_CORRELATION_ID);
+
+CREATE INDEX NR_SRC_STORIES_DGR_SIDX
+    ON HOMEPAGE.NR_SRC_STORIES_DGR (SOURCE_TYPE);
+  
+
+----------------------------------------------------------------------
+-- 8) HOMEPAGE.NR_SRC_STORIES_FILE
+----------------------------------------------------------------------
+CREATE TABLE HOMEPAGE.NR_SRC_STORIES_FILE (
+	STORY_ID nvarchar(36) NOT NULL,
+	EVENT_NAME nvarchar(256) NOT NULL,
+	SOURCE nvarchar(36),
+	CONTAINER_ID nvarchar(256),	
+	CONTAINER_NAME nvarchar(256),
+	CONTAINER_URL nvarchar(2048),
+	ITEM_NAME nvarchar(256),
+	ITEM_URL nvarchar(2048),
+	ITEM_ATOM_URL nvarchar(2048),
+	ITEM_ID nvarchar(36), -- NEW
+	ITEM_CORRELATION_ID nvarchar(36), -- NEW	
+	CREATION_DATE DATETIME NOT NULL,
+	BRIEF_DESC nvarchar(512),
+	ACTOR_UUID nvarchar(36),
+	EVENT_RECORD_UUID nvarchar(36) NOT NULL,
+	TAGS nvarchar(1024),
+	META_TEMPLATE nvarchar(4000) DEFAULT '' NOT NULL,
+	TEXT_META_TEMPLATE nvarchar(1024),
+	R_META_TEMPLATE nvarchar(4000),
+	R_TEXT_META_TEMPLATE nvarchar(1024),
+	N_COMMENTS NUMERIC(5,0) DEFAULT 0 NOT NULL, -- NEW
+	N_RECOMMANDATIONS NUMERIC(5,0) DEFAULT 0 NOT NULL, -- NEW
+	IS_COMMUNITY_STORY NUMERIC(5,0) DEFAULT 0,
+	ITEM_CORRELATION_NAME nvarchar(256),
+	SOURCE_TYPE NUMERIC(5,0),
+	CONSTRAINT   	CK_SRC8_TYPE
+    				CHECK
+    				(SOURCE_TYPE = 8)
+) ON [PRIMARY]
+GO
+
+ALTER TABLE HOMEPAGE.NR_SRC_STORIES_FILE
+    ADD CONSTRAINT PK_FILE_STORY_ID PRIMARY KEY(STORY_ID);
+
+CREATE INDEX NR_SRC_STORIES_FILE_DATE
+	ON HOMEPAGE.NR_SRC_STORIES_FILE(CREATION_DATE DESC);
+
+CREATE INDEX SRC_FILE_STORIES_CONTAINED_ID
+    ON HOMEPAGE.NR_SRC_STORIES_FILE (CONTAINER_ID);
+
+CREATE INDEX SRC_FILE_STORIES_ITEM_ID
+    ON HOMEPAGE.NR_SRC_STORIES_FILE (ITEM_ID);
+
+CREATE INDEX SRC_FILE_STORIES_ITEM_CORR_ID
+    ON HOMEPAGE.NR_SRC_STORIES_FILE (ITEM_CORRELATION_ID);
+
+CREATE INDEX NR_SRC_STORIES_FILE_SIDX
+    ON HOMEPAGE.NR_SRC_STORIES_FILE (SOURCE_TYPE);
+
+
+----------------------------------------------------------------------
+-- 9) HOMEPAGE.NR_SRC_STORIES_FRM 
+----------------------------------------------------------------------
+CREATE TABLE HOMEPAGE.NR_SRC_STORIES_FRM  (
+	STORY_ID nvarchar(36) NOT NULL,
+	EVENT_NAME nvarchar(256) NOT NULL,
+	SOURCE nvarchar(36),
+	CONTAINER_ID nvarchar(256),	
+	CONTAINER_NAME nvarchar(256),
+	CONTAINER_URL nvarchar(2048),
+	ITEM_NAME nvarchar(256),
+	ITEM_URL nvarchar(2048),
+	ITEM_ATOM_URL nvarchar(2048),
+	ITEM_ID nvarchar(36), -- NEW
+	ITEM_CORRELATION_ID nvarchar(36), -- NEW	
+	CREATION_DATE DATETIME NOT NULL,
+	BRIEF_DESC nvarchar(512),
+	ACTOR_UUID nvarchar(36),
+	EVENT_RECORD_UUID nvarchar(36) NOT NULL,
+	TAGS nvarchar(1024),
+	META_TEMPLATE nvarchar(4000) DEFAULT '' NOT NULL,
+	TEXT_META_TEMPLATE nvarchar(1024),
+	R_META_TEMPLATE nvarchar(4000),
+	R_TEXT_META_TEMPLATE nvarchar(1024),
+	N_COMMENTS NUMERIC(5,0) DEFAULT 0 NOT NULL, -- NEW
+	N_RECOMMANDATIONS NUMERIC(5,0) DEFAULT 0 NOT NULL, -- NEW
+	IS_COMMUNITY_STORY NUMERIC(5,0) DEFAULT 0,
+	ITEM_CORRELATION_NAME nvarchar(256),
+	SOURCE_TYPE NUMERIC(5,0),
+	CONSTRAINT   	CK_SRC9_TYPE
+    				CHECK
+    				(SOURCE_TYPE = 9)
+) ON [PRIMARY]
+GO
+
+ALTER TABLE HOMEPAGE.NR_SRC_STORIES_FRM 
+    ADD CONSTRAINT PK_FRM_STORY_ID PRIMARY KEY(STORY_ID);
+
+CREATE INDEX NR_SRC_STORIES_FRM_DATE
+	ON HOMEPAGE.NR_SRC_STORIES_FRM (CREATION_DATE DESC);
+
+CREATE INDEX SRC_FRM_CONTAINED_ID
+    ON HOMEPAGE.NR_SRC_STORIES_FRM  (CONTAINER_ID);
+
+CREATE INDEX SRC_FRM_ITEM_ID
+    ON HOMEPAGE.NR_SRC_STORIES_FRM  (ITEM_ID);
+
+CREATE INDEX SRC_FRM_ITEM_CORR_ID
+    ON HOMEPAGE.NR_SRC_STORIES_FRM  (ITEM_CORRELATION_ID);
+
+CREATE INDEX NR_SRC_STORIES_FRM_SIDX
+    ON HOMEPAGE.NR_SRC_STORIES_FRM (SOURCE_TYPE);
+  
+
+---------------------------------------------------------------------------------
+-- 4) RUNNING DATA MIGRATION
+---------------------------------------------------------------------------------
+
+------------
+--- START INSERT NR_SOURCE_TYPE
+------------
+
+INSERT INTO HOMEPAGE.NR_SOURCE_TYPE (SOURCE_TYPE_ID, SOURCE_TYPE, SOURCE_TYPE_NAME, SOURCE_TYPE_DESC)
+VALUES ('activities_c9cax4cc4x80bx51af2ddef2c', 1, '%activities', 'activities');
+
+INSERT INTO HOMEPAGE.NR_SOURCE_TYPE (SOURCE_TYPE_ID, SOURCE_TYPE, SOURCE_TYPE_NAME, SOURCE_TYPE_DESC)
+VALUES ('blogs________0f1xc9caxcc4x8b0bx51af2', 2, '%blogs', 'blogs');
+
+INSERT INTO HOMEPAGE.NR_SOURCE_TYPE (SOURCE_TYPE_ID, SOURCE_TYPE, SOURCE_TYPE_NAME, SOURCE_TYPE_DESC)
+VALUES ('communities____f1xc9caxcc48b0bx51af2', 3, '%communities', 'communities');
+
+INSERT INTO HOMEPAGE.NR_SOURCE_TYPE (SOURCE_TYPE_ID, SOURCE_TYPE, SOURCE_TYPE_NAME, SOURCE_TYPE_DESC)
+VALUES ('wikis________dfdxc9cax4cc4xb0bx51af2', 4, '%wikis', 'wikis');
+
+INSERT INTO HOMEPAGE.NR_SOURCE_TYPE (SOURCE_TYPE_ID, SOURCE_TYPE, SOURCE_TYPE_NAME, SOURCE_TYPE_DESC)
+VALUES ('profiles____________fdfdc98b0bx51af2', 5, '%profiles', 'profiles');
+
+INSERT INTO HOMEPAGE.NR_SOURCE_TYPE (SOURCE_TYPE_ID, SOURCE_TYPE, SOURCE_TYPE_NAME, SOURCE_TYPE_DESC)
+VALUES ('homepage_0f1xc9cax4cc4x8cdb0bx51f2dd', 6, '%homepage', 'homepage');
+
+INSERT INTO HOMEPAGE.NR_SOURCE_TYPE (SOURCE_TYPE_ID, SOURCE_TYPE, SOURCE_TYPE_NAME, SOURCE_TYPE_DESC)
+VALUES ('dogear_0f1xc9cax4cc4x8cdb0bx51f2d', 7, '%dogear', 'dogear');
+
+INSERT INTO HOMEPAGE.NR_SOURCE_TYPE (SOURCE_TYPE_ID, SOURCE_TYPE, SOURCE_TYPE_NAME, SOURCE_TYPE_DESC)
+VALUES ('files____________fdfdc9cax8b0bx51af2', 8, '%files', 'files');
+
+INSERT INTO HOMEPAGE.NR_SOURCE_TYPE (SOURCE_TYPE_ID, SOURCE_TYPE, SOURCE_TYPE_NAME, SOURCE_TYPE_DESC)
+VALUES ('forums____________fdfdc9cax80bx51af2', 9, '%forums', 'forums');
+------------
+--- END INSERT NR_SOURCE_TYPE
+------------
+
+GO
+
+--------------------------------------------------------------------------------
+-- START MIGRATING OLD DATA FROM THE NR_STORIES TABLE TO THE PARTITIONED TABLES
+--------------------------------------------------------------------------------
+
+-- PARTITIONING MAIN TABLE
+ALTER TABLE HOMEPAGE.NR_STORIES
+	ADD  SOURCE_TYPE NUMERIC(5,0);
+GO
+
+UPDATE HOMEPAGE.NR_STORIES
+	SET SOURCE_TYPE = 1 WHERE SOURCE = 'activities';
+GO
+
+UPDATE HOMEPAGE.NR_STORIES
+	SET SOURCE_TYPE = 2 WHERE SOURCE = 'blogs';
+GO
+
+UPDATE HOMEPAGE.NR_STORIES
+	SET SOURCE_TYPE = 3 WHERE SOURCE = 'communities';
+GO
+
+UPDATE HOMEPAGE.NR_STORIES
+	SET SOURCE_TYPE = 4 WHERE SOURCE = 'wikis';
+GO
+
+UPDATE HOMEPAGE.NR_STORIES
+	SET SOURCE_TYPE = 5 WHERE SOURCE = 'profiles';
+GO
+
+UPDATE HOMEPAGE.NR_STORIES
+	SET SOURCE_TYPE = 6 WHERE SOURCE = 'homepage';
+GO
+
+UPDATE HOMEPAGE.NR_STORIES
+	SET SOURCE_TYPE = 7 WHERE SOURCE = 'dogear';
+GO
+
+UPDATE HOMEPAGE.NR_STORIES
+	SET SOURCE_TYPE = 8 WHERE SOURCE = 'files';
+GO
+
+UPDATE HOMEPAGE.NR_STORIES
+	SET SOURCE_TYPE = 9 WHERE SOURCE = 'forums';
+GO    
+
+--------------------------------------------
+-- ADDING SOURCE_TYPE - NR_STORIES_CONTENT (THIS IS BASED ON A JOIN WITH NR_STORIES
+--------------------------------------------	
+ALTER TABLE HOMEPAGE.NR_STORIES_CONTENT
+	ADD  SOURCE_TYPE NUMERIC(5,0);
+GO	
+
+UPDATE HOMEPAGE.NR_STORIES_CONTENT SET SOURCE_TYPE = 1 WHERE STORY_ID IN (
+	SELECT 	NR_STORIES.STORY_ID
+	FROM 	HOMEPAGE.NR_STORIES NR_STORIES, HOMEPAGE.NR_STORIES_CONTENT NR_STORIES_CONTENT
+	WHERE 	NR_STORIES.STORY_ID = NR_STORIES_CONTENT.STORY_ID AND SOURCE = 'activities'
+);
+GO
+
+UPDATE HOMEPAGE.NR_STORIES_CONTENT SET SOURCE_TYPE = 2 WHERE STORY_ID IN (
+	SELECT 	NR_STORIES.STORY_ID
+	FROM 	HOMEPAGE.NR_STORIES NR_STORIES, HOMEPAGE.NR_STORIES_CONTENT NR_STORIES_CONTENT
+	WHERE 	NR_STORIES.STORY_ID = NR_STORIES_CONTENT.STORY_ID AND SOURCE = 'blogs'
+);
+GO
+
+UPDATE HOMEPAGE.NR_STORIES_CONTENT SET SOURCE_TYPE = 3 WHERE STORY_ID IN (
+	SELECT 	NR_STORIES.STORY_ID
+	FROM 	HOMEPAGE.NR_STORIES NR_STORIES, HOMEPAGE.NR_STORIES_CONTENT NR_STORIES_CONTENT
+	WHERE 	NR_STORIES.STORY_ID = NR_STORIES_CONTENT.STORY_ID AND SOURCE = 'communities'
+);
+GO
+
+UPDATE HOMEPAGE.NR_STORIES_CONTENT SET SOURCE_TYPE = 4 WHERE STORY_ID IN (
+	SELECT 	NR_STORIES.STORY_ID
+	FROM 	HOMEPAGE.NR_STORIES NR_STORIES, HOMEPAGE.NR_STORIES_CONTENT NR_STORIES_CONTENT
+	WHERE 	NR_STORIES.STORY_ID = NR_STORIES_CONTENT.STORY_ID AND SOURCE = 'wikis'
+);
+GO
+
+UPDATE HOMEPAGE.NR_STORIES_CONTENT SET SOURCE_TYPE = 5 WHERE STORY_ID IN (
+	SELECT 	NR_STORIES.STORY_ID
+	FROM 	HOMEPAGE.NR_STORIES NR_STORIES, HOMEPAGE.NR_STORIES_CONTENT NR_STORIES_CONTENT
+	WHERE 	NR_STORIES.STORY_ID = NR_STORIES_CONTENT.STORY_ID AND SOURCE = 'profiles'
+);
+GO
+
+UPDATE HOMEPAGE.NR_STORIES_CONTENT SET SOURCE_TYPE = 6 WHERE STORY_ID IN (
+	SELECT 	NR_STORIES.STORY_ID
+	FROM 	HOMEPAGE.NR_STORIES NR_STORIES, HOMEPAGE.NR_STORIES_CONTENT NR_STORIES_CONTENT
+	WHERE 	NR_STORIES.STORY_ID = NR_STORIES_CONTENT.STORY_ID AND SOURCE = 'homepage'
+);
+GO
+
+UPDATE HOMEPAGE.NR_STORIES_CONTENT SET SOURCE_TYPE = 7 WHERE STORY_ID IN (
+	SELECT 	NR_STORIES.STORY_ID
+	FROM 	HOMEPAGE.NR_STORIES NR_STORIES, HOMEPAGE.NR_STORIES_CONTENT NR_STORIES_CONTENT
+	WHERE 	NR_STORIES.STORY_ID = NR_STORIES_CONTENT.STORY_ID AND SOURCE = 'dogear'
+);
+GO
+
+UPDATE HOMEPAGE.NR_STORIES_CONTENT SET SOURCE_TYPE = 8 WHERE STORY_ID IN (
+	SELECT 	NR_STORIES.STORY_ID
+	FROM 	HOMEPAGE.NR_STORIES NR_STORIES, HOMEPAGE.NR_STORIES_CONTENT NR_STORIES_CONTENT
+	WHERE 	NR_STORIES.STORY_ID = NR_STORIES_CONTENT.STORY_ID AND SOURCE = 'files'
+);
+GO
+
+UPDATE HOMEPAGE.NR_STORIES_CONTENT SET SOURCE_TYPE = 9 WHERE STORY_ID IN (
+	SELECT 	NR_STORIES.STORY_ID
+	FROM 	HOMEPAGE.NR_STORIES NR_STORIES, HOMEPAGE.NR_STORIES_CONTENT NR_STORIES_CONTENT
+	WHERE 	NR_STORIES.STORY_ID = NR_STORIES_CONTENT.STORY_ID AND SOURCE = 'forums'
+);
+GO
+
+-- COPYING BACK THE DATA
+
+
+------------------------------
+-- i) COMMIT all the work
+-- ii) enable xp_cmdshell
+-----------------------------
+COMMIT;
+
+
+EXEC master.dbo.sp_configure 'show advanced options', 1
+RECONFIGURE
+EXEC master.dbo.sp_configure 'xp_cmdshell', 1
+RECONFIGURE
+
+---------------------------------
+-- Move the data
+---------------------------------
+
+
+
+--1) HOMEPAGE.NR_SRC_STORIES_ACT
+BEGIN TRANSACTION
+GO
+
+CREATE VIEW HOMEPAGE.STORIES AS (
+	SELECT * 
+	FROM HOMEPAGE.HOMEPAGE.NR_STORIES 
+	WHERE SOURCE_TYPE = 1
+);
+GO
+
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.STORIES TO HOMEPAGEUSER
+GO
+
+COMMIT;
+
+BEGIN TRANSACTION
+GO
+
+declare @backup_command varchar(8000), @format_command varchar(8000), @bulk_insert_command varchar(8000) 
+declare @format_file varchar(8000), @data_file varchar(8000)
+set @format_file = 'C:\format.fmt'
+set @data_file = 'C:\data.dat'
+
+declare @in_view varchar(8000), @out_table varchar(8000)
+set @in_view = 'HOMEPAGE.HOMEPAGE.STORIES' -- The view name need also to be specified with the database name and the schema name
+set @out_table = 'HOMEPAGE.NR_SRC_STORIES_ACT' -- Schema name and table name
+
+-- create the format file
+set @format_command = 'bcp '+@in_view+' format nul -S '+@@servername+' -T -n -f "'+@format_file+'"'
+EXEC master..xp_cmdshell @format_command
+-- backup the data
+set @backup_command = 'bcp '+@in_view+' out "'+@data_file+'" -n -S '+@@servername+' -U HOMEPAGEUSER -P $(password)'
+EXEC master..xp_cmdshell @backup_command
+--insert back the record
+set @bulk_insert_command = 'BULK INSERT '+@out_table+' FROM "'+@data_file+'" WITH (DATAFILETYPE="native", FORMATFILE="'+@format_file+'")'
+EXEC (@bulk_insert_command) 
+GO
+
+DROP VIEW HOMEPAGE.STORIES;
+
+COMMIT;
+
+--2) HOMEPAGE.NR_SRC_STORIES_BLG
+BEGIN TRANSACTION
+GO
+
+CREATE VIEW HOMEPAGE.STORIES AS (
+	SELECT * 
+	FROM HOMEPAGE.HOMEPAGE.NR_STORIES 
+	WHERE SOURCE_TYPE = 2
+);
+GO
+
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.STORIES TO HOMEPAGEUSER
+GO
+
+COMMIT;
+
+BEGIN TRANSACTION
+GO
+
+declare @backup_command varchar(8000), @format_command varchar(8000), @bulk_insert_command varchar(8000) 
+declare @format_file varchar(8000), @data_file varchar(8000)
+set @format_file = 'C:\format.fmt'
+set @data_file = 'C:\data.dat'
+
+declare @in_view varchar(8000), @out_table varchar(8000)
+set @in_view = 'HOMEPAGE.HOMEPAGE.STORIES' -- The view name need also to be specified with the database name and the schema name
+set @out_table = 'HOMEPAGE.NR_SRC_STORIES_BLG' -- Schema name and table name
+
+-- create the format file
+set @format_command = 'bcp '+@in_view+' format nul -S '+@@servername+' -T -n -f "'+@format_file+'"'
+EXEC master..xp_cmdshell @format_command
+-- backup the data
+set @backup_command = 'bcp '+@in_view+' out "'+@data_file+'" -n -S '+@@servername+' -U HOMEPAGEUSER -P $(password)'
+EXEC master..xp_cmdshell @backup_command
+--insert back the record
+set @bulk_insert_command = 'BULK INSERT '+@out_table+' FROM "'+@data_file+'" WITH (DATAFILETYPE="native", FORMATFILE="'+@format_file+'")'
+EXEC (@bulk_insert_command) 
+GO
+
+DROP VIEW HOMEPAGE.STORIES;
+
+COMMIT;
+
+--3) HOMEPAGE.NR_SRC_STORIES_COM
+BEGIN TRANSACTION
+GO
+
+CREATE VIEW HOMEPAGE.STORIES AS (
+	SELECT * 
+	FROM HOMEPAGE.HOMEPAGE.NR_STORIES 
+	WHERE SOURCE_TYPE = 3
+);
+GO
+
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.STORIES TO HOMEPAGEUSER
+GO
+
+COMMIT;
+
+BEGIN TRANSACTION
+GO
+
+declare @backup_command varchar(8000), @format_command varchar(8000), @bulk_insert_command varchar(8000) 
+declare @format_file varchar(8000), @data_file varchar(8000)
+set @format_file = 'C:\format.fmt'
+set @data_file = 'C:\data.dat'
+
+declare @in_view varchar(8000), @out_table varchar(8000)
+set @in_view = 'HOMEPAGE.HOMEPAGE.STORIES' -- The view name need also to be specified with the database name and the schema name
+set @out_table = 'HOMEPAGE.NR_SRC_STORIES_COM' -- Schema name and table name
+
+-- create the format file
+set @format_command = 'bcp '+@in_view+' format nul -S '+@@servername+' -T -n -f "'+@format_file+'"'
+EXEC master..xp_cmdshell @format_command
+-- backup the data
+set @backup_command = 'bcp '+@in_view+' out "'+@data_file+'" -n -S '+@@servername+' -U HOMEPAGEUSER -P $(password)'
+EXEC master..xp_cmdshell @backup_command
+--insert back the record
+set @bulk_insert_command = 'BULK INSERT '+@out_table+' FROM "'+@data_file+'" WITH (DATAFILETYPE="native", FORMATFILE="'+@format_file+'")'
+EXEC (@bulk_insert_command) 
+GO
+
+DROP VIEW HOMEPAGE.STORIES;
+
+COMMIT;
+
+--4) HOMEPAGE.NR_SRC_STORIES_WIK
+BEGIN TRANSACTION
+GO
+
+CREATE VIEW HOMEPAGE.STORIES AS (
+	SELECT * 
+	FROM HOMEPAGE.HOMEPAGE.NR_STORIES 
+	WHERE SOURCE_TYPE = 4
+);
+GO
+
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.STORIES TO HOMEPAGEUSER
+GO
+
+COMMIT;
+
+BEGIN TRANSACTION
+GO
+
+declare @backup_command varchar(8000), @format_command varchar(8000), @bulk_insert_command varchar(8000) 
+declare @format_file varchar(8000), @data_file varchar(8000)
+set @format_file = 'C:\format.fmt'
+set @data_file = 'C:\data.dat'
+
+declare @in_view varchar(8000), @out_table varchar(8000)
+set @in_view = 'HOMEPAGE.HOMEPAGE.STORIES' -- The view name need also to be specified with the database name and the schema name
+set @out_table = 'HOMEPAGE.NR_SRC_STORIES_WIK' -- Schema name and table name
+
+-- create the format file
+set @format_command = 'bcp '+@in_view+' format nul -S '+@@servername+' -T -n -f "'+@format_file+'"'
+EXEC master..xp_cmdshell @format_command
+-- backup the data
+set @backup_command = 'bcp '+@in_view+' out "'+@data_file+'" -n -S '+@@servername+' -U HOMEPAGEUSER -P $(password)'
+EXEC master..xp_cmdshell @backup_command
+--insert back the record
+set @bulk_insert_command = 'BULK INSERT '+@out_table+' FROM "'+@data_file+'" WITH (DATAFILETYPE="native", FORMATFILE="'+@format_file+'")'
+EXEC (@bulk_insert_command) 
+GO
+
+DROP VIEW HOMEPAGE.STORIES;
+
+COMMIT;
+
+--5) HOMEPAGE.NR_SRC_STORIES_PRF
+BEGIN TRANSACTION
+GO
+
+CREATE VIEW HOMEPAGE.STORIES AS (
+	SELECT * 
+	FROM HOMEPAGE.HOMEPAGE.NR_STORIES 
+	WHERE SOURCE_TYPE = 5
+);
+GO
+
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.STORIES TO HOMEPAGEUSER
+GO
+
+COMMIT;
+
+BEGIN TRANSACTION
+GO
+
+declare @backup_command varchar(8000), @format_command varchar(8000), @bulk_insert_command varchar(8000) 
+declare @format_file varchar(8000), @data_file varchar(8000)
+set @format_file = 'C:\format.fmt'
+set @data_file = 'C:\data.dat'
+
+declare @in_view varchar(8000), @out_table varchar(8000)
+set @in_view = 'HOMEPAGE.HOMEPAGE.STORIES' -- The view name need also to be specified with the database name and the schema name
+set @out_table = 'HOMEPAGE.NR_SRC_STORIES_PRF' -- Schema name and table name
+
+-- create the format file
+set @format_command = 'bcp '+@in_view+' format nul -S '+@@servername+' -T -n -f "'+@format_file+'"'
+EXEC master..xp_cmdshell @format_command
+-- backup the data
+set @backup_command = 'bcp '+@in_view+' out "'+@data_file+'" -n -S '+@@servername+' -U HOMEPAGEUSER -P $(password)'
+EXEC master..xp_cmdshell @backup_command
+--insert back the record
+set @bulk_insert_command = 'BULK INSERT '+@out_table+' FROM "'+@data_file+'" WITH (DATAFILETYPE="native", FORMATFILE="'+@format_file+'")'
+EXEC (@bulk_insert_command) 
+GO
+
+DROP VIEW HOMEPAGE.STORIES;
+
+COMMIT;
+
+--6) HOMEPAGE.NR_SRC_STORIES_HP
+BEGIN TRANSACTION
+GO
+
+CREATE VIEW HOMEPAGE.STORIES AS (
+	SELECT * 
+	FROM HOMEPAGE.HOMEPAGE.NR_STORIES 
+	WHERE SOURCE_TYPE = 6
+);
+GO
+
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.STORIES TO HOMEPAGEUSER
+GO
+
+COMMIT;
+
+BEGIN TRANSACTION
+GO
+
+declare @backup_command varchar(8000), @format_command varchar(8000), @bulk_insert_command varchar(8000) 
+declare @format_file varchar(8000), @data_file varchar(8000)
+set @format_file = 'C:\format.fmt'
+set @data_file = 'C:\data.dat'
+
+declare @in_view varchar(8000), @out_table varchar(8000)
+set @in_view = 'HOMEPAGE.HOMEPAGE.STORIES' -- The view name need also to be specified with the database name and the schema name
+set @out_table = 'HOMEPAGE.NR_SRC_STORIES_HP' -- Schema name and table name
+
+-- create the format file
+set @format_command = 'bcp '+@in_view+' format nul -S '+@@servername+' -T -n -f "'+@format_file+'"'
+EXEC master..xp_cmdshell @format_command
+-- backup the data
+set @backup_command = 'bcp '+@in_view+' out "'+@data_file+'" -n -S '+@@servername+' -U HOMEPAGEUSER -P $(password)'
+EXEC master..xp_cmdshell @backup_command
+--insert back the record
+set @bulk_insert_command = 'BULK INSERT '+@out_table+' FROM "'+@data_file+'" WITH (DATAFILETYPE="native", FORMATFILE="'+@format_file+'")'
+EXEC (@bulk_insert_command) 
+GO
+
+DROP VIEW HOMEPAGE.STORIES;
+
+COMMIT;
+
+--7) HOMEPAGE.NR_SRC_STORIES_DGR
+BEGIN TRANSACTION
+GO
+
+CREATE VIEW HOMEPAGE.STORIES AS (
+	SELECT * 
+	FROM HOMEPAGE.HOMEPAGE.NR_STORIES 
+	WHERE SOURCE_TYPE = 7
+);
+GO
+
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.STORIES TO HOMEPAGEUSER
+GO
+
+COMMIT;
+
+BEGIN TRANSACTION
+GO
+
+declare @backup_command varchar(8000), @format_command varchar(8000), @bulk_insert_command varchar(8000) 
+declare @format_file varchar(8000), @data_file varchar(8000)
+set @format_file = 'C:\format.fmt'
+set @data_file = 'C:\data.dat'
+
+declare @in_view varchar(8000), @out_table varchar(8000)
+set @in_view = 'HOMEPAGE.HOMEPAGE.STORIES' -- The view name need also to be specified with the database name and the schema name
+set @out_table = 'HOMEPAGE.NR_SRC_STORIES_DGR' -- Schema name and table name
+
+-- create the format file
+set @format_command = 'bcp '+@in_view+' format nul -S '+@@servername+' -T -n -f "'+@format_file+'"'
+EXEC master..xp_cmdshell @format_command
+-- backup the data
+set @backup_command = 'bcp '+@in_view+' out "'+@data_file+'" -n -S '+@@servername+' -U HOMEPAGEUSER -P $(password)'
+EXEC master..xp_cmdshell @backup_command
+--insert back the record
+set @bulk_insert_command = 'BULK INSERT '+@out_table+' FROM "'+@data_file+'" WITH (DATAFILETYPE="native", FORMATFILE="'+@format_file+'")'
+EXEC (@bulk_insert_command) 
+GO
+
+DROP VIEW HOMEPAGE.STORIES;
+
+COMMIT;
+
+--8) HOMEPAGE.NR_SRC_STORIES_FILE
+BEGIN TRANSACTION
+GO
+
+CREATE VIEW HOMEPAGE.STORIES AS (
+	SELECT * 
+	FROM HOMEPAGE.HOMEPAGE.NR_STORIES 
+	WHERE SOURCE_TYPE = 8
+);
+GO
+
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.STORIES TO HOMEPAGEUSER
+GO
+
+COMMIT;
+
+BEGIN TRANSACTION
+GO
+
+declare @backup_command varchar(8000), @format_command varchar(8000), @bulk_insert_command varchar(8000) 
+declare @format_file varchar(8000), @data_file varchar(8000)
+set @format_file = 'C:\format.fmt'
+set @data_file = 'C:\data.dat'
+
+declare @in_view varchar(8000), @out_table varchar(8000)
+set @in_view = 'HOMEPAGE.HOMEPAGE.STORIES' -- The view name need also to be specified with the database name and the schema name
+set @out_table = 'HOMEPAGE.NR_SRC_STORIES_FILE' -- Schema name and table name
+
+-- create the format file
+set @format_command = 'bcp '+@in_view+' format nul -S '+@@servername+' -T -n -f "'+@format_file+'"'
+EXEC master..xp_cmdshell @format_command
+-- backup the data
+set @backup_command = 'bcp '+@in_view+' out "'+@data_file+'" -n -S '+@@servername+' -U HOMEPAGEUSER -P $(password)'
+EXEC master..xp_cmdshell @backup_command
+--insert back the record
+set @bulk_insert_command = 'BULK INSERT '+@out_table+' FROM "'+@data_file+'" WITH (DATAFILETYPE="native", FORMATFILE="'+@format_file+'")'
+EXEC (@bulk_insert_command) 
+GO
+
+DROP VIEW HOMEPAGE.STORIES;
+
+COMMIT;
+
+--9) HOMEPAGE.NR_SRC_STORIES_FRM
+BEGIN TRANSACTION
+GO
+
+CREATE VIEW HOMEPAGE.STORIES AS (
+	SELECT * 
+	FROM HOMEPAGE.HOMEPAGE.NR_STORIES 
+	WHERE SOURCE_TYPE = 9
+);
+GO
+
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.STORIES TO HOMEPAGEUSER
+GO
+
+COMMIT;
+
+BEGIN TRANSACTION
+GO
+
+declare @backup_command varchar(8000), @format_command varchar(8000), @bulk_insert_command varchar(8000) 
+declare @format_file varchar(8000), @data_file varchar(8000)
+set @format_file = 'C:\format.fmt'
+set @data_file = 'C:\data.dat'
+
+declare @in_view varchar(8000), @out_table varchar(8000)
+set @in_view = 'HOMEPAGE.HOMEPAGE.STORIES' -- The view name need also to be specified with the database name and the schema name
+set @out_table = 'HOMEPAGE.NR_SRC_STORIES_FRM' -- Schema name and table name
+
+-- create the format file
+set @format_command = 'bcp '+@in_view+' format nul -S '+@@servername+' -T -n -f "'+@format_file+'"'
+EXEC master..xp_cmdshell @format_command
+-- backup the data
+set @backup_command = 'bcp '+@in_view+' out "'+@data_file+'" -n -S '+@@servername+' -U HOMEPAGEUSER -P $(password)'
+EXEC master..xp_cmdshell @backup_command
+--insert back the record
+set @bulk_insert_command = 'BULK INSERT '+@out_table+' FROM "'+@data_file+'" WITH (DATAFILETYPE="native", FORMATFILE="'+@format_file+'")'
+EXEC (@bulk_insert_command) 
+GO
+
+DROP VIEW HOMEPAGE.STORIES;
+
+COMMIT;
+
+
+
+-----------------------------------
+-- Disable xp_cmdshell
+----------------------------------
+
+EXEC master.dbo.sp_configure 'show advanced options', 1
+RECONFIGURE
+EXEC master.dbo.sp_configure 'xp_cmdshell', 0
+RECONFIGURE
+
+----------------------------------
+-----------------------------------
+
+BEGIN TRANSACTION
+GO
+
+
+
+---------------------------------------------------------------------------------
+-- DROPPING OLD TABLE TO CREATE A NEW VIEW
+---------------------------------------------------------------------------------
+--ALTER TABLE HOMEPAGE.NR_COMM_STORIES DROP CONSTRAINT FK_COMM_STORY_ID;
+--ALTER TABLE HOMEPAGE.NR_ORGPERSON_STORIES DROP CONSTRAINT FK_ORGP_STORY_ID;
+--ALTER TABLE HOMEPAGE.NR_COMM_PERSON_STORIES DROP CONSTRAINT FK_FCP_STORY_ID;
+
+--ALTER TABLE HOMEPAGE.NR_RESPONSES_STORIES DROP CONSTRAINT FK_RESP_STORY_ID;
+--ALTER TABLE HOMEPAGE.NR_PROFILES_STORIES DROP CONSTRAINT FK_PROF_STORY_ID;
+--ALTER TABLE HOMEPAGE.NR_COMMUNITIES_STORIES DROP CONSTRAINT FK_COM_STORY_ID;
+--ALTER TABLE HOMEPAGE.NR_ACTIVITIES_STORIES DROP CONSTRAINT FK_ACT_STORY_ID;
+--ALTER TABLE HOMEPAGE.NR_BLOGS_STORIES DROP CONSTRAINT FK_BLOGS_STORY_ID;
+--ALTER TABLE HOMEPAGE.NR_BOOKMARKS_STORIES DROP CONSTRAINT FK_BOOKS_STORY_ID;
+--ALTER TABLE HOMEPAGE.NR_FILES_STORIES DROP CONSTRAINT FK_FILES_STORY_ID;
+--ALTER TABLE HOMEPAGE.NR_FORUMS_STORIES DROP CONSTRAINT FK_FORUMS_STORY_ID;
+--ALTER TABLE HOMEPAGE.NR_WIKIS_STORIES DROP CONSTRAINT FK_WIKIS_STORY_ID;
+--ALTER TABLE HOMEPAGE.NR_TAGS_STORIES DROP CONSTRAINT FK_TAGS_STORY_ID;
+--GO
+
+DROP TABLE HOMEPAGE.NR_STORIES;
+GO
+
+--------------------------------------------------------------------------------------------------------------
+-- CREATE THE VIEW FOR ALL THE SOURCE STORIES
+--------------------------------------------------------------------------------------------------------------
+CREATE VIEW HOMEPAGE.NR_STORIES AS (
+    SELECT * FROM HOMEPAGE.NR_SRC_STORIES_ACT
+        UNION ALL
+    SELECT * FROM HOMEPAGE.NR_SRC_STORIES_BLG
+        UNION ALL
+    SELECT * FROM HOMEPAGE.NR_SRC_STORIES_COM
+        UNION ALL
+    SELECT * FROM HOMEPAGE.NR_SRC_STORIES_WIK
+        UNION ALL
+    SELECT * FROM HOMEPAGE.NR_SRC_STORIES_PRF
+        UNION ALL
+    SELECT * FROM HOMEPAGE.NR_SRC_STORIES_HP
+        UNION ALL
+    SELECT * FROM HOMEPAGE.NR_SRC_STORIES_DGR
+        UNION ALL
+    SELECT * FROM HOMEPAGE.NR_SRC_STORIES_FILE
+        UNION ALL
+    SELECT * FROM HOMEPAGE.NR_SRC_STORIES_FRM
+);
+GO
+
+

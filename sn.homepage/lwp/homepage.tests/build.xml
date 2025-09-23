@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- 	HCL Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright HCL Technologies Limited. 2010, 2022                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<project name="homepage.tests" default="development" basedir=".">
+	<!-- remove these on your real project -->
+	<property name="skip.javadoc" value="true" />
+	<property name="skip.javadoc.public" value="true" />
+	<property name="skip.javadoc.full" value="true" />
+	<property name="whitespace.exclude" value="**/*.js" />
+	<property name="jsObfuscator.skipobfuscation" value="true" />
+
+	<import file="${env.WPLC_IMPORT}/std_props.xml" />
+	<import file="${env.WPLC_IMPORT}/std_dirs.xml" />
+
+	<!-- JsLint: JavaScript quality reporting tool  -->
+	<!-- import file="jslint.xml" /-->
+	<!-- JavaScript unit test using dojo objective harness  -->
+	<!-- import file="../prereqs.homepage/jsunittests/jsunittests.xml" / -->
+
+	<!-- Root of our javascript source dir -->
+	<locateComponent component="homepage.web.layer/core" locateBuildDir="false" property="homepage.web.layer.core.basedir" />
+	<property name="js.src" value="${homepage.web.layer.core.basedir}/Web Content/script/" />
+	<!-- End Of JavaScript properties -->
+
+	<!-- <import file="includes/homepage-unit-test-case-build.xml"/> //-->
+
+	<property name="output.jar" value="${dir.lib}/homepage.tests.jar" />
+	<property name="build.home" value="${basedir}/../build/" />
+	<!-- property name="logging.config.file" value="src/logging.properties" / -->
+
+
+	<!-- These property names will be used by the LCUT Framework also -->
+	<property name="homepage.unit.test.output.jar" value="${output.jar}" />
+	<!--
+		Values for System Properties that are used to point to where to read
+		files from
+	-->
+	<property name="homepage.test.config.dir.dest" value="${dir.build}/connections-config" />
+
+	<property name="homepage.test.derby.db.file.location" value="${dir.build}/HomepageDerbyDir" />
+
+	<!-- Properties used to configure how we call the junit task -->
+	<property name="homepage.junit.plain.formatter.usefile" value="true" />
+	<property name="homepage.junit.report.dir" value="." />
+	<property name="homepage.junit.jvm" value="java" />
+	<property name="homepage.junit.fork" value="no" />
+
+	<!-- values: derby, db2, oracle, sqlserver -->
+	<property name="build.db.version" value="derby" />
+
+	<property name="prereq_fes" value="${env.BUILD_HOME}/prereq_fes" />
+
+	<property name="local.sn.component" value="${basedir}/../.." />
+
+	<property name="base.tmp.dir" value="./tmp" />
+	<property name="base.reports.dir" value="./reports" />
+	<property name="cobertura.instrument.tmp.dir" value="${base.tmp.dir}/cobertura/instrumented" />
+	<property name="cobertura.report.dir" value="${base.reports.dir}/cobertura" />
+	<property name="cobertura.ser.file" value="${basedir}/cobertura.ser" />
+
+	<locateComponent component="home.news.test" locateBuildDir="true" property="home.news.test.loc" />
+	<property name="logging.properties" value="${home.news.test.loc}/connections-config/logging.properties" />
+
+	<target name="development" depends="copyDb2ScriptsDerbyScripts, copyStrutsConfig, save-classpath, std_targets.development, save-junit-jar" />
+	<target name="production" depends="copyDb2ScriptsDerbyScripts,copyStrutsConfig, save-classpath, std_targets.production, save-junit-jar" />
+
+
+	<!-- For JavaScript Unit Tests -->
+	<!--
+		Location where to set up dojo project allowing to run the unit tests
+	-->
+	<property name="dojo.version" value="1.4.1" />
+	<property name="jsunit.tmpdir" value="${base.reports.dir}/js-unit-tests" />
+
+	<!-- Packaging Override Properties  -->
+	<property name="include.pattern" value="**/*.xml,**/*.xmi,**/*.dtd,**/*.xsd,**/*.config,**/*.*xmi,**/*.ddl,**/*.tld,**/*.ecore,**/*.emap,**/*.sql" />
+
+
+	<!--
+		<property name="postpackage.override"
+		value="dao-tests-package-extra"/> //
+	-->
+
+	<import file="${env.WPLC_IMPORT}/check.xml" />
+	<import file="${env.WPLC_IMPORT}/compile.xml" />
+	<import file="${env.WPLC_IMPORT}/rmic.xml" />
+	<import file="${env.WPLC_IMPORT}/package_extra.xml" />
+	<import file="${env.WPLC_IMPORT}/javadoc.xml" />
+	<import file="${env.WPLC_IMPORT}/jdepend.xml" />
+	<import file="${env.WPLC_IMPORT}/clean.xml" />
+	<import file="${env.WPLC_IMPORT}/comp_zip.xml" />
+	<import file="${env.WPLC_IMPORT}/std_targets.xml" />
+	<import file="${env.WPLC_IMPORT}/process_nls.xml" />
+	<import file="${env.WPLC_IMPORT}/performance.xml" />
+	<import file="${env.WPLC_IMPORT}/staticanalysis.xml" />
+	<import file="${env.WPLC_IMPORT}/dependencies.xml" />
+
+	<path id="cobertura_classpath">
+		<pathelement location="../prereqs.homepage/cobertura/cobertura-1.9.2.jar" />
+		<pathelement location="../prereqs.homepage/cobertura/asm-3.0.jar" />
+		<pathelement location="../prereqs.homepage/cobertura/asm-tree-3.0.jar" />
+		<pathelement location="../prereqs.homepage/cobertura/jakarta-oro-2.0.8.jar" />
+		<pathelement location="../prereqs.homepage/cobertura/log4j-1.2.9.jar" />
+	</path>
+
+
+	<target name="save-classpath" depends="save-classpath.homepage, save-classpath.sn.infra, save-classpath.prereq.sn.infra, save-classpath.prereq.homepage" />
+
+	<target name="save-classpath.sn.infra">
+		<locateComponent component="lc.util/base" locateBuildDir="true" property="dir.util.build" />
+		<property name="source.path.sn.infra" value="${dir.util.build}/../.." />
+		<echo message="Running: save-classpath.sn.infra.. with {source.path.sn.infra}: ${source.path.sn.infra}" />
+
+		<copy todir="${dir.build}/junit_jars/classpath.sn.infra">
+			<fileset dir="${source.path.sn.infra}/directory.services">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/lc.customauthclient">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/lc.config.svc">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/lc.util">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/lc.sched">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/lc.admin">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/lc.events.30">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/lc.events/newsEjbConsumer">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/notify/client">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/lc.following">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/lc.shindig.serverapi/remote">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/lc.services/gadgets/osapiclient">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/home.news">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/home.news.test">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/lc.dynacache">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/lc.appext/core/api">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/lc.appext/core/impl">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/highway/common">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/highway/client">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/lc.mtconfig.svc">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/lc.mtconfig.engine">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="save-classpath.homepage">
+		<echo message="Running: save-classpath.homepage.." />
+		<copy todir="${dir.build}/junit_jars/classpath.homepage">
+			<fileset dir="${local.sn.component}/lwp/build/homepage.web.layer/core/lib">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${local.sn.component}/lwp/build/homepage.web.layer/taglib/lib">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${local.sn.component}/lwp/build/dboard.sn.install/stage2/homepage/homepage">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${local.sn.component}/lwp/build/homepage.service.layer/core/lib">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${local.sn.component}/lwp/build/homepage.model/core/lib">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${local.sn.component}/lwp/build/homepage.dao.layer/core/lib">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${local.sn.component}/lwp/build/homepage.common/utils/lib">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="save-junit-jar">
+		<copy todir="${dir.build}/junit_jars/classpath.homepage" file="${output.jar}" />
+	</target>
+
+
+	<target name="save-classpath.prereq.sn.infra">
+		<locateComponent component="prereqs.sn/javamail" property="source.path.prereqs.sn.javamail" />
+		<property name="source.path.sn_prereq.sn.infra" value="${source.path.prereqs.sn.javamail}/.." />
+		<echo message="Running: save-classpath.prereq.sn.infra.. with {source.path.sn_prereq.sn.infra}: ${source.path.sn_prereq.sn.infra}" />
+
+		<copy todir="${dir.build}/junit_jars/classpath.prereq.sn.infra">
+			<!-- javamail need to be first -->
+			<fileset dir="${source.path.sn_prereq.sn.infra}/javamail">
+				<exclude name="**/bin/*" />
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/was7.0">
+				<exclude name="**/bin/*" />
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/wp600">
+				<exclude name="**/bin/*" />
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/commons-fileupload-1.3.1">
+				<exclude name="**/bin/*" />
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/commons-fileupload-1.3.1">
+				<exclude name="**/bin/*" />
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/tiles-3.0.7">
+				<exclude name="**/bin/*" />
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/jakarta.commons">
+				<exclude name="**/bin/*" />
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/tomcat">
+				<exclude name="**/bin/*" />
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/mybatis">
+				<exclude name="**/bin/*" />
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/db2">
+				<exclude name="**/bin/*" />
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/derby-10.6.2.1">
+				<exclude name="**/bin/*" />
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/freemarker2.3.28">
+				<exclude name="**/bin/*" />
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/abdera040patch0509">
+				<exclude name="**/bin/*" />
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/acf.2.2.0-5">
+				<exclude name="**/bin/*" />
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/jakarta.commons.beanutils170">
+				<exclude name="**/bin/*" />
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/json4j">
+				<exclude name="**/bin/*" />
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/easymock">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/dbunit-2.4.9">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/junit-4.8.2">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/slf4j">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/tk.rproxysvc/server/lib">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/tk.rproxysvc/client/lib">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn.infra}/tk.rproxysvc/transport/lib">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/hystrix">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/spring-5.2">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/spring-test-5.2">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${source.path.sn_prereq.sn.infra}/mybatis-2-spring">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="save-classpath.prereq.homepage">
+		<echo message="Running: save-classpath.prereq.homepage.." />
+		<copy todir="${dir.build}/junit_jars/classpath.prereq.homepage">
+			<fileset dir="${local.sn.component}/lwp/prereqs.homepage/jsunittests">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+
+	<path id="classpath.sn.infra">
+		<fileset dir="${local.sn.component}/lwp/build/homepage.tests/junit_jars/classpath.sn.infra">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<!-- homepage build jar -->
+	<path id="classpath.homepage">
+		<fileset dir="${local.sn.component}/lwp/build/homepage.tests/junit_jars/classpath.homepage">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="classpath.prereq.sn.infra">
+		<fileset dir="${local.sn.component}/lwp/build/homepage.tests/junit_jars/classpath.prereq.sn.infra">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<!-- local prereqs.homepage -->
+	<path id="classpath.prereq.homepage">
+		<fileset dir="${local.sn.component}/lwp/build/homepage.tests/junit_jars/classpath.prereq.homepage">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+
+	<taskdef resource="tasks.properties">
+		<classpath refid="cobertura_classpath" />
+	</taskdef>
+
+	<target name="copyDb2ScriptsDerbyScripts">
+
+		<echo message="copyDb2ScriptsDerbyScripts Copying: ${basedir}/connections-config to: ${dir.build}" />
+
+		<copy todir="${dir.build}/connections-config">
+			<fileset dir="${basedir}/connections-config" />
+		</copy>
+	</target>
+	<target name="copyStrutsConfig">
+		<echo message="copyStruts Copying: ${basedir}/struts to: ${dir.build}" />
+		<copy todir="${dir.build}/struts">
+			<fileset dir="${basedir}/struts" />
+		</copy>
+	</target>
+	<!-- Prepare DOH unit tests on luntbuild -->
+	<!--
+		Copy special laucher (HTML file) to point to unit tests on
+		dubxpcblade05 and delegate to setup-jsunttests-dev task
+	
+	<target name="prepare-js-unit-tests-luntbuild" depends="setup-jsunittests-dev">
+		<copy todir="${base.reports.dir}">
+			<fileset dir="js-unit-tests">
+				<include name="js-unit-tests-launcher.html"></include>
+			</fileset>
+		</copy>
+	</target>
+	-->
+
+	<!--
+	<target name="run-unit-tests-with-reports"
+		depends="cleanup-cobertura, cobertura-instrument, run-unit-tests, jslint-scan-report, junit-report, prepare-js-unit-tests-luntbuild">
+		<cobertura-report format="html" destdir="${cobertura.report.dir}">
+			<fileset dir="../homepage.web.layer/core/src">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="../homepage.service.layer/core/src">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="../homepage.dao.layer/core/src">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="../homepage.model/core/src">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="../homepage.common/utils/src">
+				<include name="**/*.java" />
+			</fileset>
+		</cobertura-report>
+
+		<delete file="${cobertura.ser.file}" />
+		<delete dir="${base.tmp.dir}" />
+	</target>
+	-->
+
+	<target name="run-unit-tests">
+		<echo message="logging.properties: ${logging.properties}" />
+		<echo message="output.jar ${output.jar}" />
+
+		<!-- Java Unit tests -->
+		<junit maxmemory="1536m" errorproperty="test.failed" failureproperty="test.failed" haltonfailure="false" printsummary="yes" fork="yes" showoutput="true">
+			<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.ser.file}" />
+
+			<!--<sysproperty key="dbconfigfile" value="${build.db.version}" /> -->
+			<sysproperty key="db.vendor" value="${build.db.version}" />
+			<sysproperty key="java.util.logging.config.file" value="${logging.properties}" />
+
+			<!-- folder which contains all the configuration artifacts -->
+			<sysproperty key="test.project.home" value="${dir.build}" />
+
+			<classpath location="${cobertura.instrument.tmp.dir}" />
+			<classpath>
+				<!-- pathelement path="${basedir}/src" / We cannot include the src folder into the unit test because this is not packaged into the fe.zip. 
+				All the resources need to be availble inside the homepage.test.jar which is ${output.jar} -->
+
+
+				<!--<pathelement location="${output.jar}" />-->
+				<pathelement path="${local.sn.component}/lwp/build/homepage.test" />
+				<path refid="classpath.prereq.sn.infra" />
+				<path refid="classpath.sn.infra" />
+				<path refid="classpath.homepage" />
+			</classpath>
+			<classpath refid="cobertura_classpath" />
+			<formatter type="plain" usefile="true" />
+			<formatter type="xml" usefile="true" />
+			<test name="com.ibm.lconn.homepage.test.TestAllJUnit4" />
+		</junit>
+
+		<!-- JavaScript unit tests (in Rhino) -->
+
+		<!-- <antcall target="runJsUnitTests" /> -->
+	</target>
+
+	<target name="run-unit-tests-old">
+		<prereqclasspath componentXML="${basedir}/component.xml" recurseClasspath="true" />
+
+		<!-- Java Unit tests -->
+		<junit haltonfailure="yes" printsummary="yes" fork="yes">
+			<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.ser.file}" />
+			<sysproperty key="db.vendor" value="${build.db.version}" />
+			<classpath location="${cobertura.instrument.tmp.dir}" />
+			<classpath>
+				<pathelement path="${basedir}/src" />
+				<pathelement location="${output.jar}" />
+				<pathelement path="${prereq.classpath}" />
+			</classpath>
+			<classpath refid="cobertura_classpath" />
+			<formatter type="plain" usefile="true" />
+			<formatter type="xml" usefile="true" />
+			<test name="com.ibm.lconn.homepage.test.TestAll" />
+		</junit>
+
+		<!-- JavaScript unit tests (in Rhino) -->
+
+		<!-- <antcall target="runJsUnitTests" /> -->
+	</target>
+
+	<target name="jslint-scan-report">
+		<antcall target="jslint" />
+	</target>
+
+	<target name="junit-report" description="Create the unit test report">
+		<!-- Properties used to configure how we call the junit task -->
+		<property name="junit.plain.formatter.usefile" value="true" />
+		<property name="junit.report.dir" value="${base.reports.dir}/jreport" />
+		<property name="junit.html.report.dir" value="${junit.report.dir}/html" />
+		<property name="junit.jvm" value="java" />
+		<property name="junit.fork" value="no" />
+
+		<mkdir dir="${junit.html.report.dir}" />
+		<junitreport todir="${junit.report.dir}">
+			<fileset dir="${basedir}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report todir="${junit.html.report.dir}" />
+		</junitreport>
+	</target>
+
+	<target name="cobertura-instrument">
+		<mkdir dir="${cobertura.instrument.tmp.dir}" />
+		<cobertura-instrument todir="${cobertura.instrument.tmp.dir}" datafile="${cobertura.ser.file}">
+			<fileset dir="${build.home}/homepage.web.layer/core/classes/">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${build.home}/homepage.service.layer/core/classes/">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${build.home}/homepage.dao.layer/core/classes/">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${build.home}/homepage.model/core/classes/">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${build.home}/homepage.common/utils/classes/">
+				<include name="**/*.class" />
+			</fileset>
+		</cobertura-instrument>
+	</target>
+
+	<target name="cleanup-cobertura">
+		<delete file="${cobertura.ser.file}" />
+		<delete dir="${base.tmp.dir}" />
+		<delete dir="${base.reports.dir}" />
+	</target>
+
+
+</project>		

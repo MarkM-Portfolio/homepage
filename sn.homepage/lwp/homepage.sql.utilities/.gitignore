@@ -1,0 +1,8 @@
+/.classpath
+/.project
+/TEST-com.ibm.lconn.homepage.test.TestAll.txt
+/TEST-com.ibm.lconn.homepage.test.TestAll.xml
+/TEST-com.ibm.lconn.homepage.test.TestAllJUnit4.txt
+/TEST-com.ibm.lconn.homepage.test.TestAllJUnit4.xml
+/build
+/jdbc.properties

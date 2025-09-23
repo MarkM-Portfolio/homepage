@@ -1,0 +1,36 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2011, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+
+<div class="lotusWidget homepage-widget" dojoAttachPoint="root" class="dashboard topContainer" role="region" aria-label="${title}">
+	<div>
+		<h2 dojoAttachPoint="titleBar">
+			<div class="lotusLeft">
+				<a dojoAttachPoint="maxNode" class="homepageUnclickable">${title}</a>	
+			</div>
+			<div role="toolbar" class="lotusRight" aria-labelledby="${id}_hamburgerAnchor">			
+					<a class="lotusIcon lotusActionMenu" id="${id}_hamburgerAnchor" aria-label="${_menuTitle}" title="${_menuTitle}" href="javascript:;" dojoAttachEvent="onclick:openMenu, onkeypress:downKeyOpenMenu"
+						 dojoAttachPoint="actionMenuOpener" role="button" aria-haspopup="true"> 
+						<img alt="" src="${_iconActionsUrl}" ></img><span class="lotusAltText" style="z-index: -1">${_menuTitle}</span>
+					</a>				
+				</div>
+		</h2>	
+		<div class="lotusMessage2 lotusError" role="alert" style="display:none">
+			<img class="lotusIcon lotusIconMsgError" src="${_blankGif}" alt="Error"><span class="lotusAltText">${_errorAlt}:</span> <div class="lotusMessageBody">${_errorMsg}</div>
+		</div>
+		<div dojoAttachPoint="body" class="lotusWidgetBody" style="padding: 3px 0px 3px 0px;">
+			<div dojoAttachPoint="containerNode"></div>
+		</div>
+	</div>
+</div>

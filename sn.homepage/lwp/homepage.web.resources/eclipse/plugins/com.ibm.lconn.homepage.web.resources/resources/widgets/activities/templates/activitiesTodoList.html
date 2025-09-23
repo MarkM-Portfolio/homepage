@@ -1,0 +1,38 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2012, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<div dojoAttachPoint="root">
+    <div dojoAttachPoint="activitiesTodoListCentralLoading" class="lotusHidden">
+        <center>
+            <img dojoAttachPoint="loadingImage" alt='${loading}' src='${loadingImg}' />
+        </center>
+    </div>
+    <div dojoAttachPoint="errorNode" class="lotusTable lotusHidden">
+    	<img role="presentation" alt="${_resourceBundle.ACTIVITIES_ERROR}" title="${_resourceBundle.ACTIVITIES_ERROR}" src="${blankGif}" class="lconnSprite lconnSprite-iconWarning16">&nbsp;
+    	<span class="lotusMeta">${_resourceBundle.ACTIVITIES_ERROR}</span>
+    </div>
+    <div dojoAttachPoint="welcomeNode" class="lotusHidden">
+		<h4 class="homepageNoTodos">${_resourceBundle.ACTIVITIES_NO_ACTIVITES_MSG}</h4>
+		<div class="lotusSectionFooter toDoFooter">
+        	<a class="lotusAction" href="${activitiesTodoLink}" title="${_resourceBundle.ACTIVITIES_GO_ACTIVITIES_INFO}">${_resourceBundle.ACTIVITIES_GO_ACTIVITIES}</a>
+        </div>
+    </div>
+    <div dojoAttachPoint="activitiesTodoListCentralContainerNode" class="lotusHidden">
+        <div class="lotusChunk" dojoAttachPoint="activitiesTodoListCentralNode">
+        </div>
+        <div class="lotusSectionFooter toDoFooter" dojoAttachPoint="seeMoreNode">
+        	<a class="lotusAction" href="${activitiesTodoLink}" title="${_resourceBundle.ACTIVITIES_GO_ACTIVITIES_INFO}">${_resourceBundle.ACTIVITIES_GO_ACTIVITIES}</a>
+        </div>
+    </div>
+</div>

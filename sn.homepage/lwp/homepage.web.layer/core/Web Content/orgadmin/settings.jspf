@@ -1,0 +1,163 @@
+<%@page import="com.ibm.lconn.core.platform.ICPlatform"%>
+<%@page import="com.ibm.lconn.homepage.orgadmin.HighwayAdminRequest"%>
+<%@page import="com.ibm.lconn.homepage.orgadmin.SettingDetails"%>
+<%@page import="java.net.URL"%>
+<%@page import="java.util.ResourceBundle"%>
+<%@page import="java.util.Collection"%>
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- IBM Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright IBM Corp. 2007, 2016                                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+
+<%
+HighwayAdminRequest adminRequest = new HighwayAdminRequest(request,response);
+boolean isOrgAdmin = request.isUserInRole("org-admin");
+if (!isOrgAdmin) {
+%>
+<b></b><!-- only accessed directly by someone hacking - no message needed -->
+<%
+} else {
+
+	String orgId=ICPlatform.getCurrentOrgId();
+	ResourceBundle bundle = ResourceBundle.getBundle("com.ibm.lconn.homepage.orgadmin.orgadmin", request.getLocale());
+	String sNoSettings = bundle.getString("ui.message.no.settings");
+	String sChange = bundle.getString("ui.button.change");
+	String sSaveChanges = bundle.getString("ui.button.savechanges");
+	String sCancel = bundle.getString("ui.button.cancel");
+	String sError = bundle.getString("ui.error");
+	String sPostError = bundle.getString("ui.post.error");
+	String sYes = bundle.getString("ui.input.yes");
+	String sNo = bundle.getString("ui.input.no");
+	
+	SettingDetails postDetails = null;
+	boolean doPost = false;
+	if (request.getMethod().equals("POST")) {
+		doPost = true;		
+		postDetails = adminRequest.updateHighwaySettingDetails();
+		if (postDetails == null) {
+			doPost = false;
+			%>
+			  <div id="errorPost" class="lotusMessage2" >
+			    <img class="lotusIcon lotusIconMsgError" alt="<%=sError%>" src="/manage/img/blank.gif">
+			    <div class="lotusMessageBody lotusAlert" style="display: none;"><%=sPostError%></div>
+			  </div>
+			<%	
+		}
+	}
+	
+	// Now get a new nonce
+	String nonce = adminRequest.setNonce();
+	
+	// get the setting names
+	Collection<String> settingNames = adminRequest.getHighwaySettingsToShow();
+	if (settingNames.size()==0) {
+		%>
+  <div id="noSettings">
+    <div class="lotusMessageBody"><%=sNoSettings%></div>
+  </div>
+	<%
+	}
+	
+	for (String settingName : settingNames) {
+		
+		// show the post details for the setting if available, otherwise get as appropriate
+		SettingDetails details = null;
+		if (doPost && settingName.equals(postDetails.getName()))
+			details = postDetails;
+		else
+			details = adminRequest.getHighwaySettingDetails(settingName);
+		
+		// get the correct value to display
+		String settingDisplayValue = details.getValue();
+		if (details.useCheckbox()) // present as boolean
+			settingDisplayValue = (Boolean.parseBoolean(details.getValue())) ? sYes : sNo ;
+		
+		if ((details.getStatus()!=null) && (details.getStatus().equals(SettingDetails.STATUS_ERROR))) {
+%>
+  <div id="errorSummary_<%=settingName%>" class="lotusMessage2" >
+    <img class="lotusIcon lotusIconMsgError" alt="<%=sError%>" src="/manage/img/blank.gif">
+    <div class="lotusMessageBody lotusAlert" role="alert" style="display: none;"><%=details.getMessage()%></div>
+  </div>
+<%
+		}
+%>
+
+  <div class="section_info" id="<%=settingName%>_show" style="display: block;">
+    <div class="title">
+      <h2><%=details.getTitle() %></h2>
+      <span class="link">
+        <a href="#" id="<%=settingName%>_change" 
+          onclick="switchToEdit('<%=settingName%>'); return false;" 
+          onkeypress="switchToEditIfSpacebar('<%=settingName%>', event)"
+          role="button" 
+          aria-label="Change : <%=details.getTitle() %>"><%=sChange %></a>
+      </span>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="description">
+      <div class="settingsValue"><%=settingDisplayValue %></div>
+      <div class="settingsDescription"><%=details.getDescription() %></div>
+      <div class="clear">&nbsp;</div>
+    </div>
+  </div>
+
+  <div class="section_info" id="<%=settingName%>_edit" style="display: none;" aria-hidden="true">
+    <div class="title">
+      <h2><%=details.getTitle() %></h2>
+      <div class="clear">&nbsp;</div>
+    </div>
+
+    <div class="description descriptionEdit">
+    
+      <div class="formDescription" id="<%=settingName%>_description"><%=details.getDescription() %>
+      <%if (details.getWarning()!= null) {%>
+        <div class="formWarning"><%=details.getWarning() %></div>
+      <% } %>
+      </div>
+      <form id="<%=settingName%>_form" name="<%=settingName%>_form" action="orgadmin.jsp" method="post">
+        <fieldset>
+          <div>
+            <div class="clear">&nbsp;</div>
+            <input name="settingName" value="<%=settingName %>" type="hidden"/>
+            
+      <%if (details.useCheckbox()) {
+    	  String checkedString = Boolean.parseBoolean(details.getValue()) ? "checked" : "" ;
+      %>
+            <input type="checkbox" name="settingValue" <%=checkedString%> id="<%=settingName%>_value" aria-required="true" aria-describedby="<%=settingName%>_description" type="text">
+            	<%=details.getPrompt() %>
+            </input>
+      <% } else { %>
+            <label for="<%=settingName%>_value"><%=details.getPrompt() %></label>
+            <input name="settingValue" value="<%=details.getValue() %>" id="<%=settingName%>_value" class="inputText" aria-required="true" aria-describedby="<%=settingName%>_description" type="text"></input>
+      <% } %>
+          </div>
+        </fieldset>
+              
+        <input id="<%=settingName%>_nonce" name="nonce" value="<%= nonce%>" type="hidden" />
+        <input id="<%=settingName%>_orgId" name="organizationId" value="<%=orgId %>" type="hidden" />
+  
+        <div class="buttonsActionWithRequired">
+          <input id="<%=settingName%>_submit" class="lotusFormButton" aria-label="<%=sSaveChanges %> : <%=details.getTitle() %>" value="<%=sSaveChanges %>" type="button" onclick="submitWithTrackFocus('<%=settingName%>')">
+          <input id="<%=settingName%>_cancel" class="lotusFormButton" onclick="switchToShow('<%=settingName%>'); return false;" value="<%=sCancel %>" type="button">
+          <div class="clear">&nbsp;</div>
+        </div>
+        
+      </form>
+
+    <div class="clear">&nbsp;</div>
+    </div>
+  </div>
+  
+<%
+	}
+}
+%>

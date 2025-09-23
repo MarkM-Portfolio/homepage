@@ -1,0 +1,31 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2011, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<div class="lotusSection2 homepage-widget" role="complementary" aria-labelledby="${id}heading">
+	<div class="lotusSectionHeader"
+		><div class="lotusInner"
+			><h2 class="lotusHeading" id="${id}heading" dojoAttachPoint="titleBar" class="section-titleBar">${title}</h2
+			><div role="toolbar" class="lotusRight" aria-labelledby="${id}_hamburgerAnchor"><a class="lotusIcon lotusActionIcon" id="${id}_hamburgerAnchor" href="javascript:;" role="button" aria-haspopup="true"
+				title="${_resourceBundle.ACTION}" dojoAttachEvent="onclick: openMenu, onkeypress:downKeyOpenMenu" dojoAttachPoint="actionMenuOpener"
+				><img src="${_blankGif}" alt="" 
+				/><span class="lotusAltText">${_resourceBundle.ACTION}</span
+			></a
+		></div></div
+	></div>
+	<div class="lotusMessage2 lotusError" role="alert" style="display:none">
+		<img class="lotusIcon lotusIconMsgError" src="${_blankGif}" alt="Error"
+		><span class="lotusAltText">${_errorAlt}:</span> <div class="lotusMessageBody">${_errorMsg}</div>
+	</div>
+	<div class="lotusSectionBody" dojoAttachPoint="containerNode"></div>
+</div>

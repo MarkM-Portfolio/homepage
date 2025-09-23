@@ -1,0 +1,53 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2009, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+-- CONSTRAINTS KEYS
+CONNECT TO HOMEPAGE;
+
+-- HOMEPAGE 
+ALTER TABLE HOMEPAGE.LOGINNAME DROP FOREIGN KEY "FK_LN_PERSON_ID";
+
+ALTER TABLE HOMEPAGE.HP_UI DROP FOREIGN KEY "FK_UI_PERSON_ID";
+
+ALTER TABLE HOMEPAGE.HP_TAB_INST DROP FOREIGN KEY "FK_UI_ID";
+
+ALTER TABLE HOMEPAGE.HP_TAB_INST DROP FOREIGN KEY "FK_TAB_INST_TAB_ID";
+
+ALTER TABLE HOMEPAGE.HP_WIDGET_INST DROP FOREIGN KEY "FK_WIDGET_ID";
+
+ALTER TABLE HOMEPAGE.HP_WIDGET_INST DROP FOREIGN KEY "FK_TAB_INST_ID";
+
+ALTER TABLE HOMEPAGE.HP_WIDGET_TAB DROP FOREIGN KEY "FK_WID_TAB_WID_ID";
+
+ALTER TABLE HOMEPAGE.HP_WIDGET_TAB DROP FOREIGN KEY "FK_WID_TAB_TAB_ID";
+
+ALTER TABLE HOMEPAGE.PREREQ DROP FOREIGN KEY "FK_PREREQ_WIDGET";
+
+ALTER TABLE HOMEPAGE.NT_NOTIFICATION_RECIPIENT DROP FOREIGN KEY "FK_RECIP_NOTIF";
+
+ALTER TABLE HOMEPAGE.LOGINNAME DROP UNIQUE "LOGINNAME_UNIQUE";
+
+DROP INDEX  HOMEPAGE.PERSON_EXID;
+
+-- NEWS RECORDS 
+ALTER TABLE HOMEPAGE.NR_SUBSCRIPTION DROP FOREIGN KEY "FK_PERSON_ID";
+
+ALTER TABLE HOMEPAGE.NR_SUBSCRIPTION DROP FOREIGN KEY "FK_SOURCE_ID";
+
+ALTER TABLE HOMEPAGE.NR_SOURCE DROP UNIQUE "SOURCE_UNIQUE";
+
+DROP INDEX  HOMEPAGE.NR_SUBSCRIPTION_IX_UNIQUE;
+
+CONNECT RESET;
+DISCONNECT ALL;

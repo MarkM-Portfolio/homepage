@@ -1,0 +1,192 @@
+/* ***************************************************************** */
+/*                                                                   */
+/* IBM Confidential                                                  */
+/*                                                                   */
+/* OCO Source Materials                                              */
+/*                                                                   */
+/* Copyright IBM Corp. 2016                                          */
+/*                                                                   */
+/* The source code for this program is not published or otherwise    */
+/* divested of its trade secrets, irrespective of what has been      */
+/* deposited with the U.S. Copyright Office.                         */
+/*                                                                   */
+/* ***************************************************************** */
+
+/* these classes are general and mostly just set helvetica and reduce the size */
+.lotusliveui, lotusliveui30 {
+        font: normal .75em/1.5em Arial, Helvetica, sans-serif;
+} 
+
+.lotusliveui button, .lotusliveui input, .lotusliveui select, .lotusliveui textarea {
+	font-family: Arial, Helvetica, sans-serif; 
+	font-size: inherit;
+}
+
+/* these are stolen from bss_ui, as the URL available for it appears to be brittle */
+div.lotusHeader{
+	margin-bottom:15px;
+	margin-top:-5px;
+	overflow:hidden;
+	position:relative;
+	zoom:1
+}
+
+div.lotusHeader div.lotusDetails {
+	margin-top:5px;
+}
+
+h1.lotusHeading {
+	margin-bottom:5px;
+	font-size: 1.7em;
+	font-weight: normal;
+	color: #444;
+}
+
+.lotusIcon{
+    margin-right:3px;
+    vertical-align:top
+}
+
+.lotusMessage2 .lotusIcon {
+    float: left;  
+    margin-top: 1px;
+    margin-right: 5px;  
+    margin-bottom: 0;
+    margin-left: 0;  
+    
+}
+
+.lotusIconMsgError {
+    background-position: 88px 0px;
+    background-image: url("/theming/css/images/shared/iconsprite2_8.png");
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+}
+
+.lotusMessage2 {
+    border: 1px solid #CCCCCC;
+    border-radius: 4px 4px 4px 4px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    padding: 5px;
+    position: relative;
+    background-color: #FFEBE6;	
+    border-color: #EFA6A5;
+}
+
+.lotusliveui a, .lotusliveui a:visited{
+	color:#1970B0;
+}
+
+/* These are mostly stolen from the accounts.css */
+div.section_info {
+	clear: both;
+	padding: 0 10px 40px 10px;
+}
+
+div.section_info div.title {
+	border-bottom: 1px solid #cecece;
+}
+
+div.section_info div.title h2 {
+	float: left;   
+	font-size: 1.0em;
+	font-weight: bold;
+	color: #4e4e4e;
+	margin: 0;
+	padding: 0 5px 2px 0;
+}
+
+div.section_info div.title span.link {
+	display: block;
+	float: right; 
+	padding: 0 0 2px 2px;
+	font-size: 1.0em;
+	font-weight: normal;
+	color: #aaa;
+}
+
+div.section_info div.settingsValue {
+	font-size: 1.0em;
+	font-weight: normal;
+	color: #333333;
+	margin: 0;
+	padding: 5px 0 0;
+	float: left; 
+	width: 300px;
+	word-wrap: break-word;
+	text-align: left;  
+}
+
+div.section_info div.settingsDescription {
+	font-size: 1.0em;
+	font-weight: normal;
+	float: right;   
+	text-align: right;
+	width: 50%;
+	display: block;
+	padding: 5px 0 0;
+	color: #666666;
+}
+
+div.section_info div.descriptionEdit {
+	background: #eef2f5;
+}
+
+div.section_info div.descriptionEdit div.formDescription {
+	font-size: 1.0em;
+	font-weight: normal;
+	padding: 10px;
+	margin: 0;
+	color: #666666;
+}
+
+div.section_info div.descriptionEdit div.formWarning {
+	font-size: 1.0em;
+	font-weight: bold;
+	padding-top: 0px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin: 0;
+	color: #ff3333;
+}
+
+div.section_info fieldset {
+	border-width: 0;
+	margin: 0;
+	padding: 10px;
+}
+
+div.section_info div.descriptionEdit label {
+	font-size: 1.1em;
+	font-weight: bold;
+	float: left;  
+	display: block;
+	padding-top: 5px;
+	padding-left: 15px;
+	color: #000;
+	text-align: right;  
+	margin-right: 10px;  
+}
+
+div.section_info div.descriptionEdit input.inputText {
+	font-size: 1.0em;
+	font-weight: normal;
+	color: #5f5f5f;
+	display: block;
+	width: 400px;
+	float: left;   
+	margin-top: 5px;
+}
+
+div.buttonsActionWithRequired {
+	background: #e2ebf2;
+	border-top: 1px solid #d2dfef;
+	padding: 10px;
+}
+
+div.clear {
+	clear: both;
+}

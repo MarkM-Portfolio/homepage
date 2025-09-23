@@ -1,0 +1,27 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- (C) Copyright IBM Corp. 2006, 2007                                -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<component name="prereqs.homepage/junit" 
+           type="binary" 
+           description="Junit 4.5" 
+           spec-version="4.5"
+           build-version=""
+           owner=""
+           owner-email="">
+
+   <output-group name="default">
+      <output type="jar" visibility="public" platform="all" location="junit-4.5.jar" />
+   </output-group>
+
+</component>

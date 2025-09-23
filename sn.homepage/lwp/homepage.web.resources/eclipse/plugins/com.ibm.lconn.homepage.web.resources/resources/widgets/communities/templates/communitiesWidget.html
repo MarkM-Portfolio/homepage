@@ -1,0 +1,43 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2011, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<div dojoAttachPoint="communityRoot">
+
+	<div dojoAttachPoint="communityContainer">
+		<div>
+			<h3 class="widgetTitle" dojoAttachPoint="titleNode" style="padding-top: 5px; height:20px;">
+				<span class="lotusLeft" id="${id}_ViewDropDown" dojoAttachPoint="communityTitle">${communityTitle}</span><span dojoAttachPoint="menuModeButtonNode"></span>&nbsp;
+			</h3>
+		</div>
+		<div dojoAttachPoint="communityLoading" style="display:none;">
+			<center><img src="${_loadingImagePath}" class="loading" alt="${loading}" /></center>
+		</div>
+		<div dojoAttachPoint="errorNode" style="display: none"></div>
+		<div dojoAttachPoint="boardingNode" style="display:none;"></div>
+		<div dojoAttachPoint="commNode"></div>
+		<div dojoattachpoint="communityWelcome" style="display:none;">
+			<div class="lconnEmpty" style="padding: 0 10px 0 10px;">
+				<div class="lotusClear">${noCommunityTitle}</div>
+				<div class="lotusClear">${noCommMsg1}&nbsp;${noCommMsg2}</div>
+				<div style="font-style: normal; padding-top: 10px;">
+					<a href="" dojoattachpoint="communityLink" >${goToYourCommPage}</a>
+				</div>
+			</div>
+		</div>
+		
+		<div class="widgetFooter" dojoAttachPoint="scrollerNode"></div>	
+		
+	</div>
+	
+</div>

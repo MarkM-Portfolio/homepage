@@ -1,0 +1,15 @@
+*.class
+.apt_generated
+.settings
+.factorypath
+build
+target
+logs
+.directory
+*.launch
+/.project
+/bin
+/.apt_generated
+/.settings
+/.factorypath
+/build

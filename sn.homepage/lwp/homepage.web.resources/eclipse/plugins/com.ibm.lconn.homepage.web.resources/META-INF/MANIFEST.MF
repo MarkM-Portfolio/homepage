@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: IBM Connections Homepage JavaScript
+Bundle-SymbolicName: com.ibm.lconn.homepage.web.resources;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: IBM
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ClassPath: _properties/, .

@@ -1,0 +1,49 @@
+<%@ page session="true" contentType = "text/html; charset=UTF-8" buffer = "128kb"%>
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- IBM Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright IBM Corp. 2011, 2016                                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+
+<%@ taglib prefix="ui" uri="http://www.ibm.com/lconn/tags/coreuiutil" %>
+<%@ taglib prefix="lc-cache" uri="http://www.ibm.com/connections/core/cache"%>
+<%@ taglib prefix="lc-ui" uri="http://www.ibm.com/lconn/tags/coreuiutil" %>
+
+<%
+	Object home = new com.ibm.lconn.core.web.util.resourcebundle.UILabelConfig("bundle","jsp.homepage.home");
+	request.setAttribute("home", home);
+%>
+
+<div id="hpUserPhoto" class="titleBarBody" role="presentation" aria-labelledby="semtagmenu"></div>
+<h2 class="lotusHeading">
+	<img src='<lc-ui:blankGif/>' 
+		alt="" class="lotusIcon iconsComponentsBlue24 iconsComponentsBlue24-HomeBlue24">
+	<span class="lotusText lconnHomepageTitle"><ui:message label="${home}"/></span>
+</h2>
+
+<script>
+	dojo.require("com.ibm.lconn.layout.people");
+		
+	var person = {
+		name: "<lc-ui:escapeJavaScript>${sessionScope['user.info.name']}</lc-ui:escapeJavaScript>",
+		userid: "<lc-ui:escapeJavaScript>${sessionScope['user.info.id']}</lc-ui:escapeJavaScript>"
+	};
+
+	var img=com.ibm.lconn.layout.people.createImage(person, 106, true);
+
+	if (img != null){
+		var subImg=img.firstChild;
+		dojo.attr(subImg, {id: "hpUserPhotoImg"});
+		dojo.addClass(subImg, "profilePicture");
+		dojo.attr(subImg, {title: img.title});
+		dojo.place(img, "hpUserPhoto");
+	}
+</script>

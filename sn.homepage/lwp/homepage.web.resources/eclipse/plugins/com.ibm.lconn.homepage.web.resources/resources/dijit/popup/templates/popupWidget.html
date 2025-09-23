@@ -1,0 +1,45 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2011, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<div class="lotusDialogBorder">
+	<div class="lotusDialog" style="overflow: hidden;" role="dialog" aria-labelledby="${id}_dialogTitle">
+
+		<div style="width:592px; overflow:hidden;">
+			<div class="lotusDialogHeader" style="overflow:hidden; white-space:nowrap;">
+				<h1 id="${id}_dialogTitle" class="lotusHeading"><div dojoAttachPoint="dialogTitleNode" style="overflow:hidden;"></div></h1>
+				<a class="lotusDialogClose" role="button" 
+					dojoAttachEvent="onclick: closePopup" href="javascript:;" title="${closeText}">
+					<img src="${_blankGif}" alt="${closeText}" role="presentation" />
+					<span class="lotusAltText" aria-label="${closeText}">X</span>
+				</a>
+			</div>
+			<div dojoAttachPoint="loadingNode">
+				<br>
+				<center><img dojoAttachPoint="loadingImageNode" class="loading"	alt="${loading}"/></center>
+				<br>
+			</div>
+			<div class="lotusDialogContent" dojoAttachPoint="dialogContentNode" style="height:185px; border-bottom-style: none; overflow-y: auto; overflow-x: hidden;"></div>
+			
+		</div>
+		
+		<div class="lotusDialogFooter" style="padding:0">
+			<br/>&nbsp;&nbsp;&nbsp;
+			<span class="lotusBtn lotusBtnSpecial">
+				<a dojoAttachEvent="onclick: closePopup" 
+					role="button" href="javascript:;" title="${cancelText}">${cancelText}</a>
+			</span>
+			<br/><br/>
+		</div>
+	</div>
+</div>

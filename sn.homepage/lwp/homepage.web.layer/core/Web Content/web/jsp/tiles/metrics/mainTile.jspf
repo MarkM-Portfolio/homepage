@@ -1,0 +1,110 @@
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- HCL Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright HCL Technologies Limited. 2001, 2021                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+
+<%@ taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" 	uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" 		uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="dboard" 	uri="http://www.ibm.com/homepage/tags"%>
+
+<div id="lotusMain" class="lotusMain">
+
+	<span style="position: absolute;">
+		<a name="mainContent" id="maincontent">&nbsp;</a>
+	</span>
+
+	<div id="lotusContent" class="lotusContent" role="main">
+
+		<div class="lotusHeader" align="${bidir.alignment}"><h1><fmt:message key="label.metrics.title" /></h1>
+			<div class="lotusMeta">
+				<p><fmt:message key="label.metrics.asof"/> 
+				<fmt:formatDate value="${date}" type="both" dateStyle="short" timeStyle="short"/>
+				</p>
+				<p><fmt:message key="label.metrics.storyLifeTime"> 
+						<fmt:param value="${storyLifeTimeInDays}"/>
+					</fmt:message>
+				</p>
+				<ul class="lotusInlinelist" style="display:none;">
+                 	<li class="lotusFirst"><a href="javascript:;" onclick="dijit.byId('chooseDate').onValueSelected('2010-06-20');">Previous</a></li>                        
+                 	<li><div wairole="presentation" dojoattachevent="onmouseenter:_onMouse,onmouseleave:_onMouse,onmousedown:_onMouse" id="widget_chooseDate" class="dijit dijitReset dijitInlineTable dijitLeft dijitTextBox dijitDateTextBox" role="presentation" widgetid="chooseDate"><div style="overflow: hidden;"><div class="dijitReset dijitValidationIcon"><br/></div><div class="dijitReset dijitValidationIconText">?</div><div class="dijitReset dijitInputField"><input type="text" autocomplete="off" dojoattachpoint="textbox,focusNode" class="dijitReset" aria-valuenow="Mon Jun 21 2010 00:00:00 GMT+0100 (GMT)" aria-invalid="false" id="chooseDate" tabindex="0" value="6/21/2010" aria-valuemin="Mon Jun 07 2010 00:00:00 GMT+0100 (GMT)" aria-valuemax="Mon Jun 21 2010 00:00:00 GMT+0100 (GMT)"/><input type="hidden" value="2010-06-21"/></div></div></div></li>
+                    <li>Next</li>
+                 </ul>
+                 <div class="lotusClear"/>
+			</div>
+		</div><%--end header--%>
+		<dl class="qkrMetrics lotusClear lotusList lotusMetrics">
+	 		<c:forEach var="metricList" items="${renderMetricAsList}">			
+				<c:forEach items="${metricList}" var="element" varStatus="counter1">
+					<c:choose>
+						<c:when test="${element.total == 0}">
+							<c:set var="avg" value="0"/>
+						</c:when>
+						<c:otherwise>
+							<c:set var="avg" value="${element.scalarData/element.total}"/>
+						</c:otherwise>
+					</c:choose>
+					<c:choose>
+						<c:when test="${element.type=='scalar'}">
+							<c:choose>
+								<c:when test="${counter1.index == 0}">
+									<dt>
+										<span class="lotusRight" title="<fmt:message key="${element.key}"/>">
+											<c:out value="${element.scalarData}" default="0"/>
+										</span>
+										<fmt:message key="${element.key}"/>
+									</dt>
+									<dd><table cellspacing="0" cellpadding="0" class="lotusVertTable"><tbody>
+								</c:when>
+								<c:when test="${counter1.last}">
+									<tr><th><fmt:message key="${element.key}"/></th><td><c:out value="${element.scalarData}"/> (<fmt:formatNumber type="percent" maxFractionDigits="1" value="${avg}"/>)</td></tr></tbody></table></dd>								
+								</c:when>
+								<c:otherwise>
+									<tr><th><fmt:message key="${element.key}"/></th><td><c:out value="${element.scalarData}"/> (<fmt:formatNumber type="percent" maxFractionDigits="1" value="${avg}"/>)</td></tr>
+								</c:otherwise>
+							</c:choose>
+						</c:when>	
+						<c:otherwise>
+								<dt>
+									<span class="lotusRight" title="<fmt:message key="${element.key}"/>">
+									
+									</span>
+									<fmt:message key="${element.key}"/>
+								</dt>
+								<dd><table cellspacing="0" cellpadding="0" class="lotusVertTable"><tbody>						
+								<c:forEach items="${element.top5list}" var="nameValuePair" varStatus="counter1">
+										<tr>
+											<th><c:out value="${nameValuePair.key}"/></th>
+											<td><c:out value="${nameValuePair.value}"/></td>
+										</tr>
+										<c:if test="${counter1.last}">
+											</tbody></table></dd>								
+										</c:if>								
+								</c:forEach>
+						</c:otherwise>
+					</c:choose>				
+				</c:forEach>		
+			</c:forEach>	
+	 		<c:forEach var="metricList" items="${renderMetricAsItem}">			
+				<c:forEach items="${metricList}" var="element" varStatus="counter1">				
+									<dt>
+										<span class="lotusRight" title="<fmt:message key="${element.key}"/>">
+											<c:out value="${element.scalarData}" default="0"/>
+										</span>
+										<fmt:message key="${element.key}"/>
+									</dt>
+				</c:forEach>		
+			</c:forEach>	
+		</dl>
+
+	</div>
+</div>

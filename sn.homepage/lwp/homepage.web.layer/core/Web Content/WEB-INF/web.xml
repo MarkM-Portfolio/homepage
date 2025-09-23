@@ -1,0 +1,1687 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+*****************************************************************
+HCL Confidential
+OCO Source Materials
+Copyright HCL Technologies Limited. 2008, 2021
+
+The source code for this program is not published or otherwise
+divested of its trade secrets, irrespective of what has been
+deposited with the U.S. Copyright Office.
+*****************************************************************
+-->
+<!--
+5724-E76
+-->
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ id="WebApp_1227622577390" version="2.4"
+ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+    <display-name>
+        Homepage
+    </display-name>
+
+    <welcome-file-list>
+        <welcome-file>
+            /web/jsp/index.jsp
+        </welcome-file>
+        <welcome-file>
+            index.jsp
+        </welcome-file>
+    </welcome-file-list>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/homepage-servlet.xml</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>homepage</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>dispatchOptionsRequest</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>homepage</servlet-name>
+        <url-pattern>*</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- *********************************************************************************************************************
+    ************************************************************************************************ CONTEXT PARAMS
+    ************************************************************************************************************************** -->
+    <context-param>
+        <param-name>
+            javax.servlet.jsp.jstl.fmt.localizationContext
+        </param-name>
+        <param-value>
+            com.ibm.lconn.homepage.resources.nls.jsp.jsp_resources
+        </param-value>
+    </context-param>
+
+    <!--
+    Location of property file containing mapping between icon in river of
+    news and story sources
+    -->
+    <context-param>
+        <param-name>
+            iconMappingLocation
+        </param-name>
+        <param-value>
+            /WEB-INF/properties/riverOfNewsIcons.properties
+        </param-value>
+    </context-param>
+
+
+    <context-param>
+        <param-name>
+            service.name
+        </param-name>
+        <param-value>
+            homepage
+        </param-value>
+    </context-param>
+
+    <!-- ************************************ STRING BUNDLES *************************************************************** -->
+    <context-param>
+        <param-name>
+            bundles
+        </param-name>
+        <param-value>
+            lc_hp_catalog,com.ibm.lconn.homepage.resources.nls.catalog.service.ui.CatalogServiceUIMessages;lc_hp_jsp,com.ibm.lconn.homepage.resources.nls.jsp.jsp_resources;
+        </param-value>
+    </context-param>
+
+
+    <listener>
+        <listener-class>
+            com.ibm.lconn.core.web.customization.CustomizationInitializer
+        </listener-class>
+    </listener>
+    <context-param>
+        <param-name>
+            customization.directory.name
+        </param-name>
+        <param-value>
+            homepage
+        </param-value>
+    </context-param>
+
+    <!-- *********************************************************************************************************************
+    ************************************************************************************************ LISTENERS
+    ************************************************************************************************************************** -->
+    <listener>
+        <listener-class>
+            com.ibm.lconn.homepage.web.initialization.VenturaConfigCheckListener
+        </listener-class>
+    </listener>
+    <listener>
+        <listener-class>
+            com.ibm.lconn.homepage.web.initialization.UserLifeCycleSPIInitializer
+        </listener-class>
+    </listener>
+    <listener>
+        <listener-class>
+            com.ibm.lconn.core.web.auth.LCRestSecurityHelper
+        </listener-class>
+    </listener>
+    <listener>
+        <listener-class>
+            com.ibm.lconn.homepage.web.initialization.DatabaseSchemaVersionCheck
+        </listener-class>
+    </listener>
+    <listener>
+        <listener-class>
+            com.ibm.lconn.web.taglib.sprites.SpriteIconListener
+        </listener-class>
+    </listener>
+    <context-param>
+        <param-name>
+            org.apache.tiles.definition.DefinitionsFactory
+        </param-name>
+        <param-value>
+            com.ibm.lconn.core.web.tiles204.SynchronizedTilesUrlDefinitionsFactory
+        </param-value>
+    </context-param>
+    <context-param>
+		<param-name>org.apache.tiles.impl.BasicTilesContainer.DEFINITIONS_CONFIG</param-name>
+    	<param-value>/WEB-INF/tiles.xml</param-value>
+	</context-param>    
+
+    <!-- Struts2 Removal 
+    <listener>
+        <listener-class>
+            org.apache.struts2.tiles.StrutsTilesListener
+        </listener-class>
+    </listener>
+    -->
+
+    <listener>
+        <listener-class>
+            com.ibm.lconn.events.internal.enable.EventInitContextListener
+        </listener-class>
+    </listener>
+    <listener>
+        <listener-class>
+            com.ibm.lconn.homepage.services.config.gettingstarted.GettingStartedBeanHelper
+        </listener-class>
+    </listener>
+
+	<!--  OAuth provider listener -->
+	<listener>
+		<listener-class>
+			com.ibm.lconn.oauth.web.servlet.ProviderInitializer
+		</listener-class>
+	</listener>
+
+
+    <!-- *********************************************************************************************************************
+    ************************************************************************************************ RESOURCE REF
+    ************************************************************************************************************************** -->
+
+    <resource-ref id="ResourceRef_1266516033939">
+        <description>
+            HomePage DataSource
+        </description>
+        <res-ref-name>
+            jdbc/homepage
+        </res-ref-name>
+        <res-type>
+            javax.sql.DataSource
+        </res-type>
+        <res-auth>
+            Container
+        </res-auth>
+        <res-sharing-scope>
+            Unshareable
+        </res-sharing-scope>
+    </resource-ref>
+
+    <!-- *********************************************************************************************************************
+    ************************************************************************************************ EJB REF
+    ************************************************************************************************************************** -->
+
+    <ejb-ref id="NewsStoryEJB">
+        <description>
+            News Story EJB
+        </description>
+        <ejb-ref-name>
+            NewsStoryBean
+        </ejb-ref-name>
+        <ejb-ref-type>
+            Session
+        </ejb-ref-type>
+        <home>
+            com.ibm.lconn.news.ejb.client.NewsStoryEJBBeanHome
+        </home>
+        <remote>
+            com.ibm.lconn.news.ejb.client.NewsStoryEJBBean
+        </remote>
+    </ejb-ref>
+
+    <!-- event publisher resource reference -->
+    <ejb-local-ref id="EJBLocalRef_1266516033840">
+        <description>
+        </description>
+        <ejb-ref-name>
+            ejb/EventPublisher
+        </ejb-ref-name>
+        <ejb-ref-type>
+            Session
+        </ejb-ref-type>
+        <local-home>
+            com.ibm.lconn.events.internal.publish.impl.JMSPublisherLocalHome
+        </local-home>
+        <local>
+            com.ibm.lconn.events.internal.publish.impl.JMSPublisherLocal
+        </local>
+    </ejb-local-ref>
+
+    <!-- *********************************************************************************************************************
+    ************************************************************************************************ JSP CONFIG
+    ************************************************************************************************************************** -->
+
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>
+                *.jsp
+            </url-pattern>
+            <el-ignored>
+                false
+            </el-ignored>
+            <page-encoding>
+                UTF-8
+            </page-encoding>
+            <scripting-invalid>
+                false
+            </scripting-invalid>
+        </jsp-property-group>
+        <jsp-property-group>
+            <url-pattern>
+                *.jspf
+            </url-pattern>
+            <el-ignored>
+                false
+            </el-ignored>
+            <page-encoding>
+                UTF-8
+            </page-encoding>
+            <scripting-invalid>
+                false
+            </scripting-invalid>
+        </jsp-property-group>
+    </jsp-config>
+
+    <!-- *********************************************************************************************************************
+    ************************************************************************************************ FILTERS
+    ************************************************************************************************************************** -->
+	<filter>
+        <filter-name>ExtensibleFilter</filter-name>
+        <filter-class>com.ibm.lconn.core.web.extension.ExtensibleFilter</filter-class>
+    </filter>
+	<filter>
+        <display-name>
+            CSRFFilter
+        </display-name>
+        <filter-name>
+            CSRFFilter
+        </filter-name>
+        <filter-class>
+            com.ibm.lconn.core.web.atom.CSRFFilter
+        </filter-class>
+    </filter>
+
+    <filter>
+        <display-name>
+            CustomizationFilter
+        </display-name>
+        <filter-name>
+            CustomizationFilter
+        </filter-name>
+        <filter-class>
+            com.ibm.lconn.core.web.customization.CustomizationFilter
+        </filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>
+            NoCacheFilter
+        </filter-name>
+        <filter-class>
+            com.ibm.lconn.core.web.cache.NoCacheFilter
+        </filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>
+            PublicCacheFilter
+        </filter-name>
+        <filter-class>
+            com.ibm.lconn.core.web.cache.PublicCacheFilter
+        </filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>
+            PrivateCacheFilter
+        </filter-name>
+        <filter-class>
+            com.ibm.lconn.core.web.cache.PrivateCacheFilter
+        </filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>
+            30MinPrivateCacheFilter
+        </filter-name>
+        <filter-class>
+            com.ibm.lconn.core.web.cache.CustomCacheFilter
+        </filter-class>
+        <init-param>
+            <param-name>
+                cacheType
+            </param-name>
+            <param-value>
+                private
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>
+                max-age
+            </param-name>
+            <param-value>
+                1800
+            </param-value>
+        </init-param>
+    </filter>
+
+    <filter>
+        <filter-name>
+            10MinPublicCacheFilter
+        </filter-name>
+        <filter-class>
+            com.ibm.lconn.core.web.cache.CustomCacheFilter
+        </filter-class>
+        <init-param>
+            <param-name>
+                cacheType
+            </param-name>
+            <param-value>
+                public
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>
+                max-age
+            </param-name>
+            <param-value>
+                600
+            </param-value>
+        </init-param>
+    </filter>
+
+    <!-- Only use this one for resources that have unique paths that contain build no
+    or other dynamic elements -->
+    <filter>
+        <filter-name>
+            StaticContentFilter
+        </filter-name>
+        <filter-class>
+            com.ibm.lconn.core.web.cache.StaticContentFilter
+        </filter-class>
+        <init-param>
+            <param-name>
+                fakeLastModified
+            </param-name>
+            <param-value>
+                false
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>
+                fakeNotModSince
+            </param-name>
+            <param-value>
+                false
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>
+                time2live
+            </param-name>
+            <param-value>
+                15724800
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>
+                expires
+            </param-name>
+            <param-value>
+                true
+            </param-value>
+        </init-param>
+    </filter>
+
+    <!-- SSL Constraint filter -->
+    <filter>
+        <filter-name>
+            UserDataConstraintFilter
+        </filter-name>
+        <filter-class>
+            com.ibm.lconn.core.web.auth.LCUserDataConstraintFilter
+        </filter-class>
+        <init-param>
+            <param-name>
+                service.name
+            </param-name>
+            <param-value>
+                homepage
+            </param-value>
+        </init-param>
+    </filter>
+
+    <filter>
+        <filter-name>
+            LoginRedirectFilter
+        </filter-name>
+        <filter-class>
+            com.ibm.lconn.core.web.auth.LCDirectLoginRedirectFilter
+        </filter-class>
+        <init-param>
+            <param-name>
+                service.name
+            </param-name>
+            <param-value>
+                homepage
+            </param-value>
+        </init-param>
+    </filter>
+
+    <!-- Basic Authentication filter -->
+    <filter>
+        <description/>
+        <display-name>
+            BasicAuthFilter
+        </display-name>
+        <filter-name>
+            BasicAuthFilter
+        </filter-name>
+        <filter-class>
+            com.ibm.lconn.core.web.auth.LCBasicAuthFilter
+        </filter-class>
+    </filter>
+     <!--
+    Protection of Basic Auth protected feeds that by default are in the
+    reader role, making them public
+    -->
+    <filter>
+        <filter-name>
+            AtomBASecurityFilter
+        </filter-name>
+        <filter-class>
+            com.ibm.lconn.core.web.auth.LCRestSecurityFilter
+        </filter-class>
+        <init-param>
+            <param-name>
+                enforce.read.role
+            </param-name>
+            <param-value>
+                reader
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>
+                enforce.write.role
+            </param-name>
+            <param-value>
+                person
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>
+                authentication.chooser.forward
+            </param-name>
+            <param-value>
+                /nav/templates/loginBasic.jsp
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>
+                unauthorized.user.forward
+            </param-name>
+            <param-value>
+                /nav/templates/loginBasic.jsp?error=true
+            </param-value>
+        </init-param>
+    </filter>
+
+    <!-- ATOM/REST authentication filter -->
+    <filter>
+        <filter-name>
+            AtomSecurityFilter
+        </filter-name>
+        <filter-class>
+            com.ibm.lconn.core.web.auth.LCRestSecurityFilter
+        </filter-class>
+        <init-param>
+            <param-name>
+                enforce.read.role
+            </param-name>
+            <param-value>
+                person
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>
+                enforce.write.role
+            </param-name>
+            <param-value>
+                person
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>
+                authentication.chooser.forward
+            </param-name>
+            <param-value>
+                /nav/templates/loginBasic.jsp
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>
+                unauthorized.user.forward
+            </param-name>
+            <param-value>
+                /nav/templates/loginBasic.jsp?error=true
+            </param-value>
+        </init-param>
+    </filter>
+
+    <!-- UTF-8 filter -->
+    <filter>
+        <description/>
+        <display-name>
+            Utf8CharsetFilter
+        </display-name>
+        <filter-name>
+            Utf8CharsetFilter
+        </filter-name>
+        <filter-class>
+            com.ibm.lconn.homepage.web.filter.Utf8CharsetFilter
+        </filter-class>
+    </filter>
+
+    <!-- i18n filter -->
+    <filter>
+        <description/>
+        <display-name>
+            I18NFilter
+        </display-name>
+        <filter-name>
+            I18NFilter
+        </filter-name>
+        <filter-class>
+            com.ibm.lconn.core.web.util.lang.I18NFilter
+        </filter-class>
+    </filter>
+
+    <!-- Force form-based login to happen only over a POST request -->
+    <filter>
+        <filter-name>
+            LoginOverPOSTFilter
+        </filter-name>
+        <filter-class>
+            com.ibm.lconn.homepage.web.filter.LoginOverPOSTFilter
+        </filter-class>
+    </filter>
+
+    <filter>
+        <display-name>
+            HttpRequestFilter
+        </display-name>
+        <filter-name>
+            HttpRequestFilter
+        </filter-name>
+        <filter-class>
+            com.ibm.lconn.core.web.request.HttpRequestFilter
+        </filter-class>
+    </filter>
+
+    <filter>
+        <display-name>
+            DarkLaunchFilter
+        </display-name>
+        <filter-name>
+            DarkLaunchFilter
+        </filter-name>
+        <filter-class>
+            com.ibm.lconn.core.web.request.DarkLaunchFilter
+        </filter-class>
+    </filter>
+    
+    <!-- Struts -->
+
+    <!-- Struts2 Removal 
+    <filter>
+        <filter-name>
+            struts2
+        </filter-name>
+        <filter-class>
+            org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter
+        </filter-class>
+    </filter>
+    -->
+
+    <filter>
+        <display-name>
+            ConnectionsThemeFilter
+        </display-name>
+        <filter-name>
+            ConnectionsThemeFilter
+        </filter-name>
+        <filter-class>
+            com.ibm.lconn.core.web.css.ConnectionsThemeFilter
+        </filter-class>
+    </filter>
+
+    <!-- Platform filter - used to resolve organisations from URLs -->
+    <filter>
+		<description>Determines the current organization and user details from the URL and makes it available from a ThreadLocal</description>
+		<display-name>PlatformFilter</display-name>
+		<filter-name>PlatformFilter</filter-name>
+		<filter-class>com.ibm.lconn.core.web.platform.ICPlatformFilter</filter-class>
+		<init-param>
+			<param-name>application</param-name>
+			<param-value>homepage</param-value> <!-- HERE IS THE IMPORTANT PART -->
+		</init-param>
+	</filter>
+
+	<!-- In 4.0; bookmarklet .WAR was moved to the common ear, causing the old bookmarklet URL invalid - Defect 94710 -->
+	<filter>
+		<filter-name>BookmarkletRedirectFor301Filter</filter-name>
+		<filter-class>com.ibm.lconn.core.web.util.BookmarkletRedirectFor301Filter</filter-class>
+	</filter>
+
+    <filter>
+        <filter-name>ResponseCommittedFilter</filter-name>
+        <filter-class>com.ibm.lconn.core.web.filters.ResponseCommittedFilter</filter-class>
+    </filter>
+
+    <!-- *********************************************************************************************************************
+    ************************************************************************************************ FILTER MAPPING CHAIN
+    ************************************************************************************************************************** -->
+    <!-- ** Important **-->
+    <!--
+    The sequence of filter-mapping entries will change the order of
+    filtering
+    -->
+    <filter-mapping>
+        <filter-name>ResponseCommittedFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+     <filter-mapping>
+        <filter-name>ExtensibleFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- CSRF Filter to be put on all incoming requests -->
+	<filter-mapping>
+        <filter-name>CSRFFilter</filter-name>
+        <url-pattern>/atom/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CSRFFilter</filter-name>
+        <url-pattern>/atomfba/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CSRFFilter</filter-name>
+        <url-pattern>/ajaxProxy/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CSRFFilter</filter-name>
+        <url-pattern>/web/proxy/*</url-pattern>
+    </filter-mapping>   
+
+    <filter-mapping>
+        <filter-name>
+            CustomizationFilter
+        </filter-name>
+        <url-pattern>
+            /*
+        </url-pattern>
+        <dispatcher>
+            REQUEST
+        </dispatcher>
+        <dispatcher>
+            FORWARD
+        </dispatcher>
+        <dispatcher>
+            INCLUDE
+        </dispatcher>
+        <dispatcher>
+            ERROR
+        </dispatcher>
+    </filter-mapping>
+
+    <!-- Catch-all no caching directive. Will be overridden by later filters/code -->
+    <filter-mapping>
+        <filter-name>
+            NoCacheFilter
+        </filter-name>
+        <url-pattern>
+            /*
+        </url-pattern>
+    </filter-mapping>
+
+    <!-- Publicly cached URL patterns -->
+    <filter-mapping>
+        <filter-name>
+            PublicCacheFilter
+        </filter-name>
+        <url-pattern>
+            /nav/common/images/*
+        </url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>
+            PublicCacheFilter
+        </filter-name>
+        <url-pattern>
+            /common/styles/images/*
+        </url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>
+            PublicCacheFilter
+        </filter-name>
+        <url-pattern>
+            /images/default_buttons/*
+        </url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>
+            PublicCacheFilter
+        </filter-name>
+        <url-pattern>
+            /nav/common/styles/images/*
+        </url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>
+            PublicCacheFilter
+        </filter-name>
+        <url-pattern>
+            /nav/lconn/styles/*
+        </url-pattern>
+    </filter-mapping>
+
+    <!-- Privately cached URL patterns -->
+    <filter-mapping>
+        <filter-name>
+            PrivateCacheFilter
+        </filter-name>
+        <url-pattern>
+            /web/jsp/about.jsp
+        </url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>
+            PrivateCacheFilter
+        </filter-name>
+        <url-pattern>
+            /web/toolsHomepage.jsp
+        </url-pattern>
+    </filter-mapping>
+
+    <!-- 30 minute private cache patterns -->
+    <filter-mapping>
+        <filter-name>
+            30MinPrivateCacheFilter
+        </filter-name>
+        <url-pattern>
+            /web/servermetrics
+        </url-pattern>
+    </filter-mapping>
+
+    <!-- 10 minute caching for public search api -->
+    <filter-mapping>
+        <filter-name>
+            10MinPublicCacheFilter
+        </filter-name>
+        <url-pattern>
+            /atom/search/results*
+        </url-pattern>
+    </filter-mapping>
+
+    <!-- Note the following 3 filters must remain in this order. -->
+     <!-- Support for reverse proxy -->
+    <filter-mapping>
+        <filter-name>
+            HttpRequestFilter
+        </filter-name>
+        <url-pattern>
+            /*
+        </url-pattern>
+    </filter-mapping>
+    
+     <!-- Tenant Lookup filter -->
+    <filter-mapping>
+        <filter-name>PlatformFilter</filter-name>
+        <url-pattern>/nav/templates/menu/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>PlatformFilter</filter-name>
+        <url-pattern>/</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>PlatformFilter</filter-name>
+        <url-pattern>/web/jsp/index.jsp</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>PlatformFilter</filter-name>
+        <url-pattern>/web/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+	 <filter-mapping>
+        <filter-name>PlatformFilter</filter-name>
+        <url-pattern>/static/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>PlatformFilter</filter-name>
+        <url-pattern>/orgadmin/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+	 <filter-mapping>
+        <filter-name>PlatformFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+
+      <filter-mapping>
+        <filter-name>
+            DarkLaunchFilter
+        </filter-name>
+        <url-pattern>
+            /*
+        </url-pattern>
+    </filter-mapping>
+    <!-- End filter order comment -->
+    
+    <!-- static content cache patterns -->
+    <filter-mapping>
+        <filter-name>
+            StaticContentFilter
+        </filter-name>
+        <url-pattern>
+            /nav/common/styles/*
+        </url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>
+            StaticContentFilter
+        </filter-name>
+        <url-pattern>
+            /nav/common/styles/images/*
+        </url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>
+            StaticContentFilter
+        </filter-name>
+        <url-pattern>
+            /nav/common/styles/defaultTheme/themeImages/*
+        </url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>
+            StaticContentFilter
+        </filter-name>
+        <url-pattern>
+            /nav/common/styles/base/themeImages/*
+        </url-pattern>
+    </filter-mapping>
+
+   
+
+    <!-- Utf8CharsetFilter filters all URLs -->
+    <filter-mapping>
+        <filter-name>
+            Utf8CharsetFilter
+        </filter-name>
+        <url-pattern>
+            /*
+        </url-pattern>
+    </filter-mapping>
+
+    <!-- I18NFilter filters all URLs -->
+    <filter-mapping>
+        <filter-name>
+            I18NFilter
+        </filter-name>
+        <url-pattern>
+            /*
+        </url-pattern>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+    <!-- UserDataConstraintFilter filters all request/reponse-->
+    <filter-mapping>
+        <filter-name>
+            UserDataConstraintFilter
+        </filter-name>
+        <url-pattern>
+            /*
+        </url-pattern>
+    </filter-mapping>
+
+    <!-- BasicAuthFilter filters all request/reponse-->
+    <filter-mapping>
+        <filter-name>
+            BasicAuthFilter
+        </filter-name>
+        <url-pattern>
+            /*
+        </url-pattern>
+    </filter-mapping>
+
+    <!-- Login redirect filter filters just the login jsps -->
+    <filter-mapping>
+        <filter-name>
+            LoginRedirectFilter
+        </filter-name>
+        <url-pattern>
+            /login/
+        </url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>
+            LoginRedirectFilter
+        </filter-name>
+        <url-pattern>
+            /login?error=true
+        </url-pattern>
+    </filter-mapping>
+
+    <!-- Mappings for Basic Auth public APIs -->
+    <filter-mapping>
+        <filter-name>
+            AtomBASecurityFilter
+        </filter-name>
+        <url-pattern>
+            /atom/search/*
+        </url-pattern>
+    </filter-mapping>
+
+    <!-- AtomSecurityFilter filters all ATOM APIs -->
+
+    <filter-mapping>
+        <filter-name>
+            AtomSecurityFilter
+        </filter-name>
+        <url-pattern>
+            /atom/mysearch/*
+        </url-pattern>
+    </filter-mapping>
+
+    <!--
+    <filter-mapping> <filter-name>AtomSecurityFilter</filter-name>
+    <url-pattern>/atom/notifications/*</url-pattern>
+    </filter-mapping>
+    -->
+
+    <!-- Limit form based auth to POST -->
+    <filter-mapping>
+        <filter-name>
+            LoginOverPOSTFilter
+        </filter-name>
+        <url-pattern>
+            /j_security_check
+        </url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>
+            struts2
+        </filter-name>
+        <url-pattern>
+            /admin/*
+        </url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>
+            struts2
+        </filter-name>
+        <url-pattern>
+            /web/*
+        </url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>
+            struts2
+        </filter-name>
+        <url-pattern>
+            /serviceconfig
+        </url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>
+            ConnectionsThemeFilter
+        </filter-name>
+        <url-pattern>
+            /nav/common/styles/*
+        </url-pattern>
+        <dispatcher>
+            REQUEST
+        </dispatcher>
+        <dispatcher>
+            FORWARD
+        </dispatcher>
+    </filter-mapping>
+
+    <filter-mapping>
+		<filter-name>BookmarkletRedirectFor301Filter</filter-name>
+    	<url-pattern>/bookmarklet/*</url-pattern>
+	</filter-mapping>
+
+    <!-- *********************************************************************************************************************
+    ************************************************************************************************ SERVLETS
+    ************************************************************************************************************************** -->
+
+
+    <!--  Create virtual path with build # for static resources -->
+    <servlet>
+        <servlet-name>
+            StaticContentForwardServlet
+        </servlet-name>
+        <servlet-class>
+            com.ibm.lconn.core.web.cache.StaticContentForwardServlet
+        </servlet-class>
+        <init-param>
+            <param-name>
+                servletPathPrefix
+            </param-name>
+            <param-value>
+                /static
+            </param-value>
+        </init-param>
+    </servlet>
+
+    <servlet>
+        <servlet-name>
+            ConnectionsStaticContentForwardServlet
+        </servlet-name>
+        <servlet-class>
+            com.ibm.lconn.core.web.cache.ConnectionsStaticContentForwardServlet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>
+            ConnectionsStaticContentForwardServlet
+        </servlet-name>
+        <url-pattern>
+            /static/*
+        </url-pattern>
+    </servlet-mapping>
+
+    <!-- Ajax Proxy -->
+    <servlet>
+        <servlet-name>
+            ProxyServlet
+        </servlet-name>
+        <servlet-class>
+            com.ibm.lconn.core.proxy.LCProxyServlet
+        </servlet-class>
+        <init-param>
+            <description>
+                Component name for override
+            </description>
+            <param-name>
+                componentname
+            </param-name>
+            <param-value>
+                homepage
+            </param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>
+            ProxyServlet
+        </servlet-name>
+        <url-pattern>
+            /web/proxy/*
+        </url-pattern>
+    </servlet-mapping>
+	<servlet-mapping>
+        <servlet-name>
+            ProxyServlet
+        </servlet-name>
+        <url-pattern>
+            /ajaxProxy/*
+        </url-pattern>
+    </servlet-mapping>
+
+    <!-- end Ajax Proxy -->
+
+    <!-- ServiceConfig servlet -->
+    <servlet>
+        <description>
+        </description>
+        <display-name>
+            ServiceConfigServlet
+        </display-name>
+        <servlet-name>
+            ServiceConfigServlet
+        </servlet-name>
+        <servlet-class>
+            com.ibm.lconn.homepage.web.servlet.ServiceConfigServlet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>
+            ServiceConfigServlet
+        </servlet-name>
+        <url-pattern>
+            /serviceconfigs
+        </url-pattern>
+    </servlet-mapping>
+    <!-- End ServiceConfig servlet -->
+
+    <!-- Servlet to provide BasicAuth challenges -->
+    <servlet>
+        <servlet-name>
+            HomepageBasicAuthServlet
+        </servlet-name>
+        <servlet-class>
+            com.ibm.lconn.homepage.web.servlet.BasicAuthServlet
+        </servlet-class>
+        <load-on-startup>
+            1
+        </load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>
+            HomepageBasicAuthServlet
+        </servlet-name>
+        <url-pattern>
+            /auth/BasicAuth/*
+        </url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>
+            css-base
+        </servlet-name>
+        <servlet-class>
+            com.ibm.lconn.core.web.css.ConnectionsStylesheet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>
+            css-base
+        </servlet-name>
+        <url-pattern>
+            /nav/common/styles/base/base.css
+        </url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>
+            css-theme
+        </servlet-name>
+        <servlet-class>
+            com.ibm.lconn.core.web.css.ConnectionsStylesheet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>
+            css-theme
+        </servlet-name>
+        <url-pattern>
+            /WEB-INF/css/theme
+        </url-pattern>
+    </servlet-mapping>
+
+    <!-- *********************************************************************************************************************
+    ************************************************************************************************ REDIRECTS
+    ************************************************************************************************************************** -->
+
+    <servlet>
+        <servlet-name>
+            GetUserPrefRedirect
+        </servlet-name>
+        <servlet-class>
+            com.ibm.lconn.homepage.web.servlet.GenericRedirectServlet
+        </servlet-class>
+        <init-param>
+            <param-name>
+                redirectURL
+            </param-name>
+            <param-value>
+                /homepage
+            </param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>
+            GetUserPrefRedirect
+        </servlet-name>
+        <url-pattern>
+            /web/getuserpref
+        </url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>
+            LoginRedirectServlet
+        </servlet-name>
+        <servlet-class>
+            com.ibm.lconn.homepage.web.servlet.LoginRedirectServlet
+        </servlet-class>
+        <init-param>
+        	<param-name>
+        		service.name
+        	</param-name>
+        	<param-value>
+        		homepage
+        	</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>
+            LoginRedirectServlet
+        </servlet-name>
+        <url-pattern>
+            /web/login_redirect
+        </url-pattern>
+    </servlet-mapping>
+
+    <!-- *********************************************************************************************************************
+    ************************************************************************************************ PROXY SERVLET
+    ************************************************************************************************************************** -->
+
+    <servlet>
+        <servlet-name>
+            SearchProxyServlet
+        </servlet-name>
+        <servlet-class>
+            com.ibm.lconn.homepage.web.servlet.SearchProxyServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>
+            SearchProxyServlet
+        </servlet-name>
+        <url-pattern>
+            /atom/search/*
+        </url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>
+            SearchProxyServlet
+        </servlet-name>
+        <url-pattern>
+            /atomfba/search/*
+        </url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>
+            MySearchProxyServlet
+        </servlet-name>
+        <servlet-class>
+            com.ibm.lconn.homepage.web.servlet.SearchProxyServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>
+            MySearchProxyServlet
+        </servlet-name>
+        <url-pattern>
+            /atom/mysearch/*
+        </url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>
+            MySearchProxyServlet
+        </servlet-name>
+        <url-pattern>
+            /atomfba/mysearch/*
+        </url-pattern>
+    </servlet-mapping>
+
+
+    <!-- *********************************************************************************************************************
+    ************************************************************************************************ SECURITY CONSTRAINTS
+    ************************************************************************************************************************** -->
+
+    <!-- Secure Admin page and actions -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>
+                Secure Catalog Administration
+            </web-resource-name>
+            <url-pattern>
+                /admin/*
+            </url-pattern>
+            <http-method>
+                GET
+            </http-method>
+            <http-method>
+                POST
+            </http-method>
+            <http-method>
+                PUT
+            </http-method>
+            <http-method>
+                DELETE
+            </http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>
+                admin
+            </role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <!-- Unsecure Atom APIs -->
+    <security-constraint>
+        <display-name>
+            Unsecure Atom APIs
+        </display-name>
+        <web-resource-collection>
+            <web-resource-name>
+                Atom APIs
+            </web-resource-name>
+            <description/>
+            <url-pattern>
+                /atomfba/search/*
+            </url-pattern>
+            <http-method>
+                GET
+            </http-method>
+            <http-method>
+                PUT
+            </http-method>
+            <http-method>
+                POST
+            </http-method>
+            <http-method>
+                DELETE
+            </http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>
+                reader
+            </role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <!-- Secure main content and Atom APIs -->
+    <security-constraint>
+        <display-name>
+            Secure Main content and Atom APIs
+        </display-name>
+        <web-resource-collection>
+            <web-resource-name>
+                Homepage content
+            </web-resource-name>
+            <description/>
+            <url-pattern>
+                /
+            </url-pattern>
+            <url-pattern>
+                /web/*
+            </url-pattern>
+			<url-pattern>
+                /ajaxProxy/*
+            </url-pattern>
+            <url-pattern>
+                /web/widgets/*
+            </url-pattern>
+            <url-pattern>
+                /script/*
+            </url-pattern>
+            <url-pattern>
+                /atomfba/mysearch/*
+            </url-pattern>
+            <!--
+            <url-pattern> /atomfba/notifications/* </url-pattern>
+            -->
+            <http-method>
+                GET
+            </http-method>
+            <http-method>
+                PUT
+            </http-method>
+            <http-method>
+                POST
+            </http-method>
+            <http-method>
+                DELETE
+            </http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>
+                person
+            </role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <!-- Secure main content and Atom APIs -->
+    <security-constraint>
+        <display-name>
+            Secure Metrics page
+        </display-name>
+        <web-resource-collection>
+            <web-resource-name>
+                Server Metrics
+            </web-resource-name>
+            <description/>
+            <url-pattern>
+                /web/servermetrics/*
+            </url-pattern>
+            <http-method>
+                GET
+            </http-method>
+            <http-method>
+                PUT
+            </http-method>
+            <http-method>
+                POST
+            </http-method>
+            <http-method>
+                DELETE
+            </http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>
+                metrics-reader
+            </role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <!-- Secure Login Page -->
+    <security-constraint>
+        <display-name>
+            Secure Login page
+        </display-name>
+        <web-resource-collection>
+            <web-resource-name>
+                login page resource
+            </web-resource-name>
+            <description/>
+            <url-pattern>
+                /login/*
+            </url-pattern>
+            <url-pattern>
+                /login?error=true
+            </url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>
+                Permit 'everyone' to view login page but enforce security.
+            </description>
+            <role-name>
+                everyone
+            </role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>
+                CONFIDENTIAL
+            </transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
+    <!-- Home Page -->
+    <security-constraint>
+        <display-name>
+            Display Homepage
+        </display-name>
+        <web-resource-collection>
+            <web-resource-name>
+                homepage resource
+            </web-resource-name>
+            <description/>
+            <url-pattern>
+                /web/displayHomePage.action
+            </url-pattern>
+            <url-pattern>
+                /web/homepageRedirectAction.action
+            </url-pattern>
+            <url-pattern>
+                /web/updates/
+            </url-pattern>
+            <url-pattern>
+                /
+            </url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>
+                Permit 'everyone' to view home page. Security is enforced by homepageAuth.jspf.
+            </description>
+            <role-name>
+                everyone
+            </role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <!-- Secure CSS and Images -->
+    <security-constraint>
+        <display-name>
+            secure UI constraint
+        </display-name>
+        <web-resource-collection>
+            <web-resource-name>
+                secureUI
+            </web-resource-name>
+            <url-pattern>
+                /common/*
+            </url-pattern>
+            <url-pattern>
+                /images/*
+            </url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>
+                everyone
+            </role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <!-- *********************************************************************************************************************
+    ************************************************************************************************ SECURITY ROLES
+    ************************************************************************************************************************** -->
+
+    <security-role>
+        <description>
+            Everyone, use for securing login page.
+        </description>
+        <role-name>
+            everyone
+        </role-name>
+    </security-role>
+    <security-role>
+        <description>
+            Logical role for read-only access to the application. Mapped to 'everyone' by default.
+        </description>
+        <role-name>
+            reader
+        </role-name>
+    </security-role>
+    <security-role>
+        <description>
+            Logical role for read/write access to the application. Mapped to 'allAuthenticated' by default.
+        </description>
+        <role-name>
+            person
+        </role-name>
+    </security-role>
+    <security-role>
+        <description>
+            Logical admin role. No default mappings.
+        </description>
+        <role-name>
+            admin
+        </role-name>
+    </security-role>
+    <security-role>
+        <description>
+            Logical role for metrics read-only access to the application. Mapped to 'everyone' by default.
+        </description>
+        <role-name>
+            metrics-reader
+        </role-name>
+    </security-role>
+
+
+    <!-- *********************************************************************************************************************
+    ************************************************************************************************ LOGIN CONFIG
+    ************************************************************************************************************************** -->
+
+    <login-config>
+        <auth-method>
+            FORM
+        </auth-method>
+        <form-login-config>
+            <form-login-page>
+                /login/
+            </form-login-page>
+            <form-error-page>
+                /login/?error=true
+            </form-error-page>
+        </form-login-config>
+    </login-config>
+
+
+    <!-- *********************************************************************************************************************
+    ************************************************************************************************ ERROR PAGES
+    ************************************************************************************************************************** -->
+
+    <error-page>
+        <error-code>
+            403
+        </error-code>
+        <location>
+            /nav/templates/error.jsp
+        </location>
+    </error-page>
+    <error-page>
+        <error-code>
+            404
+        </error-code>
+        <location>
+            /nav/templates/error.jsp
+        </location>
+    </error-page>
+    <error-page>
+        <error-code>
+            500
+        </error-code>
+        <location>
+            /nav/templates/error.jsp
+        </location>
+    </error-page>
+    <error-page>
+        <error-code>
+            503
+        </error-code>
+        <location>
+            /nav/templates/error.jsp
+        </location>
+    </error-page>
+
+</web-app>

@@ -1,0 +1,67 @@
+<%@page session="true" contentType="text/html; charset=UTF-8"
+	buffer="128kb"%>
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- IBM Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright IBM Corp. 2010, 2016                                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+
+<%-- "Visual" header at the top of the page --%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@ taglib prefix="core" uri="http://www.ibm.com/lconn/tags/external"%>
+	
+<%-- Navigation bar to other LC components --%>
+<tiles:insertAttribute name="navigationBar" />
+
+<div class="lotusTitleBar2">
+	<div class="lotusWrapper">
+		<div class="lotusInner" role="region" aria-label="<fmt:message key='jsp.homepage.home'/>"> 
+			<tiles:insertAttribute name="homeHeading" />
+			
+			<%-- The search box --%>
+			<script type="text/javascript" >
+				var lconn_core_thirdPartySearchEngines = <core:externalSearchTag includeScriptTags="false" />
+			</script>
+			<tiles:insertAttribute name="searchBox" />
+		</div>
+	</div>
+</div>
+
+<%--
+<fmt:message key="jsp.homepage.lotusBar.updates" var="lotusBarUpdates" />
+<jsp:param name="placeName" value="${lotusBarUpdates}"/>
+
+ --%>
+	
+<tiles:insertAttribute name="placeBar" ignore="true" />
+
+<%-- Seed the page with the activityStream config --%>
+<script type="text/javascript">
+<c:choose>
+	<c:when test="${empty activityStreamConfig}">
+window.activityStreamConfig = {};
+	</c:when>
+	<c:otherwise>
+window.activityStreamConfig = ${activityStreamConfig};
+	</c:otherwise>
+</c:choose>
+window.activityStreamConfig = com.ibm.social.as.config.ActivityStreamConfigProcessor.processConfig(window.activityStreamConfig);
+window.activityStreamConfig.isProcessed = true;
+</script>
+
+<%-- Conditionally add the v8 main.js and main.css to the page --%>
+<c:if test="${isCnx8UI}">
+	<link id="cnx8_homepage_css" type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/v8/main.css">
+	<script id="cnx8_homepage_js" type="text/javascript" src="<%= request.getContextPath() %>/v8/main.js"></script>
+</c:if> 

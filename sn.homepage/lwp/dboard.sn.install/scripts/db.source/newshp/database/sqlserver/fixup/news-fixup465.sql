@@ -1,0 +1,18 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2007, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+-- {COPYRIGHT}
+
+-- 110166: fixup465 - rename BOARD_OBJECT_REFERENCE.META_TYPE to BOARD_OBJECT_REFERENCE.TYPE
+EXEC sp_rename 'HOMEPAGE.BOARD_OBJECT_REFERENCE.MIME_TYPE', 'TYPE', 'column';

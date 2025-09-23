@@ -1,0 +1,242 @@
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- HCL Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright HCL Technologies Limited. 2008, 2021                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+
+<%--wscExemptBegin--%>
+<%--wscExemptEnd--%>
+
+<%@ page session="true" contentType="text/html; charset=UTF-8"
+	buffer="128kb"%>
+<%@ page errorPage="/web/jsp/common/errorPage.jsp"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="bidi" uri="http://www.ibm.com/lconn/tags/bidiutil"%>
+<%@ taglib prefix="lc-cache" uri="http://www.ibm.com/connections/core/cache"%>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+
+<%@page import="java.util.ResourceBundle"%>
+
+<%-- Form based auth stuff --%>
+<jsp:include page='../web/jsp/common/auth.jspf' flush="false" />
+
+<script type="text/javascript">
+	dojo.require("lconn.homepage.dijit.admin.WidgetTabConfiguration");
+	
+	dojo.addOnLoad(function() {
+		new lconn.homepage.utils.toolbar.build(dojo.byId("homepageLeftNavigationMenu"));
+	    dojo.place(dojo.byId("adminTipBox"), dojo.byId("homepageLeftNavigationMenuContainer"), "last");
+	})
+</script>
+
+<div id="lotusMain" class="lotusMain">
+
+<div id="lotusColLeft" class="lotusColLeft">
+	<tiles:insertAttribute name="leftColumn" />
+	
+	<%-- The tips are under the side navigation --%>
+	<div id="adminTipBox" class="lotusInfoBox" class="LotusColRight" role="complementary" aria-label="<fmt:message key="jsp.admin.tip.header" />">
+		<h3><fmt:message key="jsp.admin.tips" /></h3>
+		<h4><fmt:message key="jsp.admin.tip.header" /></h4>
+		<ul>
+			<li><fmt:message key="jsp.admin.tip.1" /></li>
+			<li><fmt:message key="jsp.admin.tip.2" /></li>
+		</ul>
+	</div>
+</div>
+
+<div id="lotusContent" class="lotusContent" role="main">
+<label id="refreshWarn" role="presentation" class="lotusAccess"><fmt:message key="jsp.admin.alert.willupdate" /></label>
+<div class="lotusHeader">
+<h1><fmt:message key="jsp.admin.title" /></h1>
+<div class="lotusDetails">
+<p><fmt:message key="jsp.admin.description" /></p>
+</div>
+</div>
+
+<%--  Beginning main administrators page --%> 
+
+	<table class="lotusTable" role="presentation" cellspacing="0" cellpadding="0" border="0">
+		<tbody>
+
+
+			<tr>
+				<td>
+					<div id="widgetTabConfiguration" class="lotusSection">
+						<div dojoType="lconn.homepage.dijit.admin.WidgetTabConfiguration" requestUrl='${pageContext.request.contextPath}/admin/rest/widgetTab.action'>
+						</div>
+					</div>
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
+					<form id="clearWidgetCache" name="clearWidgetCache" action="blank" method="post">
+						<span class="lotusBtn lotusBtnSpecial cnxSecondaryBtn"> 
+							<a role="button" href="javascript:widgetAdmin.submitForm('disabled', 'clearWidgetCache');"><fmt:message key="jsp.admin.button.refresh" /></a>
+						</span>
+					</form>
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
+				<div class="lotusSection">
+					<fmt:message key="jsp.admin.widgets.click" />
+
+					<c:choose>
+						<c:when test="${! empty errorMessageKey}">
+							<span id="adminError" class="lotusMessage" style="display: block;"> 
+								<img alt="Error" class="lconnSprite lconnSprite-iconError16" 
+									 src="<lc-cache:uri template="{webResourcesRoot}/web/com.ibm.lconn.core.styles.oneui3/images/blank.gif"/>" />
+								<span id="adminErrorText">
+									<fmt:message key="${errorMessageKey}"/>
+								</span>
+							</span>
+						</c:when>
+						<c:otherwise>					
+							<span id="adminError" class="lotusMessage" style="display: none;"> 
+								<img alt="Error" class="lconnSprite lconnSprite-iconError16" 
+									 src="<lc-cache:uri template="{webResourcesRoot}/web/com.ibm.lconn.core.styles.oneui3/images/blank.gif"/>" />
+								<span id="adminErrorText"></span>
+							</span>
+						</c:otherwise>
+					</c:choose>		
+				</div>
+				<div class="lotusContentColTwo lotusForm">
+				<form id="enabledForm" name="enabledForm" action="blank" method="post">
+				<input type="hidden" id="X-Update-Nonce" name="X-Update-Nonce" value="${xUpdateNonce}" />
+				<table class="lotusTable" role="presentation" cellspacing="0" cellpadding="0" border="0">
+					<tr>
+						<td>
+						<div class="lotusHeader">
+						<h1 id="enabledWidgetsTitle" style="color: #00c209;">
+							<fmt:message key="jsp.admin.enabled.widgets" />
+						</h1>
+						<div class="lotusDetails">
+						<p><fmt:message key="jsp.admin.enabled.widgets.comment" /></p>
+						</div>
+						</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="hidden" name="enabled" value="true" /> 
+						 	<select role="listbox" name="widgetID" size="15" style="width: 250px" id="enabledWidgetsSelect" aria-labelledby="enabledWidgetsTitle" tabindex="0">
+								<c:forEach var="widget" items="${enabledWidgets}" varStatus="status">
+									<c:choose>
+										<c:when test="${status.first}">
+											<option selected="selected" role="option" value="${widget.widgetId}" system="${widget.isSystem}"
+												cachable="${widget.cachable}">${widget.title}</option>
+										</c:when>
+										<c:otherwise>										
+											<option role="option" value="${widget.widgetId}" system="${widget.isSystem}"
+												cachable="${widget.cachable}">${widget.title}</option>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						<span class="lotusBtn lotusBtnSpecial lotusLeft cnxSecondaryBtn">
+						<a role="button" aria-describedby="refreshWarn" aria-label="<fmt:message key="jsp.admin.button.disable" />" href="javascript:widgetAdmin.submitForm('enabled','disableWidgets');">
+						<fmt:message key="jsp.admin.button.disable" /></a> 
+						</span> 
+						
+						<span class="lotusBtn lotusLeft cnxSecondaryBtn">
+						<a role="button" href="javascript:widgetAdmin.submitForm('enabled','openEditForm');">
+						<fmt:message key="jsp.admin.button.edit" /></a> 
+						</span> 
+						
+						<span class="lotusBtn cnxSecondaryBtn">
+						<a role="button" href="javascript:widgetAdmin.submitForm('enabled','removeWidgets');">
+						<fmt:message key="jsp.admin.button.remove" /></a>
+						</span>
+						
+						</td>
+					</tr>
+				</table>
+				</form>
+				</div>
+
+				<div class="lotusContentColOne lotusForm">
+				<form id="disabledForm" name="disabledForm" action="blank" method="post">
+				<input type="hidden" id="X-Update-Nonce" name="X-Update-Nonce" value="${xUpdateNonce}" />
+				<table class="lotusTable" role="presentation" cellspacing="0" cellpadding="0" border="0">
+					<tr>
+						<td>
+						<div class="lotusHeader" >
+						<h1 id="disabledWidgetsTitle" style="color: #ff0305;">
+							<fmt:message key="jsp.admin.disabled.widgets" />
+						</h1>
+						<div class="lotusDetails">
+						<p><fmt:message key="jsp.admin.disabled.widgets.comment" /></p>
+						</div>
+						</div>
+						</td>
+					</tr>
+					<tr>
+						<td><input type="hidden" name="disabled" value="true" /> 
+						<select name="widgetID" size="15" style="width: 250px" id="disabledWidgetsSelect" aria-labelledby="disabledWidgetsTitle" tabindex="0"
+							 <c:choose>
+							 	<c:when test="${ disabledWidgets.size()==0}"> aria-disabled="true"</c:when>
+							 	<c:otherwise> role="listbox"</c:otherwise>
+							 </c:choose>
+						>
+							<c:forEach var="widget" items="${disabledWidgets}" varStatus="status">
+								<c:choose>
+									<c:when test="${status.first}">
+										<option selected="selected" role="option" value="${widget.widgetId}" system="${widget.isSystem}"
+											cachable="${widget.isMarkedCachable}">${widget.title}</option>
+									</c:when>
+									<c:otherwise>
+										<option role="option" value="${widget.widgetId}" system="${widget.isSystem}"
+											cachable="${widget.isMarkedCachable}">${widget.title}</option>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+						</select></td>
+					</tr>
+					<tr>
+						<td>
+						<span class="lotusBtn lotusBtnAction lotusLeft cnxSecondaryBtn"> 
+						<a  role="button" aria-describedby="refreshWarn" aria-label="<fmt:message key="jsp.admin.button.enable" />" href="javascript:widgetAdmin.submitForm('disabled','enableWidgets');">
+							<fmt:message key="jsp.admin.button.enable" /></a> </span> 
+						
+						<span class="lotusBtn lotusLeft cnxSecondaryBtn"> 
+						<a role="button" href="javascript:widgetAdmin.submitForm('disabled','openEditForm');"><fmt:message key="jsp.admin.button.edit" /></a> </span> 
+						<span class="lotusBtn cnxSecondaryBtn"> 
+						<a role="button" href="javascript:widgetAdmin.submitForm('disabled','removeWidgets');"><fmt:message key="jsp.admin.button.remove" /></a> </span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						<span class="lotusBtn lotusBtnSpecial cnxSecondaryBtn"> 
+						<a role="button" href="javascript:widgetAdmin.submitForm('disabled', 'newOpenEditForm');"><fmt:message key="jsp.admin.button.add" /></a> </span>
+						</td>
+					</tr>
+				</table>
+				</form>
+				</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	
+</div>
+<%--end content--%></div>
+
+<%--end main--%>

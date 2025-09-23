@@ -1,0 +1,90 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2007, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+-- {COPYRIGHT}
+
+---------------------------------------------------------------
+-- HOMEPAGE.NR_CUSTOM_LIST
+---------------------------------------------------------------
+CREATE TABLE HOMEPAGE.NR_CUSTOM_LIST (
+	CUSTOM_LIST_ID nvarchar(36) NOT NULL,
+	CUSTOM_LIST_NAME nvarchar(1024) NOT NULL,
+	CREATION_TIME DATETIME NOT NULL,
+	UPDATE_TIME DATETIME NOT NULL,
+	CUSTOM_LIST_SUMMARY nvarchar(2048),
+	ORGANIZATION_ID nvarchar(36) NOT NULL,
+	PERSON_ID nvarchar(36) NOT NULL,
+	STATE NUMERIC(5,0) NOT NULL,
+	PERSON_DISPLAY nvarchar(36)
+) ON [PRIMARY]
+GO
+
+ALTER TABLE HOMEPAGE.NR_CUSTOM_LIST 
+  	ADD CONSTRAINT PK_CUSTOM_LIST_ID PRIMARY KEY(CUSTOM_LIST_ID);	
+  	
+ALTER TABLE HOMEPAGE.NR_CUSTOM_LIST
+  	ADD CONSTRAINT FK_CUST_L_PER_ID FOREIGN KEY(PERSON_ID) REFERENCES HOMEPAGE.PERSON (PERSON_ID);
+  	
+ALTER TABLE HOMEPAGE.NR_CUSTOM_LIST
+  	ADD CONSTRAINT FK_CUST_L_PER_D_ID FOREIGN KEY(PERSON_DISPLAY) REFERENCES HOMEPAGE.PERSON (PERSON_ID);  	
+  	
+ALTER TABLE HOMEPAGE.NR_CUSTOM_LIST
+  	ADD CONSTRAINT FK_CUST_L_ORG_ID FOREIGN KEY(ORGANIZATION_ID) REFERENCES HOMEPAGE.MT_ORGANIZATION (ORGANIZATION_ID);
+  	
+CREATE INDEX NR_CUSTOM_LIST_PER_ORG_IDX
+	ON HOMEPAGE.NR_CUSTOM_LIST (PERSON_ID, ORGANIZATION_ID);
+	
+CREATE INDEX NR_CUSTOM_LIST_PER_D_IDX
+	ON HOMEPAGE.NR_CUSTOM_LIST (PERSON_DISPLAY);	
+
+
+---------------------------------------------------------------
+-- HOMEPAGE.NR_CUSTOM_LIST_ITEM
+---------------------------------------------------------------
+CREATE TABLE HOMEPAGE.NR_CUSTOM_LIST_ITEM (
+	CUSTOM_LIST_ITEM_ID nvarchar(36) NOT NULL,
+	CUSTOM_LIST_ID nvarchar(36) NOT NULL,
+	ITEM_ID nvarchar(256) NOT NULL,
+	CUSTOM_LIST_ITEM_NAME nvarchar(1024) NOT NULL,
+	CREATION_TIME DATETIME NOT NULL,
+	UPDATE_TIME DATETIME NOT NULL,
+	TYPE nvarchar(256) NOT NULL,
+	CUSTOM_LIST_ITEM_SUMMARY VARCHAR(2048),
+	ORGANIZATION_ID nvarchar(36) NOT NULL,
+	STATE NUMERIC(5,0) NOT NULL,
+	PERSON_DISPLAY nvarchar(36)
+) ON [PRIMARY]
+GO
+
+ALTER TABLE HOMEPAGE.NR_CUSTOM_LIST_ITEM 
+  	ADD CONSTRAINT PK_CUSTOM_LIST_ITEM_ID PRIMARY KEY(CUSTOM_LIST_ITEM_ID);
+  	
+ALTER TABLE HOMEPAGE.NR_CUSTOM_LIST_ITEM 
+  	ADD CONSTRAINT FK_CUSTOM_LIST_ID FOREIGN KEY(CUSTOM_LIST_ID) REFERENCES HOMEPAGE.NR_CUSTOM_LIST (CUSTOM_LIST_ID);
+
+ALTER TABLE HOMEPAGE.NR_CUSTOM_LIST_ITEM 
+  	ADD CONSTRAINT FK_CUST_L_I_ORG_ID FOREIGN KEY(ORGANIZATION_ID) REFERENCES HOMEPAGE.MT_ORGANIZATION (ORGANIZATION_ID);
+  	
+ALTER TABLE HOMEPAGE.NR_CUSTOM_LIST_ITEM
+  	ADD CONSTRAINT FK_CUST_L_I_PER_D_ID FOREIGN KEY(PERSON_DISPLAY) REFERENCES HOMEPAGE.PERSON (PERSON_ID);  	
+  	
+CREATE INDEX NR_CUSTOM_LIST_ID_ORG_IDX
+	ON HOMEPAGE.NR_CUSTOM_LIST_ITEM (CUSTOM_LIST_ID, ORGANIZATION_ID);
+	
+CREATE UNIQUE INDEX NR_CUSTOM_LIST_ITEM_IDX_UNQ
+	ON HOMEPAGE.NR_CUSTOM_LIST_ITEM (ITEM_ID, CUSTOM_LIST_ID);
+	
+CREATE INDEX NR_CUSTOM_LIST_ITEM_PER_D_IDX
+	ON HOMEPAGE.NR_CUSTOM_LIST_ITEM (PERSON_DISPLAY);	
+GO

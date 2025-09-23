@@ -1,0 +1,27 @@
+// Squad : Gaia, Teams Channel Name : Pipeline Notifications
+
+@Library('quickstart') _
+
+def param = [
+    "SERVER_POOL":"Pipeline",
+    "dbFileName":"database.properties",
+    "global_ENABLE_CODE_COVERAGE":false,
+    "UT":["Stage":["UTStages":[
+                     "Homepage":[
+	  	     "JUnitResultLoc":"src/sn.homepage/lwp/homepage.tests/TEST-com.ibm.lconn.homepage.test.TestAllJUnit4.xml",
+	  	     "JaCoCoExePath":"src/sn.homepage/lwp/homepage.tests/jacoco.exec",
+	  	     "utArchiveArtifactsInclude":"create_db.log,jacoco_report*",
+	  	     "utArchiveArtifactsExclude":""]]]
+         ],
+    "DB":["Stage":["DBStages":["Homepage":[]]]],
+    "BVT":["GUI_Test":["bvtGUIStages":[
+                         "Homepage":[
+	  	         "NodeLable":"HomepageNews_BVT",
+	  		 "CI_PREBVT_TEST_NAME":"Homepage",
+	  		 "CI_PREBVT_TEST_CLASS":"com.ibm.conn.auto.tests.homepage.BVT_Level_2_Homepage"]]
+	  	    ],
+           "Collect_Coverage":["bvtCoverageStages":["Homepage":["bvtCoverageStages":["bvtCoverageParam":"Homepage"]]]]
+          ],
+    // "PTI":["Promote_Build":["PTIStages":["Homepage":["NodeLable":"write_BVTBuildLabel"]]]]
+]
+JenkinsBlue(param)

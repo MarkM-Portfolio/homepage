@@ -1,0 +1,157 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2008, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+--------------------------------------
+-- CREATE THE DATABASE
+--------------------------------------
+
+CREATE DATABASE HOMEPAGE USING CODESET UTF-8 TERRITORY US;
+
+CONNECT TO HOMEPAGE;
+
+CREATE BUFFERPOOL HOMEPAGE4KBP IMMEDIATE SIZE 20000 AUTOMATIC PAGESIZE 4K;
+
+CREATE LARGE TABLESPACE HOMEPAGETABSPACE  PAGESIZE 4K MANAGED BY DATABASE
+        USING (FILE 'HOMEPAGETABSPACE' 20000)
+        EXTENTSIZE 4
+        PREFETCHSIZE AUTOMATIC
+        BUFFERPOOL HOMEPAGE4KBP
+        AUTORESIZE YES
+        INCREASESIZE 20 M
+        MAXSIZE NONE;
+    
+--------------------------------------
+-- CREATE THE SCHEMA
+--------------------------------------    
+        
+CREATE SCHEMA HOMEPAGE;
+
+--------------------------------------
+-- CREATE THE TABLES
+--------------------------------------
+
+CREATE TABLE HOMEPAGE.HOMEPAGE_SCHEMA (
+	COMPKEY VARCHAR ( 36 ) NOT NULL,
+	DBSCHEMAVER INTEGER NOT NULL
+)
+IN HOMEPAGETABSPACE;
+
+CREATE TABLE HOMEPAGE.PERSON  (
+		  USER_ID VARCHAR(256) NOT NULL,
+		  USER_MAIL VARCHAR(256) NOT NULL,
+		  LAST_VISIT TIMESTAMP NOT NULL,
+		  WELCOME_MODE SMALLINT DEFAULT 1 NOT NULL
+)
+IN HOMEPAGETABSPACE;
+
+CREATE TABLE HOMEPAGE.USER_WIDGET_PREF  (
+	USER_WIDGET_PREF_ID VARCHAR(36) NOT NULL,
+	USER_ID VARCHAR(256) NOT NULL,
+	WIDGET_ID VARCHAR(36) NOT NULL,
+	PAGE_ID VARCHAR(36),
+	WIDGET_SETTING VARCHAR(2048),
+	MAX_MIN SMALLINT,
+	ROW_NUM INTEGER,
+	COL_NUM INTEGER,
+	SHOW_DISABLED_WIDGETS SMALLINT DEFAULT 0 NOT NULL
+)
+IN HOMEPAGETABSPACE;
+
+CREATE TABLE HOMEPAGE.WIDGET (
+		WIDGET_ID VARCHAR(36) NOT NULL,
+		WIDGET_TITLE VARCHAR(256) NOT NULL,
+		WIDGET_TEXT VARCHAR(256),
+		WIDGET_URL VARCHAR(256) NOT NULL,
+		WIDGET_ICON VARCHAR(256),
+		WIDGET_ENABLED SMALLINT DEFAULT 0 NOT NULL,
+		WIDGET_SYSTEM SMALLINT DEFAULT 0 NOT NULL,
+		WIDGET_HOMEPAGE_SPECIFIC SMALLINT DEFAULT 0 NOT NULL
+)
+IN HOMEPAGETABSPACE;	
+
+CREATE TABLE HOMEPAGE.PREREQ (
+		PREREQ_ID VARCHAR(36) NOT NULL,
+		APP_ID VARCHAR(36) NOT NULL,
+		WIDGET_ID VARCHAR(36) NOT NULL
+)
+IN HOMEPAGETABSPACE;
+
+--------------------------------------
+-- CREATE THE CONSTRAINTS
+--------------------------------------
+
+ALTER TABLE HOMEPAGE.PERSON 
+    ADD CONSTRAINT "PK_USER_ID" PRIMARY KEY("USER_ID");
+
+ALTER TABLE HOMEPAGE.USER_WIDGET_PREF
+    ADD CONSTRAINT "PK_USER_FP_ID" PRIMARY KEY("USER_WIDGET_PREF_ID");
+
+ALTER TABLE HOMEPAGE.WIDGET 
+	ADD CONSTRAINT "PK_WIDGET" PRIMARY KEY ("WIDGET_ID");
+
+ALTER TABLE HOMEPAGE.PREREQ 
+	ADD CONSTRAINT "PK_PREREQ" PRIMARY KEY ("PREREQ_ID");
+
+ALTER TABLE HOMEPAGE.USER_WIDGET_PREF
+    ADD CONSTRAINT "FK_USER_ID" FOREIGN KEY ("USER_ID")
+	REFERENCES HOMEPAGE.PERSON("USER_ID");
+
+ALTER TABLE HOMEPAGE.USER_WIDGET_PREF
+    ADD CONSTRAINT "FK_WIDGET_ID" FOREIGN KEY ("WIDGET_ID")
+	REFERENCES HOMEPAGE.WIDGET ("WIDGET_ID");
+
+ALTER TABLE HOMEPAGE.PREREQ 
+	ADD CONSTRAINT "FK_PREREQ_WIDGET" FOREIGN KEY ("WIDGET_ID")
+	REFERENCES HOMEPAGE.WIDGET ("WIDGET_ID")
+	ON DELETE CASCADE;
+	
+--------------------------------------
+-- CREATE THE INDEXES
+--------------------------------------
+CREATE UNIQUE INDEX "HOMEPAGE"."USERID_WIDGET_UNIQUE" 
+	ON "HOMEPAGE"."USER_WIDGET_PREF"("USER_ID" ASC, "WIDGET_ID" ASC);
+	
+--------------------------------------
+-- POPULATE THE TABLES
+--------------------------------------
+
+ INSERT INTO HOMEPAGE.HOMEPAGE_SCHEMA
+	( COMPKEY, DBSCHEMAVER) 
+ VALUES 
+	( 'HOMEPAGE', 5);	
+
+---------------------------------------
+-- RUN STATS
+---------------------------------------
+RUNSTATS ON TABLE "HOMEPAGE"."PERSON";
+RUNSTATS ON TABLE "HOMEPAGE"."USER_WIDGET_PREF";
+RUNSTATS ON TABLE "HOMEPAGE"."WIDGET";
+RUNSTATS ON TABLE "HOMEPAGE"."PREREQ";
+
+RUNSTATS ON TABLE "HOMEPAGE"."PERSON" FOR INDEXES ALL;
+RUNSTATS ON TABLE "HOMEPAGE"."USER_WIDGET_PREF" FOR INDEXES ALL;
+RUNSTATS ON TABLE "HOMEPAGE"."WIDGET" FOR INDEXES ALL;
+RUNSTATS ON TABLE "HOMEPAGE"."PREREQ" FOR INDEXES ALL;
+COMMIT;
+	
+--------------------------------------
+-- FLUSH
+--------------------------------------
+FLUSH PACKAGE CACHE DYNAMIC;
+
+--------------------------------------
+-- DISCONNECT
+--------------------------------------
+CONNECT RESET;
+DISCONNECT ALL;	

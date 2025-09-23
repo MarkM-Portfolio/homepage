@@ -1,0 +1,43 @@
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- IBM Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright IBM Corp. 2010, 2015                                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+
+<%-- Section going in the <head> of the main template used for updates and widget pages --%>
+<%-- Mainly deal with including the CSS and JS needed for the page --%>
+
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="lc-cache" uri="http://www.ibm.com/connections/core/cache"%>
+<%@ taglib prefix="lc-ui" uri="http://www.ibm.com/lconn/tags/coreuiutil" %>
+<lc-ui:serviceLink serviceName="webresources" var="urlWebResources" />
+<%@page session="true" contentType="text/html; charset=UTF-8"
+	buffer="128kb"%>
+
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="cache-control" content="private,max-age=0" />
+
+<lc-ui:favicon appname="homepage" />
+
+<title><fmt:message key="jsp.homepage.title" /></title>
+<tiles:insertAttribute name="css" />
+<tiles:insertAttribute name="bootStrapJavaScript" />
+<tiles:insertAttribute name="widgetDescriptors" ignore="true" />
+<tiles:insertAttribute name="businessCardInit" ignore="true" />
+<tiles:insertAttribute name="adminHeadJavaScript" ignore="true" />
+<script type="text/javascript">
+	dojo.subscribe(com.ibm.social.as.constants.events.CHANGEPAGETITLE, function(pageTitle){
+			document.title = "<fmt:message key="jsp.homepage.title" />"+" - "+pageTitle;
+	});
+	
+</script>

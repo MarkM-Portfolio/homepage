@@ -1,0 +1,169 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2008, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+----------------------------------------------------
+-- Script to upgrade Home Page database
+-- from Beta 1 to Connections 2.0
+----------------------------------------------------
+
+ALTER TABLE "HOMEPAGE"."USER_WIDGET_PREF"
+   ADD SHOW_DISABLED_WIDGETS NUMBER (1) DEFAULT 0 NOT NULL;
+   
+----------------------------------------------------
+-- Script to upgrade Home Page database
+-- from schema version 4 to 5
+----------------------------------------------------
+
+-- Old table to update
+--CREATE TABLE "HOMEPAGE"."WIDGET" (
+--		WIDGET_ID VARCHAR2(36) NOT NULL,
+--		WIDGET_TITLE VARCHAR2(256) NOT NULL,
+--		WIDGET_TEXT VARCHAR2(256),
+--		WIDGET_URL VARCHAR2(256) NOT NULL,
+--		WIDGET_ICON VARCHAR2(256),
+--		WIDGET_ENABLED CHAR(1) DEFAULT 'N' NOT NULL,
+--		WIDGET_SYSTEM CHAR(1) DEFAULT 'N' NOT NULL,
+--		WIDGET_HOMEPAGE_SPECIFIC CHAR(1) DEFAULT 'N' NOT NULL
+--	)
+--TABLESPACE "HOMEPAGEREGTABSPACE";
+
+-- New table updated:
+--CREATE TABLE "HOMEPAGE"."WIDGET" (
+--		WIDGET_ID VARCHAR2(36) NOT NULL,
+--		WIDGET_TITLE VARCHAR2(256) NOT NULL,
+--		WIDGET_TEXT VARCHAR2(256),
+--		WIDGET_URL VARCHAR2(256) NOT NULL,
+--		WIDGET_ICON VARCHAR2(256),
+--		WIDGET_ENABLED NUMBER(1) DEFAULT 0 NOT NULL,
+--		WIDGET_SYSTEM NUMBER(1) DEFAULT 0 NOT NULL,
+--		WIDGET_HOMEPAGE_SPECIFIC NUMBER(1) DEFAULT 0 NOT NULL
+--	)
+--TABLESPACE "HOMEPAGEREGTABSPACE";
+
+
+-- adding temp columns
+ALTER TABLE "HOMEPAGE"."WIDGET"
+   ADD WIDGET_ENABLED_TMP CHAR(1) DEFAULT 'N' NOT NULL;
+
+ALTER TABLE "HOMEPAGE"."WIDGET"
+   ADD WIDGET_SYSTEM_TMP CHAR(1) DEFAULT 'N' NOT NULL;
+   
+ALTER TABLE "HOMEPAGE"."WIDGET"
+   ADD WIDGET_HOMEPAGE_SPECIFIC_TMP CHAR(1) DEFAULT 'N' NOT NULL;
+
+-- copy from wrong columns to temp columns
+UPDATE HOMEPAGE.WIDGET 
+   SET WIDGET_ENABLED_TMP = 'N' 
+   WHERE WIDGET_ENABLED = 'N';
+UPDATE HOMEPAGE.WIDGET 
+   SET WIDGET_ENABLED_TMP = 'Y' 
+   WHERE WIDGET_ENABLED = 'Y';
+UPDATE HOMEPAGE.WIDGET 
+   SET WIDGET_ENABLED_TMP = 'N' 
+   WHERE WIDGET_ENABLED = '0';
+UPDATE HOMEPAGE.WIDGET 
+   SET WIDGET_ENABLED_TMP = 'Y' 
+   WHERE WIDGET_ENABLED = '1';
+   
+UPDATE HOMEPAGE.WIDGET 
+   SET WIDGET_SYSTEM_TMP = 'N' 
+   WHERE WIDGET_SYSTEM = 'N';
+UPDATE HOMEPAGE.WIDGET 
+   SET WIDGET_SYSTEM_TMP = 'Y' 
+   WHERE WIDGET_SYSTEM = 'Y';
+UPDATE HOMEPAGE.WIDGET 
+   SET WIDGET_SYSTEM_TMP = 'N' 
+   WHERE WIDGET_SYSTEM = '0';
+UPDATE HOMEPAGE.WIDGET 
+   SET WIDGET_SYSTEM_TMP = 'Y' 
+   WHERE WIDGET_SYSTEM = '1';
+   
+UPDATE HOMEPAGE.WIDGET 
+   SET WIDGET_HOMEPAGE_SPECIFIC_TMP = 'N' 
+   WHERE WIDGET_HOMEPAGE_SPECIFIC = 'N';
+UPDATE HOMEPAGE.WIDGET 
+   SET WIDGET_HOMEPAGE_SPECIFIC_TMP = 'Y' 
+   WHERE WIDGET_HOMEPAGE_SPECIFIC = 'Y';
+UPDATE HOMEPAGE.WIDGET 
+   SET WIDGET_HOMEPAGE_SPECIFIC_TMP = 'N' 
+   WHERE WIDGET_HOMEPAGE_SPECIFIC = '0';
+UPDATE HOMEPAGE.WIDGET 
+   SET WIDGET_HOMEPAGE_SPECIFIC_TMP = 'Y' 
+   WHERE WIDGET_HOMEPAGE_SPECIFIC = '1'; 
+
+-- delete wrong columns
+ALTER TABLE HOMEPAGE.WIDGET
+   DROP COLUMN WIDGET_ENABLED;
+
+ALTER TABLE HOMEPAGE.WIDGET
+   DROP COLUMN WIDGET_SYSTEM;
+
+ALTER TABLE HOMEPAGE.WIDGET
+   DROP COLUMN WIDGET_HOMEPAGE_SPECIFIC;
+
+-- create right columns
+ALTER TABLE HOMEPAGE.WIDGET
+   ADD WIDGET_ENABLED NUMBER(1) DEFAULT 0 NOT NULL;
+
+ALTER TABLE HOMEPAGE.WIDGET
+   ADD WIDGET_SYSTEM NUMBER(1) DEFAULT 0 NOT NULL;
+   
+ALTER TABLE HOMEPAGE.WIDGET
+   ADD WIDGET_HOMEPAGE_SPECIFIC NUMBER(1) DEFAULT 0 NOT NULL;
+
+-- translating value from temp columns to new columns
+UPDATE HOMEPAGE.WIDGET 
+   SET WIDGET_ENABLED = 0 
+   WHERE WIDGET_ENABLED_TMP = 'N';
+UPDATE HOMEPAGE.WIDGET 
+   SET WIDGET_ENABLED = 1 
+   WHERE WIDGET_ENABLED_TMP = 'Y';
+   
+UPDATE HOMEPAGE.WIDGET 
+   SET WIDGET_SYSTEM = 0 
+   WHERE WIDGET_SYSTEM_TMP = 'N';
+UPDATE HOMEPAGE.WIDGET 
+   SET WIDGET_SYSTEM = 1 
+   WHERE WIDGET_SYSTEM_TMP = 'Y';
+   
+UPDATE HOMEPAGE.WIDGET 
+   SET WIDGET_HOMEPAGE_SPECIFIC = 0 
+   WHERE WIDGET_HOMEPAGE_SPECIFIC_TMP = 'N';
+UPDATE HOMEPAGE.WIDGET 
+   SET WIDGET_HOMEPAGE_SPECIFIC = 1 
+   WHERE WIDGET_HOMEPAGE_SPECIFIC_TMP = 'Y';
+
+-- cleanup temp columns
+ALTER TABLE HOMEPAGE.WIDGET
+   DROP COLUMN WIDGET_ENABLED_TMP;
+
+ALTER TABLE HOMEPAGE.WIDGET
+   DROP COLUMN WIDGET_SYSTEM_TMP;
+
+ALTER TABLE HOMEPAGE.WIDGET
+   DROP COLUMN WIDGET_HOMEPAGE_SPECIFIC_TMP;
+   
+-- update schema version
+UPDATE HOMEPAGE.HOMEPAGE_SCHEMA
+   SET   DBSCHEMAVER = 5
+   WHERE COMPKEY = 'HOMEPAGE';
+   
+COMMIT;
+
+--------------------------------------
+-- DISCONNECT
+--------------------------------------
+DISCONNECT ALL;
+
+QUIT;

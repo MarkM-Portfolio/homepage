@@ -1,0 +1,169 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2007, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+-- {COPYRIGHT}
+
+
+DROP TABLE HOMEPAGE.OAUTH2_TOKEN;
+DROP TABLE HOMEPAGE.OAUTH2_GADGET_BINDING;
+DROP TABLE HOMEPAGE.OAUTH1_CONTEXT;
+DROP TABLE HOMEPAGE.OAUTH1_CLIENT;
+DROP TABLE HOMEPAGE.OAUTH1_PROVIDER;
+DROP TABLE HOMEPAGE.OAUTH1_TOKEN;
+
+
+-------------------------------------------
+-- HOMEPAGE.OAUTH1_TOKEN
+-------------------------------------------	 
+CREATE TABLE HOMEPAGE.OAUTH1_TOKEN (
+	ID nvarchar(256) NOT NULL PRIMARY KEY,
+	TOKEN nvarchar(1024) NOT NULL,
+	SECRET nvarchar(1024) NOT NULL,
+	EXPIRATION DATETIME,
+	CREATED DATETIME NOT NULL,
+	MODIFIED DATETIME NOT NULL
+) ON [PRIMARY]
+GO
+
+-------------------------------------------
+-- HOMEPAGE.OAUTH2_TOKEN
+-------------------------------------------
+CREATE TABLE HOMEPAGE.OAUTH2_TOKEN (
+  ID nvarchar(254) NOT NULL PRIMARY KEY,
+  URI nvarchar(1024) NOT NULL,
+  SERVICE_NAME nvarchar(254) NOT NULL,
+  PERSON_ID nvarchar(36) NOT NULL,
+  SCOPE nvarchar(1024) NOT NULL,
+  TTYPE NUMERIC(5,0) NOT NULL,
+  SECRET nvarchar(1024),
+  EXPIRES DATETIME,
+  ISSUED DATETIME NOT NULL,
+  TOKEN_TYPE nvarchar(254),
+  MAC_SECRET nvarchar(1024),
+  MAC_ALG nvarchar(254),
+  MAC_EXT nvarchar(254),
+  PROPS nvarchar(1024)
+) ON [PRIMARY]
+GO
+
+ALTER TABLE HOMEPAGE.OAUTH2_TOKEN
+	ADD CONSTRAINT FK_OA2T_PERSON_ID FOREIGN KEY (PERSON_ID)
+	REFERENCES HOMEPAGE.PERSON(PERSON_ID);	
+
+CREATE INDEX OA2T_PERSON_SERVICE
+	ON HOMEPAGE.OAUTH2_TOKEN (PERSON_ID, SERVICE_NAME);
+	
+GO
+
+-------------------------------------------
+-- HOMEPAGE.OAUTH2_GADGET_BINDING
+-------------------------------------------
+CREATE TABLE HOMEPAGE.OAUTH2_GADGET_BINDING (
+  ID nvarchar(36) NOT NULL PRIMARY KEY,
+  URI_SHA1 CHAR(40) NOT NULL, 
+  SERVICE_NAME nvarchar(254)  NOT NULL,
+  URI nvarchar(1024) NOT NULL,
+  CLIENT_NAME nvarchar(254) NOT NULL,
+  OVERRIDES NUMERIC(5,0) NOT NULL,
+  CONSTRAINT PK_GADGET_PK UNIQUE (URI_SHA1, SERVICE_NAME)
+) ON [PRIMARY]
+GO
+
+ALTER TABLE HOMEPAGE.OAUTH2_GADGET_BINDING
+  ADD CONSTRAINT FK_BINDING_CLIENT FOREIGN KEY(CLIENT_NAME)
+  REFERENCES HOMEPAGE.OAUTH2_CLIENT(NAME) ON DELETE CASCADE ON UPDATE NO ACTION;
+  
+GO 
+
+-------------------------------------------
+-- HOMEPAGE.OAUTH1_PROVIDER
+-------------------------------------------	 
+CREATE TABLE HOMEPAGE.OAUTH1_PROVIDER (
+	ID nvarchar(256) NOT NULL PRIMARY KEY,
+	NAME nvarchar(254) NOT NULL,
+	DESCRIPTION nvarchar(1024),
+	REQUESTTOKENURL nvarchar(512) NOT NULL,
+	AUTHORIZEURL nvarchar(512) NOT NULL,
+	ACCESSTOKENURL nvarchar(512) NOT NULL,
+	BASEURL nvarchar(512),
+	MANAGEURL nvarchar(512),
+	REGISTERURL nvarchar(512),
+	SIGNMETHOD nvarchar(32),
+	VERSION nvarchar(8),
+	CREATED DATETIME NOT NULL,
+	MODIFIED DATETIME NOT NULL,
+	CONSTRAINT PRVD_NAME_UK UNIQUE (NAME)
+) ON [PRIMARY]
+GO
+
+-------------------------------------------
+-- HOMEPAGE.OAUTH1_CLIENT
+-------------------------------------------
+CREATE TABLE HOMEPAGE.OAUTH1_CLIENT (
+	ID nvarchar(256) NOT NULL PRIMARY KEY,
+	PERSON_ID nvarchar(36) NOT NULL,
+	NAME nvarchar(254) NOT NULL,
+	TOKENID nvarchar(256) NOT NULL,
+	PROVIDERID nvarchar(256) NOT NULL,
+	DESCRIPTION nvarchar(1024),
+	CALLBACKURL nvarchar(512),	
+	CREATED DATETIME NOT NULL,
+	MODIFIED DATETIME NOT NULL,
+	CONSTRAINT CLNT_NAME_UK UNIQUE (NAME)
+) ON [PRIMARY]
+GO
+
+ALTER TABLE HOMEPAGE.OAUTH1_CLIENT 
+	ADD CONSTRAINT CLNT_FK FOREIGN KEY (PROVIDERID) 
+	REFERENCES HOMEPAGE.OAUTH1_PROVIDER(ID) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+ALTER TABLE HOMEPAGE.OAUTH1_CLIENT 
+	ADD CONSTRAINT CLNT_TOKEN_FK FOREIGN KEY (TOKENID) 
+	REFERENCES HOMEPAGE.OAUTH1_TOKEN(ID) ON DELETE CASCADE ON UPDATE NO ACTION;
+	
+ALTER TABLE HOMEPAGE.OAUTH1_CLIENT
+	ADD CONSTRAINT FK_OA1CL_PERSON_ID FOREIGN KEY (PERSON_ID)
+	REFERENCES HOMEPAGE.PERSON(PERSON_ID);		
+	
+GO
+
+-------------------------------------------
+-- HOMEPAGE.OAUTH1_CONTEXT
+-------------------------------------------
+CREATE TABLE HOMEPAGE.OAUTH1_CONTEXT (
+	ID nvarchar(256) NOT NULL PRIMARY KEY,
+	CLIENTID nvarchar(256) NOT NULL,
+	PERSON_ID nvarchar(36),
+	TOKENID nvarchar(256) NOT NULL,
+	CREATED DATETIME NOT NULL,
+	MODIFIED DATETIME NOT NULL,
+	NONCE nvarchar(256),
+	EXPIRATION DATETIME,
+	AUTHORIZED NUMERIC(5,0) DEFAULT 0 NOT NULL
+) ON [PRIMARY]
+GO
+
+ALTER TABLE HOMEPAGE.OAUTH1_CONTEXT
+	ADD CONSTRAINT CONTEXT_CLNT_FK FOREIGN KEY (CLIENTID) 
+	REFERENCES HOMEPAGE.OAUTH1_CLIENT(ID) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+ALTER TABLE HOMEPAGE.OAUTH1_CONTEXT
+	ADD CONSTRAINT AUTH_TOKEN_FK FOREIGN KEY (TOKENID) 
+	REFERENCES HOMEPAGE.OAUTH1_TOKEN(ID);
+	
+ALTER TABLE HOMEPAGE.OAUTH1_CONTEXT
+	ADD CONSTRAINT FK_OA1C_PERSON_ID FOREIGN KEY (PERSON_ID)
+	REFERENCES HOMEPAGE.PERSON(PERSON_ID);		
+
+GO

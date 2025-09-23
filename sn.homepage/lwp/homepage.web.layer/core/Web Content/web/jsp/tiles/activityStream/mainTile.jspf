@@ -1,0 +1,132 @@
+<%@page session="true" contentType="text/html; charset=UTF-8"
+buffer="128kb"%>
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- IBM Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright IBM Corp. 2011, 2015                                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@ taglib prefix="lc-cache" uri="http://www.ibm.com/connections/core/cache"%>
+<%@ taglib prefix="lc-ui" uri="http://www.ibm.com/lconn/tags/coreuiutil" %>
+
+<%@page import="com.ibm.lconn.homepage.web.utils.impl.HomepageConfigUtils"%>
+
+<%
+request.setAttribute("canCustomize", !HomepageConfigUtils.getNoCustomize());
+%>
+
+<%--  CODE TO LOAD WIDGET FROM CRE USING CONNECTIONS LAYOUT MACHINERY --%>
+<script>
+
+	var adapter=new lconn.homepage.core.layout.ContainerToColumnAdapter();
+	adapter.addMapping("1", 0);
+	var layoutModel=new lconn.homepage.core.layout.WidgetLayoutModel();
+	layoutModel.setContainerToColumnAdapter(adapter);
+	layoutModel.setPageId('${tabInstanceId}');
+	layoutModel.setPageType(layoutModel.UPDATE_TAB);
+	layoutModel.setNumberOfColumns(1);
+	layoutModel.setCanCustomize('${canCustomize}');
+	new lconn.homepage.core.layout.WidgetModelUpdater(layoutModel);
+	new lconn.homepage.core.layout.WidgetPersister(layoutModel, '${pageContext.request.contextPath}/web/handleUP.action');
+
+	var firstColWidgets=[]; // Array persistence models
+	var widgets=[]; // Array of widgets to display on page.
+
+	function WidgetModel() {
+	};
+	function PersistenceModel() {
+	};
+
+	<%-- CODE TO LOAD WIDGET FROM CRE USING CONNECTIONS LAYOUT MACHINERY --%>
+
+
+	var widget; // Widget we're creating.
+	var persis1; // Persistence model
+
+	<c:if test="${param.nocreui == 'true'}">
+			<%-- Set up for not using CRE to render widgets by simulating config file setting. --%>
+			lconn.core.config.services.nocreui = {};
+	</c:if>
+
+	<%-- FOREACH --%>
+		<c:forEach items="${availWidgets}" var="availWidgets">
+			widget = new WidgetModel();
+			widget.id = "${availWidgets.widgetId}";
+			widget.title = "<lc-ui:escapeJavaScript>${availWidgets.title}</lc-ui:escapeJavaScript>";
+			widget.creUrl = widget.url="${availWidgets.url}";
+			widget.iconUrl ="${availWidgets.iconUrl}";
+			widget.type="iWidget";
+			widget.isSystem = "${availWidgets.isSystem}";
+			widget.setting = "${availWidgets.widgetSetting}"
+
+			// Check for Open Social Gadget
+			if (${availWidgets.isGadget} == true) {
+				widget.type = "gadget";
+			}
+			widgets.push(widget);
+			</c:forEach>
+
+		<c:forEach items="${firstColWidgets}" var="firstColWidgets">
+			var persis1 = new PersistenceModel();
+			persis1.widgetId = "${firstColWidgets.widgetId}";
+			persis1.rowNum = "${firstColWidgets.orderSequence}";
+			persis1.widgetInstanceId = "${firstColWidgets.widgetInstanceId}";
+			persis1.setting = '${firstColWidgets.widgetSetting}' //note the single quotes!!
+			firstColWidgets.push(persis1);
+			layoutModel.appendWidgetToColumn(persis1.widgetInstanceId, 0);
+		</c:forEach>
+
+
+
+	<%-- FOREACH --%>
+
+</script>
+
+<div class="activityStreamPage lotusMain" id="lotusMain">
+<div id="hpplaceholder_top"></div>
+
+<script type="text/javascript">
+		// Placeholder for custom css for backport to One UI 2.1
+		// TODO: Eventually these styles should be integrated with the
+		// main OneUI3 stylesheets
+		lconn.core.theme.addStylesheet("activityStream");
+</script>
+
+<tiles:insertDefinition name="homepage.common.palette"></tiles:insertDefinition>
+
+<div id="lotusColLeft" class="lotusColLeft lconnHomepageColLeft"><tiles:insertAttribute name="leftColumn" /></div>
+
+<div id=leftColBgPlaceholder class="lotusHidden leftColBackgroundPlaceholder">&nbsp;</div>
+
+<div id="lotusColRight" class="lotusColRight">
+	<div id="hpplaceholder_right_top"></div>
+	<div id="1"></div>
+	<div id="hpplaceholder_right_center"></div>
+	<div id="hpplaceholder_right_bottom"></div>
+</div>
+
+<div id="lotusContent" class="lotusContent lotusBoard" role="main">
+	<span style="position: absolute;"><a name="mainContent" id="maincontent">&nbsp;</a></span>
+
+	<div id="hpplaceholder_updates_content_top"></div>
+	<div id="messageContainer"></div>
+	<div id="hpplaceholder_updates_content_abovestreamheader"></div>
+	<div id="activityStreamHeader"></div>
+	<div id="hpplaceholder_updates_content_abovestream"></div>
+	<div id="activityStream"></div>
+	<div id="hpplaceholder_updates_content_bottom"></div>
+</div>
+
+<div id="hpplaceholder_bottom"></div>
+</div>

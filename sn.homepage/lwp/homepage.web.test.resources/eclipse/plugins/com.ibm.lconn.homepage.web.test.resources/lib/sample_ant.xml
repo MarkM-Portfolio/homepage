@@ -1,0 +1,78 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2013, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<project name="TestSelenium" default="test" basedir=".">
+		 
+	<!-- Setup the properties -->
+	<property name="report.dir" value="report" />
+	<property name="out.dir" value="build/classes" />
+	<property name="lib.dir" value="lib" />
+	<property name="selenium.url" value="http://9.162.89.243:4444/wd/hub" />
+	<property name="runner.url" value="http://http://dubxpcvm799.mul.ie.ibm.com:9082/connections/resources/web/lconn.homepage.tests/runner.html?render=test&oneui=3&testModule=lconn.homepage.tests.module" />
+	<property name="test.timeout" value="20" />
+	
+	<!-- Clean the directories -->
+	<target name="clean">
+		<delete dir="${out.dir}" />
+		<delete dir="${report.dir}" />
+	</target>
+
+	<!-- Prepare for the build -->
+	<target name="prepare" depends="clean">
+		<mkdir dir="${out.dir}" />
+		<mkdir dir="${report.dir}" />
+	</target>
+
+	<!-- Compile the Java source code -->
+	<target name="compile" depends="prepare">
+		<javac srcdir="src" destdir="${out.dir}">
+			<classpath>
+				<fileset dir="${lib.dir}" includes="*.jar"/>
+			</classpath>
+		</javac>
+	</target>
+
+	<!-- Run the DOH tests in parallel -->
+	<target name="run-doh-in-selenium" description="Run DOH tests in selenium" depends="compile">
+		<java classname="org.testng.TestNG" failonerror="true">
+			<classpath>
+				<pathelement location="${out.dir}" />
+				<fileset dir="${lib.dir}" includes="*.jar"/>
+			</classpath>
+	
+			<sysproperty key="java.security.policy" file="${basedir}/lib/testng.policy"/>
+			<sysproperty key="runnerUrl" value="${runner.url}"/>
+			<sysproperty key="seleniumUrl" value="${selenium.url}"/>
+			<sysproperty key="firefoxVer" value="18"/>
+			<sysproperty key="ieVer" value="none"/>
+			<sysproperty key="chromeVer" value="none"/>
+			<sysproperty key="JSTimeOut" value="${test.timeout}"/>
+			<sysproperty key="reportDir" value="${report.dir}"/>
+			
+			<arg value="-d"/>
+			<arg value="${report.dir}"/>
+			<arg value="-suitename"/>
+			<arg value="Selenium to DOH"/>
+			<arg value="-testclass"/>
+			<arg value="com.ibm.lconn.homepage.selenium.DOHTestController"/>
+		</java>
+				
+		<property file="${report.dir}/JSUTResults.properties" prefix="dohResults" />
+	
+		<!-- If there has been a doh failure, make the build fail -->
+		<fail if="dohResults.dohFailed" 
+			  message="DOH tests have failed. Check the logs and DOH HTML reports for more information."/>
+	</target>
+	
+</project>

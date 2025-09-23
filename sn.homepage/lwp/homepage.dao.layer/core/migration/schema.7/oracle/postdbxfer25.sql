@@ -1,0 +1,86 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2009, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+-- HOMEPAGE
+ALTER TABLE "HOMEPAGE"."LOGINNAME"
+	ADD CONSTRAINT "FK_LN_PERSON_ID" FOREIGN KEY ("PERSON_ID")
+	REFERENCES "HOMEPAGE"."PERSON" ("PERSON_ID");
+
+ALTER TABLE "HOMEPAGE"."HP_UI"
+    ADD CONSTRAINT "FK_UI_PERSON_ID" FOREIGN KEY ("PERSON_ID")
+	REFERENCES "HOMEPAGE"."PERSON" ("PERSON_ID");
+		
+ALTER TABLE "HOMEPAGE"."HP_TAB_INST"
+    ADD CONSTRAINT "FK_UI_ID" FOREIGN KEY ("UI_ID")
+	REFERENCES "HOMEPAGE"."HP_UI" ("UI_ID");
+
+ALTER TABLE "HOMEPAGE"."HP_TAB_INST"
+    ADD CONSTRAINT "FK_TAB_INST_TAB_ID" FOREIGN KEY ("TAB_ID")
+	REFERENCES "HOMEPAGE"."HP_TAB" ("TAB_ID");
+	
+ALTER TABLE "HOMEPAGE"."HP_WIDGET_INST"
+    ADD CONSTRAINT "FK_WIDGET_ID" FOREIGN KEY ("WIDGET_ID")
+	REFERENCES "HOMEPAGE"."WIDGET" ("WIDGET_ID");
+		
+ALTER TABLE "HOMEPAGE"."HP_WIDGET_INST"
+    ADD CONSTRAINT "FK_TAB_INST_ID" FOREIGN KEY ("TAB_INST_ID")
+	REFERENCES "HOMEPAGE"."HP_TAB_INST" ("TAB_INST_ID");
+	
+ALTER TABLE "HOMEPAGE"."HP_WIDGET_TAB"	
+    ADD CONSTRAINT "FK_WID_TAB_WID_ID" FOREIGN KEY ("WIDGET_ID")
+	REFERENCES "HOMEPAGE"."WIDGET" ("WIDGET_ID");
+	
+ALTER TABLE "HOMEPAGE"."HP_WIDGET_TAB"	
+    ADD CONSTRAINT "FK_WID_TAB_TAB_ID" FOREIGN KEY ("TAB_ID")
+	REFERENCES "HOMEPAGE"."HP_TAB" ("TAB_ID");
+	
+ALTER TABLE "HOMEPAGE"."PREREQ"
+	ADD CONSTRAINT "FK_PREREQ_WIDGET" FOREIGN KEY ("WIDGET_ID")
+	REFERENCES "HOMEPAGE"."WIDGET" ("WIDGET_ID")
+	ON DELETE CASCADE;
+	
+ALTER TABLE "HOMEPAGE"."NT_NOTIFICATION_RECIPIENT"
+	ADD CONSTRAINT "FK_RECIP_NOTIF" FOREIGN KEY ("NOTIFICATION_ID")
+	REFERENCES "HOMEPAGE"."NT_NOTIFICATION" ("NOTIFICATION_ID")
+	ON DELETE CASCADE;
+	
+ALTER TABLE "HOMEPAGE"."LOGINNAME"
+	ADD CONSTRAINT LOGINNAME_UNIQUE UNIQUE(LOGINNAME);
+
+CREATE UNIQUE INDEX "HOMEPAGE"."PERSON_EXID"
+    ON "HOMEPAGE"."PERSON"("EXID") TABLESPACE "HPNTINDEXTABSPACE";
+
+-- NEWS RECORDS 
+ALTER TABLE HOMEPAGE.NR_SUBSCRIPTION
+    ADD CONSTRAINT "FK_PERSON_ID" FOREIGN KEY ("PERSON_ID")
+	REFERENCES HOMEPAGE.PERSON ("PERSON_ID");
+
+ALTER TABLE HOMEPAGE.NR_SUBSCRIPTION
+    ADD CONSTRAINT "FK_SOURCE_ID" FOREIGN KEY ("SOURCE_ID")
+	REFERENCES HOMEPAGE.NR_SOURCE ("SOURCE_ID");	
+
+ALTER TABLE HOMEPAGE.NR_SOURCE
+	ADD CONSTRAINT "SOURCE_UNIQUE" UNIQUE("SOURCE");
+
+CREATE UNIQUE INDEX HOMEPAGE.NR_SUBSCRIPTION_IX_UNIQUE
+	ON HOMEPAGE.NR_SUBSCRIPTION("PERSON_ID" ASC) TABLESPACE "NEWSINDEXTABSPACE";
+
+COMMIT;
+
+--------------------------------------
+-- DISCONNECT
+--------------------------------------
+DISCONNECT ALL;
+
+QUIT;

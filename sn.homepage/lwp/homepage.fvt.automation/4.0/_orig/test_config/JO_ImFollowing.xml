@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2012, 2013                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<!-- SEE TESTNG.ORG for documentation on using these xml config files. DTD available at above link and also in testng.jar -->
+
+<suite thread-count="1" name="WebDriver_Johann" parallel="false" >
+
+  <!-- SELENIUM GRID/REMOTE SERVER SETTINGS -->
+  <parameter name="server_is_grid_hub" value="false" />
+  <!--<parameter name="server_host" value="http://dslvm180.mul.ie.ibm.com:5555/wd/hub" />--> 
+  <parameter name="server_host" value="localhost" />
+  <parameter name="server_port" value="" />
+  
+  <!-- APPLICATION UNDER TEST SERVER SETTINGS -->
+  <parameter name="browser_url" value="http://dubxpcvm080.mul.ie.ibm.com:9081/" />
+  <!--<parameter name="browser_url" value="http://lc30linux4.swg.usma.ibm.com/" />-->
+  <parameter name="admin_users" value="Amy Jones1;Amy Jones33;Amy Jones345" />
+  <parameter name="global_mod_users" value="Amy Jones1;Amy Jones33;Amy Jones345" />
+  <parameter name="users_login_preference" value="email" /><!-- What field from ldap CSV to use as login username e.g. 'uid' OR 'display' OR 'email' -->
+  
+  <!-- BROWSER RELATED SETTINGS -->
+  <!--
+  The appropriate browser start commmaruend is formed from the browser_start_command string in format [browser_name]_[browser_version]_[browser_environment_os]. 
+  All 3 parts are required.
+  For Selenium Grid, browser start command will be used to set to capabilities.
+  If using selenium grid(i.e. '<parameter name="server_is_grid_hub" value="true" />'), you must request capabilities that match what is available on the grid.
+  If not using selenium grid(i.e. '<parameter name="server_is_grid_hub" value="false" />'), the appropriate browser_start_command will be automatically chosen (e.g. *firefox for browser_name="FireFox").
+  View grid capabilities at 'http://[server_host]:[server_port]/grid/'.
+  If using -IBMtemplate argument with executable .jar, desired browsers must be delimited by a semi-colon (e.g. 'GoogleChrome_9_Windows7;Firefox_8_WindowsVista').
+  -->
+  <parameter name="browser_start_command" value="Firefox_10_Windows7" />
+  
+  <!-- CUSTOM PARAMETERS -->
+  <!-- This folder must be in drive root (e.g. 'C:\[root_folder_name]' expected absolute path if windows). Intended to be used for accessing files placed in advance on a remote machine. -->
+  <parameter name="root_folder_name" value="SeleniumServer" />
+
+  <!-- LISTENERS FOR TESTNG RESULTS -->
+  <listeners>
+    <listener class-name="com.ibm.atmn.wdbase.ListenerForErrors" />
+  </listeners>
+  
+ <!--
+  Specify test structure below. Parameters for tests may be expected. <Test> parameters automatically override suite parameters of the same same.
+  <Test> divisions are abritrary. @Test method locations for a <test> may be specified by <package> or <class>.
+  -->
+  <test name="Activities" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="activities/auth/login.jsp" />
+    <!--<packages>
+      <package name="com.ibm.atmn.wd_homepagefvt.testcases.activities.discover" />
+    </packages>-->
+    <classes>
+  	  <!-- <class name="com.ibm.atmn.wd_homepagefvt.testcases.activities.imfollowing.FVT_ImFollowing_Public_Activities" /> 
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.activities.imfollowing.FVT_ImFollowing_Private_Activities" />
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.activities.imfollowing.FVT_ImFollowing_Miscellaneous_Activities" />
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.activities.imfollowing.FVT_ImFollowing_Public_Community_Activities" /> 
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.activities.imfollowing.FVT_ImFollowing_Mod_Community_Activities" /> -->
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.activities.imfollowing.FVT_ImFollowing_Private_Community_Activities" /> 
+      <!-- <class name="com.ibm.atmn.wd_homepagefvt.testcases.activities.TestOfFVT_Level2_Activities" />-->
+    </classes>
+  </test>
+  <test name="Blogs" preserve-order="true" enabled="true">
+    <parameter name="start_url" value="blogs/login" />
+    <!-- <packages>
+      <package name="com.ibm.atmn.wd_homepagefvt.testcases.blogs.discover" />
+    </packages> --> 
+   <classes>
+      <!--<class name="com.ibm.atmn.wd_homepagefvt.testcases.blogs.imfollowing.FVT_ImFollowing_Blogs" />
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.blogs.imfollowing.FVT_ImFollowing_Public_Comm_Blogs" /> 
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.blogs.imfollowing.FVT_ImFollowing_Mod_Comm_Blogs" />-->
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.blogs.imfollowing.FVT_ImFollowing_Private_Comm_Blogs" />
+      <!--<class name="com.ibm.atmn.wd_homepagefvt.testcases.blogs.imfollowing.FVT_ImFollowing_Public_Comm_Ideablog" />
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.blogs.imfollowing.FVT_ImFollowing_Mod_Comm_Ideablog" />
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.blogs.imfollowing.FVT_ImFollowing_Private_Comm_Ideablog" /> 
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.blogs.imfollowing.FVT_ImFollowing_Misc_Blogs" />
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.blogs.imfollowing.FVT_ImFollowing_Misc_Comm_Blogs" />
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.blogs.TestOfFVT_Level2_Blogs" /> --> 
+    </classes>
+  </test>
+  <test name="Communities" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="communities/login" />
+    <groups>
+        <run>
+         	<exclude name="broken"/>
+        </run>
+    </groups>
+    <!-- <packages>
+      <package name="com.ibm.atmn.wd_homepagefvt.testcases.communities.discover" />
+    </packages> -->
+     <classes>
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.communities.imfollowing.FVT_ImFollowing_PublicCommunities" />
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.communities.imfollowing.FVT_ImFollowing_ModCommunities" />
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.communities.imfollowing.FVT_ImFollowing_PrivateCommunities" />
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.communities.imfollowing.FVT_ImFollowing_Unfollow" />
+    </classes>
+  </test>
+  <test name="Dogear" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="dogear/login" />
+    <!-- <packages>
+      <package name="com.ibm.atmn.wd_homepagefvt.testcases.dogear.imfollowing" />
+    </packages> -->
+  </test>
+  <test name="Files" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="files/login" />
+    <!-- <packages>
+      <package name="com.ibm.atmn.wd_homepagefvt.testcases.files.discover" />
+    </packages> -->
+    <classes>
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.files.discover.FVT_Discover_Public_Files" />
+    </classes>
+  </test>
+  <test name="Forums" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="forums/auth/login" />
+    <!-- <packages>
+      <package name="com.ibm.atmn.wd_homepagefvt.testcases.forums.discover" />
+    </packages> -->
+     <classes>
+      <!--<class name="com.ibm.atmn.wd_homepagefvt.testcases.forums.imfollowing.FVT_ImFollowing_Forums" />
+	  <class name="com.ibm.atmn.wd_homepagefvt.testcases.forums.imfollowing.FVT_ImFollowing_Mod_Comm_Forums" />
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.forums.imfollowing.FVT_ImFollowing_Private_Comm_Forums" />-->
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.forums.imfollowing.FVT_ImFollowing_Public_Comm_Forums" /> 
+    </classes>
+  </test>
+  <test name="Homepage" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="homepage/login" />
+    <packages>
+      <package name="com.ibm.atmn.wd_homepagefvt.testcases.homepage" />
+    </packages>
+  </test>
+  <test name="News" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="homepage/login" />
+    <!-- <packages>
+      <package name="com.ibm.atmn.wd_homepagefvt.testcases.news" />
+    </packages> -->
+  </test>
+  <test name="Profiles" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="profiles/login" />
+    <!-- <packages>
+      <package name="com.ibm.atmn.wd_homepagefvt.testcases.profiles.discover" />
+    </packages>-->
+    <classes>
+      <class name="com.ibm.atmn.wd_homepagefvt.testcases.profiles.discover.FVT_Discover_CollegueAdded_Profiles" />
+    </classes>
+  </test>
+  <test name="Wikis" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="wikis/login" />
+    <!--<packages>
+      <package name="com.ibm.atmn.wd_homepagefvt.testcases.wikis.discover" />
+    </packages> -->
+    <classes>
+     <!-- <class name="com.ibm.atmn.wd_homepagefvt.testcases.wikis.imfollowing.FVT_ImFollowing_Pub_Stand_Wikis" />
+     <class name="com.ibm.atmn.wd_homepagefvt.testcases.wikis.imfollowing.FVT_ImFollowing_Private_Stand_Wikis" /> 
+     <class name="com.ibm.atmn.wd_homepagefvt.testcases.wikis.imfollowing.FVT_ImFollowing_Pub_Comm_Wikis" />--> 
+     <class name="com.ibm.atmn.wd_homepagefvt.testcases.wikis.imfollowing.FVT_ImFollowing_Mod_Comm_Wikis" />
+     <!--<class name="com.ibm.atmn.wd_homepagefvt.testcases.wikis.imfollowing.FVT_ImFollowing_Priv_Comm_Wikis" />--> 
+    </classes>
+  </test>
+</suite>

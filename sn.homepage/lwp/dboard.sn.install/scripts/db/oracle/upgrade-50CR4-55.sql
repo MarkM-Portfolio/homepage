@@ -1,0 +1,159 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2015, 2016                              
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- *****************************************************************                                         
+
+
+{include.news-fixup500.sql}
+{include.search-fixup500.sql}
+-- [news-fixup501.sql] empty
+{include.news-fixup502.sql}
+{include.news-fixup503.sql}
+-- [news-fixup504.sql] smart cloud specific
+-- [news-fixup510.sql] smart cloud specific
+{include.news-fixup510.sql}
+
+--[news-fixup511.sql] START
+
+INSERT INTO HOMEPAGE.NR_COMM_PERSON_FOLLOW VALUES ('00000000-0000-0000-0000-000000000001','00000000-0000-0000-0000-000000000001','00000000-0000-0000-0000-000000000001',1,'00000000-0000-0000-0000-000000000000');
+
+--[news-fixup511.sql] END
+
+-- [news-fixup512.sql] smart cloud specific
+{include.news-fixup513.sql}
+
+--[news-fixup514.sql] START
+
+-- 139069: Refactoring of two unique indexes
+DROP INDEX HOMEPAGE.SEQ_NUMBER_UNIQUE;
+
+CREATE UNIQUE INDEX HOMEPAGE.SEQ_NUMBER_UNIQUE
+    ON HOMEPAGE.EMD_TRANCHE (SEQ_NUMBER, ORGANIZATION_ID) TABLESPACE "NEWSINDEXTABSPACE";
+    
+COMMIT;    
+
+-- 139426: DAO: Table storing whether a given story is read by a given user
+CREATE TABLE HOMEPAGE.NR_READ_STATUS (
+	READ_STATUS_ID VARCHAR2(36) NOT NULL,
+	PERSON_ID VARCHAR2(36) NOT NULL,
+	STORY_ID VARCHAR2(36) NOT NULL,
+	CREATION_DATE TIMESTAMP NOT NULL,
+	ORGANIZATION_ID VARCHAR2(36) NOT NULL
+)
+TABLESPACE "NEWSREGTABSPACE"; 
+
+ALTER TABLE HOMEPAGE.NR_READ_STATUS
+  	ADD (CONSTRAINT PK_READ_STATUS_ID PRIMARY KEY(READ_STATUS_ID)  USING INDEX TABLESPACE "NEWSINDEXTABSPACE");
+  	
+ALTER TABLE HOMEPAGE.NR_READ_STATUS
+  	ADD CONSTRAINT FK_READ_STATUS_PER FOREIGN KEY (PERSON_ID)
+	REFERENCES HOMEPAGE.PERSON (PERSON_ID);  
+	
+ALTER TABLE HOMEPAGE.NR_READ_STATUS
+  	ADD CONSTRAINT FK_READ_STATUS_STR FOREIGN KEY (STORY_ID)
+	REFERENCES HOMEPAGE.NR_STORIES (STORY_ID);
+	
+ALTER TABLE HOMEPAGE.NR_READ_STATUS
+  	ADD CONSTRAINT FK_READ_STATUS_ORG FOREIGN KEY (ORGANIZATION_ID)
+	REFERENCES HOMEPAGE.MT_ORGANIZATION (ORGANIZATION_ID);
+	
+CREATE UNIQUE INDEX HOMEPAGE.READ_STATUS_PER_STR_UNQ_IDX
+	ON HOMEPAGE.NR_READ_STATUS (PERSON_ID, STORY_ID)  TABLESPACE "NEWSINDEXTABSPACE";	
+	
+CREATE INDEX HOMEPAGE.READ_STATUS_ORG_IDX
+	ON HOMEPAGE.NR_READ_STATUS (ORGANIZATION_ID)  TABLESPACE "NEWSINDEXTABSPACE";	
+	
+ALTER TABLE HOMEPAGE.NR_READ_STATUS ENABLE ROW MOVEMENT;
+
+COMMIT;	
+
+--[news-fixup514.sql] END
+
+{include.news-fixup515.sql}
+-- [news-fixup516.sql] empty
+{include.news-fixup517.sql}
+
+
+{include.news-fixup601.sql}
+{include.news-fixup602.sql}
+{include.news-fixup603.sql}
+{include.search-fixup603.sql}
+{include.news-fixup604.sql}
+{include.news-fixup605.sql}
+{include.hp-fixup605.sql}
+{include.news-fixup606.sql}
+{include.hp-fixup607.sql}
+{include.news-fixup700.sql}
+{include.news-fixup701.sql}
+{include.news-fixup702.sql}
+{include.news-fixup703.sql}
+{include.news-fixup704.sql}
+{include.news-fixup705.sql}
+
+-- Defect 167558: Specifically only affects Oracle in-place migration path from 4.0/4.5/5.0 > 5.5
+
+ALTER TABLE HOMEPAGE.OAUTH1_CONTEXT DROP CONSTRAINT AUTH_TOKEN_FK;
+
+ALTER TABLE HOMEPAGE.OAUTH1_CONTEXT
+	ADD CONSTRAINT AUTH_TOKEN_FK FOREIGN KEY (TOKENID) 
+	REFERENCES HOMEPAGE.OAUTH1_TOKEN(ID);
+	
+-- -------------------------------------------------------------------------- 
+	
+INSERT INTO HOMEPAGE.SR_TASKDEF(TASK_ID,TASK_NAME,STARTBY,INTERVAL,TASK_TYPE,ENABLED)
+VALUES('60036bd4-e48d-4421-a6de-c0d819bbe408','20min-file-content-indexing-task','0 29,49,09 0,2-23 * * ?','0 11,31,51 0,2-23 * * ?','FileContentIndexingTask',1);
+
+INSERT INTO HOMEPAGE.SR_FILECONTENTINDEXINGTASK(FILE_CONTENT_INDEXING_TASK_ID,TASK_ID,FILE_CONT_INDX_TASK_SERVICES,FILE_CONT_INDX_TASK_DURATION)
+VALUES('e52073b9-bbe2-4041-aa08-91fe76d17526','60036bd4-e48d-4421-a6de-c0d819bbe408','all_configured',300);
+
+COMMIT;
+
+
+------------------------------------------------
+
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.SR_RECOMMEND_CACHE_USERPROFILE TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.NR_READ_STATUS TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.NR_ENTRIES_ROLLUP_ACTION TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.NR_ENTRIES_ROLLUP_PERSON TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.L3T_ORGANIZATION TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.L3T_COMPANIES TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.L3T_USERS TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.L3T_PACKAGES TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.L3T_COMPANY_ENTITLEMENTS TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.L3T_COMPANY_PKG_PREFS TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.L3T_EXT_META2 TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.L3T_PACKAGE_DETAILS TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.L3T_PACKAGE_LOCATION TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.L3T_USER_ENTITLEMENTS TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.L3T_USER_PKG_PREFS TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.SR_FILECONTENTINDEXINGTASK TO HOMEPAGEUSER_ROLE;
+GRANT DELETE,INSERT,SELECT,UPDATE ON HOMEPAGE.SR_ALLTASKSDEF TO HOMEPAGEUSER_ROLE;
+
+------------------------------------------------
+
+UPDATE  HOMEPAGE.HOMEPAGE_SCHEMA SET DBSCHEMAVER = 705, RELEASEVER = '5.5.0.0' 
+WHERE   DBSCHEMAVER = 479; 
+
+--------------------------------------
+-- COMMIT
+--------------------------------------
+
+COMMIT;
+
+
+--------------------------------------
+-- DISCONNECT
+--------------------------------------
+
+DISCONNECT ALL;
+
+QUIT;

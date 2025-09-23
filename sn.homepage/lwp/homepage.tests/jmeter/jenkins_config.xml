@@ -1,0 +1,297 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2015                                          -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<project>
+  <actions/>
+  <description></description>
+  <logRotator class="hudson.tasks.LogRotator">
+    <daysToKeep>5</daysToKeep>
+    <numToKeep>5</numToKeep>
+    <artifactDaysToKeep>-1</artifactDaysToKeep>
+    <artifactNumToKeep>-1</artifactNumToKeep>
+  </logRotator>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>connectionsServer</name>
+          <description>dubxpcvm2349.mul.ie.ibm.com
+lcauto7.swg.usma.ibm.com</description>
+          <defaultValue>lcauto12.swg.usma.ibm.com</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>mailServer</name>
+          <description>lcauto7.swg.usma.ibm.com
+oxpar.mul.ie.ibm.com</description>
+          <defaultValue>lcauto12.swg.usma.ibm.com</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>httpPort</name>
+          <description>9081
+80</description>
+          <defaultValue>80</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>httpsPort</name>
+          <description>944
+4443</description>
+          <defaultValue>443</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>userMailGlobalAdmin</name>
+          <description>global-admin@lc45linux1.swg.usma.ibm.com</description>
+          <defaultValue>global-admin@lc45linux1.swg.usma.ibm.com</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>userMailNewsAdmin</name>
+          <description>news-admin@swg.usma.ibm.com
+news-admin@lc45linux1.swg.usma.ibm.com
+news-admin@elvar.mul.ie.ibm.com</description>
+          <defaultValue>news-admin@lc45linux1.swg.usma.ibm.com</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>userMailPort</name>
+          <description>143
+25001</description>
+          <defaultValue>25002</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>userMailType</name>
+          <description>imap
+pop3</description>
+          <defaultValue>imap</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>user_1</name>
+          <description>ssocial1@oxpar.mul.ie.ibm.com  on dublin vms
+buser10@janet.iris.com on pool servers</description>
+          <defaultValue>buser10@janet.iris.com</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>user_2</name>
+          <description></description>
+          <defaultValue>buser11@janet.iris.com</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>user_3</name>
+          <description></description>
+          <defaultValue>buser12@janet.iris.com</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>user_4</name>
+          <description></description>
+          <defaultValue>buser13@janet.iris.com</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>emailReadDelayMS</name>
+          <description></description>
+          <defaultValue>20000</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>emptyMailboxesBeforeRun</name>
+          <description></description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>setPrefsRun</name>
+          <description></description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>activitesTestsRun</name>
+          <description></description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>blogsTestsRun</name>
+          <description></description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>forumsTestsRun</name>
+          <description></description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>communitiesTestsRun</name>
+          <description></description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>filesTestsRun</name>
+          <description></description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>profilesTestsRun</name>
+          <description></description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>wikisTestsRun</name>
+          <description></description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>moderationTestsRun</name>
+          <description></description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>microblogTestsRun</name>
+          <description></description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>digestsDailyTestsRun</name>
+          <description>users configured above, i.e. user_1,user_2,user_3, user_4 must be in admin role</description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>dailyWeeklyTestsRun</name>
+          <description>users configured above, i.e. user_1,user_2,user_3, user_4 must be in admin role</description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>#export JMTER_BIN=/opt/IBM/apache-jmeter-2.10/bin
+export JMETER_BIN=/home/decarey/Programs/apache-jmeter-2.11/bin
+export JMX=&quot;/home/decarey/work/code/IC10/sn.homepage/lwp/homepage.tests/jmeter/hompage.notify.jmx&quot;;
+export JMETER_PROPS=/home/decarey/work/code/IC10/sn.homepage/lwp/homepage.tests/jmeter/jmeter.properties
+export RESP_DIR=$WORKSPACE/saved_responses
+export RESULTS_DIR=$WORKSPACE/results
+
+mkdir -p &quot;$RESP_DIR&quot;;
+mkdir -p &quot;$RESULTS_DIR&quot;;
+
+
+cd &quot;$RESP_DIR&quot;
+prevEmailCnt=$(ls -1 *.eml | wc -l)
+
+if [[ &quot;$prevEmailCnt&quot; != &quot;0&quot; ]]; then
+ tar -czvf previous.tgz *.eml
+ rm -f notify*
+fi
+
+cd $WORKSPACE
+
+cd &quot;$RESULTS_DIR&quot;
+rm -f *.xml
+
+cd $WORKSPACE
+
+if [[ -e $JMX ]]; then
+  echo &quot;$JMX file exists&quot; 
+
+$JMETER_BIN/jmeter -n \
+-Jserver.name=${connectionsServer} \
+-Jhttp.port=${httpPort} \
+-Jhttps.port=${httpsPort} \
+-Juser.mail.news.admin=${userMailNewsAdmin} \
+-Juser.mail.global.admin=${userMailGlobalAdmin} \
+-Juser.mail.server=${mailServer} \
+-Juser.mail.port=${userMailPort} \
+-Juser.mail.type=${userMailType} \
+-Juser_1=${user_1} \
+-Juser_2=${user_2} \
+-Juser_3=${user_3} \
+-Juser_4=${user_4} \
+-Jresponses.dir=&quot;$RESP_DIR&quot; \
+-Jset.prefs.run=${setPrefsRun} \
+-Jemail.read.delay.ms=${emailReadDelayMS} \
+-Jempty.mailboxes.before.run=${emptyMailboxesBeforeRun} \
+-Jactivites.tests.run=${activitesTestsRun} \
+-Jblogs.tests.run=${blogsTestsRun} \
+-Jbookmarks.tests.run=${bookmarkTestsRun} \
+-Jcommunities.tests.run=${communitiesTestsRun} \
+-Jfiles.tests.run=${filesTestsRun} \
+-Jfiles.upload.file.name=jmeter.test.file.txt \
+-Jfiles.upload.file.path=$JMETER_PROPS \
+-Jforums.tests.run=${forumsTestsRun} \
+-Jprofiles.tests.run=${profilesTestsRun} \
+-Jwikis.tests.run=${wikisTestsRun} \
+-Jnews.tests.run=false \
+-Jmoderation.tests.run=${moderationTestsRun} \
+-Jmicroblog.tests.run=${microblogTestsRun} \
+-Jdigests.tests.run=true \
+-Jdigests.daily.tests.run=${digestsDailyTestsRun} \
+-Jdigests.weekly.tests.run=${digestsWeeklyTestsRun} \
+-l &quot;$RESULTS_DIR/jmeter_results.xml&quot; \
+-p &quot;$JMETER_PROPS&quot; \
+-t &quot;$JMX&quot;
+
+else 
+ echo &quot;could not find $JMX&quot; 
+ exit 1
+fi
+
+export CWD1=$(pwd)
+cd &quot;$RESP_DIR&quot;
+export CNT=$(ls -l *.eml | wc -l)
+echo &quot;$CNT emails saved to $RESP_DIR&quot;;
+cd $CWD1;
+
+if [[ $CNT -eq 0 ]]; then 
+ exit 101
+fi
+
+echo &quot;FINISH&quot;
+</command>
+    </hudson.tasks.Shell>
+    <com.meyling.hudson.plugin.job__exporter.ExporterBuilder plugin="job-exporter@0.4"/>
+    <org.jenkinsci.plugins.exportparams.ExportParametersBuilder plugin="export-params@1.1">
+      <filePath>props</filePath>
+      <fileFormat>properties</fileFormat>
+      <keyPattern></keyPattern>
+      <useRegexp>false</useRegexp>
+    </org.jenkinsci.plugins.exportparams.ExportParametersBuilder>
+  </builders>
+  <publishers>
+    <hudson.plugins.performance.PerformancePublisher plugin="performance@1.11">
+      <errorFailedThreshold>0</errorFailedThreshold>
+      <errorUnstableThreshold>0</errorUnstableThreshold>
+      <errorUnstableResponseTimeThreshold></errorUnstableResponseTimeThreshold>
+      <relativeFailedThresholdPositive>0.0</relativeFailedThresholdPositive>
+      <relativeFailedThresholdNegative>0.0</relativeFailedThresholdNegative>
+      <relativeUnstableThresholdPositive>0.0</relativeUnstableThresholdPositive>
+      <relativeUnstableThresholdNegative>0.0</relativeUnstableThresholdNegative>
+      <nthBuildNumber>0</nthBuildNumber>
+      <modeRelativeThresholds>false</modeRelativeThresholds>
+      <configType>ART</configType>
+      <modeOfThreshold>false</modeOfThreshold>
+      <compareBuildPrevious>false</compareBuildPrevious>
+      <xml></xml>
+      <modePerformancePerTestCase>true</modePerformancePerTestCase>
+      <parsers>
+        <hudson.plugins.performance.JMeterParser>
+          <glob>results/jmeter_results.xml	</glob>
+        </hudson.plugins.performance.JMeterParser>
+      </parsers>
+      <modeThroughput>false</modeThroughput>
+    </hudson.plugins.performance.PerformancePublisher>
+  </publishers>
+  <buildWrappers/>
+</project>

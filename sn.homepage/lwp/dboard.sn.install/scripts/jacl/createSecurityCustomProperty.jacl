@@ -1,0 +1,57 @@
+# ***************************************************************** 
+#                                                                   
+# IBM Confidential                                                  
+#                                                                   
+# OCO Source Materials                                              
+#                                                                   
+# Copyright IBM Corp. 2008, 2015                                    
+#                                                                   
+# The source code for this program is not published or otherwise    
+# divested of its trade secrets, irrespective of what has been      
+# deposited with the U.S. Copyright Office.                         
+#                                                                   
+# ***************************************************************** 
+
+
+set FileName "createSecurityCustomProperty.jacl"
+
+set FlagDebug "True"
+
+#----------------------------------------------------------------------
+# Main
+#----------------------------------------------------------------------
+if {$FlagDebug == "True"} {
+    puts stdout " "
+    puts stdout "--------------------------------"
+    puts stdout "---- Start $FileName"
+    puts stdout "--------------------------------"
+}
+
+set CustPropName     "@CustPropName@"
+set CustPropValue    "@CustPropValue@"
+
+if {$FlagDebug == "True"} {
+    puts stdout " "
+    puts stdout "--------------------------------"
+    puts stdout "---- Input args:"
+    puts stdout "---- CustPropName = $CustPropName"
+    puts stdout "---- CustPropValue   = $CustPropValue"
+    puts stdout "--------------------------------"
+}
+
+set security [$AdminConfig list Security]
+set nameAttr [list name $CustPropName]
+set valueAttr [list value $CustPropValue]
+set attr [list $nameAttr $valueAttr]
+
+set PropId [$AdminConfig getid /Property:$CustPropName/]
+
+# If the Property does not exist then create
+if {$PropId == "" } {
+     puts stdout "Creating Security Custom Property $CustPropName created with initial value: $CustPropValue"
+     set props [$AdminConfig create Property $security $attr]
+} else {
+     puts stdout "Security Custom Property $CustPropName already exists"
+}
+    
+$AdminConfig save

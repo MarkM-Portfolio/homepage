@@ -1,0 +1,318 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2007, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+-- {COPYRIGHT}
+
+----------------------------------------------------------------------
+-- 0) ADDING UNIQUE CONSTRAINTS FOR NR_FOLLOWS TABLE
+----------------------------------------------------------------------
+CREATE UNIQUE INDEX HOMEPAGE.NR_FOLLOWS_IDX
+    ON HOMEPAGE.NR_FOLLOWS (RESOURCE_ID, PERSON_ID);
+
+----------------------------------------------------------------------
+-- 1) REMOVING UN-USED TABLE
+----------------------------------------------------------------------
+DROP TABLE HOMEPAGE.NR_NEWS_STORY;
+DROP TABLE HOMEPAGE.NR_NEWS_WATCHLIST;
+DROP TABLE HOMEPAGE.NR_NEWS_TOP_UPDATES;
+DROP TABLE HOMEPAGE.NR_FOLLOW;
+DROP TABLE HOMEPAGE.NR_GROUP_SOURCE;
+DROP TABLE HOMEPAGE.NR_PERSON_SOURCE;
+DROP TABLE HOMEPAGE.NR_GROUP;
+DROP TABLE HOMEPAGE.NR_GROUP_TYPE;
+DROP TABLE HOMEPAGE.NR_EVENT_RECORDS;
+-- DROP TABLE HOMEPAGE.NR_NEWS_RECORDS;
+-- DROP TABLE HOMEPAGE.NR_SUBSCRIPTION;
+-- DROP TABLE HOMEPAGE.NR_SOURCE;
+
+------------------------------------------------------------
+-- 2) MOVING NR_RESOURCE_TYPE to NEWS4TABSPACE
+------------------------------------------------------------
+ALTER TABLE HOMEPAGE.NR_RESOURCE DROP FOREIGN KEY "FK_RES_RES_TYPE";
+
+DROP TABLE HOMEPAGE.NR_RESOURCE_TYPE;
+
+------------------------------------------------
+-- NR_RESOURCE_TYPE
+------------------------------------------------
+CREATE TABLE HOMEPAGE.NR_RESOURCE_TYPE (
+	RESOURCE_TYPE_ID VARCHAR(36) NOT NULL,
+	RESOURCE_TYPE_NAME VARCHAR(36) NOT NULL, -- this is externalized
+	RESOURCE_TYPE SMALLINT NOT NULL,
+	RESOURCE_TYPE_DESC VARCHAR(256) NOT NULL
+)
+IN NEWS4TABSPACE;
+
+ALTER TABLE HOMEPAGE.NR_RESOURCE_TYPE 
+  	ADD CONSTRAINT "PK_RES_TYPE_ID" PRIMARY KEY("RESOURCE_TYPE_ID");
+
+ALTER TABLE HOMEPAGE.NR_RESOURCE_TYPE 
+	ADD CONSTRAINT RES_TYPE_UNIQUE UNIQUE (RESOURCE_TYPE);
+
+------------
+--- START INSERT NR_RESOURCE_TYPE
+------------
+
+INSERT INTO HOMEPAGE.NR_RESOURCE_TYPE (RESOURCE_TYPE_ID, RESOURCE_TYPE, RESOURCE_TYPE_NAME, RESOURCE_TYPE_DESC)
+VALUES ('responses_0fdf1xc9cax4cc4x8b0bx51af2', 1, '%responses', 'responses');
+
+INSERT INTO HOMEPAGE.NR_RESOURCE_TYPE (RESOURCE_TYPE_ID, RESOURCE_TYPE, RESOURCE_TYPE_NAME, RESOURCE_TYPE_DESC)
+VALUES ('activity_c9cax4cc4x8b0bx51af2ddef2cd', 2, '%activity', 'activity');
+
+INSERT INTO HOMEPAGE.NR_RESOURCE_TYPE (RESOURCE_TYPE_ID, RESOURCE_TYPE, RESOURCE_TYPE_NAME, RESOURCE_TYPE_DESC)
+VALUES ('blog________0f1xc9cax4cc4x8b0bx51af2', 3, '%blog', 'blog');
+
+INSERT INTO HOMEPAGE.NR_RESOURCE_TYPE (RESOURCE_TYPE_ID, RESOURCE_TYPE, RESOURCE_TYPE_NAME, RESOURCE_TYPE_DESC)
+VALUES ('community____f1xc9cax4cc4x8b0bx51af2', 4, '%community', 'community');
+
+INSERT INTO HOMEPAGE.NR_RESOURCE_TYPE (RESOURCE_TYPE_ID, RESOURCE_TYPE, RESOURCE_TYPE_NAME, RESOURCE_TYPE_DESC)
+VALUES ('file_change_ds1xc9cax4cc4x8b0bx51af2', 5, '%file_change', 'file_change');
+
+INSERT INTO HOMEPAGE.NR_RESOURCE_TYPE (RESOURCE_TYPE_ID, RESOURCE_TYPE, RESOURCE_TYPE_NAME, RESOURCE_TYPE_DESC)
+VALUES ('file_comment_df1xc9cax4cc4x8b0bx5af2', 6, '%file_comment', 'file_comment');
+
+INSERT INTO HOMEPAGE.NR_RESOURCE_TYPE (RESOURCE_TYPE_ID, RESOURCE_TYPE, RESOURCE_TYPE_NAME, RESOURCE_TYPE_DESC)
+VALUES ('file_collection_fdfca4cc4x8b0bx51af2', 7, '%file_collection', 'file_collection');
+
+INSERT INTO HOMEPAGE.NR_RESOURCE_TYPE (RESOURCE_TYPE_ID, RESOURCE_TYPE, RESOURCE_TYPE_NAME, RESOURCE_TYPE_DESC)
+VALUES ('forum_topic_fdfdxc9cax4cc4xb0bx51af2', 8, '%forum_topic', 'forum_topic');
+
+INSERT INTO HOMEPAGE.NR_RESOURCE_TYPE (RESOURCE_TYPE_ID, RESOURCE_TYPE, RESOURCE_TYPE_NAME, RESOURCE_TYPE_DESC)
+VALUES ('forum_0fdsfdsf1xc9cax4cc4xb0bxd51af2', 9, '%forum', 'forum');
+
+INSERT INTO HOMEPAGE.NR_RESOURCE_TYPE (RESOURCE_TYPE_ID, RESOURCE_TYPE, RESOURCE_TYPE_NAME, RESOURCE_TYPE_DESC)
+VALUES ('person_0f1xc9cax4cc4xb0bx51af2def2cd', 10, '%person', 'person');
+
+INSERT INTO HOMEPAGE.NR_RESOURCE_TYPE (RESOURCE_TYPE_ID, RESOURCE_TYPE, RESOURCE_TYPE_NAME, RESOURCE_TYPE_DESC)
+VALUES ('wiki_page_change_fdfdc9cax8b0bx51af2', 11, '%wiki_page_change', 'wiki_page_change');
+
+INSERT INTO HOMEPAGE.NR_RESOURCE_TYPE (RESOURCE_TYPE_ID, RESOURCE_TYPE, RESOURCE_TYPE_NAME, RESOURCE_TYPE_DESC)
+VALUES ('wiki_page_comment_0cax4c4x8b0bx51af2', 12, '%wiki_page_comment', 'wiki_page_comment');
+
+INSERT INTO HOMEPAGE.NR_RESOURCE_TYPE (RESOURCE_TYPE_ID, RESOURCE_TYPE, RESOURCE_TYPE_NAME, RESOURCE_TYPE_DESC)
+VALUES ('tag_0f1xc9cax4cc4x8cdb0bx51f2ddef2cd', 13, '%tag', 'tag');
+
+------------
+--- END INSERT NR_RESOURCE_TYPE
+------------
+
+{DB2_GRANT_START} HOMEPAGE.NR_RESOURCE_TYPE {DB2_GRANT_STOP}
+reorg table HOMEPAGE.NR_RESOURCE_TYPE use NEWS4TMPTABSPACE;
+RUNSTATS ON TABLE "HOMEPAGE"."NR_RESOURCE_TYPE" FOR INDEXES ALL;
+
+
+ALTER TABLE HOMEPAGE.NR_RESOURCE
+    ADD CONSTRAINT "FK_RES_RES_TYPE" FOREIGN KEY ("RESOURCE_TYPE")
+	REFERENCES HOMEPAGE.NR_RESOURCE_TYPE ("RESOURCE_TYPE");
+
+------------------------------------------------------------
+-- 3) MOVING NR_STORIES_CONTENT to NEWS4TABSPACE
+------------------------------------------------------------
+-- create tmp
+CREATE TABLE HOMEPAGE.NR_CONTENT_TMP (
+	STORY_CONTENT_ID VARCHAR(36) NOT NULL,
+	CONTENT BLOB(1M) NOT NULL,
+	CREATION_DATE TIMESTAMP NOT NULL
+)
+IN NEWS4TABSPACE;
+
+-- moving data to tmp
+insert into HOMEPAGE.NR_CONTENT_TMP (
+	STORY_CONTENT_ID,
+	CONTENT,
+	CREATION_DATE
+)
+select
+	STORY_CONTENT_ID,
+	CONTENT,
+	CREATION_DATE
+from  HOMEPAGE.NR_STORIES_CONTENT;
+
+-- dropping original table
+DROP TABLE HOMEPAGE.NR_STORIES_CONTENT;
+
+-- re-creating original table
+------------------------------------------------
+-- NR_STORIES_CONTENT
+------------------------------------------------
+CREATE TABLE HOMEPAGE.NR_STORIES_CONTENT (
+	STORY_CONTENT_ID VARCHAR(36) NOT NULL,
+	CONTENT BLOB(1M) NOT NULL,
+	CREATION_DATE TIMESTAMP NOT NULL
+)
+IN NEWS4TABSPACE;
+
+ALTER TABLE HOMEPAGE.NR_STORIES_CONTENT
+  	ADD CONSTRAINT "PK_STORY_CONT_ID" PRIMARY KEY("STORY_CONTENT_ID");
+
+-- moving back the data
+insert into HOMEPAGE.NR_STORIES_CONTENT (
+	STORY_CONTENT_ID,
+	CONTENT,
+	CREATION_DATE
+)
+select
+	STORY_CONTENT_ID,
+	CONTENT,
+	CREATION_DATE
+from  HOMEPAGE.NR_CONTENT_TMP;
+
+-- drop tmp table
+DROP TABLE  HOMEPAGE.NR_CONTENT_TMP;
+
+-- reorg runstats
+{DB2_GRANT_START} HOMEPAGE.NR_STORIES_CONTENT {DB2_GRANT_STOP}
+reorg table HOMEPAGE.NR_STORIES_CONTENT use NEWS4TMPTABSPACE;
+RUNSTATS ON TABLE "HOMEPAGE"."NR_STORIES_CONTENT" FOR INDEXES ALL;  	
+
+------------------------------------------------------------
+-- 4) MOVING NR_NEWS_COMMENT_CONTENT to NEWS4TABSPACE
+------------------------------------------------------------
+-- create tmp
+CREATE TABLE HOMEPAGE.NR_CONTENT_TMP (
+	NEWS_COMMENT_CONTENT_ID VARCHAR(36) NOT NULL,
+	CONTENT BLOB(1M) NOT NULL,
+	NEWS_STATUS_COMMENT_ID TIMESTAMP NOT NULL
+)
+IN NEWS4TABSPACE;
+
+-- moving data to tmp
+insert into HOMEPAGE.NR_CONTENT_TMP (
+	NEWS_COMMENT_CONTENT_ID,
+	CONTENT,
+	NEWS_STATUS_COMMENT_ID
+)
+select
+	NEWS_COMMENT_CONTENT_ID,
+	CONTENT,
+	NEWS_STATUS_COMMENT_ID
+from  HOMEPAGE.NR_NEWS_COMMENT_CONTENT;
+
+-- dropping original table
+DROP TABLE HOMEPAGE.NR_NEWS_COMMENT_CONTENT;
+
+-- re-creating original table
+------------------------------------------------
+-- NR_NEWS_COMMENT_CONTENT
+------------------------------------------------
+CREATE TABLE HOMEPAGE.NR_NEWS_COMMENT_CONTENT (
+	NEWS_COMMENT_CONTENT_ID VARCHAR(36) NOT NULL,
+	CONTENT BLOB(1M) NOT NULL,
+	NEWS_STATUS_COMMENT_ID  VARCHAR(36)
+)
+IN NEWS4TABSPACE;
+
+ALTER TABLE HOMEPAGE.NR_NEWS_COMMENT_CONTENT
+  	ADD CONSTRAINT "PK_C_CONTENT_ID" PRIMARY KEY("NEWS_COMMENT_CONTENT_ID");    
+
+ALTER TABLE HOMEPAGE.NR_NEWS_COMMENT_CONTENT
+  	ADD CONSTRAINT "FK_C_COMMENT_ID" FOREIGN KEY ("NEWS_STATUS_COMMENT_ID")
+	REFERENCES HOMEPAGE.NR_NEWS_STATUS_COMMENT("NEWS_STATUS_COMMENT_ID");
+
+-- moving back the data
+insert into HOMEPAGE.NR_NEWS_COMMENT_CONTENT (
+	NEWS_COMMENT_CONTENT_ID,
+	CONTENT,
+	NEWS_STATUS_COMMENT_ID
+)
+select
+	NEWS_COMMENT_CONTENT_ID,
+	CONTENT,
+	NEWS_STATUS_COMMENT_ID
+from  HOMEPAGE.NR_CONTENT_TMP;
+
+-- drop tmp table
+DROP TABLE  HOMEPAGE.NR_CONTENT_TMP;
+
+-- reorg runstats
+{DB2_GRANT_START} HOMEPAGE.NR_NEWS_COMMENT_CONTENT {DB2_GRANT_STOP}
+reorg table HOMEPAGE.NR_NEWS_COMMENT_CONTENT use NEWS4TMPTABSPACE;
+RUNSTATS ON TABLE "HOMEPAGE"."NR_NEWS_COMMENT_CONTENT" FOR INDEXES ALL;   
+
+
+------------------------------------------------------------
+-- 5) MOVING NR_NEWS_STATUS_CONTENT to NEWS4TABSPACE
+------------------------------------------------------------
+-- create tmp
+CREATE TABLE HOMEPAGE.NR_CONTENT_TMP (
+	NEWS_STATUS_CONTENT_ID VARCHAR(36) NOT NULL,
+	CONTENT BLOB(1M) NOT NULL,
+	ITEM_ID VARCHAR(36)
+)
+IN NEWS4TABSPACE;
+
+-- moving data to tmp
+insert into HOMEPAGE.NR_CONTENT_TMP (
+	NEWS_STATUS_CONTENT_ID,
+	CONTENT,
+	ITEM_ID
+)
+select
+	NEWS_STATUS_CONTENT_ID,
+	CONTENT,
+	ITEM_ID
+from  HOMEPAGE.NR_NEWS_STATUS_CONTENT;
+
+-- dropping original table
+DROP TABLE HOMEPAGE.NR_NEWS_STATUS_CONTENT;
+
+-- re-creating original table
+------------------------------------------------
+-- NR_NEWS_STATUS_CONTENT
+------------------------------------------------
+CREATE TABLE HOMEPAGE.NR_NEWS_STATUS_CONTENT (
+	NEWS_STATUS_CONTENT_ID VARCHAR(36) NOT NULL,
+	CONTENT BLOB(1M) NOT NULL,
+	ITEM_ID  VARCHAR(36)
+)
+IN NEWS4TABSPACE;
+
+ALTER TABLE HOMEPAGE.NR_NEWS_STATUS_CONTENT
+  	ADD CONSTRAINT "PK_S_CONTENT_ID" PRIMARY KEY("NEWS_STATUS_CONTENT_ID");
+
+-- moving back the data
+insert into HOMEPAGE.NR_NEWS_STATUS_CONTENT (
+	NEWS_STATUS_CONTENT_ID,
+	CONTENT,
+	ITEM_ID
+)
+select
+	NEWS_STATUS_CONTENT_ID,
+	CONTENT,
+	ITEM_ID
+from  HOMEPAGE.NR_CONTENT_TMP;
+
+-- drop tmp table
+DROP TABLE  HOMEPAGE.NR_CONTENT_TMP;
+
+-- reorg runstats
+{DB2_GRANT_START} HOMEPAGE.NR_NEWS_STATUS_CONTENT {DB2_GRANT_STOP}
+reorg table HOMEPAGE.NR_NEWS_STATUS_CONTENT use NEWS4TMPTABSPACE;
+RUNSTATS ON TABLE "HOMEPAGE"."NR_NEWS_STATUS_CONTENT" FOR INDEXES ALL;
+
+-----------------------------------------------
+-- DROPPING TABSPACE AND BUFFERPOOL
+-----------------------------------------------
+DROP TABLESPACE NEWS8TABSPACE; 
+DROP TABLESPACE NEWS8TMPTABSPACE;
+DROP BUFFERPOOL NEWS8KBP;
+
+DROP TABLESPACE NEWSCONT4KTABSPACE;
+DROP BUFFERPOOL NEWSCONTBFP;
+
+
+
+
+
+

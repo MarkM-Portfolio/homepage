@@ -1,0 +1,39 @@
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+ "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2009, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<!-- Package regrouping the actions related to notification tab -->
+<struts>
+    <package name="customization" extends="homepage-default">               
+        <action name="doLoadCustomization" class="com.ibm.lconn.homepage.web.action.customization.LoadCustomizationAction">
+			<result name="success" type="stream">
+               <param name="contentType">application/json</param>
+   			   <param name="inputName">resultContent</param>    				
+            </result>
+        </action>
+		<action name="doSaveCustomization" class="com.ibm.lconn.homepage.web.action.customization.SaveCustomizationAction">
+        </action>
+		<action name="doRearrangeLayout" class="com.ibm.lconn.homepage.web.action.customization.RearrangeLayoutAction">
+        </action>
+		<!-- legacy action that map the former handleUP in 2.0/2.5 to new actions above -->
+		<action name="handleUP" class="com.ibm.lconn.homepage.web.action.customization.LegacyCustomizationAction">
+			<result name="success" type="chain">
+				<param name="actionName">${actionName}</param>
+			</result>
+		</action>
+    </package>
+</struts>

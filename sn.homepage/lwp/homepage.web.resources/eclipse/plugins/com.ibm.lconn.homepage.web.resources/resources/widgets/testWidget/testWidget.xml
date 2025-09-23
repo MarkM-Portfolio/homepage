@@ -1,0 +1,58 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2008, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<!-- 5724-E76                                                          -->
+
+<iw:iwidget name="testwidget" xmlns:iw="http://www.ibm.com/xmlns/prod/iWidget"
+			supportedModes="view edit" mode="view" lang="en" iScope="testWidgetClass" useHomepageEnhancedFeatures="true">
+	<iw:resource uri="testWidgetClass.js" id="testWidgetClass"/>
+
+	<iw:event id="view" handled="true" onEvent="onView" />
+	<iw:event id="edit" handled="true" onEvent="onEdit" />
+
+
+	<iw:itemSet id="attributes">
+		<iw:item id="attribute1" value="1" />
+		<iw:item id="attribute2" value="2" />
+		<iw:item id="attribute3" value="3" />
+	</iw:itemSet>
+
+	<iw:content mode="view">
+		<![CDATA[
+		<div>
+			In admin page of widget set url to /connections/resources/web/lconn.homepage/widgets/testWidget/testWidget.xml<br><br>
+			<div id="displayDiv"></div>
+			<hr>
+			<input type="button" onclick="iContext.iScope().dumpAttributes()" value="Dump Attributes"/>
+			<input type="button" onclick="iContext.iScope().onEdit()" value="Edit"/>
+		</div>
+		]]>
+	 </iw:content>
+
+	<iw:content mode="edit">
+		<![CDATA[
+		<div> Attribute 1: <span id="name"></span></div>
+		<div>
+			<input type="text" dojoType="dijit.form.TextBox" maxlength="6" name="txtAttr1" id="txtAttr1" /><br/>
+			<input type="text" dojoType="dijit.form.TextBox" maxlength="6" name="txtAttr2" id="txtAttr2" /><br/>
+			<input type="text" dojoType="dijit.form.TextBox" maxlength="6" name="txtAttr3" id="txtAttr3" />
+			<input type="button" name="btnSaveAttributes" value="Save Attributes" onclick="iContext.iScope().saveAttributes()"/>
+			<hr>
+			<input type="button" onclick="iContext.iScope().dumpAttributes()" value="Dump Attributes"/>
+			<input type="button" onclick="iContext.iScope().cancel()" value="Cancel"/>
+			<div id="displayDiv"></div>
+		</div>
+		]]>
+	</iw:content>
+</iw:iwidget>

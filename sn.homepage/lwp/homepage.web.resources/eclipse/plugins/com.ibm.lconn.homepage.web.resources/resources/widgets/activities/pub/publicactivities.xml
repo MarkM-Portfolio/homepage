@@ -1,0 +1,73 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2001, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<iw:iwidget name="publicActivities" xmlns:iw="http://www.ibm.com/xmlns/prod/iWidget" iScope="lconn.homepage.core.base.widgets.activities.pub.PublicActivitiesHomepageClass" supportedModes="Public" useHomepageEnhancedFeatures="true">
+	<!-- iw:resource uri="{homepage}/static/web/widgets/{version}/activities/pub/PublicActivitiesHomepageClass.js"/ -->
+
+	<iw:event id="edit" handled="true" onEvent="onEdit" /> 
+	<iw:event id="onRefreshNeeded" handled="true" onEvent="onRefresh" />	
+	<iw:event id="help" handled="true" onEvent="onHelp" />
+	<iw:event id="onUnload" handled="true" onEvent="onDestroy" />
+  	
+	<iw:itemSet id="attributes">
+		<iw:item id="publicNumberEntries" value="3" />
+		<iw:item id="recent" value="3" />
+  	</iw:itemSet>	
+
+	<iw:itemSet id="defaultParams">
+		<iw:item id="xsltUrl" value="../activities.xsl"/>		
+		<iw:item id="xsltUrlPublic" value="../publicActivities.xsl"/>
+		<iw:item id="mappingRemoteUrl" value="{activities}/service/html/mainpage#dashboard,public"/>
+		<iw:item id="helpUrl" value="{help}/topic/com.ibm.lotus.connections.homepage.help/t_hp_using_public_activities_widget.html"/>
+	</iw:itemSet>
+
+	<iw:itemSet id="feeds">
+		<iw:item id="defaultURL" value="{activities}/service/atom2/forms/everything"/>
+		<iw:item id="activities" value="{activities}/service/atom2/forms/activities"/>
+		<iw:item id="responses" value="{activities}/service/atom2/forms/everything?repliesToUserid="/>
+		<iw:item id="todos" value="{activities}/service/atom2/forms/todos"/>
+		<iw:item id="publicActivities" value="{activities}/service/atom2/forms/activities?public=only&amp;organization=only"/>
+	</iw:itemSet>
+	
+	<iw:itemSet id="modes">
+		<iw:item id="Public" value="{ACTIVITIES_PUBLIC_ACTIVITIES_TITLE}"/>
+	</iw:itemSet>
+
+	<iw:content mode="view">
+		 <![CDATA[    
+		<div id="_IWID_options_metadata" style="display: none"/>
+
+		<hp:options xmlns:hp="http://www.ibm.com/homepage">
+
+		<hp:option hp:id="publicNumberEntries" hp:type="select" hp:caption="{ACTIVITIES_AMOUNT_ENTRIES}">
+			<hp:choice hp:id="1" hp:value="1"></hp:choice>
+			<hp:choice hp:id="2" hp:value="2"></hp:choice>
+			<hp:choice hp:id="3" hp:value="3"></hp:choice>
+			<hp:choice hp:id="4" hp:value="4"></hp:choice>
+			<hp:choice hp:id="5" hp:value="5"></hp:choice>
+			<hp:choice hp:id="6" hp:value="6"></hp:choice>
+			<hp:choice hp:id="7" hp:value="7"></hp:choice>
+			<hp:choice hp:id="8" hp:value="8"></hp:choice>
+			<hp:choice hp:id="9" hp:value="9"></hp:choice>
+			<hp:choice hp:id="10" hp:value="10"></hp:choice>
+		</hp:option>	
+
+		</hp:options>
+
+		</div>
+
+   		<div id="_IWID_root"/>
+		]]> 
+	</iw:content>
+</iw:iwidget>

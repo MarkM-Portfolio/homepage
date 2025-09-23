@@ -1,0 +1,232 @@
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- HCL Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright HCL Technologies Limited. 2008, 2021                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+
+<script type="text/javascript">
+	var hashValue = location.hash;
+	if(hashValue.length > 0){
+		if (hashValue.charAt(0) == "#"){
+			hashValue = hashValue.substring(1);
+
+			// If the hashValue actually has some content
+			if(hashValue.length > 0){
+				// Save the hash value as a cookie
+				document.cookie="ConnectionsHomepageActivityStreamState=" + hashValue + "; path=${pageContext.request.contextPath}";
+				// Redirect to the updates page
+				window.location.replace("${pageContext.request.contextPath}/web/updates/");
+			}
+		}
+	}
+</script>
+
+<%--wscExemptBegin--%>
+<%--wscExemptEnd--%>
+
+<%@ page session="true" contentType="text/html; charset=UTF-8"
+	buffer="128kb"%>
+<%@ page import="com.ibm.lconn.homepage.services.helper.DefaultHomepageTabHelper" %>
+<%@ page errorPage="/web/jsp/common/errorPage.jsp"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="bidi" uri="http://www.ibm.com/lconn/tags/bidiutil"%>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@ taglib prefix="lc-ui" uri="http://www.ibm.com/lconn/tags/coreuiutil" %>
+
+<bidi:direction />
+
+<c:set var="tabPosition" value="left-h"/>
+
+<lc-ui:serviceLink serviceName="help" var="urlHelp" />
+<lc-ui:serviceLink serviceName="homepage" var="urlHomepage" />
+<lc-ui:serviceLink serviceName="communities" var="urlCommunities" />
+<lc-ui:serviceLink serviceName="files" var="urlFiles" />
+
+<c:if test="${bidi}">
+	<c:set var="tabPosition" value="right-h"/>
+    <c:set var="bidi" value='true'/>
+</c:if>
+
+<script type="text/javascript">
+	dojo.require("lconn.homepage.gettingStarted.stackController");
+</script>
+
+<script type="text/javascript">
+
+	dojo.publish(com.ibm.social.as.constants.events.CHANGEPAGETITLE, ["<fmt:message key='jsp.start.title' />"]);
+
+	function isUserExternal() {
+		if (typeof lconn.homepage.userIsExternal == 'undefined'){
+			return false;
+		} else if (typeof lconn.homepage.userIsExternal == 'boolean'){
+			return lconn.homepage.userIsExternal;
+		} else if (typeof lconn.homepage.userIsExternal == 'string'){
+			if(lconn.homepage.userIsExternal.toLowerCase() == 'false'){
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	function updateWelcomeMode() {
+		var xhrArgs = {
+				url: "${pageContext.request.contextPath}/web/updateWelcomeMode.action",
+				handleAs: "json",
+				preventCache: true,
+				headers: {"X-Update-Nonce": "${xUpdateNonce}"},
+				content: {
+					checkboxValue: dojo.byId("dontshowgetstartpagecheckbox").checked
+				},
+				load: function(data) {
+					//do nothing yet
+				},
+				error: function(error) {
+					//do nothing
+				}
+			};
+			//Call the asynchronous xhrPost
+			var deferred = dojo.xhrPost(xhrArgs);
+	}
+
+	function registerWelcomeBoxHandler() {
+		updateCheckboxNode = dojo.byId("dontshowgetstartpagecheckbox");
+		updateCheckboxConnections = [];
+		updateCheckboxConnections.push(dojo.connect(updateCheckboxNode, 'onclick', updateWelcomeMode));
+	}
+
+	function hideCheckbox(){
+		if (<%= DefaultHomepageTabHelper.isGettingStartedBypassed()%>){
+			dojo.addClass(dojo.byId("gettingStartedCheckboxContainer"), "lotusHidden")
+		}
+	}
+
+	function positionTabContentPane(){
+
+        var bidi = '${bidi}';
+        var tablist_position = dojo.position(dojo.byId("gettingStart_tablist"));
+		var tabpane_wrapper = dojo.query("#gettingStart .dijitTabPaneWrapper")[0];
+		dojo.removeClass(tabpane_wrapper, "dijitTabContainerLeft-container");
+        dojo.removeClass(dojo.query("#gettingStart")[0], "dijitTabContainerLeft");
+
+		if(tabpane_wrapper){
+            if(bidi==="true"){
+                dojo.style(tabpane_wrapper, {"white-space": "normal", right: tablist_position.w + "px"});
+            }else{
+                dojo.style(tabpane_wrapper, {"white-space": "normal", left: tablist_position.w + "px"});
+            }
+		}
+	}
+
+	function startUp() {
+		if(!isUserExternal()){
+			positionTabContentPane();
+		}
+
+		registerWelcomeBoxHandler();
+		hideCheckbox();
+	}
+
+	dojo.addOnLoad(startUp);
+
+</script>
+
+<div id="lotusMain" class="lotusMain" aria-labelledby="gettingStartedTitle">
+	<div id="hpplaceholder_top"></div>
+	<div id="lotusColLeft" class="lotusColLeft">
+		<tiles:insertAttribute name="leftColumn" />
+	</div>
+
+	<div id="lotusContent" class="lotusContent" role="main">
+		<div id="hpplaceholder_start_content_top"></div>
+		<div class="lotusHeader gettingStartedHeader">
+			<div>
+				<span id="gettingStartedTitle" class="lotusHeading1" role="heading" aria-level="1"><fmt:message key="jsp.start.welcome.title" /></span>
+			</div>
+			<div class="gettingStartedCheckboxContainer" id="gettingStartedCheckboxContainer">
+				<input class="lotusCheckbox" type="checkbox" id="dontshowgetstartpagecheckbox" name="dontshowgetstartpagecheckbox" ${welcomeMode}/><label class="lotusCheckbox gettingStartedDontShowLabel" for="dontshowgetstartpagecheckbox"><fmt:message key="jsp.start.checkbox.label"/></label>
+				<input type="hidden" id="X-Update-Nonce" name="X-Update-Nonce" value="${xUpdateNonce}" />
+			</div>
+		</div>
+		<div id="hpplaceholder_start_content_beforetabs"></div>
+
+		<c:choose>
+			<c:when test="${sessionScope['user.info.isExternal']}">
+				<div id="gettingStartedVisitor" class="gettingStartedVisitor">
+					<div>
+						<p id="gettingStartedVisitorIntro" class="gettingStartedVisitorIntro"><fmt:message key="jsp.start.welcome.visitor.text.line1" /></p>
+					</div>
+					<div id="gettingStartedVisitorComponents" class="gettingStartedVisitorComponents">
+						<div>
+							<div id="gettingStartedVisitorHomepage" class="gettingStartedVisitorHomepage">
+								<a href="<c:out value="${urlHomepage}/web/updates/#myStream/imFollowing/all"/>" id="gettingStartedVisitorHomepageIcon" class="gettingStartedVisitorHomepageIcon"><img src="<lc-ui:blankGif />" alt="<fmt:message key="jsp.start.share.component.linksTitle.homepage" />" class="iconsComponentsBlue24 iconsComponentsBlue24-HomeBlue24"><span id="noImageHomepage">Homepage</span></a>
+								<p>
+									<fmt:message key="jsp.start.welcome.visitor.text.homepage">
+										<fmt:param><a href="<c:out value="${urlHomepage}/web/updates/#myStream/imFollowing/all"/>" class="gettingStartedVisitorLink" id="gettingStartedVisitorLinkHomepage" title="<fmt:message key="jsp.start.welcome.visitor.homepage" />"><fmt:message key="jsp.start.welcome.visitor.homepage" /></a></fmt:param>
+									</fmt:message>
+								</p>
+							</div>
+						</div>
+						<div>
+							<div id="gettingStartedVisitorComm" class="gettingStartedVisitorComm">
+								<a href="<c:out value="${urlCommunities}/service/html/mycommunities"/>" id="gettingStartedVisitorCommIcon" class="gettingStartedVisitorCommIcon"><img src="<lc-ui:blankGif />" alt="<fmt:message key="jsp.start.share.component.linksTitle.communities" />" class="iconsComponentsBlue24 iconsComponentsBlue24-CommunitiesBlue24"><span id="noImageCommunities">Communities</span></a>
+								<p>
+									<fmt:message key="jsp.start.welcome.visitor.text.communities">
+										<fmt:param><a href="<c:out value="${urlCommunities}/service/html/mycommunities"/>" class="gettingStartedVisitorLink" id="gettingStartedVisitorLinkComm" title="<fmt:message key="jsp.common.service.name.communities" />"><fmt:message key="jsp.common.service.name.communities" /></a></fmt:param>
+									</fmt:message>
+								</p>
+							</div>
+						</div>
+						<div>
+							<div id="gettingStartedVisitorFiles" class="gettingStartedVisitorFiles">
+								<a href="<c:out value="${urlFiles}"/>" id="gettingStartedVisitorFilesIcon" class="gettingStartedVisitorFilesIcon"><img src="<lc-ui:blankGif />" alt="<fmt:message key="jsp.start.share.component.linksTitle.files" />" class="iconsComponentsBlue24 iconsComponentsBlue24-FilesBlue24"><span id="noImageFiles">Files</span></a>
+								<p>
+									<fmt:message key="jsp.start.welcome.visitor.text.files">
+										<fmt:param><a href="<c:out value="${urlFiles}/"/>" class="gettingStartedVisitorLink" id="gettingStartedVisitorLinkFiles" title="<fmt:message key="jsp.common.service.name.files" />"><fmt:message key="jsp.common.service.name.files" /></a></fmt:param>
+									</fmt:message>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div>
+						<p id="gettingStartedVisitorOtherViews" class="gettingStartedVisitorOtherViews">
+							<fmt:message key="jsp.start.welcome.visitor.text.line2">
+									<fmt:param><a href="<c:out value="${urlHomepage}/web/updates/#myNotifications/forme/all"/>" class="gettingStartedVisitorLink" title="<fmt:message key="jsp.homepage.nav.activitystream.myNotificationsDesc" />"><fmt:message key="jsp.homepage.nav.activitystream.myNotifications" /></a></fmt:param>
+									<fmt:param><a href="<c:out value="${urlHomepage}/web/updates/#actionRequired/actionRequired/all" />" class="gettingStartedVisitorLink" title="<fmt:message key="jsp.homepage.nav.activitystream.actionRequiredDesc" />"><fmt:message key="jsp.homepage.nav.activitystream.actionRequired" /></a></fmt:param>
+							</fmt:message>
+						</p>
+					</div>
+					<div>
+						<p id="gettingStartedVisitorLearnMore" class="gettingStartedVisitorLearnMore">
+							<fmt:message key="jsp.start.welcome.visitor.text.line3">
+								<fmt:param><a href="<c:out value="${urlHelp}/topic/com.ibm.lotus.connections.common.help/c_eucommon_ext_user.html"/>" id="gettingStartedVisitorLinkHelp" title="<fmt:message key="jsp.start.welcome.visitor.help" />"><fmt:message key="jsp.start.welcome.visitor.help" /></a></fmt:param>
+							</fmt:message>
+						</p>
+					</div>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div id="gettingStartedContainer" class="tundra">
+					<div dojoType="lconn.homepage.dijit.start.TabContainer" id="gettingStart"
+						class="startContent" tabPosition="${tabPosition}"><!-- Initially Empty --></div>
+				</div>
+			</c:otherwise>
+		</c:choose>
+
+		<div id="hpplaceholder_start_content_bottom"></div>
+	</div>
+	<div id="hpplaceholder_bottom"></div>
+</div>
+
+

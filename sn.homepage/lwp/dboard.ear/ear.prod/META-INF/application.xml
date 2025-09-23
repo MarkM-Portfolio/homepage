@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE application PUBLIC "-//Sun Microsystems, Inc.//DTD J2EE Application 1.3//EN" "http://java.sun.com/dtd/application_1_3.dtd">
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2008, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<application id="dashboard.ear">
+	<display-name>Homepage</display-name>
+	<description/>
+	<module id="EventPublisher">
+	   <ejb>lc.events.publish.jar</ejb>
+	</module>
+	<module id="DashboardWebUi">
+		<web>
+			<web-uri>homepage.war</web-uri>
+			<context-root>/homepage</context-root>
+		</web>
+	</module>
+	
+	<security-role id="SecurityRole_1198526434430">
+		<description/>
+		<role-name>person</role-name>
+	</security-role>
+	<security-role id="SecurityRole_1198526434431">
+		<description/>
+		<role-name>everyone</role-name>
+	</security-role>
+	<security-role id="SecurityRole_1198526434432">
+		<role-name>reader</role-name>
+	</security-role>
+	<security-role id="SecurityRole_1198526434433">
+		<role-name>admin</role-name>
+	</security-role>
+	<security-role id="SecurityRole_1198526434434">
+		<role-name>metrics-reader</role-name>
+	</security-role>
+	<security-role id="SecurityRole_1198526434435">
+		<role-name>org-admin</role-name>
+	</security-role>
+
+</application>

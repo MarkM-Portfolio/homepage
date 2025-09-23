@@ -1,0 +1,156 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2007, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+-- {COPYRIGHT}
+
+
+-- +++++++++++++++++++++++++++++++++++++++++++++
+-- +++++++++++++++++++++++++++++++++++++++++++++
+--					start HP FIXUP 30
+-- +++++++++++++++++++++++++++++++++++++++++++++
+-- +++++++++++++++++++++++++++++++++++++++++++++
+
+
+------------------------------------------------------------------------------------------------
+-- UPDATE SCHEMA VERSION AND RELEASE VERSION to 30
+------------------------------------------------------------------------------------------------
+
+-- UPDATE SCHEMA VERSION AND RELEASE VERSION to 3.0.0
+-- UPDATE  HOMEPAGE.HOMEPAGE_SCHEMA SET DBSCHEMAVER = 30 , RELEASEVER = '3.0.0'
+-- WHERE   DBSCHEMAVER = 23;
+
+-- +++++++++++++++++++++++++++++++++++++++++++++
+-- +++++++++++++++++++++++++++++++++++++++++++++
+--					start HP FIXUP 31
+-- +++++++++++++++++++++++++++++++++++++++++++++
+-- +++++++++++++++++++++++++++++++++++++++++++++
+
+---------------------------------------------------------------------------------
+------------------------ START HOMEPAGE ---------------------------------------------
+---------------------------------------------------------------------------------
+
+------------------------------------------------
+-- PERSON
+------------------------------------------------
+
+ALTER TABLE HOMEPAGE.PERSON
+	ADD IS_ACTIVE NUMBER(5,0) DEFAULT 1;
+
+ALTER TABLE HOMEPAGE.PERSON
+	ADD USER_MAIL_LOWER VARCHAR2(256);
+
+UPDATE HOMEPAGE.PERSON SET USER_MAIL_LOWER =  lower(USER_MAIL);
+
+COMMIT;
+
+ALTER TABLE HOMEPAGE.PERSON
+	ADD DISPLAYNAME_LOWER VARCHAR2(256);	
+
+UPDATE HOMEPAGE.PERSON SET DISPLAYNAME_LOWER =  lower(DISPLAYNAME);
+
+COMMIT;
+
+-- DROP SNCORE_PERSON
+-- in 2.5 it didn't exist
+-- DROP VIEW HOMEPAGE.SNCORE_PERSON;
+	
+CREATE INDEX HOMEPAGE.PERSON_USER_MAIL_LWR
+    ON HOMEPAGE.PERSON(USER_MAIL_LOWER ASC) TABLESPACE "HOMEPAGEINDEXTABSPACE";
+
+CREATE INDEX HOMEPAGE.PERSON_DISPLAYNAME_LWR
+    ON HOMEPAGE.PERSON(DISPLAYNAME_LOWER ASC) TABLESPACE "HOMEPAGEINDEXTABSPACE";
+
+ALTER TABLE HOMEPAGE.PERSON ENABLE ROW MOVEMENT;
+
+------------------------------------------------
+-- SNCORE_PERSON
+------------------------------------------------
+
+CREATE VIEW HOMEPAGE.SNCORE_PERSON (SNC_INTERNAL_ID, SNC_IDKEY, SNC_EMAIL_LOWER, SNC_DISPLAY_NAME) 
+    AS SELECT PERSON_ID, EXID, USER_MAIL_LOWER, DISPLAYNAME FROM HOMEPAGE.PERSON;		
+
+
+------------------------------------------------
+-- HP_TAB
+------------------------------------------------
+
+ALTER TABLE HOMEPAGE.HP_TAB
+	ADD ENABLED NUMBER(5,0) DEFAULT 1;
+
+ALTER TABLE HOMEPAGE.HP_TAB ENABLE ROW MOVEMENT;
+        
+---------------------------------------------------------------------------------
+---------------- END UPDATE HOMEPAGE DATABASE ----------------    
+--------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------------
+-- UPDATE SCHEMA VERSION AND RELEASE VERSION to 31
+------------------------------------------------------------------------------------------------
+-- UPDATE  HOMEPAGE.HOMEPAGE_SCHEMA SET DBSCHEMAVER = 31 , RELEASEVER = '3.0.0'
+-- WHERE   DBSCHEMAVER = 30;
+
+-- +++++++++++++++++++++++++++++++++++++++++++++
+-- +++++++++++++++++++++++++++++++++++++++++++++
+--					start HP FIXUP 34
+-- +++++++++++++++++++++++++++++++++++++++++++++
+-- +++++++++++++++++++++++++++++++++++++++++++++
+{include.hp-fixup34_b.sql}
+
+
+-- +++++++++++++++++++++++++++++++++++++++++++++
+-- +++++++++++++++++++++++++++++++++++++++++++++
+--					start HP FIXUP 35
+-- +++++++++++++++++++++++++++++++++++++++++++++
+-- +++++++++++++++++++++++++++++++++++++++++++++
+{include.hp-fixup35.sql}
+
+
+-- +++++++++++++++++++++++++++++++++++++++++++++
+-- +++++++++++++++++++++++++++++++++++++++++++++
+--					start HP FIXUP 36
+-- +++++++++++++++++++++++++++++++++++++++++++++
+-- +++++++++++++++++++++++++++++++++++++++++++++
+{include.hp-fixup36.sql}
+
+
+-- +++++++++++++++++++++++++++++++++++++++++++++
+-- +++++++++++++++++++++++++++++++++++++++++++++
+--					start HP FIXUP 37
+-- +++++++++++++++++++++++++++++++++++++++++++++
+-- +++++++++++++++++++++++++++++++++++++++++++++
+{include.hp-fixup37.sql}
+
+
+-- +++++++++++++++++++++++++++++++++++++++++++++
+-- +++++++++++++++++++++++++++++++++++++++++++++
+--					start HP FIXUP 38
+-- +++++++++++++++++++++++++++++++++++++++++++++
+-- +++++++++++++++++++++++++++++++++++++++++++++
+{include.hp-fixup38.sql}
+
+-- +++++++++++++++++++++++++++++++++++++++++++++
+-- +++++++++++++++++++++++++++++++++++++++++++++
+--					start HP FIXUP 41
+-- +++++++++++++++++++++++++++++++++++++++++++++
+-- +++++++++++++++++++++++++++++++++++++++++++++
+{include.hp-fixup41.sql}
+
+-- +++++++++++++++++++++++++++++++++++++++++++++
+-- +++++++++++++++++++++++++++++++++++++++++++++
+--					start HP FIXUP 43
+-- +++++++++++++++++++++++++++++++++++++++++++++
+-- +++++++++++++++++++++++++++++++++++++++++++++
+{include.hp-fixup43.sql}
+

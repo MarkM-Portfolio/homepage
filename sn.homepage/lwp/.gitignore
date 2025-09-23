@@ -1,0 +1,16 @@
+*.class
+.apt_generated
+.factorypath
+.settings
+build
+logs
+/.apt_generated
+/.factorypath
+/.project
+/.settings
+/bin
+/build
+/dboard.sn.install.zip
+/dboard.sn.install.zip.gz
+/time.txt
+.classpath

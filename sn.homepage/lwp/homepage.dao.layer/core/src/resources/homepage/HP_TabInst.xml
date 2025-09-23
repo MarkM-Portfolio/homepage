@@ -1,0 +1,129 @@
+<!DOCTYPE sqlMap
+	PUBLIC "-//iBATIS.com/DTD SQL Map 2.0//EN"
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+	
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2008, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<!-- 
+CREATE TABLE HOMEPAGE.HP_TAB_INST  (
+	TAB_INST_ID VARCHAR(36) NOT NULL,
+	TAB_ID VARCHAR(36) NOT NULL,
+	UI_ID VARCHAR(36) NOT NULL,
+	TAB_NAME VARCHAR(36),
+	N_COLUMNS SMALLINT,
+	LAST_MODIFIED TIMESTAMP NOT NULL
+);
+IN HOMEPAGETABSPACE;
+ -->
+ 
+<sqlMap namespace="HP_TabInst">
+
+	<typeAlias alias="HP_TAB_INST" type="com.ibm.lconn.homepage.dao.model.TabInst" />
+
+	<resultMap id="HP_TAB_INSTMap" class="HP_TAB_INST">
+		<result property="tabInstId" column="TAB_INST_ID" jdbcType="VARCHAR" />
+		<result property="tabId" column="TAB_ID" jdbcType="VARCHAR" />
+		<result property="uiId" column="UI_ID" jdbcType="VARCHAR" />
+		<result property="tabName" column="TAB_NAME" jdbcType="VARCHAR" />
+		<result property="numColumns" column="N_COLUMNS" jdbcType="VARCHAR"/>
+		<result property="lastModified" column="LAST_MODIFIED" jdbcType="VARCHAR"/>
+		<result property="enabled" column="ENABLED" jdbcType="SMALLINT"/>
+		<result property="organizationId" column="ORGANIZATION_ID" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="select-HP_TAB_INST" resultMap="HP_TAB_INSTMap" >
+		<![CDATA[
+			SELECT * from 
+				$schema$.HP_TAB_INST HP_TAB_INST,
+				$schema$.HP_TAB HP_TAB
+			where HP_TAB.TAB_ID=HP_TAB_INST.TAB_ID
+		]]>
+			<isEqual prepend="AND" property="applyMT" compareValue="true">
+					HP_TAB_INST.ORGANIZATION_ID = #organizationId:VARCHAR#
+			</isEqual>
+	</select>
+
+	<insert id="insert-HP_TAB_INST" parameterClass="HP_TAB_INST" >
+		<![CDATA[
+			INSERT INTO $schema$.HP_TAB_INST
+				(TAB_INST_ID, TAB_ID, UI_ID, TAB_NAME, N_COLUMNS, LAST_MODIFIED, ORGANIZATION_ID) 
+			VALUES
+				(#tabInstId:VARCHAR#, #tabId:VARCHAR#, #uiId:VARCHAR#, #tabName:VARCHAR#, #numColumns:VARCHAR#, #lastModified:TIMESTAMP#, #organizationId:VARCHAR#)
+		]]>
+	</insert>
+
+	<update id="update-HP_TAB_INST" parameterClass="HP_TAB_INST">
+		<![CDATA[
+			update $schema$.HP_TAB_INST set
+				TAB_ID = #tabId:VARCHAR#,
+				UI_ID = #uiId:VARCHAR#,
+				TAB_NAME = #tabName:TIMESTAMP#,
+				N_COLUMNS = #numColumns:TIMESTAMP#,
+				LAST_MODIFIED = #lastModified:BOOLEAN#,
+				ORGANIZATION_ID = #organizationId:VARCHAR#
+			where TAB_INST_ID = #tabInstId:VARCHAR#
+		]]>
+	</update>
+
+	<delete id="delete-HP_TAB_INST">
+		<![CDATA[
+			delete from $schema$.HP_TAB_INST where TAB_INST_ID = #key#
+		]]>
+	</delete>
+  
+	<select id="getByPK-HP_TAB_INST"  resultMap="HP_TAB_INSTMap">
+		<![CDATA[
+			select *
+			from 	$schema$.HP_TAB_INST HP_TAB_INST,
+					$schema$.HP_TAB  HP_TAB
+			where 	HP_TAB_INST.TAB_INST_ID = #key:VARCHAR# AND HP_TAB.TAB_ID=HP_TAB_INST.TAB_ID
+		]]>
+			<isEqual prepend="AND" property="applyMT" compareValue="true">
+					HP_TAB_INST.ORGANIZATION_ID = #organizationId:VARCHAR#
+			</isEqual>
+	</select>
+
+	<select id="getPersonUIPageByDefaultName-HP_TAB_INST" resultMap="HP_TAB_INSTMap">
+		<![CDATA[
+			select *
+			from 	$schema$.HP_TAB_INST HP_TAB_INST, 
+					$schema$.HP_UI HP_UI,
+					$schema$.HP_TAB HP_TAB
+			where   HP_TAB_INST.TAB_NAME = #defaultName# AND 
+					HP_UI.PERSON_ID=#personId# AND
+					HP_UI.UI_ID = HP_TAB_INST.UI_ID AND
+					HP_TAB.TAB_ID=HP_TAB_INST.TAB_ID
+		]]>
+			<isEqual prepend="AND" property="applyMT" compareValue="true">
+						HP_TAB_INST.ORGANIZATION_ID = #organizationId:VARCHAR#
+					AND HP_TAB_INST.ORGANIZATION_ID = HP_UI.ORGANIZATION_ID
+			</isEqual>
+	</select>
+
+	 <select id="getPersonUIPages-HP_TAB_INST" resultMap="HP_TAB_INSTMap">
+		<![CDATA[
+			select 	*
+			from 	$schema$.HP_TAB_INST HP_TAB_INST, 
+					$schema$.HP_UI HP_UI,
+					$schema$.HP_TAB HP_TAB
+			where 	HP_UI.PERSON_ID=#personId# AND HP_UI.UI_ID = HP_TAB_INST.UI_ID AND HP_TAB.TAB_ID=HP_TAB_INST.TAB_ID
+		]]>
+			 <isEqual prepend="AND" property="applyMT" compareValue="true">
+					 HP_TAB_INST.ORGANIZATION_ID = #organizationId:VARCHAR#
+				 AND HP_TAB_INST.ORGANIZATION_ID = HP_UI.ORGANIZATION_ID
+			</isEqual>
+	 </select>
+</sqlMap>
+ 

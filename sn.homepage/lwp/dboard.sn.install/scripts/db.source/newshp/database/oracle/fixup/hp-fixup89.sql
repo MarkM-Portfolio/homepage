@@ -1,0 +1,44 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2007, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+-- {COPYRIGHT}
+
+ALTER TABLE HOMEPAGE.PERSON ADD CREATION_DATE TIMESTAMP;
+UPDATE 		HOMEPAGE.PERSON SET CREATION_DATE = LAST_UPDATE;
+COMMIT;
+
+-----------------------------------------------
+-- UPDATE PERSON
+-----------------------------------------------
+ALTER TABLE HOMEPAGE.PERSON
+	ADD THEME_ID VARCHAR2(36);
+
+ALTER TABLE HOMEPAGE.PERSON
+	ADD COMM_VISIBILITY NUMBER(5 ,0);	
+
+ALTER TABLE HOMEPAGE.PERSON
+	ADD MEMBER_TYPE NUMBER(5 ,0) DEFAULT 0;
+
+UPDATE HOMEPAGE.PERSON SET MEMBER_TYPE = 0;
+
+COMMIT;
+
+ALTER TABLE HOMEPAGE.PERSON 
+	MODIFY MEMBER_TYPE NUMBER(5 ,0) NOT NULL;
+ 
+COMMIT;
+
+UPDATE HOMEPAGE.PERSON SET MEMBER_TYPE = 2 WHERE PERSON_ID = '00000000-0000-0000-0000-000000000000';
+
+COMMIT;

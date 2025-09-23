@@ -1,0 +1,37 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2015                                          -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<iw:iwidget id="SimpleWidget" xmlns:iw="http://www.ibm.com/xmlns/prod/iWidget"
+		supportedModes="view edit" mode="view" lang="en"
+		iScope="simple.widget" allowInstanceContent="true">
+
+    <iw:resource uri="simple.js" />
+    <iw:event id="edit" handled="true" onEvent="onEdit" />
+
+	<iw:content mode="view">
+		<![CDATA[
+			<div id="container">View Mode:</div>
+		]]>
+	</iw:content>
+
+	<iw:content mode="edit">
+		<![CDATA[
+			<div>
+			Edit Mode:
+			<span class="lotusBtn"><a href="javascript:iContext.iScope().save();">Save</a></span>
+			<span class="lotusBtn"><a href="javascript:iContext.iScope().cancel();">Cancel</a></span>
+			</div>
+		]]>
+	</iw:content>
+</iw:iwidget>

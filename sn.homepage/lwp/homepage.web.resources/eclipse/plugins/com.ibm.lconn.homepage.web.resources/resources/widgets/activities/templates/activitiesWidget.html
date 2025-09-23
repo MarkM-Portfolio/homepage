@@ -1,0 +1,106 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2011, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<div dojoAttachPoint="root" class="topContainer">
+<div style="padding-top: 5px">
+<h3 class="widgetTitle" dojoAttachPoint="titleNode" style="height:20px;">
+	<span class="lotusLeft" id="${id}_ViewDropDown" style="height:20px;">${modeTitle}</span><span dojoAttachPoint="menuModeButtonNode"></span>&nbsp;
+</h3>
+</div>
+<div dojoAttachPoint="loadingNode"><center><img src="${_loadingImagePath}" class='loading'
+	alt='${_resourceBundle.ACTIVITIES_LOADING_ALT}' /></center></div>
+	
+<div dojoAttachPoint="errorNode" style="display: none"></div>
+
+<div dojoAttachPoint="containerNode" style="display: none" class="entry noBorder">
+
+<table width="98%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 5px;" role="presentation">
+	<tr>
+		<td width="175px" valign="top">
+		<div dojoAttachPoint="calendarNode" role="region" aria-label="${_resourceBundle.ACTIVITIES_CALENDAR_SUMMARY}"></div>
+		</td>
+
+		<td valign="top" class="activityInfoColumn" style="vertical-align:top;">
+
+		<div class="activityInfo">
+		<h4><span dojoAttachPoint="dayNode" class="day"></span></h4>
+		<div style="margin-top: 5px">
+		<p class="overline_todo">
+			<img class="lconnSprite lconnSprite-iconNote16" alt="${_resourceBundle.ACTIVITIES_NEW_REPONSES_TOOLTIP}" title="${_resourceBundle.ACTIVITIES_NEW_REPONSES_TOOLTIP}" src="${_blankGif}"/>
+			<span dojoAttachPoint="newResponsesNode"></span>
+		</p>
+		<p class="overline_todo">
+			<img class="lconnSprite lconnSprite-iconPriorityHigh16" alt="${_resourceBundle.ACTIVITIES_HIGH_PRIORITY_ENTRIES_TOOLTIP}" title="${_resourceBundle.ACTIVITIES_HIGH_PRIORITY_ENTRIES_TOOLTIP}" src="${_blankGif}"/>
+			<a dojoAttachPoint="highPriorityNode" role="button" href="#" dojoAttachEvent="onclick:displayHighPriority" class="lotusAction"></a>
+		</p>
+		<p class="overline_todo">
+			<img class="lconnSprite lconnSprite-iconActivities16" alt="${_resourceBundle.ACTIVITIES_MY_ACTIVITIES_TOOLTIP}" title="${_resourceBundle.ACTIVITIES_MY_ACTIVITIES_TOOLTIP}" src="${_blankGif}"/>
+			<a dojoAttachPoint="activitiesNode" role="button" href="#" dojoAttachEvent="onclick:displayActivities" class="lotusAction"></a>
+		</p>
+		</div>
+		</div>
+		<!-- end Activity info --></td>
+	</tr>
+</table>
+
+<div dojoAttachPoint="popupTodoNode" class="popup" style="display:none;"></div>
+<div dojoAttachPoint="popupTodoNode2" class="popup" style="display:none;"></div>
+
+<div dojoAttachPoint="popupNewResponsesNode" class="detailsBox" style="display:none;"></div>
+
+<div dojoAttachPoint="popupHighPriorityNode" class="detailsBox" style="display:none;"></div>
+
+<div dojoAttachPoint="tempNode" style="display: none"></div>
+
+<div dojoAttachPoint="noActivitiesNode" id="noActivitesNode" style="display: none;">
+	<div style="border-bottom: solid 1px #ddd;">
+		<div>
+			<img class="lotusLeft" src="${activitiesImg}" alt="${noActivitiesTitle}" style="margin-right:5px;">
+		</div>
+		<span style="font-size:1em;font-weight:bold;" tabindex="0" aria-describedby="noActivitiesDesc">
+			${noActivitiesTitle}
+		</span>
+		<br/>
+		<div id="noActivitiesDesc" style="margin-bottom: 3px; padding-left: 3px;">
+			${noActivitiesBodyExplaination1}
+			<br/>
+			${noActivitiesBodyExplaination2}
+			<a href="${linkActivities}">${linkActivitiesMessage}</a>
+		</div>
+	</div>
+</div>
+
+<div dojoAttachPoint="noHighPriorityNode" id="noHighPriorityNode" style="display: none;">
+	<div style="border-bottom: solid 1px #ddd;">
+		<div>
+			<img class="lotusLeft" src="${activitiesImg}" alt="${_resourceBundle.ACTIVITIES_ALT}" style="margin-right:5px;">
+		</div>
+		<span style="font-size:1em;font-weight:bold;" tabindex="0" aria-describedby="noHighPriorityDesc">
+			${noHighPriorityTitle}
+		</span>
+		<br/>
+		<div id="noHighPriorityDesc" style="margin-bottom: 3px; padding-left: 3px;">
+			${noHighPriorityBodyExplaination1}
+			<br/>
+			${noHighPriorityBodyExplaination2}
+			<a href="${linkActivities}" aria-describedby="noHighPriorityDesc">${linkActivitiesMessage}</a>
+		</div>
+	</div>
+</div>
+
+</div>
+ 
+</div>
+
+

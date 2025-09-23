@@ -1,0 +1,368 @@
+/* ***************************************************************** */
+/*                                                                   */
+/* IBM Confidential                                                  */
+/*                                                                   */
+/* OCO Source Materials                                              */
+/*                                                                   */
+/* Copyright IBM Corp. 2011, 2015                                    */
+/*                                                                   */
+/* The source code for this program is not published or otherwise    */
+/* divested of its trade secrets, irrespective of what has been      */
+/* deposited with the U.S. Copyright Office.                         */
+/*                                                                   */
+/* ***************************************************************** */
+
+/*********************************************************************/
+/** Temporary file fix so that the Activity Stream in profiles can  **/
+/** correctly load when an anonymous user logs on. Should remove as **/
+/** soon as we fully move to One UI 3 styles. (2011/11/09)          **/
+/*********************************************************************/
+
+.lotusContent{
+	padding: 25px;
+}
+
+.lotusui .lotusContent .lotusBoard .lotusPost{
+	border-style: solid;
+	overflow: hidden;
+	padding: 7px 7px 0 4px;
+    /*padding: 7px 7px 7px 0;*/
+	border-color: #FFFFFF !important;
+	border-top: 1px solid #EEEEEE !important;
+	border-bottom-width: 0 !important;
+	margin-bottom: 0;
+	border-left-width: 0 !important;
+    margin-left: 0 !important;
+}
+
+.lotusBoard .lotusPost .lotusPostMore {
+    bottom: 8px;
+    display: none;
+    position: absolute;
+    right: 5px;
+}
+
+.lotusBoard .lotusPostHover{
+	background-color: #E8F7FC;
+    cursor: pointer;
+}
+
+.lotusBoard .lotusPostHover .lotusPostMore {
+    display: inline;
+}
+
+.lotusPost .lotusPostContent {
+    position: relative;
+    min-height: 26px;
+    overflow: hidden;
+    padding: 0 20px 3px 0;
+    position: relative;
+}
+
+.lotusui .lotusPost a.lotusHidden {
+	display: none;
+}
+
+.lotusPost .lotusPostDate img {
+    margin-right: 3px;
+}
+
+.lotusPost .lotusPostDate {
+    clear: both;
+    /* Overriding One UI 3.0 */
+    margin-top: 5px;
+}
+
+.lotusPopup {
+    border: 7px solid rgba(3, 3, 3, 0.33);
+    border-radius: 8px 8px 8px 8px;
+    box-shadow: 0 0 15px #AAAAAA;
+    color: #222222;
+    position: relative;
+    z-index: 10000;
+}
+
+.lotusPopupRight .lotusPopupConnector {
+    background-position: -136px -10px;
+    height: 21px;
+    left: -11px;
+    top: 20px;
+    width: 11px;
+}
+
+.lotusPopup .lotusPopupConnector {
+    background-image: url("/connections/resources/web/com.ibm.oneui3.styles/css/images/lotusHSprite-8bit.png?etag=XAxDBks");
+    position: absolute;
+}
+
+.lotusPopup .lotusPopupContent {
+    background: none repeat scroll 0 0 #FFFFFF;
+    padding: 20px;
+}
+
+.lotusPopup .lotusPopupClose {
+    position: absolute;
+    right: -18px;
+    top: -18px;
+    z-index: 10001;
+}
+
+.lotusPopup .lotusPopupClose img {
+    background-image: url("/connections/resources/web/com.ibm.oneui3.styles/css/images/lotusHSprite-8bit.png?etag=XAxDBks");
+    background-position: -259px -4px;
+    height: 32px;
+    width: 32px;
+}
+
+.lotusPopup .lotusPopupHeader {
+    border-bottom: 2px solid #888888;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 5px;
+    padding-bottom: 10px;
+}
+
+.lotusPopupHeader .entry {
+    border-bottom: medium none;
+    clear: both;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 5px;
+    overflow: hidden;
+    padding: 0;
+}
+
+.lotusPost .lotusPostDetails {
+    overflow: hidden;
+    /* Overriding One UI 3.0 */
+    padding-top: 5px;
+}
+
+.lotusPost .lotusPostObject {
+    float: left;
+    margin-right: 5px;
+}
+
+.lotusPost .lotusTitle {
+    font-size: 1em;
+}
+
+.lotusPost h4 {
+	/* Overriding One UI 3.0 */
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+}
+
+/* Commenting out until we sync with Karl. These styles follow the
+   design, but don't fit in with the rest of the UI 
+.lotusui .lotusPostAction a, .lotusui .lotusPostAction a:visited {
+	color: #222222;
+}
+
+.lotusPostAction {
+	color: grey;
+}
+*/
+
+.lotusui .lotusPost li.lotusHidden {
+	display: none;
+}
+
+.lotusui .lotusPost .lotusMeta {
+	margin-bottom: 0;
+}
+
+.lotusSection2 {
+	width: 720px;
+	box-shadow: none;
+}
+
+.activityStreamImageUpload {
+	height: 60px;
+}
+
+.activityStreamFilterMenu {
+	margin-left: 5px;
+}
+
+.activityStreamPhotoOf {
+	width: 32px; 
+	height: 32px;
+}
+
+.activityStreamHeader {
+	margin-bottom: 10px;
+}
+
+.activityStreamPage .sharebox {
+	width: 750px;
+	margin-bottom: 10px;
+}
+
+.activityStreamPage .sharebox .lotusStatusField {
+	-moz-box-shadow: 0 1px 5px #DDDDDD inset;
+	-webkit-box-shadow: 0 1px 5px #DDDDDD;
+	box-shadow: 0 1px 5px #DDDDDD;
+	color: #444444;
+}
+
+.lotusForm2 {
+	background-color: #FFFFFF;
+}
+
+/* Connections Communities Activity Stream iWidget Styles */
+
+.lotusui .mm_iWidget .lotusWidgetBody{
+	border-width: 0;
+}
+
+.lotusui .mm_iWidget .lotusSection2 {
+	width: 100%;
+}
+
+/* EE Styling */
+
+/* EE Pop-up Callout Styling */
+.lotusui .lotusPopupRight .lotusPopupConnector {
+    background-position: -813px -6px;
+    height: 21px;
+    left: -11px;
+    top: 20px;
+    width: 11px;
+}
+
+.lotusui .lotusPopup .lotusPopupConnector {
+    background-image: url("/connections/resources/web/com.ibm.oneui3.styles/css/images/lotusHSprite-8bit.png?etag=XFTmxji");
+    position: absolute;
+}
+/* EE Pop-up Border Styling */
+.lotusui .lotusPopup .lotusPopupContent {
+	background: none repeat scroll 0 0 #FFFFFF;
+	padding: 20px;
+}
+.lotusui .lotusPopup {
+	color: #222222;
+}
+.lotusui_fonts {
+	font: 75%/1.5 Arial,Helvetica,sans-serif;
+}
+/* EE Pop-up Close Button Styling */
+.lotusui .lotusPopup .lotusPopupClose {
+	position: absolute;
+	right: -18px;
+	top: -18px;
+	z-index: 10001;
+}
+.lotusui a, .lotusui a:visited {
+	color: #105CB6;
+	text-decoration: none;
+}
+.lotusui .lotusPopup .lotusPopupClose img {
+	background-image: url("/connections/resources/web/com.ibm.oneui3.styles/css/images/lotusHSprite-8bit.png?etag=XFTmxji");
+	background-position: -110px 0;
+	height: 32px;
+	width: 32px;
+}
+.lotusui img {
+	border: 0 none;
+	line-height: 0;
+	vertical-align: middle;
+}
+
+/* EE Error Message Styling */
+
+.lotusui .lotusMessage2 {
+    -moz-border-radius: 4px 4px 4px 4px;
+    background-color: #FFFABC;
+    border: 1px solid #CCCCCC;
+    margin-bottom: 12px;
+    overflow: hidden;
+    padding: 5px;
+    position: relative;
+}
+
+.lotusui .lotusForm2 .lotusMessage2 {
+    margin: 20px;
+    top: 20px;
+}
+.lotusui .lotusMessage2 .lotusIcon {
+    float: left;
+    margin: 2px 5px 0 0;
+}
+.lotusui .lotusMessage2 .lotusMessageBody {
+    margin: 0 20px;
+}
+
+.lotusui .lotusMessage2 span.lotusAltText {
+    float: left;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.lotusui .lotusMessage2 {
+    -moz-border-radius: 3px 3px 3px 3px;
+    background-color: #FFE3E0;
+    border-color: #EFA6A5;
+}
+
+.lotusui .lotusIconMsgError {
+    background-position: -22px -8px;
+}
+.lotusui .lotusIconLike, .lotusui .lotusIconMsgSuccess, .lotusui .lotusIconMsgError, .lotusui .lotusIconMsgInfo, .lotusui .lotusIconMsgWarning {
+    background-image: url("/connections/resources/web/com.ibm.oneui3.styles/css/images/lotusHSprite-8bit.png?etag=XFTmxji");
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+}
+
+/**************************************/
+/*** C O M M E N T S   S T Y L E S ****/
+/**************************************/
+
+.lotusui .lotusCommentList{
+	margin: 0 0 2px 45px;
+}
+
+.lotusui .lotusContent .lotusBoard ul.lotusCommentList li{
+	margin-top: 1px;
+}
+
+.lotusui .lotusContent .lotusBoard .lotusCommentList .lotusPost{
+	padding-left: 0;
+	padding-bottom: 0;
+}
+
+.lotusui .lotusCommentList .lotusPostDetails{
+	padding-top: 0;
+}
+
+.lotusui .lotusCommentList .lotusPostDetails p{
+	margin-top: 0;
+}
+
+.lotusui .lotusBoard .lotusCommentList .lotusPost .lotusPerson{
+	font-weight: normal;
+}
+
+.lotusui .lotusBoard .lotusCommentList .lotusPostAuthorInfo{
+	padding-right: 0;
+}
+
+/**************************************/
+/*** 		   S A V E D 		   ****/
+/**************************************/
+
+.lotusui .lotusContent .lotusBoard .lotusPost .savedEnabled a{	
+	text-decoration: none;
+	color: #222222;
+	cursor: default;
+}
+
+.lotusBoard .lotusActions{
+	margin: 0 0 2px 45px;
+	visibility: hidden;
+}
+.lotusBoard .lotusPostHover .lotusActions{
+	visibility: visible;
+}

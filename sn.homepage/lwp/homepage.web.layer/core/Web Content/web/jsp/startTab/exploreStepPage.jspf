@@ -1,0 +1,97 @@
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- IBM Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright IBM Corp. 2008, 2015                                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+
+<%--wscExemptBegin--%>
+<%-- 5724-E76                                                          --%>
+<%--wscExemptEnd--%>
+
+<%@ page session="true" contentType="text/html; charset=UTF-8"
+	buffer="128kb"%>
+<%@ page errorPage="/web/jsp/common/errorPage.jsp"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="dboard" uri="http://www.ibm.com/homepage/tags"%>
+<%@ taglib prefix="lc-cache" uri="http://www.ibm.com/connections/core/cache"%>
+<%@ taglib prefix="bidi" uri="http://www.ibm.com/lconn/tags/bidiutil"%>
+<%@ taglib prefix="lc-ui" uri="http://www.ibm.com/lconn/tags/coreuiutil" %>
+
+<%-- Set up the class for the View Demo icon. Need to choose direction --%>
+<bidi:direction />
+<c:set var="viewDemoClass" value="iconsOther16 iconsOther16-WatchDemoBlue14"/>
+<c:if test="${bidi}">
+	<c:set var="viewDemoClass" value="iconsOther16 iconsOther16-WatchDemoBlue14-rtl"/>
+</c:if>
+
+
+<div class="lotusContent gettingStartedContent">	
+	<table class="lotusLayout" role="presentation">
+		<tbody>
+			<tr>
+				<td class="exploreAppsColumn">
+					<div dojoType="lconn.homepage.gettingStarted.stackController" stackContainerId="suggestionExploreTextContainerId" 
+						doLayout="false" labelby="exploreServiceLabel" type="explore">						
+					</div>			
+				</td>
+				<td class="exploreTextContainer">
+					<div dojoType="dijit.layout.StackContainer" id="suggestionExploreTextContainerId" class="exploreTextContainerDiv" doLayout="false">
+					
+						<div dojoType="dijit.layout.ContentPane" id="homepage-pane" class="exploreTextContent"
+								title="<fmt:message key='jsp.start.explore.introduction.title' />"
+								component="connections">
+							<span id="connections_heading" role="heading" aria-level="1" class="lotusHeading1"><fmt:message key="jsp.start.explore.introduction.title" /></span>
+							<div id="homepage-pane_description" class="exploreTextContainerIntroduction" role="document" tabindex="0" 
+								 aria-labelledby="connections_heading">
+                                 <fmt:message key="jsp.start.explore.introduction.body" />
+                            </div>
+							<div id="exploreServiceLabel" class="lotusInactive">
+								<fmt:message key="jsp.start.share.info" />
+							</div>	
+						</div>						
+					
+						<c:forEach items="${componentsConfig}" var="componentInfo">
+							<div dojoType="dijit.layout.ContentPane" id="${componentInfo.key}-pane" title="<fmt:message
+							key='jsp.common.service.name.${componentInfo.key}'/>" component="${componentInfo.key}">								
+								<div class="lotusLeft exploreTextContent">
+									<%-- Section title --%>
+									<span id="${componentInfo.key}_heading" role="heading" aria-level="1" class="lotusHeading1">
+										<fmt:message key="jsp.common.service.name.${componentInfo.key}"/>
+									</span>
+										
+									<%-- Main message --%>						
+									<div id="${componentInfo.key}-pane_description" class="gettingStartedComponentInfo"
+										 role="document" tabindex="0" aria-labelledby="${componentInfo.key}_heading">					
+										<fmt:message key="jsp.start.explore.component.body.${componentInfo.key}" />									
+									</div>
+								
+									<%-- Links to components --%>
+									<div class="gettingStartedComponentLinks">							
+										<span class="exploreComponentLinksSpan">
+											<span>
+											     <a href="${componentInfo.value}">
+											     	<fmt:message key="jsp.start.share.component.linksTitle.${componentInfo.key}" />
+											     </a>			
+											</span>		
+										</span>								
+									</div>
+								</div>
+							</div>
+						</c:forEach>
+					</div>								
+				</td>
+			</tr>		
+		</tbody>
+	</table>
+</div>

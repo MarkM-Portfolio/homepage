@@ -1,0 +1,43 @@
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2011, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<div dojoAttachPoint="dogearRoot" class="topContainer">
+	<div style="display:none" dojoAttachPoint="boardingNode"></div>
+
+	<div dojoAttachPoint="containerNode">
+		<div>
+			<h3 class="widgetTitle" dojoAttachPoint="titleNode" style="padding-top: 5px; height:20px;">	   
+	   			<span dojoAttachPoint="dogTitleNode" id="${id}_ViewDropDown" class="lotusLeft">${dogTitle}</span><span dojoAttachPoint="menuModeButtonNode"></span>&nbsp;			   		
+	   		</h3>
+	   	</div>
+	   
+		<div dojoAttachPoint="dogearLoadingNode">
+		   <center><img src="${_loadingImagePath}" class="loading" alt="${loading}" /></center>
+		</div>	
+	   <div dojoAttachPoint="errorNode" style="display: none"></div>
+
+	   <div dojoAttachPoint="dogearBookmarksNode">
+	   </div>
+	   <div dojoattachpoint="welcomeNode" style="display:none;" class="welcomeNode">
+			<div class="lconnEmpty" tabindex="0" aria-label="${noBookmarks1}. ${noBookmarks2}">
+				${noBookmarks1}.&nbsp;${noBookmarks2}
+				<div style="font-style: normal; padding-top: 10px;">
+					<a href="" dojoattachpoint="bookmarkLink" >${noBookmarks3}</a>
+				</div>
+			</div>
+		</div>
+	   <div class="widgetFooter" dojoAttachPoint="scrollerNode">
+	   </div>
+	</div>
+</div>	

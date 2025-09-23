@@ -1,0 +1,83 @@
+<%-- ***************************************************************** --%>
+<%--                                                                   --%>
+<%-- HCL Confidential                                                  --%>
+<%--                                                                   --%>
+<%-- OCO Source Materials                                              --%>
+<%--                                                                   --%>
+<%-- Copyright HCL Technologies Limited. 2006, 2021                    --%>
+<%--                                                                   --%>
+<%-- The source code for this program is not published or otherwise    --%>
+<%-- divested of its trade secrets, irrespective of what has been      --%>
+<%-- deposited with the U.S. Copyright Office.                         --%>
+<%--                                                                   --%>
+<%-- ***************************************************************** --%>
+
+<%@ page session="true" contentType = "text/html; charset=UTF-8" buffer = "128kb"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@ taglib prefix="core" uri="http://www.ibm.com/lconn/tags/coreuiutil" %>
+<%@ taglib prefix="hometags" uri="http://www.ibm.com/homepage/tags" %>
+
+<tiles:importAttribute name="tabName" toName="selected" />
+
+<ul class="lotusTabs" id="pageTabs" role="toolbar navigation">
+	<%
+	Object updates = new com.ibm.lconn.core.web.util.resourcebundle.UILabelConfig("tabBundle2","jsp.homepage.tab.updates");
+	Object activityStream = new com.ibm.lconn.core.web.util.resourcebundle.UILabelConfig("tabBundle2","jsp.homepage.tab.activityStream");
+	Object widgets = new com.ibm.lconn.core.web.util.resourcebundle.UILabelConfig("tabBundle2","jsp.homepage.tab.widgets");
+	Object admin = new com.ibm.lconn.core.web.util.resourcebundle.UILabelConfig("tabBundle2","jsp.homepage.tab.admin");
+	Object gettingStarted = new com.ibm.lconn.core.web.util.resourcebundle.UILabelConfig("tabBundle2","jsp.homepage.tab.gettingStarted");
+	
+	request.setAttribute("updates",updates);
+	request.setAttribute("activityStream",activityStream);
+	request.setAttribute("widgets",widgets);
+	request.setAttribute("admin",admin);
+	request.setAttribute("gettingStarted",gettingStarted);
+	
+	%>
+	
+	<!--  Getting Started Tab -->
+	<% if (selected.equalsIgnoreCase("gettingStarted")) {%>
+		<li id="gettingStartedTab" class="lotusSelected"><a href="javascript:void(0);" role="button" aria-pressed="true"><core:message label="${gettingStarted}"/></a></li>	
+	<% } else { %>
+		<li id="gettingStartedTab"><a href="${pageContext.request.contextPath}/web/gettingStarted/" role="button" aria-pressed="false"><core:message label="${gettingStarted}" /></a></li>	
+	<% } %>
+	
+	<%-- Updates Tab --%>
+	<% if (selected.equalsIgnoreCase("updates")) {%>
+		<li id="mainTab" class="lotusSelected"><a href="javascript:void(0);" role="button" aria-pressed="true"><core:message label="${updates}"/></a></li>	
+	<% } else { %>
+		<li id="mainTab"><a href="${pageContext.request.contextPath}/web/updates/" role="button" aria-pressed="false"><core:message label="${updates}" /></a></li>	
+	<% } %>
+	
+	<%-- Widgets Tab --%>
+	<% pageContext.setAttribute("widgetTabStyle", "display:none;"); %>
+	<c:if test="${ sessionScope.isWidgetTabEnabled }">
+		<%pageContext.setAttribute("widgetTabStyle", "display:block;"); %>
+	</c:if>
+	<% if (selected.equalsIgnoreCase("widgets")) {%>
+		<li id="widgetTab" class="lotusSelected" style="${widgetTabStyle}"><a href="javascript:void(0);" role="button" aria-pressed="true"><core:message label="${widgets}"/> 
+		</a>
+				
+		</li>	
+	<% } else { %>
+		<li id="widgetTab" style="${widgetTabStyle}"><a href="${pageContext.request.contextPath}/web/widgets/" role="button" aria-pressed="false"><core:message label="${widgets}"/></a></li>	
+	<% } %>
+		
+	<%-- Admin Tab --%>
+	<c:if test="${ sessionScope.isAdmin }">
+		<% if (selected.equalsIgnoreCase("admin")) {%>
+			<li id="adminTab" class="lotusSelected"><a href="javascript:void(0);" role="button" aria-pressed="true"><core:message label="${admin}"/></a></li>	
+		<% } else { %>
+			<li id="adminTab"><a href="${pageContext.request.contextPath}/admin/openAdminPage.action" role="button" aria-pressed="false"><core:message label="${admin}"/></a></li>	
+		<% } %>
+	</c:if>	
+</ul>
+
+<script type="text/javascript">
+	// Setup aria helper for this toolbar above
+	dojo.require("lconn.core.aria.Toolbar");
+	new lconn.core.aria.Toolbar("pageTabs");
+</script>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2012, 2013                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<!-- SEE TESTNG.ORG for documentation on using these xml config files. DTD available at above link and also in testng .jar-->
+
+<suite thread-count="1" name="LCBVT_Suite_Full" parallel="false">
+
+  <parameter name="server_host" value="localhost" />
+  <parameter name="server_port" value="4445" />
+  <parameter name="browser_url" value="http://lc30linux3.swg.usma.ibm.com/" />
+  <parameter name="server_is_grid_hub" value="false" />
+   
+  <!--
+  The appropriate browser start commmand is formed from the 3 parameters below. All parameters are required.
+  For Selenium Grid, browser start command will be '[browser_name]_[browser_version]_[browser_environment_os]'.
+  If using selenium grid(i.e. '<parameter name="server_is_grid_hub" value="true" />'), you must request capabilities that match what is available on the grid.
+  If not using selenium grid(i.e. '<parameter name="server_is_grid_hub" value="false" />'), the appropriate browser_start_command will be automatically chosen (e.g. *firefox for browser_name="FireFox").
+  View grid capabilities at 'http://[server_host]:[server_port]/grid/'.
+  -->
+  <!-- <parameter name="browser_name" value="Firefox" /> Valid values are: 'Firefox' OR 'GoogleChrome' OR 'InternetExplorer'. This is CaseSensitive -->
+  <!-- <parameter name="browser_version" value="3.6" /> Example values are:'3.6', '5', '8', '10'-->
+  <!-- <parameter name="browser_environment_os" value="WindowsVista" /> Example values are: Windows7, WindowsVista, WindowsXP, MacOSX, LinuxMint etc. This is CaseSensitive -->
+
+  <!-- Provide list of grid style browser capabilities separated by ';'. If "server_is_grid_hub" value="false" start command will be automatically adjsuted for standalone server. -->
+  <parameter name="browser_start_command" value="InternetExplorer_9_Windows7" />
+
+  <!-- Listeners to be passed to testng -->
+  <listeners>
+    <listener class-name="com.ibm.atmn.base.ListenerForErrors" />
+  </listeners>
+  
+  <!--
+  Specify test structure below. Parameters for tests may be expected. <Test> parameters automatically override suite parameters of the same same.
+  <Test> divisions are abritrary. @Test method locations for a <test> may be specified by <package> or <class>.
+  -->
+  <test name="Activities" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="activities/auth/login.jsp" />
+    <packages>
+      <package name="com.ibm.atmn.lc.testcases.activities" />
+    </packages>
+  </test>
+  <test name="Blogs" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="blogs/roller-ui/homepage" />
+    <packages>
+      <package name="com.ibm.atmn.lc.testcases.blogs" />
+    </packages>
+  </test>
+  <test name="Communities" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="communities/service/html/allcommunities" />
+    <packages>
+      <package name="com.ibm.atmn.lc.testcases.communities" />
+    </packages>
+  </test>
+  <test name="Dogear" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="dogear/html" />
+    <packages>
+      <package name="com.ibm.atmn.lc.testcases.dogear" />
+    </packages>
+  </test>
+  <test name="Files" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="files/login" />
+    <packages>
+      <package name="com.ibm.atmn.lc.testcases.files" />
+    </packages>
+  </test>
+  <test name="Forums" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="forums/html/public" />
+    <packages>
+      <package name="com.ibm.atmn.lc.testcases.forums" />
+    </packages>
+  </test>
+  <test name="Globalsearch" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="search/login" />
+    <packages>
+      <package name="com.ibm.atmn.lc.testcases.globalsearch" />
+    </packages>
+  </test>
+  <test name="Homepage" preserve-order="true" enabled="true">
+    <parameter name="start_url" value="homepage/login" />
+    <packages>
+      <package name="com.ibm.atmn.lc.testcases.homepage" />
+    </packages>
+  </test>
+  <test name="MediaGallery" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="communities/service/html/allcommunities" />
+    <packages>
+      <package name="com.ibm.atmn.lc.testcases.mediagallery" />
+    </packages>
+  </test>
+  <test name="Metrics" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="" />
+    <packages>
+      <package name="com.ibm.atmn.lc.testcases.metrics" />
+    </packages>
+  </test>
+  <test name="Mobile" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="mobile/admin/Login" />
+    <packages>
+      <package name="com.ibm.atmn.lc.testcases.mobile" />
+    </packages>
+  </test>
+  <test name="Moderation" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="" />
+    <packages>
+      <package name="com.ibm.atmn.lc.testcases.moderation" />
+    </packages>
+  </test>
+  <test name="News" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="homepage/web/displayHomePage.action#newsfeed" />
+    <packages>
+      <package name="com.ibm.atmn.lc.testcases.news" />
+    </packages>
+  </test>
+  <test name="Profiles" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="profiles/login" />
+    <packages>
+      <package name="com.ibm.atmn.lc.testcases.profiles" />
+    </packages>
+  </test>
+  <test name="Widgets" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="communities/service/html/allcommunities" />
+    <packages>
+      <package name="com.ibm.atmn.lc.testcases.widgets" />
+    </packages>
+  </test>
+  <test name="Wikis" preserve-order="true" enabled="false">
+    <parameter name="start_url" value="wikis/home" />
+    <packages>
+      <package name="com.ibm.atmn.lc.testcases.wikis" />
+    </packages>
+  </test>
+</suite>

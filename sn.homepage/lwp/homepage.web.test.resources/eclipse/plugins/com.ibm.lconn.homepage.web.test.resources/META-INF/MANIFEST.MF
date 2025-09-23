@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: IBM Connections Homepage JavaScript Unit Tests
+Bundle-SymbolicName: com.ibm.lconn.homepage.web.test.resources;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: IBM
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ClassPath: ., lib/commons-logging-1.0.4.jar,
+ lib/junit.jar,
+ lib/selenium-server-standalone-2.28.0.jar,
+ lib/testng-5.7-jdk15.jar

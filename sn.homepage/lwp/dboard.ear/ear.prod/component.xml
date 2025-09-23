@@ -1,0 +1,40 @@
+<!-- ************************************************************** -->
+<!--                                                                -->
+<!-- Licensed Materials - Property of HCL                           -->
+<!--                                                                -->
+<!-- Copyright HCL Technologies Limited 2006, 2022                  -->
+<!--                                                                -->
+<!-- US Government Users Restricted Rights                          -->
+<!--                                                                -->
+<!-- ************************************************************** -->
+
+<component name="dboard.ear/ear.prod" description="Dashboard EAR" project-type="ear" spec-version="1.0">
+
+    <output-group name="default">
+        <output type="ear" visibility="public" platform="all" location="${env.LWP_COMP_BUILD}/lib/dboard.ear" preferredInstallLocation="ears" />
+    </output-group>
+
+    <output-group name="to_ear">
+        <output type="dir" visibility="public" platform="all" location="ilmt" />
+    </output-group>
+
+    <dependency name="homepage.events.publish.ejb" type="jar" version="3.0" />
+    <dependency name="homepage.web.layer/core" type="war" version="1.0" />
+
+    <dependency name="lc.events/newsEjbConsumer" type="jar" version="2.5" />
+    <dependency name="lc.util/web" type="jar" version="2.0" />
+    <dependency name="prereqs.sn/freemarker2.3.28" type="jar" version="2.3.28" />
+    <dependency name="prereqs.sn/tiles-3.0.7" type="jar" version="3.0.7" />
+    <dependency name="prereqs.sn/mybatis-2-spring" type="jar" version="1.0.1" />
+    <dependency name="prereqs.sn/mybatis" type="jar" />
+    <dependency name="prereqs.sn/spring-5.2" type="jar" />
+    <dependency name="prereqs.sn/jakarta.commons.fileupload-1.2.1" type="jar" version="1.2.1" />
+
+    <!-- LC Common -->
+    <dependency name="lc.web.common.ear" type="jar" />
+
+    <dependency name="home.news" type="jar" version="1.0" />
+    <dependency name="lc.userPreferences" type="jar" />
+
+    <dependency name="prereqs.sn/hystrix" type="jar" />
+</component>

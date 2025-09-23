@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//iBATIS.com/DTD SQL Map 2.0//EN"
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+	
+<!-- ***************************************************************** -->
+<!--                                                                   -->
+<!-- IBM Confidential                                                  -->
+<!--                                                                   -->
+<!-- OCO Source Materials                                              -->
+<!--                                                                   -->
+<!-- Copyright IBM Corp. 2006, 2015                                    -->
+<!--                                                                   -->
+<!-- The source code for this program is not published or otherwise    -->
+<!-- divested of its trade secrets, irrespective of what has been      -->
+<!-- deposited with the U.S. Copyright Office.                         -->
+<!--                                                                   -->
+<!-- ***************************************************************** -->
+
+<!-- 
+CREATE TABLE HOMEPAGE.METRIC_STAT  (
+      METRIC_STAT_ID VARCHAR(36) NOT NULL,
+      RECORDED_ON TIMESTAMP NOT NULL,
+      METRIC_TYPE SMALLINT NOT NULL,
+      METRIC_DESC VARCHAR(36) NOT NULL,
+      RES_BUNDLE_KEY VARCHAR(144) NOT NULL,
+      COUNT_LAST_24_H BIGINT,
+      COUNT_LAST_7_D BIGINT,
+      COUNT_LAST_1_M BIGINT,
+      TOP_STATS VARCHAR(512),
+      TOT_STAT BIGINT,
+      AVG_TOT_STAT BIGINT
+)
+IN HOMEPAGETABSPACE;
+-->
+
+<sqlMap namespace="MetricStat">
+
+	<typeAlias alias="MetricStat" type="com.ibm.lconn.homepage.dao.model.MetricStat" />	
+	
+	<resultMap id="MetricStatMap" class="MetricStat">
+		<result property="metricStatId" column="METRIC_STAT_ID" jdbcType="VARCHAR" />
+		<result property="recordedOn" column="RECORDED_ON" jdbcType="TIMESTAMP" />
+		<result property="metricType" column="METRIC_TYPE" jdbcType="SMALLINT" />	
+		<result property="metricDesc" column="METRIC_DESC" jdbcType="VARCHAR" />
+		<result property="resBundleKey" column="RES_BUNDLE_KEY" jdbcType="VARCHAR" />
+		<result property="countLast24h" column="COUNT_LAST_24_H" jdbcType="BIGINT" />		
+		<result property="countLast7d" column="COUNT_LAST_7_D" jdbcType="BIGINIT" />
+		<result property="countLast1m" column="COUNT_LAST_1_M" jdbcType="BIGINIT" />
+		<result property="topStats" column="TOP_STATS" jdbcType="VARCHAR" />
+		<result property="totStat" column="TOT_STAT" jdbcType="BIGINT" />
+		<result property="avgTotStat" column="AVG_TOT_STAT" jdbcType="BIGINT" />		
+	</resultMap>
+
+	<insert id="insert-METRIC_STAT" parameterClass="MetricStat" >
+		<![CDATA[
+			INSERT INTO $schema$.METRIC_STAT
+				(	
+					METRIC_STAT_ID, 
+					RECORDED_ON,
+					METRIC_TYPE,
+					METRIC_DESC, 
+					RES_BUNDLE_KEY,
+					COUNT_LAST_24_H,
+					COUNT_LAST_7_D,
+					COUNT_LAST_1_M, 
+					TOP_STATS, 
+					TOT_STAT, 
+					AVG_TOT_STAT,
+					ORGANIZATION_ID				
+				)
+			VALUES
+				(	
+					#metricStatId:VARCHAR#, 
+					#recordedOn:TIMESTAMP#,
+					#metricType:SMALLINT#,
+					#metricDesc:VARCHAR#, 
+					#resBundleKey:VARCHAR#,
+					#countLast24h:BIGINT#, 
+					#countLast7d:BIGINT#,
+					#countLast1m:BIGINT#,
+					#topStats:VARCHAR#, 
+					#totStat:BIGINT#, 
+					#avgTotStat:BIGINIT#,
+					#organizationId:VARCHAR#					 
+				)
+		]]>
+	</insert>
+
+  	<update id="update-METRIC_STAT" parameterClass="MetricStat">
+		<![CDATA[
+		 	UPDATE $schema$.METRIC_STAT 
+		 	SET 				
+					RECORDED_ON = #recordedOn:TIMESTAMP#,
+					METRIC_TYPE = #metricType:SMALLINT#,
+					METRIC_DESC = #metricDesc:VARCHAR#, 
+					RES_BUNDLE_KEY = #resBundleKey:VARCHAR#,
+					COUNT_LAST_24_H = #countLast24h:BIGINT#, 
+					COUNT_LAST_7_D = #countLast7d:BIGINT#,
+					COUNT_LAST_1_M = #countLast1m:BIGINT#,
+					TOP_STATS = #topStats:VARCHAR#, 
+					TOT_STAT = #totStat:BIGINT#, 
+					AVG_TOT_STAT =#avgTotStat:BIGINIT#
+		  	WHERE METRIC_STAT_ID = #metricStatId:VARCHAR#
+		]]>
+  	</update>
+    
+    <delete id="delete-METRIC_STAT">
+        <![CDATA[
+		   	delete from $schema$.METRIC_STAT where METRIC_STAT_ID = #key#
+		]]>
+    </delete>
+
+	<select id="select-METRIC_STAT" resultMap="MetricStatMap" >
+		<![CDATA[
+			SELECT * from $schema$.METRIC_STAT
+		]]>
+		<isEqual prepend="WHERE" property="applyMT" compareValue="true">
+				ORGANIZATION_ID = #organizationId:VARCHAR#
+		</isEqual>
+		ORDER BY RECORDED_ON
+	</select>
+	
+	<select id="getByPK-METRIC_STAT"  resultMap="MetricStatMap">
+	    <![CDATA[
+		    select *
+	    	from $schema$.METRIC_STAT
+	    	where METRIC_STAT_ID = #key:VARCHAR#
+	    ]]>
+	    <isEqual prepend="AND" property="applyMT" compareValue="true">
+				ORGANIZATION_ID = #organizationId:VARCHAR#
+		</isEqual>
+	</select>
+	<select id="selectByDate-METRIC_STAT" resultMap="MetricStatMap" >
+		<![CDATA[
+			SELECT * from $schema$.METRIC_STAT
+			where RECORDED_ON BETWEEN #begin# AND #end#
+		]]>
+		<isEqual prepend="AND" property="applyMT" compareValue="true">
+				ORGANIZATION_ID = #organizationId:VARCHAR#
+		</isEqual>
+	</select>    
+	
+</sqlMap>

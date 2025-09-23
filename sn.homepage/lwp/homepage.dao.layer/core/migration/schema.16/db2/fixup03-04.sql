@@ -1,0 +1,42 @@
+-- ***************************************************************** 
+--                                                                   
+-- IBM Confidential                                                  
+--                                                                   
+-- OCO Source Materials                                              
+--                                                                   
+-- Copyright IBM Corp. 2008, 2015                                    
+--                                                                   
+-- The source code for this program is not published or otherwise    
+-- divested of its trade secrets, irrespective of what has been      
+-- deposited with the U.S. Copyright Office.                         
+--                                                                   
+-- ***************************************************************** 
+
+----------------------------------------------------
+----------------------------------------------------
+-- Script to upgrade Home Page database
+-- from schema version 3 to 4
+----------------------------------------------------
+
+CONNECT TO HOMEPAGE;
+
+ALTER TABLE HOMEPAGE.USER_WIDGET_PREF
+   ADD SHOW_DISABLED_WIDGETS SMALLINT DEFAULT 0 NOT NULL;
+   
+UPDATE HOMEPAGE.HOMEPAGE_SCHEMA
+   SET   DBSCHEMAVER = 4
+   WHERE COMPKEY = 'HOMEPAGE';
+
+COMMIT;
+	
+--------------------------------------
+-- FLUSH
+--------------------------------------
+FLUSH PACKAGE CACHE DYNAMIC;
+
+--------------------------------------
+-- TERMINATE
+--------------------------------------
+connect reset;
+terminate; 	
+
